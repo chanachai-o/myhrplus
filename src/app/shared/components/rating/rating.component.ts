@@ -138,5 +138,16 @@ export class RatingComponent implements ControlValueAccessor {
   getSizeClass(): string {
     return `size-${this.size}`;
   }
+
+  getStarColor(star: number): string {
+    if (this.hoveredRating > 0) {
+      if (star <= this.hoveredRating) {
+        return 'text-yellow-400 dark:text-yellow-500';
+      }
+    } else if (star <= this.currentRating) {
+      return 'text-yellow-400 dark:text-yellow-500';
+    }
+    return 'text-gray-300 dark:text-gray-600';
+  }
 }
 

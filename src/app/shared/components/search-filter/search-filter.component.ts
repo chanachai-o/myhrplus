@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export interface FilterOption {
@@ -30,10 +30,12 @@ export class SearchFilterComponent implements OnInit {
   filterForm: FormGroup;
   isAdvancedOpen: boolean = false;
   activeFilters: Record<string, any> = {};
+  searchControl: FormControl;
 
   constructor(private fb: FormBuilder) {
+    this.searchControl = this.fb.control('');
     this.searchForm = this.fb.group({
-      search: ['']
+      search: this.searchControl
     });
 
     this.filterForm = this.fb.group({});

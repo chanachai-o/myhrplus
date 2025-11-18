@@ -1,29 +1,29 @@
-<div class="home-container">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-0 relative overflow-x-hidden flex flex-col">
   <!-- Header -->
   <app-home-header></app-home-header>
 
   <!-- Main Content -->
-  <div class="home-content">
+  <div class="flex-1 px-5 pb-10 max-w-7xl mx-auto w-full">
     <!-- Welcome Section -->
-    <div class="welcome-section">
-      <div class="welcome-content">
-        <h1 class="welcome-title thai-text">
+    <div class="relative my-10 p-10 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/90 dark:to-gray-800/70 rounded-3xl shadow-2xl backdrop-blur-lg overflow-hidden animate-fade-in">
+      <div class="relative z-10">
+        <h1 class="text-5xl font-bold mb-4 thai-text bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animate-fade-in-up">
           {{ getGreeting() }}, {{ currentUser?.fullname || currentUser?.name || 'ผู้ใช้งาน' }}!
         </h1>
-        <p class="welcome-subtitle thai-text">
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 thai-text animate-fade-in-up">
           ยินดีต้อนรับสู่ระบบ HR Management
         </p>
-        <div class="user-info" *ngIf="currentUser">
-          <div class="info-item">
-            <mat-icon>badge</mat-icon>
+        <div class="flex flex-wrap gap-6 animate-fade-in-up" *ngIf="currentUser">
+          <div class="flex items-center gap-2 px-5 py-3 bg-indigo-100/50 dark:bg-indigo-900/30 rounded-xl text-sm text-gray-700 dark:text-gray-300">
+            <app-icon name="badge" size="sm" color="text-indigo-600 dark:text-indigo-400"></app-icon>
             <span class="thai-text">รหัสพนักงาน: {{ currentUser.employeeid || currentUser.uid }}</span>
           </div>
-          <div class="info-item" *ngIf="currentUser['emp_position']">
-            <mat-icon>work</mat-icon>
+          <div class="flex items-center gap-2 px-5 py-3 bg-indigo-100/50 dark:bg-indigo-900/30 rounded-xl text-sm text-gray-700 dark:text-gray-300" *ngIf="currentUser['emp_position']">
+            <app-icon name="work" size="sm" color="text-indigo-600 dark:text-indigo-400"></app-icon>
             <span class="thai-text">ตำแหน่ง: {{ currentUser['emp_position'] }}</span>
           </div>
-          <div class="info-item" *ngIf="currentUser['workarea']">
-            <mat-icon>business</mat-icon>
+          <div class="flex items-center gap-2 px-5 py-3 bg-indigo-100/50 dark:bg-indigo-900/30 rounded-xl text-sm text-gray-700 dark:text-gray-300" *ngIf="currentUser['workarea']">
+            <app-icon name="business" size="sm" color="text-indigo-600 dark:text-indigo-400"></app-icon>
             <span class="thai-text">แผนก: {{ currentUser['workarea'] }}</span>
           </div>
         </div>
@@ -31,143 +31,167 @@
     </div>
 
     <!-- Dashboard Stats -->
-    <div class="dashboard-stats-section" *ngIf="!dashboardLoading">
-      <div class="stats-grid">
+    <div class="my-10" *ngIf="!dashboardLoading">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         <!-- Leave Balance Card -->
-        <div class="stat-card leave-card" [@fadeInUp]>
-          <div class="stat-card-header">
-            <mat-icon class="stat-icon">event</mat-icon>
-            <h3 class="stat-title thai-text">ยอดการลาคงเหลือ</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" [@fadeInUp]>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+              <app-icon name="event" size="sm" color="text-white"></app-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 thai-text">ยอดการลาคงเหลือ</h3>
           </div>
-          <div class="stat-card-content">
-            <div class="stat-value">{{ stats.totalLeaveBalance }}</div>
-            <div class="stat-unit thai-text">วัน</div>
+          <div class="mb-5">
+            <div class="text-5xl font-bold text-gray-800 dark:text-gray-200 leading-none mb-2">{{ stats.totalLeaveBalance }}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 thai-text">วัน</div>
           </div>
-          <div class="stat-card-footer" *ngIf="leaveBalances.length > 0">
-            <div class="leave-details">
-              <div *ngFor="let balance of leaveBalances.slice(0, 3)" class="leave-item">
-                <span class="leave-type thai-text">{{ balance.leaveTypeName }}</span>
-                <span class="leave-balance">{{ balance.balance }} วัน</span>
+          <div class="mb-4 pt-4 border-t border-gray-200 dark:border-gray-700" *ngIf="leaveBalances.length > 0">
+            <div class="flex flex-col gap-2">
+              <div *ngFor="let balance of leaveBalances.slice(0, 3)" class="flex justify-between items-center py-2">
+                <span class="text-sm text-gray-600 dark:text-gray-400 thai-text">{{ balance.leaveTypeName }}</span>
+                <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ balance.balance }} วัน</span>
               </div>
             </div>
           </div>
-          <button mat-button class="view-more-btn" (click)="router.navigate(['/ta/leave'])">
+          <button 
+            class="w-full mt-4 px-4 py-2 text-indigo-600 dark:text-indigo-400 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors flex items-center justify-center gap-2"
+            (click)="router.navigate(['/ta/leave'])">
             <span class="thai-text">ดูรายละเอียด</span>
-            <mat-icon>arrow_forward</mat-icon>
+            <app-icon name="arrow_forward" size="sm" color="text-indigo-600 dark:text-indigo-400"></app-icon>
           </button>
         </div>
 
         <!-- Payslip Card -->
-        <div class="stat-card payslip-card" [@fadeInUp]>
-          <div class="stat-card-header">
-            <mat-icon class="stat-icon">receipt</mat-icon>
-            <h3 class="stat-title thai-text">สลิปเงินเดือน</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" [@fadeInUp]>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center">
+              <app-icon name="receipt" size="sm" color="text-white"></app-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 thai-text">สลิปเงินเดือน</h3>
           </div>
-          <div class="stat-card-content">
-            <div class="stat-value">{{ stats.recentPayslipsCount }}</div>
-            <div class="stat-unit thai-text">รายการล่าสุด</div>
+          <div class="mb-5">
+            <div class="text-5xl font-bold text-gray-800 dark:text-gray-200 leading-none mb-2">{{ stats.recentPayslipsCount }}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 thai-text">รายการล่าสุด</div>
           </div>
-          <div class="stat-card-footer" *ngIf="recentPayslips.length > 0">
-            <div class="payslip-list">
-              <div *ngFor="let payslip of recentPayslips" class="payslip-item">
-                <div class="payslip-period">
-                  <span class="thai-text">{{ payslip.periodMonth }}/{{ payslip.periodYear }}</span>
-                </div>
-                <div class="payslip-amount">
-                  <span class="amount">{{ payslip.netSalary | number:'1.0-0' }}</span>
-                  <span class="currency">฿</span>
+          <div class="mb-4 pt-4 border-t border-gray-200 dark:border-gray-700" *ngIf="recentPayslips.length > 0">
+            <div class="flex flex-col gap-3">
+              <div *ngFor="let payslip of recentPayslips" class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div class="text-sm text-gray-600 dark:text-gray-400 thai-text">{{ payslip.periodMonth }}/{{ payslip.periodYear }}</div>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-xl font-semibold text-cyan-500 dark:text-cyan-400">{{ payslip.netSalary | number:'1.0-0' }}</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">฿</span>
                 </div>
               </div>
             </div>
           </div>
-          <button mat-button class="view-more-btn" (click)="router.navigate(['/dashboard/payslip'])">
+          <button 
+            class="w-full mt-4 px-4 py-2 text-cyan-600 dark:text-cyan-400 font-medium hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors flex items-center justify-center gap-2"
+            (click)="router.navigate(['/dashboard/payslip'])">
             <span class="thai-text">ดูทั้งหมด</span>
-            <mat-icon>arrow_forward</mat-icon>
+            <app-icon name="arrow_forward" size="sm" color="text-cyan-600 dark:text-cyan-400"></app-icon>
           </button>
         </div>
 
         <!-- Time Attendance Card -->
-        <div class="stat-card attendance-card" [@fadeInUp]>
-          <div class="stat-card-header">
-            <mat-icon class="stat-icon">access_time</mat-icon>
-            <h3 class="stat-title thai-text">การลงเวลา</h3>
-          </div>
-          <div class="stat-card-content">
-            <div class="stat-value">{{ stats.workingHours }}</div>
-            <div class="stat-unit thai-text">ชั่วโมง (วันนี้)</div>
-          </div>
-          <div class="stat-card-footer" *ngIf="timeAttendance.length > 0">
-            <div class="attendance-status">
-              <div class="status-badge" [ngClass]="getStatusClass(stats.todayStatus)">
-                <span class="thai-text">{{ getStatusText(stats.todayStatus) }}</span>
-              </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" [@fadeInUp]>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+              <app-icon name="access_time" size="sm" color="text-white"></app-icon>
             </div>
-            <div class="attendance-list">
-              <div *ngFor="let record of timeAttendance.slice(0, 5)" class="attendance-item">
-                <span class="attendance-date">{{ formatDate(record.date) }}</span>
-                <span class="attendance-time" *ngIf="record.checkIn">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 thai-text">การลงเวลา</h3>
+          </div>
+          <div class="mb-5">
+            <div class="text-5xl font-bold text-gray-800 dark:text-gray-200 leading-none mb-2">{{ stats.workingHours }}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400 thai-text">ชั่วโมง (วันนี้)</div>
+          </div>
+          <div class="mb-4 pt-4 border-t border-gray-200 dark:border-gray-700" *ngIf="timeAttendance.length > 0">
+            <div class="mb-4">
+              <span 
+                class="inline-block px-4 py-2 rounded-full text-sm font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': stats.todayStatus === 'Present',
+                  'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400': stats.todayStatus === 'Absent',
+                  'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400': stats.todayStatus === 'Late',
+                  'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': stats.todayStatus === 'On Leave',
+                  'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-400': stats.todayStatus === 'No Record'
+                }">
+                {{ getStatusText(stats.todayStatus) }}
+              </span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div *ngFor="let record of timeAttendance.slice(0, 5)" class="flex justify-between items-center py-2 text-xs">
+                <span class="text-gray-600 dark:text-gray-400 min-w-[60px]">{{ formatDate(record.date) }}</span>
+                <span class="text-gray-500 dark:text-gray-500 flex-1 text-center" *ngIf="record.checkIn">
                   {{ record.checkIn }} - {{ record.checkOut || '-' }}
                 </span>
-                <span class="attendance-status-badge" [ngClass]="getStatusClass(record.status)">
+                <span 
+                  class="px-2 py-1 rounded-xl text-xs min-w-[60px] text-center"
+                  [ngClass]="{
+                    'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': record.status === 'Present',
+                    'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400': record.status === 'Absent',
+                    'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400': record.status === 'Late',
+                    'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': record.status === 'On Leave'
+                  }">
                   {{ getStatusText(record.status) }}
                 </span>
               </div>
             </div>
           </div>
-          <button mat-button class="view-more-btn" (click)="router.navigate(['/ta'])">
+          <button 
+            class="w-full mt-4 px-4 py-2 text-pink-600 dark:text-pink-400 font-medium hover:bg-pink-50 dark:hover:bg-pink-900/20 rounded-lg transition-colors flex items-center justify-center gap-2"
+            (click)="router.navigate(['/ta'])">
             <span class="thai-text">ดูรายละเอียด</span>
-            <mat-icon>arrow_forward</mat-icon>
+            <app-icon name="arrow_forward" size="sm" color="text-pink-600 dark:text-pink-400"></app-icon>
           </button>
         </div>
       </div>
     </div>
 
     <!-- Loading State -->
-    <div *ngIf="loading || dashboardLoading" class="loading-container">
-      <mat-spinner></mat-spinner>
-      <p class="thai-text">กำลังโหลดข้อมูล...</p>
+    <div *ngIf="loading || dashboardLoading" class="flex flex-col items-center justify-center py-24 px-5 max-w-7xl mx-auto">
+      <app-spinner size="lg" message="กำลังโหลดข้อมูล..."></app-spinner>
     </div>
 
     <!-- Menu Categories -->
-    <div *ngIf="!loading && menuCategories.length > 0" class="menu-categories-section">
-      <h2 class="section-title thai-text">เลือกเมนูที่ต้องการใช้งาน</h2>
+    <div *ngIf="!loading && menuCategories.length > 0" class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-semibold mb-10 text-center text-gray-800 dark:text-gray-200 thai-text">เลือกเมนูที่ต้องการใช้งาน</h2>
 
-      <div class="categories-grid">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
           *ngFor="let category of menuCategories"
-          class="category-card"
+          class="relative rounded-2xl p-0 cursor-pointer transition-all duration-300 overflow-hidden shadow-lg min-h-[200px] flex flex-col hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
           [style.background]="getGradientForCategory(category.code)"
           [@fadeInUp]>
-          <div class="category-card-content" (click)="navigateToCategory(category)" [attr.aria-label]="category.thaiTitle">
-            <div class="category-header">
-              <div class="category-icon">
-                <mat-icon>{{ category.icon }}</mat-icon>
+          <div class="relative z-10 p-8 flex-1 flex flex-col text-white cursor-pointer" (click)="navigateToCategory(category)" [attr.aria-label]="category.thaiTitle">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center transition-all duration-300 backdrop-blur-lg flex-shrink-0 hover:scale-110 hover:rotate-6">
+                <app-icon [name]="category.icon" size="lg" color="text-white"></app-icon>
               </div>
-              <div class="category-title-section">
-                <h3 class="category-title thai-text">{{ category.thaiTitle }}</h3>
-                <p class="category-subtitle">{{ category.englishTitle }}</p>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold mb-1 text-white thai-text">{{ category.thaiTitle }}</h3>
+                <p class="text-sm opacity-90 text-white font-medium">{{ category.englishTitle }}</p>
               </div>
             </div>
 
-            <div class="category-footer">
-              <div class="category-description thai-text">
+            <div class="mt-6 pt-4 border-t border-white/20 flex items-center justify-between gap-3">
+              <div class="text-sm opacity-90 text-white flex-1 thai-text">
                 คลิกเพื่อเข้าสู่ระบบ EMPVIEW
               </div>
-              <div class="category-arrow">
-                <mat-icon>arrow_forward</mat-icon>
+              <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center transition-all duration-300 backdrop-blur-lg flex-shrink-0 hover:bg-white/30 hover:translate-x-1">
+                <app-icon name="arrow_forward" size="md" color="text-white"></app-icon>
               </div>
             </div>
           </div>
-          <div class="category-card-overlay"></div>
+          <div class="absolute inset-0 bg-black/10 opacity-0 transition-opacity duration-300 z-0 hover:opacity-100"></div>
         </div>
       </div>
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="!loading && menuCategories.length === 0" class="empty-state">
-      <mat-icon class="empty-icon">folder_open</mat-icon>
-      <h3 class="thai-text">ไม่มีเมนูที่สามารถเข้าถึงได้</h3>
-      <p class="thai-text">กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง</p>
+    <div *ngIf="!loading && menuCategories.length === 0" class="flex flex-col items-center justify-center py-24 px-5 max-w-7xl mx-auto text-center">
+      <app-icon name="folder_open" size="xl" color="text-gray-400 dark:text-gray-600" class="mb-6"></app-icon>
+      <h3 class="text-2xl text-gray-600 dark:text-gray-400 mb-3 thai-text">ไม่มีเมนูที่สามารถเข้าถึงได้</h3>
+      <p class="text-base text-gray-500 dark:text-gray-500 thai-text">กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง</p>
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '../../../core/services/dialog.service';
 import { AuthService, User } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 import { PasswordDialogComponent } from './password-dialog.component';
@@ -50,7 +50,7 @@ export class PayslipViewerComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     public router: Router,
-    public dialog: MatDialog
+    public dialog: DialogService
   ) {
     this.currentUser = this.authService.getCurrentUser();
   }

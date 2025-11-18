@@ -23,12 +23,12 @@
           <div
             *ngIf="showStepIcons && step.icon && !isStepCompleted(i)"
             class="step-icon">
-            <mat-icon>{{ step.icon }}</mat-icon>
+            <app-icon [name]="step.icon" size="sm" color="text-white"></app-icon>
           </div>
           <div
             *ngIf="isStepCompleted(i)"
             class="step-check">
-            <mat-icon>check</mat-icon>
+            <app-icon name="check" size="sm" color="text-white"></app-icon>
           </div>
           <div
             *ngIf="!showStepIcons || (!step.icon && !isStepCompleted(i))"
@@ -58,32 +58,26 @@
   <!-- Navigation Buttons -->
   <div class="stepper-actions" *ngIf="orientation === 'horizontal'">
     <button
-      mat-stroked-button
       (click)="onPrevious()"
       [disabled]="!canGoPrevious()"
-      class="thai-text">
-      <mat-icon>arrow_back</mat-icon>
-      <span class="ml-2">ย้อนกลับ</span>
+      class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors thai-text flex items-center gap-2">
+      <app-icon name="arrow_back" size="sm"></app-icon>
+      <span>ย้อนกลับ</span>
     </button>
     <button
       *ngIf="!isLastStep()"
-      mat-raised-button
-      color="primary"
       (click)="onNext()"
       [disabled]="!canGoNext()"
-      class="thai-text">
+      class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors thai-text flex items-center gap-2">
       <span>ถัดไป</span>
-      <mat-icon class="ml-2">arrow_forward</mat-icon>
+      <app-icon name="arrow_forward" size="sm"></app-icon>
     </button>
     <button
       *ngIf="isLastStep()"
-      mat-raised-button
-      color="primary"
       (click)="onComplete()"
-      class="thai-text">
-      <mat-icon>check</mat-icon>
-      <span class="ml-2">เสร็จสิ้น</span>
+      class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors thai-text flex items-center gap-2">
+      <app-icon name="check" size="sm"></app-icon>
+      <span>เสร็จสิ้น</span>
     </button>
   </div>
 </div>
-

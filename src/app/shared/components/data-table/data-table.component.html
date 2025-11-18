@@ -1,47 +1,114 @@
-<div class="table-container">
-  <div class="table-header">
-    <mat-form-field appearance="outline" class="!w-64">
-      <mat-label class="thai-text">ค้นหา</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Search" class="glass-input dark:!bg-slate-800/20">
-      <mat-icon matSuffix class="!text-slate-500 dark:!text-slate-400">search</mat-icon>
-    </mat-form-field>
+<div class="table-container bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+  <div class="table-header p-4 border-b border-gray-200 dark:border-gray-700">
+    <div class="relative w-64">
+      <input 
+        type="text"
+        (keyup)="applyFilter($event)"
+        placeholder="ค้นหา..."
+        class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 thai-text">
+      <app-icon 
+        name="search" 
+        size="sm" 
+        color="text-gray-400 dark:text-gray-500"
+        class="absolute left-3 top-1/2 transform -translate-y-1/2">
+      </app-icon>
+    </div>
   </div>
 
-  <table mat-table [dataSource]="dataSource" matSort class="data-table">
-    <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="thai-text font-semibold">{{ column.label }}</th>
-      <td mat-cell *matCellDef="let row" class="thai-text">
-        {{ getCellValue(row, column) }}
-      </td>
-    </ng-container>
+  <div class="overflow-x-auto">
+    <table class="w-full data-table">
+      <thead class="bg-gray-50 dark:bg-gray-900">
+        <tr>
+          <ng-container *ngFor="let column of columns">
+            <th 
+              (click)="sort(column.key)"
+              class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors thai-text">
+              <div class="flex items-center gap-2">
+                <span>{{ column.label }}</span>
+                <app-icon 
+                  [name]="getSortIcon(column.key)" 
+                  size="sm" 
+                  color="text-gray-400 dark:text-gray-500">
+                </app-icon>
+              </div>
+            </th>
+          </ng-container>
+          <th 
+            *ngIf="showActions"
+            class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider thai-text">
+            การดำเนินการ
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+        <tr 
+          *ngFor="let row of filteredData; let i = index"
+          class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          <ng-container *ngFor="let column of columns">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 thai-text">
+              {{ getCellValue(row, column) }}
+            </td>
+          </ng-container>
+          <td *ngIf="showActions" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 relative">
+            <button 
+              (click)="toggleActionMenu(i)"
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+              <app-icon name="more_vert" size="sm" color="text-gray-600 dark:text-gray-400"></app-icon>
+            </button>
+            <div 
+              *ngIf="showActionMenu[i]"
+              class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10">
+              <button 
+                (click)="onActionClick('edit', row)"
+                class="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 thai-text">
+                <app-icon name="edit" size="sm" color="text-gray-600 dark:text-gray-400"></app-icon>
+                <span>แก้ไข</span>
+              </button>
+              <button 
+                (click)="onActionClick('delete', row)"
+                class="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 thai-text">
+                <app-icon name="delete" size="sm" color="text-red-600 dark:text-red-400"></app-icon>
+                <span>ลบ</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="filteredData.length === 0">
+          <td [attr.colspan]="displayedColumns.length" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400 thai-text">
+            ไม่พบข้อมูล
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <ng-container matColumnDef="actions" *ngIf="showActions">
-      <th mat-header-cell *matHeaderCellDef class="thai-text font-semibold">การดำเนินการ</th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="!text-slate-600 dark:!text-slate-400">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg">
-          <button mat-menu-item (click)="onActionClick('edit', row)" class="thai-text">
-            <mat-icon>edit</mat-icon>
-            <span class="ml-2">แก้ไข</span>
-          </button>
-          <button mat-menu-item (click)="onActionClick('delete', row)" class="thai-text">
-            <mat-icon>delete</mat-icon>
-            <span class="ml-2">ลบ</span>
-          </button>
-        </mat-menu>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-
-  <mat-paginator
-    [pageSizeOptions]="pageSizeOptions"
-    [pageSize]="pageSize"
-    showFirstLastButtons
-    class="thai-text">
-  </mat-paginator>
+  <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-gray-700 dark:text-gray-300 thai-text">แสดง</span>
+      <select 
+        [value]="pageSize"
+        (change)="changePageSize(+$any($event.target).value)"
+        class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+      </select>
+      <span class="text-sm text-gray-700 dark:text-gray-300 thai-text">รายการต่อหน้า</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button 
+        (click)="previousPage()"
+        [disabled]="currentPage === 0"
+        class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed thai-text">
+        ก่อนหน้า
+      </button>
+      <span class="text-sm text-gray-700 dark:text-gray-300 thai-text">
+        หน้า {{ currentPage + 1 }} จาก {{ totalPages }}
+      </span>
+      <button 
+        (click)="nextPage()"
+        [disabled]="currentPage >= totalPages - 1"
+        class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed thai-text">
+        ถัดไป
+      </button>
+    </div>
+  </div>
 </div>

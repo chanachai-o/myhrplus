@@ -39,7 +39,7 @@ export interface TimeCurrent {
   styleUrls: ['./employee-timestamp.component.scss']
 })
 export class EmployeeTimestampComponent implements OnInit, OnDestroy {
-  page = 0;
+  page = 1;
   pageSize = 10;
   pageSizeShow = this.pageSize;
   collectionSize = 0;
@@ -366,6 +366,13 @@ export class EmployeeTimestampComponent implements OnInit, OnDestroy {
   getEventPage(): void {
     this.getTotalData();
   }
+
+  getTotalPages(): number {
+    if (!this.dataShow || this.pageSize === 0) return 1;
+    return Math.ceil(this.dataShow.length / this.pageSize);
+  }
+
+  Math = Math; // Expose Math to template
 
   getEventGrpId(value: TimeCurrent): string {
     if (!value.eventgrp) return '';

@@ -1,77 +1,75 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ThemeService, ThemeMode, ThemeColor } from '../../../core/services/theme.service';
+import { SharedModule } from '../../shared.module';
 
 @Component({
   selector: 'app-theme-toggle',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule],
+  imports: [CommonModule, SharedModule],
   template: `
     <div class="flex items-center gap-2">
       <!-- Theme Mode Toggle -->
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="modeMenu"
-        class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/30 dark:hover:!bg-slate-700/30 transition-all duration-200"
-        matTooltip="เปลี่ยนธีม">
-        <mat-icon>{{ currentModeIcon }}</mat-icon>
-      </button>
-
-      <mat-menu #modeMenu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg">
+      <div class="relative">
         <button
-          mat-menu-item
-          (click)="setMode('light')"
-          [class.active]="currentMode === 'light'"
-          class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40">
-          <mat-icon>light_mode</mat-icon>
-          <span class="thai-text ml-2">โหมดสว่าง</span>
+          (click)="toggleModeMenu()"
+          class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200"
+          [attr.aria-label]="'เปลี่ยนธีม'">
+          <app-icon [name]="currentModeIcon" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
         </button>
-        <button
-          mat-menu-item
-          (click)="setMode('dark')"
-          [class.active]="currentMode === 'dark'"
-          class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40">
-          <mat-icon>dark_mode</mat-icon>
-          <span class="thai-text ml-2">โหมดมืด</span>
-        </button>
-        <button
-          mat-menu-item
-          (click)="setMode('auto')"
-          [class.active]="currentMode === 'auto'"
-          class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40">
-          <mat-icon>brightness_auto</mat-icon>
-          <span class="thai-text ml-2">อัตโนมัติ</span>
-        </button>
-      </mat-menu>
-
-      <!-- Theme Color Picker -->
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="colorMenu"
-        class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/30 dark:hover:!bg-slate-700/30 transition-all duration-200"
-        matTooltip="เปลี่ยนสีธีม">
-        <mat-icon>palette</mat-icon>
-      </button>
-
-      <mat-menu #colorMenu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg !p-2">
-        <div class="grid grid-cols-4 gap-2 p-2">
+        <div 
+          *ngIf="showModeMenu"
+          class="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
           <button
-            *ngFor="let color of themeColors"
-            (click)="setColor(color.value)"
-            [class.active]="currentColor === color.value"
-            class="w-10 h-10 rounded-lg border-2 transition-all duration-200 hover:scale-110 hover:shadow-lg"
-            [style.background]="color.gradient"
-            [class.border-primary-500]="currentColor === color.value"
-            [class.border-slate-300]="currentColor !== color.value"
-            [class.dark:border-slate-600]="currentColor !== color.value"
-            [matTooltip]="color.name">
+            (click)="setMode('light')"
+            [class.active]="currentMode === 'light'"
+            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 flex items-center gap-2 thai-text">
+            <app-icon name="light_mode" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+            <span>โหมดสว่าง</span>
+          </button>
+          <button
+            (click)="setMode('dark')"
+            [class.active]="currentMode === 'dark'"
+            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 flex items-center gap-2 thai-text">
+            <app-icon name="dark_mode" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+            <span>โหมดมืด</span>
+          </button>
+          <button
+            (click)="setMode('auto')"
+            [class.active]="currentMode === 'auto'"
+            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 flex items-center gap-2 thai-text">
+            <app-icon name="brightness_auto" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+            <span>อัตโนมัติ</span>
           </button>
         </div>
-      </mat-menu>
+      </div>
+
+      <!-- Theme Color Picker -->
+      <div class="relative">
+        <button
+          (click)="toggleColorMenu()"
+          class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200"
+          [attr.aria-label]="'เปลี่ยนสีธีม'">
+          <app-icon name="palette" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
+        </button>
+        <div 
+          *ngIf="showColorMenu"
+          class="absolute right-0 mt-2 w-64 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-3 z-50">
+          <div class="grid grid-cols-4 gap-2">
+            <button
+              *ngFor="let color of themeColors"
+              (click)="setColor(color.value)"
+              [class.active]="currentColor === color.value"
+              class="w-10 h-10 rounded-lg border-2 transition-all duration-200 hover:scale-110 hover:shadow-lg"
+              [style.background]="color.gradient"
+              [class.border-indigo-500]="currentColor === color.value"
+              [class.border-slate-300]="currentColor !== color.value"
+              [class.dark:border-slate-600]="currentColor !== color.value"
+              [attr.aria-label]="color.name">
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `,
   styles: [`
@@ -80,16 +78,12 @@ import { ThemeService, ThemeMode, ThemeColor } from '../../../core/services/them
     }
 
     .active {
-      background: rgba(var(--primary-rgb), 0.1) !important;
-      color: rgb(var(--primary-rgb)) !important;
+      background: rgba(59, 130, 246, 0.1) !important;
+      color: rgb(59, 130, 246) !important;
     }
 
     .dark .active {
-      background: rgba(var(--primary-rgb), 0.2) !important;
-    }
-
-    ::ng-deep .mat-mdc-menu-panel {
-      min-width: 200px !important;
+      background: rgba(59, 130, 246, 0.2) !important;
     }
   `]
 })
@@ -97,6 +91,8 @@ export class ThemeToggleComponent implements OnInit {
   currentMode: ThemeMode = 'light';
   currentColor: ThemeColor = 'blue';
   currentModeIcon = 'light_mode';
+  showModeMenu = false;
+  showColorMenu = false;
 
   themeColors = [
     { value: 'blue' as ThemeColor, name: 'น้ำเงิน', gradient: 'linear-gradient(135deg, #3b82f6, #2563eb)' },
@@ -119,13 +115,25 @@ export class ThemeToggleComponent implements OnInit {
     });
   }
 
+  toggleModeMenu(): void {
+    this.showModeMenu = !this.showModeMenu;
+    this.showColorMenu = false;
+  }
+
+  toggleColorMenu(): void {
+    this.showColorMenu = !this.showColorMenu;
+    this.showModeMenu = false;
+  }
+
   setMode(mode: ThemeMode): void {
     this.themeService.setMode(mode);
     this.updateModeIcon();
+    this.showModeMenu = false;
   }
 
   setColor(color: ThemeColor): void {
     this.themeService.setColor(color);
+    this.showColorMenu = false;
   }
 
   private updateModeIcon(): void {

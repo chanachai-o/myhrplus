@@ -1,82 +1,170 @@
 <div class="working-history-data-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Working History Data</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <!-- Date Selection -->
-      <div class="date-selection">
-        <mat-form-field appearance="outline">
-          <mat-label>Start Date</mat-label>
-          <input matInput [matDatepicker]="startPicker" [(ngModel)]="selectStartDate" readonly>
-          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-          <mat-datepicker #startPicker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>End Date</mat-label>
-          <input matInput [matDatepicker]="endPicker" [(ngModel)]="selectEndDate" readonly>
-          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-          <mat-datepicker #endPicker></mat-datepicker>
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="loadData()">Load</button>
-        <button mat-button (click)="showWeek()">Week</button>
-        <button mat-button (click)="showMonth()">Month</button>
-        <button mat-button (click)="prevData()">Prev</button>
-        <button mat-button (click)="nextData()">Next</button>
-        <button mat-button (click)="nowData()">Now</button>
+  <div class="glass-card-weak p-6 rounded-lg">
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 thai-text">Working History Data</h2>
+    </div>
+    
+    <!-- Date Selection -->
+    <div class="date-selection flex flex-wrap items-end gap-4 mb-6">
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">Start Date</label>
+        <input 
+          type="date"
+          [(ngModel)]="selectStartDate"
+          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
-
-      <!-- Filters -->
-      <div class="filters">
-        <mat-checkbox [(ngModel)]="late" (change)="changeFilter()">Late</mat-checkbox>
-        <mat-checkbox [(ngModel)]="absent" (change)="changeFilter()">Absent</mat-checkbox>
-        <mat-checkbox [(ngModel)]="leave" (change)="changeFilter()">Leave</mat-checkbox>
-        <mat-checkbox [(ngModel)]="overtime" (change)="changeFilter()">Overtime</mat-checkbox>
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">End Date</label>
+        <input 
+          type="date"
+          [(ngModel)]="selectEndDate"
+          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
-
-      <!-- Loading -->
-      <div *ngIf="loading" class="loading-container">
-        <mat-spinner></mat-spinner>
+      <div class="flex gap-2">
+        <button 
+          (click)="loadData()"
+          class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors thai-text">
+          Load
+        </button>
+        <button 
+          (click)="showWeek()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors thai-text">
+          Week
+        </button>
+        <button 
+          (click)="showMonth()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors thai-text">
+          Month
+        </button>
+        <button 
+          (click)="prevData()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors thai-text">
+          Prev
+        </button>
+        <button 
+          (click)="nextData()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors thai-text">
+          Next
+        </button>
+        <button 
+          (click)="nowData()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors thai-text">
+          Now
+        </button>
       </div>
+    </div>
 
-      <!-- Data Table -->
-      <div *ngIf="!loading && dataShow && dataShow.length > 0" class="data-table">
-        <table mat-table [dataSource]="totalData" class="history-table">
-          <ng-container matColumnDef="dateId">
-            <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">{{ element.dateId }}</td>
-          </ng-container>
+    <!-- Filters -->
+    <div class="filters flex flex-wrap gap-4 mb-6">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input 
+          type="checkbox"
+          [(ngModel)]="late" 
+          (change)="changeFilter()"
+          class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+        <span class="thai-text text-sm text-slate-700 dark:text-slate-300">Late</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input 
+          type="checkbox"
+          [(ngModel)]="absent" 
+          (change)="changeFilter()"
+          class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+        <span class="thai-text text-sm text-slate-700 dark:text-slate-300">Absent</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input 
+          type="checkbox"
+          [(ngModel)]="leave" 
+          (change)="changeFilter()"
+          class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+        <span class="thai-text text-sm text-slate-700 dark:text-slate-300">Leave</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input 
+          type="checkbox"
+          [(ngModel)]="overtime" 
+          (change)="changeFilter()"
+          class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+        <span class="thai-text text-sm text-slate-700 dark:text-slate-300">Overtime</span>
+      </label>
+    </div>
 
-          <ng-container matColumnDef="eventgrp">
-            <th mat-header-cell *matHeaderCellDef>Event</th>
-            <td mat-cell *matCellDef="let element">{{ element.eventgrp?.tdesc || element.eventgrp?.edesc || '-' }}</td>
-          </ng-container>
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container flex items-center justify-center py-12">
+      <app-spinner size="lg"></app-spinner>
+    </div>
 
-          <ng-container matColumnDef="hour_d">
-            <th mat-header-cell *matHeaderCellDef>Work Hours</th>
-            <td mat-cell *matCellDef="let element">{{ element.hour_d || 0 }}</td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="['dateId', 'eventgrp', 'hour_d']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['dateId', 'eventgrp', 'hour_d']"></tr>
+    <!-- Data Table -->
+    <div *ngIf="!loading && dataShow && dataShow.length > 0" class="data-table">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead class="bg-gray-50 dark:bg-gray-900">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider thai-text">Date</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider thai-text">Event</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider thai-text">Work Hours</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tr 
+              *ngFor="let element of totalData"
+              class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ element.dateId }}</td>
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ element.eventgrp?.tdesc || element.eventgrp?.edesc || '-' }}</td>
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ element.hour_d || 0 }}</td>
+            </tr>
+          </tbody>
         </table>
-
-        <!-- Pagination -->
-        <mat-paginator
-          [length]="collectionSize"
-          [pageSize]="pageSize"
-          [pageIndex]="page - 1"
-          (page)="page = $event.pageIndex + 1; getTotalData()"
-          [pageSizeOptions]="[10, 25, 50, 100]">
-        </mat-paginator>
       </div>
 
-      <!-- No Data -->
-      <div *ngIf="!loading && noData" class="no-data">
-        <p>No data available</p>
+      <!-- Pagination -->
+      <div class="pagination-container flex items-center justify-between mt-4 px-4">
+        <div class="text-sm text-gray-700 dark:text-gray-300">
+          Showing {{ (page - 1) * pageSize + 1 }} to {{ Math.min(page * pageSize, collectionSize) }} of {{ collectionSize }} entries
+        </div>
+        <div class="flex items-center gap-2">
+          <select 
+            [(ngModel)]="pageSize"
+            (ngModelChange)="page = 1; getTotalData()"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+            <option [value]="100">100</option>
+          </select>
+          <button
+            (click)="page = 1; getTotalData()"
+            [disabled]="page === 1"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            First
+          </button>
+          <button
+            (click)="page = page - 1; getTotalData()"
+            [disabled]="page === 1"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            Prev
+          </button>
+          <span class="px-3 py-1 text-sm text-gray-700 dark:text-gray-300">Page {{ page }} of {{ getTotalPages() }}</span>
+          <button
+            (click)="page = page + 1; getTotalData()"
+            [disabled]="page >= getTotalPages()"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            Next
+          </button>
+          <button
+            (click)="page = getTotalPages(); getTotalData()"
+            [disabled]="page >= getTotalPages()"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            Last
+          </button>
+        </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+
+    <!-- No Data -->
+    <div *ngIf="!loading && noData" class="no-data text-center py-12">
+      <p class="text-slate-600 dark:text-slate-400 thai-text">No data available</p>
+    </div>
+  </div>
 </div>
-
-

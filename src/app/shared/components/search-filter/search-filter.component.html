@@ -1,104 +1,106 @@
 <div class="search-filter-container glass-card-weak p-4">
-  <div class="search-filter-header">
+  <div class="search-filter-header flex items-center gap-3">
     <!-- Search Input -->
-    <div class="search-input-wrapper">
-      <mat-form-field appearance="outline" class="search-input">
-        <mat-label class="thai-text">{{ placeholder }}</mat-label>
+    <div class="search-input-wrapper flex-1">
+      <div class="relative">
         <input
-          matInput
-          formControlName="search"
-          [formGroup]="searchForm"
-          class="glass-input dark:!bg-slate-800/20">
-        <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">search</mat-icon>
+          type="text"
+          [formControl]="searchControl"
+          [placeholder]="placeholder"
+          class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/20 dark:bg-slate-800/20 backdrop-blur-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 thai-text">
+        <app-icon 
+          name="search" 
+          size="sm" 
+          color="text-gray-400 dark:text-gray-500"
+          class="absolute left-3 top-1/2 transform -translate-y-1/2">
+        </app-icon>
         <button
           *ngIf="searchForm.get('search')?.value"
-          mat-icon-button
-          matSuffix
           (click)="onClearSearch()"
-          class="!text-slate-500 dark:!text-slate-400">
-          <mat-icon>close</mat-icon>
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+          <app-icon name="close" size="sm"></app-icon>
         </button>
-      </mat-form-field>
+      </div>
     </div>
 
     <!-- Filter Toggle -->
     <button
       *ngIf="showAdvanced && filters.length > 0"
-      mat-icon-button
       (click)="onToggleAdvanced()"
       [class.active]="isAdvancedOpen || getActiveFilterCount() > 0"
-      class="filter-toggle !text-slate-600 dark:!text-slate-400"
-      matTooltip="ตัวกรอง">
-      <mat-icon>filter_list</mat-icon>
-      <span *ngIf="getActiveFilterCount() > 0" class="filter-count">{{ getActiveFilterCount() }}</span>
+      class="filter-toggle text-slate-600 dark:text-slate-400 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors relative">
+      <app-icon name="filter_list" size="sm"></app-icon>
+      <span *ngIf="getActiveFilterCount() > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+        {{ getActiveFilterCount() }}
+      </span>
     </button>
   </div>
 
   <!-- Active Filter Chips -->
-  <div class="filter-chips" *ngIf="showFilterChips && getActiveFilterCount() > 0">
-    <mat-chip
+  <div class="filter-chips flex flex-wrap gap-2 mt-3" *ngIf="showFilterChips && getActiveFilterCount() > 0">
+    <span
       *ngFor="let key of getActiveFilterKeys()"
-      [removable]="true"
-      (removed)="onRemoveFilter(key)"
-      class="filter-chip">
-      <span class="thai-text">{{ getFilterLabel(key) }}: {{ getFilterDisplayValue(key) }}</span>
-      <mat-icon matChipRemove>cancel</mat-icon>
-    </mat-chip>
+      class="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm thai-text">
+      <span>{{ getFilterLabel(key) }}: {{ getFilterDisplayValue(key) }}</span>
+      <button
+        (click)="onRemoveFilter(key)"
+        class="hover:bg-indigo-200 dark:hover:bg-indigo-800 rounded-full p-0.5 transition-colors">
+        <app-icon name="cancel" size="sm"></app-icon>
+      </button>
+    </span>
     <button
-      mat-button
       (click)="onClearAllFilters()"
-      class="clear-all-btn thai-text text-xs">
+      class="px-3 py-1 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 thai-text">
       ล้างทั้งหมด
     </button>
   </div>
 
   <!-- Advanced Filters Panel -->
-  <div class="advanced-filters glass-card-weak mt-4" *ngIf="isAdvancedOpen && filters.length > 0">
-    <div class="filters-grid" [formGroup]="filterForm">
+  <div class="advanced-filters glass-card-weak mt-4 p-4" *ngIf="isAdvancedOpen && filters.length > 0">
+    <div class="filters-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" [formGroup]="filterForm">
       <ng-container *ngFor="let filter of filters">
         <!-- Select Filter -->
-        <mat-form-field
+        <div
           *ngIf="filter.type === 'select'"
-          appearance="outline"
           class="filter-field">
-          <mat-label class="thai-text">{{ filter.label }}</mat-label>
-          <mat-select [formControlName]="filter.key" class="glass-input dark:!bg-slate-800/20">
-            <mat-option value="">ทั้งหมด</mat-option>
-            <mat-option *ngFor="let option of filter.options" [value]="option.value">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">{{ filter.label }}</label>
+          <select 
+            [formControlName]="filter.key" 
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 thai-text">
+            <option value="">ทั้งหมด</option>
+            <option *ngFor="let option of filter.options" [value]="option.value">
               {{ option.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+            </option>
+          </select>
+        </div>
 
         <!-- Checkbox Filter -->
         <div *ngIf="filter.type === 'checkbox'" class="filter-checkbox-group">
-          <label class="thai-text font-medium mb-2">{{ filter.label }}</label>
-          <div class="checkbox-list">
-            <mat-checkbox
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">{{ filter.label }}</label>
+          <div class="checkbox-list space-y-2">
+            <label
               *ngFor="let option of filter.options"
-              [formControlName]="filter.key + '_' + option.value"
-              class="thai-text">
-              {{ option.label }}
-            </mat-checkbox>
+              class="flex items-center gap-2 cursor-pointer thai-text">
+              <input
+                type="checkbox"
+                [formControlName]="filter.key + '_' + option.value"
+                class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+              <span>{{ option.label }}</span>
+            </label>
           </div>
         </div>
 
         <!-- Date Filter -->
-        <mat-form-field
+        <div
           *ngIf="filter.type === 'date'"
-          appearance="outline"
           class="filter-field">
-          <mat-label class="thai-text">{{ filter.label }}</mat-label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">{{ filter.label }}</label>
           <input
-            matInput
-            [matDatepicker]="picker"
+            type="date"
             [formControlName]="filter.key"
-            class="glass-input dark:!bg-slate-800/20">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
       </ng-container>
     </div>
   </div>
 </div>
-

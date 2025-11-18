@@ -1,23 +1,24 @@
 <div class="unauthorized-container">
-  <mat-card class="unauthorized-card">
-    <mat-card-content>
-      <div class="error-content">
-        <mat-icon class="error-icon">lock</mat-icon>
-        <h1>403</h1>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access this resource.</p>
-        <div class="actions">
-          <button mat-raised-button color="primary" (click)="goHome()">
-            <mat-icon>home</mat-icon>
-            Go to Dashboard
-          </button>
-          <button mat-button (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon>
-            Go Back
-          </button>
-        </div>
+  <div class="unauthorized-card glass-card-weak p-8 rounded-lg max-w-md mx-auto text-center">
+    <div class="error-content">
+      <app-icon name="lock" size="xl" color="text-red-600 dark:text-red-400" class="mb-4"></app-icon>
+      <h1 class="text-6xl font-bold text-slate-800 dark:text-slate-100 mb-2">403</h1>
+      <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Access Denied</h2>
+      <p class="text-slate-600 dark:text-slate-400 mb-6 thai-text">You do not have permission to access this resource.</p>
+      <div class="actions flex gap-3 justify-center">
+        <button 
+          (click)="goHome()"
+          class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2">
+          <app-icon name="home" size="sm" color="text-white"></app-icon>
+          <span>Go to Dashboard</span>
+        </button>
+        <button 
+          (click)="goBack()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+          <app-icon name="arrow_back" size="sm"></app-icon>
+          <span>Go Back</span>
+        </button>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>
-

@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
 import { AuthService, User } from '../../core/services/auth.service';
 import { EmployeeService, SetCharacter, Role } from '../../core/services/employee.service';
 import { environment } from '../../../environments/environment';
@@ -30,11 +29,6 @@ export interface EmployeeProfile {
   styleUrls: ['./home-header.component.scss']
 })
 export class HomeHeaderComponent implements OnInit, OnDestroy {
-  @ViewChild('settingsModal') settingsModal!: TemplateRef<any>;
-  @ViewChild('alertModal') alertModal!: TemplateRef<any>;
-  @ViewChild('confirmModal') confirmModal!: TemplateRef<any>;
-  @ViewChild('errorModal') errorModal!: TemplateRef<any>;
-
   currentUser: User | null = null;
   empProfile: EmployeeProfile | null = null;
   countNewNote = 0;
@@ -46,6 +40,12 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
   public selectedLanguage: string = 'th';
   public selectedLanguageIcon: string = 'th';
+  showLanguageMenu = false;
+  showUserMenu = false;
+  showSettingsModal = false;
+  showAlertModal = false;
+  showConfirmModal = false;
+  showErrorModal = false;
 
   // Settings Modal Properties
   activeKeep = 1;
@@ -115,7 +115,6 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private employeeService: EmployeeService,
     private http: HttpClient,
-    private dialog: MatDialog
   ) {
     this.currentUser = this.authService.getCurrentUser();
     this.userToken = sessionStorage.getItem('userToken') || null;
@@ -239,12 +238,17 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     // Load password settings
     this.loadPasswordSettings();
     // Open settings modal
-    this.dialog.open(this.settingsModal, {
-      width: '900px',
-      maxWidth: '95vw',
-      disableClose: false,
-      panelClass: 'settings-modal'
-    });
+    this.showSettingsModal = true;
+  }
+
+  toggleLanguageMenu(): void {
+    this.showLanguageMenu = !this.showLanguageMenu;
+    this.showUserMenu = false;
+  }
+
+  toggleUserMenu(): void {
+    this.showUserMenu = !this.showUserMenu;
+    this.showLanguageMenu = false;
   }
 
   private loadPasswordSettings(): void {
@@ -264,10 +268,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
       })
       .catch((reason) => {
         this.msg = reason.message || 'Error loading password settings';
-        this.dialog.open(this.alertModal, {
-          width: '400px',
-          disableClose: false
-        });
+        this.showAlertModal = true;
       });
   }
 
@@ -351,10 +352,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (response['success']) {
           this.msg = this.selectedLanguage === 'th' ? 'การเปลี่ยนรหัสผ่านสำเร็จ' : 'Change to Password Success';
-          this.dialog.open(this.confirmModal, {
-            width: '400px',
-            disableClose: false
-          });
+          this.showConfirmModal = true;
           this.loginAfterChangePass();
         } else {
           if (this.currentUser?.firstlogin === 'true') {
@@ -432,10 +430,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     }
 
     this.msg = this.selectedLanguage === 'th' ? th : en;
-    this.dialog.open(this.errorModal, {
-      width: '400px',
-      disableClose: false
-    });
+    this.showErrorModal = true;
     return this.msg;
   }
 
@@ -453,7 +448,10 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   }
 
   closeModal(): void {
-    this.dialog.closeAll();
+    this.showSettingsModal = false;
+    this.showAlertModal = false;
+    this.showConfirmModal = false;
+    this.showErrorModal = false;
   }
 
   // Helper methods for password validation display

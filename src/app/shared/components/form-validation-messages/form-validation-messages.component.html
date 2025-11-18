@@ -1,10 +1,9 @@
 <div class="validation-messages" [class.inline]="position === 'inline'">
   <div
     *ngFor="let error of errors"
-    class="error-message"
+    class="error-message flex items-center gap-2 text-red-600 dark:text-red-400 text-sm"
     [attr.data-error-type]="error.key">
-    <mat-icon *ngIf="showIcon" class="error-icon">{{ error.icon }}</mat-icon>
+    <app-icon *ngIf="showIcon" [name]="error.icon || 'error'" size="sm" color="text-red-600 dark:text-red-400"></app-icon>
     <span class="error-text thai-text">{{ error.message }}</span>
   </div>
 </div>
-

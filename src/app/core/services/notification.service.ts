@@ -1,43 +1,62 @@
-import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+import { Injectable, ComponentRef, ViewContainerRef } from '@angular/core';
+import { NotificationComponent, NotificationType } from '../../shared/components/notification/notification.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  private defaultConfig: MatSnackBarConfig = {
-    duration: 3000,
-    horizontalPosition: 'end',
-    verticalPosition: 'top'
-  };
+  private notificationContainer?: ViewContainerRef;
+  private notifications: ComponentRef<NotificationComponent>[] = [];
 
-  constructor(private snackBar: MatSnackBar) { }
-
-  showSuccess(message: string, action: string = 'Close'): void {
-    this.show(message, action, 'success');
+  setContainer(container: ViewContainerRef): void {
+    this.notificationContainer = container;
   }
 
-  showError(message: string, action: string = 'Close'): void {
-    this.show(message, action, 'error');
-  }
+  private show(message: string, type: NotificationType, duration: number = 3000): void {
+    if (!this.notificationContainer) {
+      console.warn('Notification container not set');
+      return;
+    }
 
-  showWarning(message: string, action: string = 'Close'): void {
-    this.show(message, action, 'warning');
-  }
-
-  showInfo(message: string, action: string = 'Close'): void {
-    this.show(message, action, 'info');
-  }
-
-  private show(message: string, action: string, type: NotificationType): void {
-    const config: MatSnackBarConfig = {
-      ...this.defaultConfig,
-      panelClass: [`snackbar-${type}`]
+    const componentRef = this.notificationContainer.createComponent(NotificationComponent);
+    componentRef.instance.message = message;
+    componentRef.instance.type = type;
+    componentRef.instance.duration = duration;
+    componentRef.instance.onClose = () => {
+      this.removeNotification(componentRef);
     };
 
-    this.snackBar.open(message, action, config);
+    this.notifications.push(componentRef);
+
+    // Auto remove after duration
+    if (duration > 0) {
+      setTimeout(() => {
+        this.removeNotification(componentRef);
+      }, duration);
+    }
+  }
+
+  private removeNotification(componentRef: ComponentRef<NotificationComponent>): void {
+    const index = this.notifications.indexOf(componentRef);
+    if (index > -1) {
+      this.notifications.splice(index, 1);
+      componentRef.destroy();
+    }
+  }
+
+  showSuccess(message: string, duration: number = 3000): void {
+    this.show(message, 'success', duration);
+  }
+
+  showError(message: string, duration: number = 5000): void {
+    this.show(message, 'error', duration);
+  }
+
+  showWarning(message: string, duration: number = 4000): void {
+    this.show(message, 'warning', duration);
+  }
+
+  showInfo(message: string, duration: number = 3000): void {
+    this.show(message, 'info', duration);
   }
 }
-

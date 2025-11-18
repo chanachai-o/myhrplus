@@ -15,11 +15,13 @@
         class="timeline-dot"
         [style.background-color]="item.color || getStatusColor(item.status)"
         [style.border-color]="item.color || getStatusColor(item.status)">
-        <mat-icon
+        <app-icon
           *ngIf="showIcons && (item.icon || item.status)"
+          [name]="item.icon || getDefaultIcon(item.status)"
+          size="sm"
+          color="text-white"
           class="timeline-icon">
-          {{ item.icon || getDefaultIcon(item.status) }}
-        </mat-icon>
+        </app-icon>
       </div>
 
       <!-- Timeline Content -->
@@ -37,10 +39,9 @@
           </div>
           <button
             *ngIf="item.expandable"
-            mat-icon-button
             (click)="toggleExpand(i)"
-            class="expand-btn !text-slate-600 dark:!text-slate-400">
-            <mat-icon>{{ isExpanded(i) ? 'expand_less' : 'expand_more' }}</mat-icon>
+            class="expand-btn text-slate-600 dark:text-slate-400 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+            <app-icon [name]="isExpanded(i) ? 'expand_less' : 'expand_more'" size="sm"></app-icon>
           </button>
         </div>
 
@@ -59,5 +60,3 @@
     </div>
   </div>
 </div>
-
-

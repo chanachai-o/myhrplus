@@ -26,7 +26,7 @@ export interface WarningByPeriod {
   styleUrls: ['./employee-time-warning.component.scss']
 })
 export class EmployeeTimeWarningComponent implements OnInit, OnDestroy {
-  page = 0;
+  page = 1;
   pageSize = 10;
   pageSizeShow = this.pageSize;
   collectionSize = 0;
@@ -216,5 +216,19 @@ export class EmployeeTimeWarningComponent implements OnInit, OnDestroy {
     }
     this.loadData();
   }
+
+  getPaginatedData(): WarningByPeriod[] {
+    if (!this.dataShow) return [];
+    const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.dataShow.slice(start, end);
+  }
+
+  getTotalPages(): number {
+    if (!this.dataShow || this.pageSize === 0) return 1;
+    return Math.ceil(this.dataShow.length / this.pageSize);
+  }
+
+  Math = Math; // Expose Math to template
 }
 

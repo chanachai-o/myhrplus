@@ -1,30 +1,37 @@
 <div class="employee-pnd91-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>PND91</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="form-section">
-        <mat-form-field appearance="outline">
-          <mat-label>Year</mat-label>
-          <mat-select [(ngModel)]="yearSelected">
-            <mat-option *ngFor="let year of yearList" [value]="year.value">
-              {{ year.value }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+  <div class="glass-card-weak p-6 rounded-lg">
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 thai-text">PND91</h2>
+    </div>
+    
+    <div class="form-section flex items-end gap-4 mb-6">
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">Year</label>
+        <select 
+          [(ngModel)]="yearSelected"
+          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option *ngFor="let year of yearList" [value]="year.value">
+            {{ year.value }}
+          </option>
+        </select>
+      </div>
 
-        <button mat-raised-button color="primary" (click)="loadPDF()" [disabled]="isLoading">
-          <mat-spinner *ngIf="isLoading" diameter="20" class="inline-spinner"></mat-spinner>
+      <div class="flex items-end">
+        <button 
+          (click)="loadPDF()" 
+          [disabled]="isLoading"
+          class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2">
+          <app-spinner *ngIf="isLoading" size="sm"></app-spinner>
           <span *ngIf="!isLoading">Load PDF</span>
         </button>
       </div>
+    </div>
 
-      <div *ngIf="pdfSrc" class="pdf-info">
-        <p>PDF loaded successfully. If it didn't open automatically, <a [href]="pdfSrc" target="_blank">click here</a>.</p>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div *ngIf="pdfSrc" class="pdf-info p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
+      <p class="text-green-600 dark:text-green-400 thai-text">
+        PDF loaded successfully. If it didn't open automatically, 
+        <a [href]="pdfSrc" target="_blank" class="underline hover:text-green-700 dark:hover:text-green-300">click here</a>.
+      </p>
+    </div>
+  </div>
 </div>
-
-

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { AuthService, User } from '../../../core/services/auth.service';
@@ -18,9 +17,9 @@ export interface ForgetCard {
   styleUrls: ['./employee-edittimestatistic.component.scss']
 })
 export class EmployeeEdittimestatisticComponent implements OnInit, OnDestroy {
-  @ViewChild('alertModal') alertModal: any;
 
-  page = 0;
+  page = 1;
+  showAlertModal = false;
   pageSize = 10;
   pageSizeShow = this.pageSize;
   collectionSize = 0;
@@ -50,7 +49,6 @@ export class EmployeeEdittimestatisticComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     public datepipe: DatePipe,
     private cdr: ChangeDetectorRef,
-    private dialog: MatDialog
   ) {
     this.currentUser = this.authService.getCurrentUser();
   }
@@ -104,12 +102,7 @@ export class EmployeeEdittimestatisticComponent implements OnInit, OnDestroy {
       error: (reason: any) => {
         this.lastPage = true;
         this.msg = reason.message || 'Error loading data';
-        if (this.alertModal) {
-          this.dialog.open(this.alertModal, {
-            width: '400px',
-            disableClose: true
-          });
-        }
+        this.showAlertModal = true;
       }
     });
     this.subscriptions.push(sub);
@@ -136,12 +129,7 @@ export class EmployeeEdittimestatisticComponent implements OnInit, OnDestroy {
       error: (reason: any) => {
         this.msg = reason.message || 'Error loading data';
         this.loading = false;
-        if (this.alertModal) {
-          this.dialog.open(this.alertModal, {
-            width: '400px',
-            disableClose: true
-          });
-        }
+        this.showAlertModal = true;
       }
     });
     this.subscriptions.push(sub);
@@ -216,8 +204,22 @@ export class EmployeeEdittimestatisticComponent implements OnInit, OnDestroy {
   }
 
   closeBtnClick(): void {
-    this.dialog.closeAll();
+    this.showAlertModal = false;
     this.ngOnInit();
   }
+
+  getPaginatedData(): ForgetCard[] {
+    if (!this.data) return [];
+    const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.data.slice(start, end);
+  }
+
+  getTotalPages(): number {
+    if (!this.data || this.pageSize === 0) return 1;
+    return Math.ceil(this.data.length / this.pageSize);
+  }
+
+  Math = Math; // Expose Math to template
 }
 

@@ -5,8 +5,6 @@
     'badge-' + size,
     'badge-' + variant
   ]">
-  <mat-icon *ngIf="showIcon" class="badge-icon">{{ statusIcon }}</mat-icon>
+  <app-icon *ngIf="showIcon" [name]="statusIcon" size="sm" class="badge-icon"></app-icon>
   <span class="badge-label thai-text">{{ displayLabel }}</span>
 </span>
-
-

@@ -4,7 +4,7 @@
     <div class="header-left">
       <div class="logo-section">
         <div class="logo-icon">
-          <mat-icon>business_center</mat-icon>
+          <app-icon name="business_center" size="lg" color="text-white"></app-icon>
         </div>
         <div class="logo-text">
           <span class="logo-title thai-text">ระบบบริหารทรัพยากรบุคคล</span>
@@ -17,37 +17,41 @@
     <div class="header-right">
       <!-- Language Selector -->
       <div class="nav-item">
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="languageMenu"
-          class="nav-link"
-          type="button"
-          matTooltip="เปลี่ยนภาษา">
-          <span class="flag-emoji">{{ getFlagEmoji(selectedLanguageIcon) }}</span>
-        </button>
-        <mat-menu #languageMenu="matMenu" class="language-menu">
+        <div class="relative">
           <button
-            *ngFor="let lang of languages"
-            mat-menu-item
-            (click)="changeLanguage(lang)"
-            [class.active]="selectedLanguage === lang.code">
-            <span class="flag-emoji">{{ getFlagEmoji(lang.icon) }}</span>
-            <span>{{ lang.language }}<span *ngIf="lang.type"> ({{ lang.type }})</span></span>
-            <mat-icon *ngIf="selectedLanguage === lang.code" class="check-icon">check</mat-icon>
+            (click)="toggleLanguageMenu()"
+            class="nav-link p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200"
+            type="button"
+            [title]="'เปลี่ยนภาษา'">
+            <span class="flag-emoji">{{ getFlagEmoji(selectedLanguageIcon) }}</span>
           </button>
-        </mat-menu>
+          <div
+            *ngIf="showLanguageMenu"
+            class="absolute right-0 mt-2 w-56 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+            <button
+              *ngFor="let lang of languages"
+              (click)="changeLanguage(lang); showLanguageMenu = false"
+              [class.active]="selectedLanguage === lang.code"
+              class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="flag-emoji">{{ getFlagEmoji(lang.icon) }}</span>
+                <span>{{ lang.language }}<span *ngIf="lang.type"> ({{ lang.type }})</span></span>
+              </div>
+              <app-icon *ngIf="selectedLanguage === lang.code" name="check" size="sm" color="text-blue-500"></app-icon>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Workflow Notifications -->
       <div class="nav-item">
         <button
-          mat-icon-button
-          class="nav-link"
+          class="nav-link p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200 relative"
           (click)="navigateToWorkflow()"
-          matTooltip="การแจ้งเตือน">
+          [title]="'การแจ้งเตือน'">
           <div class="notification">
-            <mat-icon>mail</mat-icon>
-            <span class="badge badge-danger" *ngIf="countNewNote > 0">
+            <app-icon name="mail" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
+            <span class="badge badge-danger absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" *ngIf="countNewNote > 0">
               {{ countNewNote > 99 ? '99+' : countNewNote }}
             </span>
           </div>
@@ -57,13 +61,12 @@
       <!-- Private Messages -->
       <div class="nav-item">
         <button
-          mat-icon-button
-          class="nav-link"
+          class="nav-link p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200 relative"
           (click)="navigateToPrivateMessage()"
-          matTooltip="ข้อความส่วนตัว">
+          [title]="'ข้อความส่วนตัว'">
           <div class="notification">
-            <mat-icon>chat</mat-icon>
-            <span class="badge badge-danger" *ngIf="countNewMessage > 0">
+            <app-icon name="chat" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
+            <span class="badge badge-danger absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" *ngIf="countNewMessage > 0">
               {{ countNewMessage > 99 ? '99+' : countNewMessage }}
             </span>
           </div>
@@ -73,280 +76,322 @@
       <!-- Chat AI -->
       <div class="nav-item">
         <button
-          mat-icon-button
-          class="nav-link"
+          class="nav-link p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200"
           (click)="navigateToChatAI()"
-          matTooltip="Chat AI">
-          <mat-icon>smart_toy</mat-icon>
+          [title]="'Chat AI'">
+          <app-icon name="smart_toy" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
         </button>
       </div>
 
       <!-- User Profile -->
       <div class="nav-item" *ngIf="empProfile || currentUser">
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="userMenu"
-          class="nav-link user-profile"
-          type="button">
-          <img
-            [src]="getProfilePictureUrl()"
-            [alt]="getFullname()"
-            class="profile-picture">
-        </button>
-        <mat-menu #userMenu="matMenu" class="user-menu">
-          <div class="user-header">
-            <div class="user-avatar">
-              <img
-                [src]="getProfilePictureUrl()"
-                [alt]="getFullname()"
-                class="avatar-large">
+        <div class="relative">
+          <button
+            (click)="toggleUserMenu()"
+            class="nav-link user-profile p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200"
+            type="button">
+            <img
+              [src]="getProfilePictureUrl()"
+              [alt]="getFullname()"
+              class="profile-picture w-8 h-8 rounded-full object-cover">
+          </button>
+          <div
+            *ngIf="showUserMenu"
+            class="absolute right-0 mt-2 w-64 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+            <div class="user-header p-4 border-b border-gray-200 dark:border-gray-700">
+              <div class="user-avatar mb-3">
+                <img
+                  [src]="getProfilePictureUrl()"
+                  [alt]="getFullname()"
+                  class="avatar-large w-16 h-16 rounded-full object-cover mx-auto">
+              </div>
+              <div class="user-info text-center">
+                <h4 class="user-name thai-text font-semibold text-slate-800 dark:text-slate-100">{{ getFullname() }}</h4>
+                <p class="user-email text-sm text-slate-600 dark:text-slate-400">{{ getEmail() }}</p>
+              </div>
             </div>
-            <div class="user-info">
-              <h4 class="user-name thai-text">{{ getFullname() }}</h4>
-              <p class="user-email">{{ getEmail() }}</p>
+            <div class="py-2">
+              <button
+                (click)="navigateToProfile(); showUserMenu = false"
+                class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+                <app-icon name="person" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+                <span class="thai-text">โปรไฟล์</span>
+              </button>
+              <button
+                *ngIf="checkRole"
+                (click)="navigateToHRManagement(); showUserMenu = false"
+                class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+                <app-icon name="settings" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+                <span class="thai-text">HR Management</span>
+              </button>
+              <button
+                (click)="navigateToSettings(); showUserMenu = false"
+                class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+                <app-icon name="edit" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+                <span class="thai-text">การตั้งค่า</span>
+              </button>
+              <button
+                *ngIf="wfMenu"
+                (click)="navigateToWorkflowAdmin(); showUserMenu = false"
+                class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+                <app-icon name="folder_managed" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+                <span class="thai-text">จัดการเอกสาร</span>
+              </button>
+            </div>
+            <div class="border-t border-gray-200 dark:border-gray-700 py-2">
+              <button
+                (click)="logout(); showUserMenu = false"
+                class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+                <app-icon name="logout" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+                <span class="thai-text">ออกจากระบบ</span>
+              </button>
             </div>
           </div>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="navigateToProfile()">
-            <mat-icon>person</mat-icon>
-            <span class="thai-text">โปรไฟล์</span>
-          </button>
-          <button
-            mat-menu-item
-            *ngIf="checkRole"
-            (click)="navigateToHRManagement()">
-            <mat-icon>settings</mat-icon>
-            <span class="thai-text">HR Management</span>
-          </button>
-          <button mat-menu-item (click)="navigateToSettings()">
-            <mat-icon>edit</mat-icon>
-            <span class="thai-text">การตั้งค่า</span>
-          </button>
-          <button
-            mat-menu-item
-            *ngIf="wfMenu"
-            (click)="navigateToWorkflowAdmin()">
-            <mat-icon>folder_managed</mat-icon>
-            <span class="thai-text">จัดการเอกสาร</span>
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            <span class="thai-text">ออกจากระบบ</span>
-          </button>
-        </mat-menu>
+        </div>
       </div>
     </div>
   </div>
 </nav>
 
 <!-- Settings Modal -->
-<ng-template #settingsModal>
-  <div class="profile-modal-container">
+<div *ngIf="showSettingsModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" (click)="closeModal()">
+  <div class="profile-modal-container bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto m-4 relative" (click)="$event.stopPropagation()">
     <div class="text-center">
-      <mat-tab-group [(selectedIndex)]="activeKeep" class="settings-tabs">
-        <!-- User Information Tab -->
-        <mat-tab label="ข้อมูลผู้ใช้">
-          <div class="tab-content">
+      <!-- Tabs -->
+      <div class="tabs-container mb-6">
+        <div class="tabs-header flex border-b border-gray-200 dark:border-gray-700">
+          <button
+            (click)="activeKeep = 0"
+            [class.active]="activeKeep === 0"
+            class="px-6 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 border-b-2 transition-colors"
+            [class.border-indigo-600]="activeKeep === 0"
+            [class.text-indigo-600]="activeKeep === 0"
+            [class.dark:text-indigo-400]="activeKeep === 0">
+            ข้อมูลผู้ใช้
+          </button>
+          <button
+            (click)="activeKeep = 1"
+            [class.active]="activeKeep === 1"
+            class="px-6 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 border-b-2 transition-colors"
+            [class.border-indigo-600]="activeKeep === 1"
+            [class.text-indigo-600]="activeKeep === 1"
+            [class.dark:text-indigo-400]="activeKeep === 1">
+            การตั้งค่า
+          </button>
+        </div>
+
+        <div class="tabs-content">
+          <!-- User Information Tab -->
+          <div *ngIf="activeKeep === 0" class="tab-content">
             <div class="profile-content" *ngIf="empProfile || currentUser">
-              <mat-card class="profile-card anim-fade-in">
-                <mat-card-content>
-                  <div class="profile-layout">
-                    <div class="profile-avatar-section">
-                      <div class="profile-pic-wrapper">
-                        <img [src]="getProfilePictureUrl()" class="profile-pic" [alt]="getFullname()">
-                      </div>
+              <div class="profile-card glass-card-weak p-6 rounded-lg anim-fade-in">
+                <div class="profile-layout">
+                  <div class="profile-avatar-section">
+                    <div class="profile-pic-wrapper">
+                      <img [src]="getProfilePictureUrl()" class="profile-pic w-32 h-32 rounded-full object-cover" [alt]="getFullname()">
                     </div>
-                    <div class="profile-info-section">
-                      <h3 class="profile-name thai-text">{{ getFullname() }}</h3>
-                      <div class="profile-details">
-                        <div class="detail-item">
-                          <span class="detail-label thai-text">กลุ่มผู้ใช้</span>
-                          <span class="detail-value">{{ user_level || '-' }}</span>
-                        </div>
-                        <div class="detail-item">
-                          <span class="detail-label thai-text">บทบาท</span>
-                          <span class="detail-value">{{ user_role || '-' }}</span>
-                        </div>
-                        <div class="detail-item" *ngIf="setCharacterPass">
-                          <span class="detail-label thai-text">รหัสผ่านหมดอายุ</span>
-                          <span class="detail-value">
-                            {{ setCharacterPass.expireDate && setCharacterPass.passwordStatus !== '1' 
-                              ? (setCharacterPass.expireDate | date: 'dd-MM-yyyy') 
-                              : '-' }}
-                          </span>
-                        </div>
-                        <div class="detail-item" *ngIf="setCharacterPass">
-                          <span class="detail-label thai-text">สถานะรหัสผ่าน</span>
-                          <span class="detail-value">
-                            {{ setCharacterPass.passwordStatus ? getDesc(setCharacterPass.passwordStatus) : '-' }}
-                          </span>
-                        </div>
+                  </div>
+                  <div class="profile-info-section">
+                    <h3 class="profile-name thai-text text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">{{ getFullname() }}</h3>
+                    <div class="profile-details space-y-3">
+                      <div class="detail-item">
+                        <span class="detail-label thai-text text-sm text-slate-600 dark:text-slate-400">กลุ่มผู้ใช้</span>
+                        <span class="detail-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ user_level || '-' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="detail-label thai-text text-sm text-slate-600 dark:text-slate-400">บทบาท</span>
+                        <span class="detail-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ user_role || '-' }}</span>
+                      </div>
+                      <div class="detail-item" *ngIf="setCharacterPass">
+                        <span class="detail-label thai-text text-sm text-slate-600 dark:text-slate-400">รหัสผ่านหมดอายุ</span>
+                        <span class="detail-value text-sm font-medium text-slate-800 dark:text-slate-100">
+                          {{ setCharacterPass.expireDate && setCharacterPass.passwordStatus !== '1'
+                            ? (setCharacterPass.expireDate | date: 'dd-MM-yyyy')
+                            : '-' }}
+                        </span>
+                      </div>
+                      <div class="detail-item" *ngIf="setCharacterPass">
+                        <span class="detail-label thai-text text-sm text-slate-600 dark:text-slate-400">สถานะรหัสผ่าน</span>
+                        <span class="detail-value text-sm font-medium text-slate-800 dark:text-slate-100">
+                          {{ setCharacterPass.passwordStatus ? getDesc(setCharacterPass.passwordStatus) : '-' }}
+                        </span>
                       </div>
                     </div>
                   </div>
-                </mat-card-content>
-              </mat-card>
+                </div>
+              </div>
             </div>
           </div>
-        </mat-tab>
 
-        <!-- Password Settings Tab -->
-        <mat-tab label="การตั้งค่า">
-          <div class="tab-content">
-            <mat-card class="settings-card anim-fade-in">
-              <mat-card-content>
-                <div class="settings-layout">
-                  <div class="settings-form-section border-right-form">
-                    <h4 class="form-title thai-text">รหัสผ่านใหม่</h4>
-                    <mat-form-field appearance="outline" class="full-width">
-                      <mat-label class="thai-text">รหัสผ่านเก่า</mat-label>
+          <!-- Password Settings Tab -->
+          <div *ngIf="activeKeep === 1" class="tab-content">
+            <div class="settings-card glass-card-weak p-6 rounded-lg anim-fade-in">
+              <div class="settings-layout grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="settings-form-section">
+                  <h4 class="form-title thai-text text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">รหัสผ่านใหม่</h4>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">รหัสผ่านเก่า</label>
                       <input
-                        matInput
                         type="password"
                         [(ngModel)]="oldPassword"
-                        id="oldPassword">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                      <mat-label class="thai-text">รหัสผ่านใหม่</mat-label>
+                        id="oldPassword"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">รหัสผ่านใหม่</label>
                       <input
-                        matInput
                         type="password"
                         [(ngModel)]="password"
                         id="newPassword"
                         [class.is-invalid]="checkPassword || checkNumPassword || checkLengthPassword || checkSmallPassword || (checkPass && confirmPassword !== '')"
-                        (ngModelChange)="changePass()">
-                      <mat-error *ngIf="checkPassword || checkNumPassword || checkLengthPassword || checkSmallPassword" class="thai-text">
+                        (ngModelChange)="changePass()"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                      <p *ngIf="checkPassword || checkNumPassword || checkLengthPassword || checkSmallPassword" class="text-red-600 dark:text-red-400 text-sm mt-1 thai-text">
                         รหัสผ่านไม่ตรงตามข้อกำหนด
-                      </mat-error>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                      <mat-label class="thai-text">ยืนยันรหัสผ่าน</mat-label>
+                      </p>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">ยืนยันรหัสผ่าน</label>
                       <input
-                        matInput
                         type="password"
                         [(ngModel)]="confirmPassword"
                         id="confirmPassword"
                         [class.is-invalid]="checkPass && confirmPassword !== ''"
-                        (ngModelChange)="changePass()">
-                      <mat-error *ngIf="checkPass && confirmPassword !== ''" class="thai-text">
+                        (ngModelChange)="changePass()"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                      <p *ngIf="checkPass && confirmPassword !== ''" class="text-red-600 dark:text-red-400 text-sm mt-1 thai-text">
                         {{ selectedLanguage === 'th' ? 'รหัสผ่านไม่ตรงกัน' : 'Passwords do not match' }}
-                      </mat-error>
-                    </mat-form-field>
-                    <mat-divider class="my-4"></mat-divider>
-                    <h4 class="form-title thai-text">ภาษา</h4>
-                    <mat-radio-group [(ngModel)]="checkLang" class="radio-group">
-                      <mat-radio-button value="THA" class="radio-option">
-                        <span class="thai-text">ไทย</span>
-                      </mat-radio-button>
-                      <mat-radio-button value="ENG" class="radio-option">
-                        <span>English</span>
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div class="password-rules-section">
-                    <div class="password-rules">
-                      <h6 class="thai-text">ข้อกำหนดรหัสผ่าน</h6>
-                      <small [class.valid]="hasValidLength()">
-                        <mat-icon>{{ hasValidLength() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-                        <span class="thai-text">ความยาว {{ validMin }} - {{ validMax }} ตัวอักษร</span>
-                      </small>
-                      <small [class.valid]="hasValidUppercase()">
-                        <mat-icon>{{ hasValidUppercase() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-                        <span class="thai-text">ตัวอักษรใหญ่ [A-Z] อย่างน้อย {{ validAZ }}</span>
-                      </small>
-                      <small [class.valid]="hasValidLowercase()">
-                        <mat-icon>{{ hasValidLowercase() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-                        <span class="thai-text">ตัวอักษรเล็ก [a-z] อย่างน้อย {{ validaz }}</span>
-                      </small>
-                      <small [class.valid]="hasValidNumber()">
-                        <mat-icon>{{ hasValidNumber() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-                        <span class="thai-text">ตัวเลข [0-9] อย่างน้อย {{ validNum }}</span>
-                      </small>
-                      <small [class.valid]="hasValidSpecial()">
-                        <mat-icon>{{ hasValidSpecial() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-                        <span class="thai-text">อักขระพิเศษ [&#64;#+$%] อย่างน้อย {{ validSpecial }}</span>
-                      </small>
-                      <mat-divider class="my-3"></mat-divider>
-                      <small class="form-text text-muted thai-text">
-                        - รหัสผ่านจะมีผลเมื่อมีการ Login เข้าระบบใหม่
-                      </small>
+                      </p>
                     </div>
                   </div>
+                  <div class="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+                  <h4 class="form-title thai-text text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">ภาษา</h4>
+                  <div class="radio-group space-y-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        [(ngModel)]="checkLang"
+                        value="THA"
+                        class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                      <span class="thai-text">ไทย</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        [(ngModel)]="checkLang"
+                        value="ENG"
+                        class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                      <span>English</span>
+                    </label>
+                  </div>
                 </div>
-                <div class="text-center mt-4">
-                  <button
-                    [disabled]="checkSmallPassword || checkPass || checkNumPassword || checkLengthPassword || password === '' || confirmPassword === ''"
-                    (click)="savePassword()"
-                    class="btn-save"
-                    mat-raised-button
-                    color="primary">
-                    <mat-icon>save</mat-icon>
-                    <span class="thai-text ml-2">บันทึก</span>
-                  </button>
+                <div class="password-rules-section">
+                  <div class="password-rules">
+                    <h6 class="thai-text text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">ข้อกำหนดรหัสผ่าน</h6>
+                    <div class="space-y-2">
+                      <div class="flex items-center gap-2" [class.text-green-600]="hasValidLength()" [class.text-gray-600]="!hasValidLength()">
+                        <app-icon [name]="hasValidLength() ? 'check_circle' : 'radio_button_unchecked'" size="sm"></app-icon>
+                        <span class="thai-text text-sm">ความยาว {{ validMin }} - {{ validMax }} ตัวอักษร</span>
+                      </div>
+                      <div class="flex items-center gap-2" [class.text-green-600]="hasValidUppercase()" [class.text-gray-600]="!hasValidUppercase()">
+                        <app-icon [name]="hasValidUppercase() ? 'check_circle' : 'radio_button_unchecked'" size="sm"></app-icon>
+                        <span class="thai-text text-sm">ตัวอักษรใหญ่ [A-Z] อย่างน้อย {{ validAZ }}</span>
+                      </div>
+                      <div class="flex items-center gap-2" [class.text-green-600]="hasValidLowercase()" [class.text-gray-600]="!hasValidLowercase()">
+                        <app-icon [name]="hasValidLowercase() ? 'check_circle' : 'radio_button_unchecked'" size="sm"></app-icon>
+                        <span class="thai-text text-sm">ตัวอักษรเล็ก [a-z] อย่างน้อย {{ validaz }}</span>
+                      </div>
+                      <div class="flex items-center gap-2" [class.text-green-600]="hasValidNumber()" [class.text-gray-600]="!hasValidNumber()">
+                        <app-icon [name]="hasValidNumber() ? 'check_circle' : 'radio_button_unchecked'" size="sm"></app-icon>
+                        <span class="thai-text text-sm">ตัวเลข [0-9] อย่างน้อย {{ validNum }}</span>
+                      </div>
+                      <div class="flex items-center gap-2" [class.text-green-600]="hasValidSpecial()" [class.text-gray-600]="!hasValidSpecial()">
+                        <app-icon [name]="hasValidSpecial() ? 'check_circle' : 'radio_button_unchecked'" size="sm"></app-icon>
+                        <span class="thai-text text-sm">อักขระพิเศษ [&#64;#+$%] อย่างน้อย {{ validSpecial }}</span>
+                      </div>
+                    </div>
+                    <div class="border-t border-gray-200 dark:border-gray-700 my-3"></div>
+                    <small class="text-gray-500 dark:text-gray-400 text-xs thai-text">
+                      - รหัสผ่านจะมีผลเมื่อมีการ Login เข้าระบบใหม่
+                    </small>
+                  </div>
                 </div>
-              </mat-card-content>
-            </mat-card>
+              </div>
+              <div class="text-center mt-6">
+                <button
+                  [disabled]="checkSmallPassword || checkPass || checkNumPassword || checkLengthPassword || password === '' || confirmPassword === ''"
+                  (click)="savePassword()"
+                  class="btn-save px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 mx-auto">
+                  <app-icon name="save" size="sm" color="text-white"></app-icon>
+                  <span class="thai-text">บันทึก</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </mat-tab>
-      </mat-tab-group>
+        </div>
+      </div>
     </div>
-    <button type="button" class="btn-close-modal" (click)="closeModal()">
-      &times;
+    <button type="button" class="btn-close-modal absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" (click)="closeModal()">
+      <app-icon name="close" size="md"></app-icon>
     </button>
   </div>
-</ng-template>
+</div>
 
 <!-- Alert Modal -->
-<ng-template #alertModal>
-  <div class="modal-header">
-    <h5 class="modal-title thai-text">แจ้งเตือน</h5>
-    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+<div *ngIf="showAlertModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" (click)="closeModal()">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full m-4" (click)="$event.stopPropagation()">
+    <div class="modal-header p-4 border-b border-gray-200 dark:border-gray-700">
+    <h5 class="modal-title thai-text text-lg font-semibold text-slate-800 dark:text-slate-100">แจ้งเตือน</h5>
+    <button type="button" class="close p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" (click)="closeModal()" aria-label="Close">
+      <app-icon name="close" size="md"></app-icon>
     </button>
   </div>
-  <div class="modal-body">
-    {{ msg }}
+  <div class="modal-body p-4">
+    <p class="text-slate-700 dark:text-slate-300 thai-text">{{ msg }}</p>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-info" (click)="closeModal()" mat-button>
+  <div class="modal-footer p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+    <button type="button" class="btn btn-info px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors" (click)="closeModal()">
       <span class="thai-text">ตกลง</span>
     </button>
   </div>
-</ng-template>
+</div>
 
 <!-- Confirm Modal -->
-<ng-template #confirmModal>
-  <div class="modal-header">
-    <h5 class="modal-title thai-text">แจ้งเตือน</h5>
-    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+<div *ngIf="showConfirmModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" (click)="closeModal()">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full m-4" (click)="$event.stopPropagation()">
+    <div class="modal-header p-4 border-b border-gray-200 dark:border-gray-700">
+    <h5 class="modal-title thai-text text-lg font-semibold text-slate-800 dark:text-slate-100">แจ้งเตือน</h5>
+    <button type="button" class="close p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" (click)="closeModal()" aria-label="Close">
+      <app-icon name="close" size="md"></app-icon>
     </button>
   </div>
-  <div class="modal-body">
-    {{ msg }}
+  <div class="modal-body p-4">
+    <p class="text-slate-700 dark:text-slate-300 thai-text">{{ msg }}</p>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-info" (click)="closeModal()" mat-button>
+  <div class="modal-footer p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+    <button type="button" class="btn btn-info px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors" (click)="closeModal()">
       <span class="thai-text">ตกลง</span>
     </button>
   </div>
-</ng-template>
+  </div>
+</div>
 
 <!-- Error Modal -->
-<ng-template #errorModal>
-  <div class="modal-header">
-    <h5 class="modal-title thai-text">แจ้งเตือน</h5>
-    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+<div *ngIf="showErrorModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" (click)="closeModal()">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full m-4" (click)="$event.stopPropagation()">
+    <div class="modal-header p-4 border-b border-gray-200 dark:border-gray-700">
+    <h5 class="modal-title thai-text text-lg font-semibold text-slate-800 dark:text-slate-100">แจ้งเตือน</h5>
+    <button type="button" class="close p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" (click)="closeModal()" aria-label="Close">
+      <app-icon name="close" size="md"></app-icon>
     </button>
   </div>
-  <div class="modal-body">
-    {{ msg }}
+  <div class="modal-body p-4">
+    <p class="text-slate-700 dark:text-slate-300 thai-text">{{ msg }}</p>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-info" (click)="closeModal()" mat-button>
+  <div class="modal-footer p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+    <button type="button" class="btn btn-info px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors" (click)="closeModal()">
       <span class="thai-text">ตกลง</span>
     </button>
   </div>
-</ng-template>
+</div>

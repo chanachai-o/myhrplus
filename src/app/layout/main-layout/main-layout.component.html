@@ -1,22 +1,32 @@
 <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-300">
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav
+  <div class="sidenav-container flex">
+    <!-- Sidebar -->
+    <aside
       #drawer
-      class="sidenav glass-nav dark:!bg-slate-900/20 dark:border-slate-700/30"
-      fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+      class="sidenav glass-nav dark:bg-slate-900/20 dark:border-slate-700/30 w-64 min-h-screen border-r border-white/30 dark:border-slate-700/30 transition-all duration-300"
+      [class.hidden]="(isHandset$ | async) && !sidebarOpen"
+      [class.fixed]="(isHandset$ | async)"
+      [class.z-50]="(isHandset$ | async) && sidebarOpen"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'">
       <app-sidebar></app-sidebar>
-    </mat-sidenav>
-    <mat-sidenav-content class="min-h-screen">
-      <app-header (toggleSidenav)="drawer.toggle()"></app-header>
-      <main class="main-content animate-fade-in">
-        <div class="glass-card dark:!bg-slate-900/25 dark:border-slate-700/30 p-6 animate-slide-up transition-all duration-300">
+    </aside>
+    
+    <!-- Overlay for mobile -->
+    <div 
+      *ngIf="(isHandset$ | async) && sidebarOpen"
+      class="fixed inset-0 bg-black/50 z-40"
+      (click)="closeSidebar()">
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1 min-h-screen flex flex-col">
+      <app-header (toggleSidenav)="toggleSidebar()"></app-header>
+      <main class="main-content flex-1 animate-fade-in p-6">
+        <div class="glass-card dark:bg-slate-900/25 dark:border-slate-700/30 p-6 rounded-lg animate-slide-up transition-all duration-300">
           <router-outlet></router-outlet>
         </div>
       </main>
       <app-footer></app-footer>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    </div>
+  </div>
 </div>

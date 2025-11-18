@@ -1,88 +1,119 @@
 <div class="personal-info-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Personal Information</mat-card-title>
-      <div class="header-actions">
-        <button mat-icon-button (click)="editProfile()" matTooltip="Edit Profile">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="loading; else profileContent" class="loading-container">
-        <mat-spinner></mat-spinner>
-      </div>
+  <div class="glass-card-weak p-6 rounded-lg">
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 thai-text">Personal Information</h2>
+      <button 
+        (click)="editProfile()" 
+        class="p-2 text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+        [title]="'Edit Profile'">
+        <app-icon name="edit" size="sm"></app-icon>
+      </button>
+    </div>
+    
+    <div *ngIf="loading; else profileContent" class="loading-container flex items-center justify-center py-12">
+      <app-spinner size="lg"></app-spinner>
+    </div>
 
-      <ng-template #profileContent>
-        <div class="profile-content" *ngIf="profileData">
-          <div class="profile-header">
-            <div class="profile-picture" *ngIf="profileData.picture">
-              <img [src]="getPictureUrl()" [alt]="getFullname()">
-            </div>
-            <div class="profile-picture-placeholder" *ngIf="!profileData.picture">
-              <mat-icon>person</mat-icon>
-            </div>
-            <div class="profile-name">
-              <h2>{{ getFullname() }}</h2>
-              <p class="employee-id">ID: {{ profileData.employeeId }}</p>
-            </div>
+    <ng-template #profileContent>
+      <div class="profile-content" *ngIf="profileData">
+        <div class="profile-header mb-6">
+          <div class="profile-picture" *ngIf="profileData.picture">
+            <img [src]="getPictureUrl()" [alt]="getFullname()" class="w-24 h-24 rounded-full object-cover">
+          </div>
+          <div class="profile-picture-placeholder w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" *ngIf="!profileData.picture">
+            <app-icon name="person" size="xl" color="text-gray-400 dark:text-gray-500"></app-icon>
+          </div>
+          <div class="profile-name ml-4">
+            <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100 thai-text">{{ getFullname() }}</h2>
+            <p class="employee-id text-sm text-slate-600 dark:text-slate-400 mt-1">ID: {{ profileData.employeeId }}</p>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+          <div class="tabs-header flex border-b border-gray-200 dark:border-gray-700 mb-4">
+            <button
+              (click)="activeTab = 0"
+              [class.active]="activeTab === 0"
+              class="px-6 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 border-b-2 transition-colors"
+              [class.border-indigo-600]="activeTab === 0"
+              [class.text-indigo-600]="activeTab === 0"
+              [class.dark:text-indigo-400]="activeTab === 0">
+              Basic Information
+            </button>
+            <button
+              (click)="activeTab = 1"
+              [class.active]="activeTab === 1"
+              class="px-6 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 border-b-2 transition-colors"
+              [class.border-indigo-600]="activeTab === 1"
+              [class.text-indigo-600]="activeTab === 1"
+              [class.dark:text-indigo-400]="activeTab === 1">
+              Work History
+            </button>
+            <button
+              (click)="activeTab = 2"
+              [class.active]="activeTab === 2"
+              class="px-6 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 border-b-2 transition-colors"
+              [class.border-indigo-600]="activeTab === 2"
+              [class.text-indigo-600]="activeTab === 2"
+              [class.dark:text-indigo-400]="activeTab === 2">
+              Documents
+            </button>
           </div>
 
-          <mat-tab-group [(selectedIndex)]="activeTab">
-            <mat-tab label="Basic Information">
-              <div class="tab-content">
-                <div class="info-section">
-                  <div class="info-row">
-                    <span class="info-label">Employee ID:</span>
-                    <span class="info-value">{{ profileData.employeeId }}</span>
-                  </div>
-                  <div class="info-row" *ngIf="profileData.email">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">{{ profileData.email }}</span>
-                  </div>
-                  <div class="info-row" *ngIf="profileData['phone'] || profileData.mobile || profileData.telNo">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">{{ profileData['phone'] || profileData.mobile || profileData.telNo }}</span>
-                  </div>
-                  <div class="info-row" *ngIf="profileData.position">
-                    <span class="info-label">Position:</span>
-                    <span class="info-value">{{ profileData.position?.tdesc || profileData.position?.edesc || '-' }}</span>
-                  </div>
-                  <div class="info-row" *ngIf="profileData['department']">
-                    <span class="info-label">Department:</span>
-                    <span class="info-value">{{ profileData['department'] }}</span>
-                  </div>
-                  <div class="info-row" *ngIf="profileData['division']">
-                    <span class="info-label">Division:</span>
-                    <span class="info-value">{{ profileData['division'] }}</span>
-                  </div>
-                  <div class="info-row" *ngIf="profileData['joinDate'] || profileData.firstHiredate">
-                    <span class="info-label">Join Date:</span>
-                    <span class="info-value">{{ (profileData['joinDate'] || profileData.firstHiredate) | date:'dd-MM-yyyy' }}</span>
-                  </div>
+          <div class="tabs-content">
+            <!-- Basic Information Tab -->
+            <div *ngIf="activeTab === 0" class="tab-content">
+              <div class="info-section">
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Employee ID:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ profileData.employeeId }}</span>
+                </div>
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700" *ngIf="profileData.email">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Email:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ profileData.email }}</span>
+                </div>
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700" *ngIf="profileData['phone'] || profileData.mobile || profileData.telNo">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Phone:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ profileData['phone'] || profileData.mobile || profileData.telNo }}</span>
+                </div>
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700" *ngIf="profileData.position">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Position:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ profileData.position?.tdesc || profileData.position?.edesc || '-' }}</span>
+                </div>
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700" *ngIf="profileData['department']">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Department:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ profileData['department'] }}</span>
+                </div>
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700" *ngIf="profileData['division']">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Division:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ profileData['division'] }}</span>
+                </div>
+                <div class="info-row flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700" *ngIf="profileData['joinDate'] || profileData.firstHiredate">
+                  <span class="info-label text-sm text-slate-600 dark:text-slate-400">Join Date:</span>
+                  <span class="info-value text-sm font-medium text-slate-800 dark:text-slate-100">{{ (profileData['joinDate'] || profileData.firstHiredate) | date:'dd-MM-yyyy' }}</span>
                 </div>
               </div>
-            </mat-tab>
+            </div>
 
-            <mat-tab label="Work History">
-              <div class="tab-content">
-                <p>Work history information will be displayed here.</p>
-              </div>
-            </mat-tab>
+            <!-- Work History Tab -->
+            <div *ngIf="activeTab === 1" class="tab-content">
+              <p class="text-slate-600 dark:text-slate-400 thai-text">Work history information will be displayed here.</p>
+            </div>
 
-            <mat-tab label="Documents">
-              <div class="tab-content">
-                <p>Employee documents will be displayed here.</p>
-                <button mat-raised-button color="primary" (click)="navigateToDocuments()">
-                  <mat-icon>folder</mat-icon>
-                  View All Documents
-                </button>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+            <!-- Documents Tab -->
+            <div *ngIf="activeTab === 2" class="tab-content">
+              <p class="text-slate-600 dark:text-slate-400 thai-text mb-4">Employee documents will be displayed here.</p>
+              <button 
+                (click)="navigateToDocuments()"
+                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2 thai-text">
+                <app-icon name="folder" size="sm" color="text-white"></app-icon>
+                <span>View All Documents</span>
+              </button>
+            </div>
+          </div>
         </div>
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
+      </div>
+    </ng-template>
+  </div>
 </div>
-

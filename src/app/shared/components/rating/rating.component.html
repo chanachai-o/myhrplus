@@ -6,19 +6,18 @@
     </span>
   </div>
   
-  <div class="stars-container" [class]="getSizeClass()">
+  <div class="stars-container flex items-center gap-1" [class]="getSizeClass()">
     <button
       *ngFor="let star of getStars()"
       type="button"
-      class="star-button"
+      class="star-button p-1 transition-colors"
       [class]="getStarClass(star)"
       [disabled]="readOnly"
-      [matTooltip]="getTooltip(star)"
+      [title]="getTooltip(star)"
       (click)="onStarClick(star)"
       (mouseenter)="onStarHover(star)"
       (mouseleave)="onStarLeave()">
-      <mat-icon [class]="getStarClass(star)">{{ getStarIcon(star) }}</mat-icon>
+      <app-icon [name]="getStarIcon(star)" size="sm" [color]="getStarColor(star)"></app-icon>
     </button>
   </div>
 </div>
-

@@ -1,359 +1,42 @@
-.dashboard-container {
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.dashboard-header {
-  margin-bottom: 24px;
-  
-  h1 {
-    margin: 0 0 8px 0;
-    font-size: 2rem;
-    font-weight: 500;
+// Custom animations for Angular animations
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
   }
-
-  .welcome-text {
-    color: #666;
-    font-size: 1rem;
-    margin: 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.dashboard-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-mat-card {
-  height: 100%;
-}
-
-.quick-links-card {
-  grid-column: 1 / -1;
-}
-
-.quick-links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.quick-link-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 24px;
-  height: auto;
-  
-  mat-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.leave-balance-card {
-  .leave-balance-summary {
-    margin-bottom: 20px;
-    padding: 16px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-  }
-
-  .total-balance {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .balance-label {
-    font-size: 0.875rem;
-    color: #666;
-  }
-
-  .balance-value {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: #3f51b5;
-  }
-
-  .leave-types {
-    margin-bottom: 16px;
-  }
-
-  .leave-type-item {
-    margin-bottom: 16px;
-  }
-
-  .leave-type-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .leave-type-name {
-    font-weight: 500;
-  }
-
-  .leave-type-detail {
-    font-size: 0.875rem;
-    color: #666;
-  }
-
-  .leave-progress {
-    height: 8px;
-    border-radius: 4px;
-  }
-
-  .leave-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
-  }
+// Animation utilities
+.animate-fade-in {
+  animation: fadeInDown 0.6s ease-out;
 }
 
-.payslip-card {
-  .payslip-list {
-    margin-bottom: 16px;
-  }
-
-  .payslip-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid #e0e0e0;
-    
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .payslip-info {
-    flex: 1;
-  }
-
-  .payslip-period {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-
-  .payslip-amount {
-    display: flex;
-    flex-direction: column;
-    margin: 8px 0;
-  }
-
-  .amount-label {
-    font-size: 0.75rem;
-    color: #666;
-  }
-
-  .amount-value {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: #4caf50;
-  }
-
-  .payslip-date {
-    font-size: 0.875rem;
-    color: #999;
-  }
-
-  .payslip-actions {
-    display: flex;
-    gap: 8px;
-  }
-
-  .payslip-actions-footer {
-    margin-top: 16px;
-  }
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
 }
 
-.employee-info-card {
-  .employee-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .info-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-  }
-
-  .info-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  .info-label {
-    font-size: 0.75rem;
-    color: #666;
-    margin-bottom: 4px;
-  }
-
-  .info-value {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  .employee-actions {
-    margin-top: 16px;
-  }
+// Thai Font Support
+.thai-text {
+  font-family: 'Sarabun', 'Kanit', 'Prompt', sans-serif;
 }
 
-.modules-card {
-  grid-column: 1 / -1;
-  
-  .modules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-  }
-
-  .module-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 24px;
-    height: auto;
-    min-height: 120px;
-    
-    mat-icon {
-      font-size: 48px;
-      width: 48px;
-      height: 48px;
-    }
-
-    .module-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      text-align: center;
-    }
-
-    .module-name {
-      font-weight: 500;
-      font-size: 1rem;
-    }
-
-    .module-desc {
-      font-size: 0.75rem;
-      opacity: 0.7;
-    }
-  }
-}
-
-.attendance-card {
-  grid-column: 1 / -1;
-  
-  .attendance-list {
-    margin-bottom: 16px;
-  }
-
-  .attendance-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    border-bottom: 1px solid #e0e0e0;
-    gap: 16px;
-    
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .attendance-date {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 120px;
-    
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  .attendance-time {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 1;
-    
-    span {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.875rem;
-      
-      mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-      }
-    }
-  }
-
-  .attendance-status {
-    min-width: 100px;
-    text-align: right;
-  }
-
-  .attendance-actions {
-    margin-top: 16px;
-    text-align: center;
-  }
-}
-
-.user-info {
-  margin-top: 8px;
-  font-size: 0.875rem;
-  color: #666;
-  
-  span {
-    margin-right: 8px;
-  }
-}
-
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  
-  p {
-    margin-top: 16px;
-    color: #666;
-  }
-}
-
+// Responsive adjustments (if needed beyond Tailwind)
 @media (max-width: 768px) {
-  .dashboard-content {
-    grid-template-columns: 1fr;
-  }
-
-  .quick-links-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .employee-info-grid {
-    grid-template-columns: 1fr;
-  }
+  // Most responsive styles are handled by Tailwind classes
+  // Add any custom responsive styles here if needed
 }

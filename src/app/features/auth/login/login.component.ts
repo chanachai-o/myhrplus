@@ -152,11 +152,11 @@ export class LoginComponent implements OnInit {
 
                   if (accountActive) {
                     if (accountActive === 'true') {
-                      // Account is active, proceed to HOME
+                      // Account is active, proceed to DASHBOARD (EMPVIEW)
                       this.notificationService.showSuccess('Login successful');
                       this.menuService.clearCache();
-                      // Navigate to HOME
-                      this.router.navigate(['/home']);
+                      // Navigate to DASHBOARD (EMPVIEW)
+                      this.router.navigate(['/dashboard']);
                     } else if (accountActive === 'waiting') {
                       this.loading = false;
                       this.loginForm.patchValue({ password: '' });
@@ -169,17 +169,17 @@ export class LoginComponent implements OnInit {
                       this.notificationService.showError(this.errorMessage);
                     }
                   } else {
-                    // No accountactive field, proceed to HOME
+                    // No accountactive field, proceed to DASHBOARD (EMPVIEW)
                     this.notificationService.showSuccess('Login successful');
                     this.menuService.clearCache();
-                    this.router.navigate(['/home']);
+                    this.router.navigate(['/dashboard']);
                   }
                 } catch (error) {
                   console.error('Error decoding token:', error);
                   // Proceed anyway
                   this.notificationService.showSuccess('Login successful');
                   this.menuService.clearCache();
-                  this.router.navigate(['/home']);
+                  this.router.navigate(['/dashboard']);
                 }
               })
               .catch((error) => {
@@ -187,7 +187,7 @@ export class LoginComponent implements OnInit {
                 // Proceed anyway if getSetPass fails
                 this.notificationService.showSuccess('Login successful');
                 this.menuService.clearCache();
-                this.router.navigate(['/home']);
+                this.router.navigate(['/dashboard']);
               });
           } else {
             this.loading = false;

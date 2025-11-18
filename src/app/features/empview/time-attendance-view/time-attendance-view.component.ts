@@ -297,5 +297,19 @@ export class TimeAttendanceViewComponent implements OnInit, OnDestroy {
   requestTimeEdit(): void {
     this.router.navigate(['/ta/time-edit']);
   }
+
+  getPaginatedData(): WorkPlan[] {
+    if (!this.dataShow) return [];
+    const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.dataShow.slice(start, end);
+  }
+
+  getTotalPages(): number {
+    if (!this.dataShow || this.pageSize === 0) return 1;
+    return Math.ceil(this.dataShow.length / this.pageSize);
+  }
+
+  Math = Math; // Expose Math to template
 }
 

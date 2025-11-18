@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '../../../core/services/dialog.service';
 import { AuthService, User } from '../../../core/services/auth.service';
 import { 
   EmployeeService, 
@@ -51,7 +51,7 @@ export class EmployeeWorkInformationComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog,
+    private dialog: DialogService,
     private datePipe: DatePipe
   ) {
     this.currentUser = this.authService.getCurrentUser();

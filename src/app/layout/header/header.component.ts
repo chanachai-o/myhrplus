@@ -12,6 +12,8 @@ export class HeaderComponent {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   currentLanguage: Language = 'th';
+  showLanguageMenu = false;
+  showUserMenu = false;
   languages: { value: Language; label: string; flag: string }[] = [
     { value: 'th', label: 'ไทย', flag: '🇹🇭' },
     { value: 'en', label: 'English', flag: '🇬🇧' }
@@ -42,5 +44,15 @@ export class HeaderComponent {
 
   changeLanguage(language: Language): void {
     this.i18nService.setLanguage(language);
+  }
+
+  toggleLanguageMenu(): void {
+    this.showLanguageMenu = !this.showLanguageMenu;
+    this.showUserMenu = false;
+  }
+
+  toggleUserMenu(): void {
+    this.showUserMenu = !this.showUserMenu;
+    this.showLanguageMenu = false;
   }
 }

@@ -1,103 +1,105 @@
-<mat-toolbar class="glass-nav !bg-white/25 dark:!bg-slate-900/25 !backdrop-blur-lg border-b border-white/30 dark:border-slate-700/30 shadow-glass-sm transition-all duration-300">
-  <button
-    mat-icon-button
-    (click)="toggleSidenav.emit()"
-    class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/30 dark:hover:!bg-slate-700/30 transition-all duration-200"
-    *ngIf="true">
-    <mat-icon>menu</mat-icon>
-  </button>
-  
-  <!-- Logo Section -->
-  <div class="flex items-center gap-3 ml-4">
-    <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-lg">
-      <mat-icon class="!text-white !text-2xl !w-6 !h-6">business_center</mat-icon>
-    </div>
-    <div class="flex flex-col">
-      <span class="app-title thai-text font-semibold text-slate-800 dark:text-slate-100 text-lg leading-tight">
-        ระบบบริหารทรัพยากรบุคคล
-      </span>
-      <span class="app-title-en font-medium text-slate-600 dark:text-slate-400 text-xs">
-        HR System
-      </span>
+<header class="glass-nav bg-white/25 dark:bg-slate-900/25 backdrop-blur-lg border-b border-white/30 dark:border-slate-700/30 shadow-lg transition-all duration-300 flex items-center justify-between px-4 py-3">
+  <div class="flex items-center gap-4">
+    <button
+      (click)="toggleSidenav.emit()"
+      class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200">
+      <app-icon name="menu" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
+    </button>
+    
+    <!-- Logo Section -->
+    <div class="flex items-center gap-3">
+      <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-lg">
+        <app-icon name="business_center" size="md" color="text-white"></app-icon>
+      </div>
+      <div class="flex flex-col">
+        <span class="app-title thai-text font-semibold text-slate-800 dark:text-slate-100 text-lg leading-tight">
+          ระบบบริหารทรัพยากรบุคคล
+        </span>
+        <span class="app-title-en font-medium text-slate-600 dark:text-slate-400 text-xs">
+          HR System
+        </span>
+      </div>
     </div>
   </div>
   
-  <span class="spacer"></span>
-  
-  <div class="flex items-center gap-2 mr-4">
+  <div class="flex items-center gap-2">
     <!-- Language Switcher -->
-    <button 
-      mat-icon-button 
-      [matMenuTriggerFor]="languageMenu"
-      class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/30 dark:hover:!bg-slate-700/30 transition-all duration-200"
-      matTooltip="เปลี่ยนภาษา">
-      <mat-icon>language</mat-icon>
-    </button>
-    
-    <mat-menu #languageMenu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg">
+    <div class="relative">
       <button 
-        *ngFor="let lang of languages"
-        mat-menu-item 
-        (click)="changeLanguage(lang.value)"
-        [class.active]="currentLanguage === lang.value"
-        class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40 transition-all duration-200">
-        <span class="mr-2">{{ lang.flag }}</span>
-        <span>{{ lang.label }}</span>
-        <mat-icon *ngIf="currentLanguage === lang.value" class="!ml-auto !text-blue-500">check</mat-icon>
+        (click)="toggleLanguageMenu()"
+        class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200"
+        [title]="'เปลี่ยนภาษา'">
+        <app-icon name="language" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
       </button>
-    </mat-menu>
+      
+      <div 
+        *ngIf="showLanguageMenu"
+        class="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+        <button 
+          *ngFor="let lang of languages"
+          (click)="changeLanguage(lang.value); showLanguageMenu = false"
+          [class.active]="currentLanguage === lang.value"
+          class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span>{{ lang.flag }}</span>
+            <span>{{ lang.label }}</span>
+          </div>
+          <app-icon *ngIf="currentLanguage === lang.value" name="check" size="sm" color="text-blue-500"></app-icon>
+        </button>
+      </div>
+    </div>
     
     <!-- Theme Toggle -->
     <app-theme-toggle></app-theme-toggle>
     
     <!-- Notifications -->
     <button 
-      mat-icon-button 
-      class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/30 dark:hover:!bg-slate-700/30 transition-all duration-200 relative"
-      matTooltip="การแจ้งเตือน">
-      <mat-icon>notifications</mat-icon>
+      class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200 relative"
+      [title]="'การแจ้งเตือน'">
+      <app-icon name="notifications" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
       <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full"></span>
     </button>
     
     <!-- User Menu -->
-    <button 
-      mat-icon-button 
-      [matMenuTriggerFor]="userMenu"
-      class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/30 dark:hover:!bg-slate-700/30 transition-all duration-200">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-  </div>
-  
-  <mat-menu #userMenu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg">
-    <div class="user-info px-4 py-3 min-w-[220px]" *ngIf="authService.currentUser$ | async as user">
-      <div class="user-name thai-text font-semibold text-slate-800 dark:text-slate-100 mb-1">
-        {{ user.name }}
-      </div>
-      <div class="user-email text-sm text-slate-600 dark:text-slate-400">
-        {{ user.email || user.username }}
+    <div class="relative">
+      <button 
+        (click)="toggleUserMenu()"
+        class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200">
+        <app-icon name="account_circle" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
+      </button>
+      
+      <div 
+        *ngIf="showUserMenu"
+        class="absolute right-0 mt-2 w-56 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+        <div class="user-info px-4 py-3 min-w-[220px] border-b border-gray-200 dark:border-gray-700" *ngIf="authService.currentUser$ | async as user">
+          <div class="user-name thai-text font-semibold text-slate-800 dark:text-slate-100 mb-1">
+            {{ user.name }}
+          </div>
+          <div class="user-email text-sm text-slate-600 dark:text-slate-400">
+            {{ user.email || user.username }}
+          </div>
+        </div>
+        <div class="py-2">
+          <button 
+            (click)="onProfile(); showUserMenu = false"
+            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+            <app-icon name="person" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+            <span class="thai-text">โปรไฟล์</span>
+          </button>
+          <button 
+            (click)="onPreferences(); showUserMenu = false"
+            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+            <app-icon name="settings" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+            <span class="thai-text">การตั้งค่า</span>
+          </button>
+          <button 
+            (click)="onLogout(); showUserMenu = false"
+            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
+            <app-icon name="logout" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
+            <span class="thai-text">ออกจากระบบ</span>
+          </button>
+        </div>
       </div>
     </div>
-    <mat-divider class="!my-2 dark:!bg-slate-700"></mat-divider>
-    <button 
-      mat-menu-item 
-      (click)="onProfile()"
-      class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40 transition-all duration-200">
-      <mat-icon class="!text-slate-600 dark:!text-slate-400">person</mat-icon>
-      <span class="thai-text">โปรไฟล์</span>
-    </button>
-    <button 
-      mat-menu-item 
-      (click)="onPreferences()"
-      class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40 transition-all duration-200">
-      <mat-icon class="!text-slate-600 dark:!text-slate-400">settings</mat-icon>
-      <span class="thai-text">การตั้งค่า</span>
-    </button>
-    <button 
-      mat-menu-item 
-      (click)="onLogout()"
-      class="!text-slate-700 dark:!text-slate-200 hover:!bg-white/40 dark:hover:!bg-slate-700/40 transition-all duration-200">
-      <mat-icon class="!text-slate-600 dark:!text-slate-400">logout</mat-icon>
-      <span class="thai-text">ออกจากระบบ</span>
-    </button>
-  </mat-menu>
-</mat-toolbar>
+  </div>
+</header>

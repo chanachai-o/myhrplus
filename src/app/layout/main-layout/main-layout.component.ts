@@ -10,6 +10,7 @@ import { map, shareReplay } from 'rxjs/operators';
 })
 export class MainLayoutComponent implements OnInit {
   isHandset$!: Observable<boolean>;
+  sidebarOpen = false;
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 
@@ -19,5 +20,22 @@ export class MainLayoutComponent implements OnInit {
         map(result => result.matches),
         shareReplay()
       );
+    
+    // Auto-open sidebar on desktop
+    this.isHandset$.subscribe(isHandset => {
+      if (!isHandset) {
+        this.sidebarOpen = true;
+      } else {
+        this.sidebarOpen = false;
+      }
+    });
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen = false;
   }
 }

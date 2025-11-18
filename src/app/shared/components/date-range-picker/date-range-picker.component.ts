@@ -137,5 +137,9 @@ export class DateRangePickerComponent implements OnInit {
       endDate: null
     });
   }
+
+  togglePresetMenu(): void {
+    this.showPresetMenu = !this.showPresetMenu;
+  }
 }
 

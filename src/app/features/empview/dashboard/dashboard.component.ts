@@ -1,138 +1,75 @@
 import { Component, OnInit } from '@angular/core';
-import { EmpviewService, EmployeeProfile, LeaveBalance, Payslip, TimeAttendance } from '../services/empview.service';
-import { AuthService, User } from '../../../core/services/auth.service';
-import { MenuService, MenuItem } from '../../../core/services/menu.service';
 import { Router } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { AuthService, User } from '../../../core/services/auth.service';
+import { HomeService, MenuCategory, MenuItem } from '../../home/home.service';
+import { EmpviewService, LeaveBalance, Payslip, TimeAttendance } from '../services/empview.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(30px)' }),
+        animate('0.5s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit {
-  employeeProfile: EmployeeProfile | null = null;
+  currentUser: User | null = null;
+  menuCategories: MenuCategory[] = [];
+  loading = false;
+
+  // Dashboard Data
   leaveBalances: LeaveBalance[] = [];
   recentPayslips: Payslip[] = [];
   timeAttendance: TimeAttendance[] = [];
-  currentUser: User | null = null;
-  menuModules: MenuItem[] = [];
-  loading = false;
-  
-  quickLinks: any[] = [];
+  dashboardLoading = false;
+
+  // Stats
   stats = {
     totalLeaveBalance: 0,
     recentPayslipsCount: 0,
-    pendingWorkflows: 0,
-    upcomingEvents: 0
+    todayStatus: '',
+    workingHours: 0
   };
 
   constructor(
-    private empviewService: EmpviewService,
     private authService: AuthService,
-    private menuService: MenuService,
-    private router: Router
+    private homeService: HomeService,
+    private empviewService: EmpviewService,
+    public router: Router
   ) {
     this.currentUser = this.authService.getCurrentUser();
   }
 
   ngOnInit(): void {
+    this.loadMenuCategories();
     this.loadDashboardData();
-    this.loadMenuModules();
-    this.setupQuickLinks();
   }
 
-  private setupQuickLinks(): void {
-    this.quickLinks = [];
-    
-    // Add quick links based on user permissions
-    if (this.hasModuleAccess('TA')) {
-      this.quickLinks.push(
-        { label: 'Request Leave', icon: 'event', route: '/ta/leave', color: 'primary', thai: 'ขอลา' },
-        { label: 'Time Attendance', icon: 'access_time', route: '/ta', color: 'warn', thai: 'ลงเวลา' }
-      );
-    }
-    
-    if (this.hasModuleAccess('PAYROLL')) {
-      this.quickLinks.push(
-        { label: 'View Payslip', icon: 'receipt', route: '/dashboard/payslip', color: 'accent', thai: 'ดูสลิปเงินเดือน' }
-      );
-    }
-    
-    if (this.hasModuleAccess('PERSONAL')) {
-      this.quickLinks.push(
-        { label: 'My Profile', icon: 'person', route: '/dashboard/personal-info', color: 'primary', thai: 'ข้อมูลส่วนตัว' }
-      );
-    }
-    
-    if (this.hasModuleAccess('WORKFLOW')) {
-      this.quickLinks.push(
-        { label: 'Workflow', icon: 'assignment', route: '/workflow', color: 'accent', thai: 'เวิร์กโฟล์' }
-      );
-    }
-  }
-
-  private hasModuleAccess(moduleCode: string): boolean {
-    if (!this.currentUser) return false;
-    
-    if (this.currentUser.user_role === 'All') return true;
-    
-    if (this.currentUser.roles && Array.isArray(this.currentUser.roles)) {
-      const moduleRoleMap: { [key: string]: string[] } = {
-        'PERSONAL': ['HR', 'ADMIN', 'USER'],
-        'TA': ['HR', 'ADMIN', 'USER'],
-        'PAYROLL': ['HR', 'ADMIN', 'PAYROLL', 'USER'],
-        'WORKFLOW': ['HR', 'ADMIN', 'USER'],
-        'TRAINING': ['HR', 'ADMIN', 'USER'],
-        'APPRAISAL': ['HR', 'ADMIN', 'USER'],
-        'WELFARE': ['HR', 'ADMIN', 'USER'],
-        'RECRUIT': ['HR', 'ADMIN', 'RECRUIT']
-      };
-      
-      const allowedRoles = moduleRoleMap[moduleCode] || ['USER'];
-      return this.currentUser.roles.some((role: string) => allowedRoles.includes(role));
-    }
-    
-    return false;
-  }
-
-  private loadMenuModules(): void {
-    this.menuService.loadMenu().subscribe(menu => {
-      // Filter out dashboard and get only module-level menus
-      this.menuModules = menu.filter(item => 
-        item.id !== 'dashboard' && 
-        !item.path.includes('/dashboard')
-      );
-    });
-  }
-
-  loadDashboardData(): void {
+  private loadMenuCategories(): void {
     this.loading = true;
-    
-    // Use current user data from JWT token if available
-    if (this.currentUser) {
-      // Set employee profile from current user
-      this.employeeProfile = {
-        employeeId: this.currentUser.employeeid || this.currentUser.uid || '',
-        name: this.currentUser.fullname || this.currentUser.name || '',
-        email: this.currentUser.email,
-        position: this.currentUser.emp_position,
-        department: this.currentUser.workarea,
-        division: this.currentUser.branch
-      };
-    }
-    
-    // Load employee profile from API (will override if available)
-    this.empviewService.getEmployeeProfile().subscribe({
-      next: (response) => {
-        if (response.success && response.data) {
-          this.employeeProfile = response.data;
-        }
+
+    // Load menu from API
+    this.homeService.loadMenuFromAPI().subscribe({
+      next: (categories) => {
+        this.menuCategories = categories;
+        this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading profile:', error);
-        // Continue with user data from token
+        console.error('Error loading menu categories:', error);
+        this.menuCategories = [];
+        this.loading = false;
       }
     });
+  }
+
+  private loadDashboardData(): void {
+    this.dashboardLoading = true;
 
     // Load leave balance
     this.empviewService.getLeaveBalance().subscribe({
@@ -159,19 +96,19 @@ export class DashboardComponent implements OnInit {
           this.recentPayslips = response.data;
           this.stats.recentPayslipsCount = this.recentPayslips.length;
         }
-        this.loading = false;
+        this.dashboardLoading = false;
       },
       error: (error) => {
         console.error('Error loading payslips:', error);
-        this.loading = false;
+        this.dashboardLoading = false;
       }
     });
 
-    // Load time attendance (recent records)
+    // Load time attendance (today and this week)
     const today = new Date();
     const startDate = new Date(today.getFullYear(), today.getMonth(), 1);
     const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    
+
     this.empviewService.getTimeAttendance({
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
@@ -180,6 +117,7 @@ export class DashboardComponent implements OnInit {
       next: (response) => {
         if (response.success && response.data) {
           this.timeAttendance = response.data;
+          this.updateTodayStatus();
         }
       },
       error: (error) => {
@@ -188,52 +126,80 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  navigateTo(route: string): void {
-    this.router.navigate([route]);
+  private updateTodayStatus(): void {
+    const today = new Date().toISOString().split('T')[0];
+    const todayRecord = this.timeAttendance.find(record => record.date === today);
+
+    if (todayRecord) {
+      this.stats.todayStatus = todayRecord.status;
+      this.stats.workingHours = todayRecord.workingHours || 0;
+    } else {
+      this.stats.todayStatus = 'No Record';
+    }
   }
 
   getTotalLeaveBalance(): number {
     return this.leaveBalances.reduce((total, balance) => total + balance.balance, 0);
   }
 
-  downloadPayslip(payslip: Payslip): void {
-    this.empviewService.downloadPayslip(payslip.periodMonth, payslip.periodYear)
-      .subscribe({
-        next: (blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `payslip_${payslip.periodYear}_${payslip.periodMonth}.pdf`;
-          link.click();
-          window.URL.revokeObjectURL(url);
-        },
-        error: (error) => {
-          console.error('Error downloading payslip:', error);
-        }
-      });
+  navigateToMenuItem(item: MenuItem): void {
+    if (item.route || item.path) {
+      this.router.navigate([item.route || item.path]);
+    }
   }
 
-  getModuleColor(moduleId: string): string {
-    const colorMap: { [key: string]: string } = {
-      'personal': 'primary',
-      'ta': 'accent',
-      'payroll': 'warn',
-      'workflow': 'primary',
-      'training': 'accent',
-      'appraisal': 'warn',
-      'welfare': 'primary',
-      'recruit': 'accent'
+  navigateToCategory(category: MenuCategory): void {
+    // Navigate to EMPVIEW module (dashboard) for all main menu items
+    this.router.navigate(['/dashboard']);
+  }
+
+  getGreeting(): string {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'สวัสดีตอนเช้า';
+    if (hour < 18) return 'สวัสดีตอนบ่าย';
+    return 'สวัสดีตอนเย็น';
+  }
+
+  getGradientForCategory(code: string): string {
+    const gradientMap: { [key: string]: string } = {
+      'EM00A': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      'EM01A': 'linear-gradient(135deg, #434343 0%, #000000 100%)',
+      'EM02A': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      'EM03A': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      'EM04A': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      'EM05A': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      'EM06A': 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+      'EM07A': 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+      'EM08A': 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+      'EM09A': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
     };
-    return colorMap[moduleId.toLowerCase()] || 'primary';
+    return gradientMap[code] || 'linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%)';
   }
 
-  getStatusColor(status: string): string {
+  getStatusClass(status: string): string {
     const statusMap: { [key: string]: string } = {
-      'Present': 'primary',
-      'Absent': 'warn',
-      'Late': 'accent',
-      'On Leave': 'primary'
+      'Present': 'status-present',
+      'Absent': 'status-absent',
+      'Late': 'status-late',
+      'On Leave': 'status-leave',
+      'No Record': 'status-no-record'
     };
-    return statusMap[status] || 'primary';
+    return statusMap[status] || 'status-default';
+  }
+
+  getStatusText(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'Present': 'เข้างาน',
+      'Absent': 'ขาดงาน',
+      'Late': 'มาสาย',
+      'On Leave': 'ลางาน',
+      'No Record': 'ไม่มีข้อมูล'
+    };
+    return statusMap[status] || status;
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit' });
   }
 }

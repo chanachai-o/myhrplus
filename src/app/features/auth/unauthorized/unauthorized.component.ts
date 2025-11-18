@@ -11,7 +11,7 @@ export class UnauthorizedComponent {
   constructor(private router: Router) {}
 
   goHome(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/dashboard']);
   }
 
   goBack(): void {

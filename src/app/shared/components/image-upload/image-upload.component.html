@@ -1,9 +1,10 @@
 <div class="image-upload-container">
   <div class="upload-section" *ngIf="canAddMore">
     <div
-      class="upload-area"
-      [class.dragging]="isDragging"
-      [class.disabled]="disabled"
+      class="upload-area border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors"
+      [class.border-indigo-500]="isDragging"
+      [class.opacity-50]="disabled"
+      [class.cursor-not-allowed]="disabled"
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
       (drop)="onDrop($event)"
@@ -15,44 +16,43 @@
         [multiple]="multiple"
         [disabled]="disabled"
         (change)="onFileSelect($event)"
-        class="file-input">
+        class="hidden">
       
       <div class="upload-content">
-        <mat-icon class="upload-icon">cloud_upload</mat-icon>
-        <p class="upload-text thai-text">{{ placeholder }}</p>
+        <app-icon name="cloud_upload" size="xl" color="text-gray-400 dark:text-gray-500" class="upload-icon mb-4"></app-icon>
+        <p class="upload-text thai-text text-gray-700 dark:text-gray-300 mb-2">{{ placeholder }}</p>
         <p class="upload-hint text-sm text-slate-500 dark:text-slate-400">
           รองรับ: {{ config.allowedTypes?.join(', ') }} (สูงสุด {{ config.maxSize }}MB)
         </p>
       </div>
     </div>
 
-    <div class="errors" *ngIf="errors.length > 0">
-      <div *ngFor="let error of errors" class="error-message">
-        <mat-icon>error</mat-icon>
+    <div class="errors mt-4 space-y-2" *ngIf="errors.length > 0">
+      <div *ngFor="let error of errors" class="error-message flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
+        <app-icon name="error" size="sm" color="text-red-600 dark:text-red-400"></app-icon>
         <span class="thai-text">{{ error }}</span>
       </div>
     </div>
   </div>
 
-  <div class="preview-section" *ngIf="uploadedImages.length > 0 && config.enablePreview">
-    <div class="preview-grid" [class.single]="!multiple || uploadedImages.length === 1">
+  <div class="preview-section mt-6" *ngIf="uploadedImages.length > 0 && config.enablePreview">
+    <div class="preview-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" [class.grid-cols-1]="!multiple || uploadedImages.length === 1">
       <div
         *ngFor="let image of uploadedImages; let i = index"
-        class="preview-item">
-        <div class="preview-image-container">
-          <img [src]="image.preview" [alt]="image.name" class="preview-image">
+        class="preview-item bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div class="preview-image-container relative">
+          <img [src]="image.preview" [alt]="image.name" class="preview-image w-full h-48 object-cover">
           <button
-            mat-icon-button
-            class="remove-button"
+            class="remove-button absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
             (click)="removeImage(i)"
             [disabled]="disabled"
-            matTooltip="ลบรูปภาพ">
-            <mat-icon>close</mat-icon>
+            [title]="'ลบรูปภาพ'">
+            <app-icon name="close" size="sm" color="text-white"></app-icon>
           </button>
         </div>
-        <div class="preview-info">
-          <p class="preview-name thai-text" [matTooltip]="image.name">{{ image.name }}</p>
-          <p class="preview-size text-sm text-slate-500 dark:text-slate-400">
+        <div class="preview-info p-3">
+          <p class="preview-name thai-text text-sm font-medium text-gray-800 dark:text-gray-200 truncate" [title]="image.name">{{ image.name }}</p>
+          <p class="preview-size text-xs text-slate-500 dark:text-slate-400 mt-1">
             {{ formatFileSize(image.size) }}
             <span *ngIf="image.width && image.height">
               • {{ image.width }}×{{ image.height }}px
@@ -63,4 +63,3 @@
     </div>
   </div>
 </div>
-

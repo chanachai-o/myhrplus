@@ -1,5 +1,4 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 export interface ConfirmDialogData {
   title: string;
@@ -14,21 +13,21 @@ export interface ConfirmDialogData {
   styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent {
+  @Input() data!: ConfirmDialogData;
+  @Output() closed = new EventEmitter<boolean>();
 
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
-  ) {
-    this.data.confirmText = this.data.confirmText || 'Confirm';
-    this.data.cancelText = this.data.cancelText || 'Cancel';
+  constructor() {
+    if (this.data) {
+      this.data.confirmText = this.data.confirmText || 'Confirm';
+      this.data.cancelText = this.data.cancelText || 'Cancel';
+    }
   }
 
   onCancel(): void {
-    this.dialogRef.close(false);
+    this.closed.emit(false);
   }
 
   onConfirm(): void {
-    this.dialogRef.close(true);
+    this.closed.emit(true);
   }
 }
-

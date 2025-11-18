@@ -1,69 +1,73 @@
 <div class="date-range-picker glass-card-weak p-4">
-  <div class="picker-header">
-    <h3 class="thai-text font-semibold text-slate-800 dark:text-slate-100 mb-4">
+  <div class="picker-header flex items-center justify-between mb-4">
+    <h3 class="thai-text font-semibold text-slate-800 dark:text-slate-100">
       เลือกช่วงวันที่
     </h3>
-    <button
-      *ngIf="showPresets"
-      mat-icon-button
-      [matMenuTriggerFor]="presetMenu"
-      class="preset-btn !text-slate-600 dark:!text-slate-400"
-      matTooltip="ตัวเลือกเร็ว">
-      <mat-icon>event</mat-icon>
-    </button>
+    <div class="relative" *ngIf="showPresets">
+      <button
+        (click)="togglePresetMenu()"
+        class="preset-btn text-slate-600 dark:text-slate-400 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <app-icon name="event" size="sm"></app-icon>
+      </button>
+      <div 
+        *ngIf="showPresetMenu"
+        class="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+        <button
+          *ngFor="let preset of getPresets()"
+          (click)="onPresetSelect(preset)"
+          class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 thai-text">
+          {{ preset.label }}
+        </button>
+      </div>
+    </div>
   </div>
 
-  <mat-menu #presetMenu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg">
-    <button
-      *ngFor="let preset of getPresets()"
-      mat-menu-item
-      (click)="onPresetSelect(preset)"
-      class="thai-text">
-      {{ preset.label }}
-    </button>
-  </mat-menu>
-
   <form [formGroup]="dateRangeForm" class="date-range-form">
-    <div class="date-inputs">
-      <mat-form-field appearance="outline" class="date-field">
-        <mat-label class="thai-text">วันที่เริ่มต้น</mat-label>
-        <input
-          matInput
-          [matDatepicker]="startPicker"
-          formControlName="startDate"
-          [min]="minDate"
-          [max]="maxDate || endDate"
-          class="glass-input dark:!bg-slate-800/20">
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-        <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">event</mat-icon>
-      </mat-form-field>
+    <div class="date-inputs grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="date-field">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">วันที่เริ่มต้น</label>
+        <div class="relative">
+          <input
+            type="date"
+            formControlName="startDate"
+            [min]="minDate"
+            [max]="maxDate || endDate"
+            class="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <app-icon 
+            name="event" 
+            size="sm" 
+            color="text-gray-400 dark:text-gray-500"
+            class="absolute left-3 top-1/2 transform -translate-y-1/2">
+          </app-icon>
+        </div>
+      </div>
 
-      <mat-form-field appearance="outline" class="date-field">
-        <mat-label class="thai-text">วันที่สิ้นสุด</mat-label>
-        <input
-          matInput
-          [matDatepicker]="endPicker"
-          formControlName="endDate"
-          [min]="startDate || minDate"
-          [max]="maxDate"
-          class="glass-input dark:!bg-slate-800/20">
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-        <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">event</mat-icon>
-      </mat-form-field>
+      <div class="date-field">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 thai-text">วันที่สิ้นสุด</label>
+        <div class="relative">
+          <input
+            type="date"
+            formControlName="endDate"
+            [min]="startDate || minDate"
+            [max]="maxDate"
+            class="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <app-icon 
+            name="event" 
+            size="sm" 
+            color="text-gray-400 dark:text-gray-500"
+            class="absolute left-3 top-1/2 transform -translate-y-1/2">
+          </app-icon>
+        </div>
+      </div>
     </div>
 
-    <div class="picker-actions">
+    <div class="picker-actions mt-4">
       <button
-        mat-stroked-button
         (click)="clearDates()"
-        class="thai-text">
-        <mat-icon>clear</mat-icon>
-        <span class="ml-2">ล้าง</span>
+        class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 thai-text">
+        <app-icon name="clear" size="sm"></app-icon>
+        <span>ล้าง</span>
       </button>
     </div>
   </form>
 </div>
-
-

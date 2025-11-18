@@ -39,7 +39,7 @@ export interface TimeCurrent {
   styleUrls: ['./working-history-data.component.scss']
 })
 export class WorkingHistoryDataComponent implements OnInit, OnDestroy {
-  page = 0;
+  page = 1;
   pageSize = 10;
   pageSizeShow = this.pageSize;
   collectionSize = 0;
@@ -198,6 +198,13 @@ export class WorkingHistoryDataComponent implements OnInit, OnDestroy {
       this.loading = false;
     }
   }
+
+  getTotalPages(): number {
+    if (!this.dataShow || this.pageSize === 0) return 1;
+    return Math.ceil(this.dataShow.length / this.pageSize);
+  }
+
+  Math = Math; // Expose Math to template
 
   changeFilter(): void {
     this.page = 1;

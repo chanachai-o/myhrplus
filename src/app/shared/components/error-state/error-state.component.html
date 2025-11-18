@@ -1,7 +1,7 @@
 <div class="error-state glass-card-weak p-6">
   <div class="error-state-content">
     <div class="error-state-icon">
-      <mat-icon class="error-icon">{{ errorIcon }}</mat-icon>
+      <app-icon [name]="errorIcon" size="xl" color="text-red-600 dark:text-red-400"></app-icon>
     </div>
     <h3 class="error-state-title thai-text font-semibold text-red-600 dark:text-red-400 mb-2">
       {{ title || defaultTitle }}
@@ -20,14 +20,10 @@
     </div>
     <button
       *ngIf="showRetry"
-      mat-raised-button
-      color="primary"
       (click)="onRetry()"
-      class="error-state-retry glass-button">
-      <mat-icon>refresh</mat-icon>
+      class="error-state-retry glass-button px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2">
+      <app-icon name="refresh" size="sm"></app-icon>
       <span class="thai-text ml-2">{{ retryText }}</span>
     </button>
   </div>
 </div>
-
-
