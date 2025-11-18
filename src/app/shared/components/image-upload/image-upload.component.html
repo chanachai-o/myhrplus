@@ -1,0 +1,66 @@
+<div class="image-upload-container">
+  <div class="upload-section" *ngIf="canAddMore">
+    <div
+      class="upload-area"
+      [class.dragging]="isDragging"
+      [class.disabled]="disabled"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="openFileDialog()">
+      <input
+        #fileInput
+        type="file"
+        [accept]="accept"
+        [multiple]="multiple"
+        [disabled]="disabled"
+        (change)="onFileSelect($event)"
+        class="file-input">
+      
+      <div class="upload-content">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+        <p class="upload-text thai-text">{{ placeholder }}</p>
+        <p class="upload-hint text-sm text-slate-500 dark:text-slate-400">
+          รองรับ: {{ config.allowedTypes?.join(', ') }} (สูงสุด {{ config.maxSize }}MB)
+        </p>
+      </div>
+    </div>
+
+    <div class="errors" *ngIf="errors.length > 0">
+      <div *ngFor="let error of errors" class="error-message">
+        <mat-icon>error</mat-icon>
+        <span class="thai-text">{{ error }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-section" *ngIf="uploadedImages.length > 0 && config.enablePreview">
+    <div class="preview-grid" [class.single]="!multiple || uploadedImages.length === 1">
+      <div
+        *ngFor="let image of uploadedImages; let i = index"
+        class="preview-item">
+        <div class="preview-image-container">
+          <img [src]="image.preview" [alt]="image.name" class="preview-image">
+          <button
+            mat-icon-button
+            class="remove-button"
+            (click)="removeImage(i)"
+            [disabled]="disabled"
+            matTooltip="ลบรูปภาพ">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <div class="preview-info">
+          <p class="preview-name thai-text" [matTooltip]="image.name">{{ image.name }}</p>
+          <p class="preview-size text-sm text-slate-500 dark:text-slate-400">
+            {{ formatFileSize(image.size) }}
+            <span *ngIf="image.width && image.height">
+              • {{ image.width }}×{{ image.height }}px
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

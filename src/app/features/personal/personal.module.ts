@@ -10,6 +10,7 @@ import { FamilyManagementComponent } from './family-management/family-management
 import { EducationManagementComponent } from './education-management/education-management.component';
 import { WorkExperienceComponent } from './work-experience/work-experience.component';
 import { DocumentsManagementComponent } from './documents-management/documents-management.component';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DocumentsManagementComponent } from './documents-management/documents-m
     FamilyManagementComponent,
     EducationManagementComponent,
     WorkExperienceComponent,
-    DocumentsManagementComponent
+    DocumentsManagementComponent,
+    PreferencesComponent
   ],
   imports: [
     CommonModule,

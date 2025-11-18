@@ -1,0 +1,194 @@
+.image-upload-container {
+  width: 100%;
+
+  .upload-section {
+    margin-bottom: 16px;
+
+    .upload-area {
+      border: 2px dashed rgba(var(--primary-rgb), 0.3);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(var(--primary-rgb), 0.05);
+      position: relative;
+
+      &:hover:not(.disabled) {
+        border-color: rgb(var(--primary-rgb));
+        background: rgba(var(--primary-rgb), 0.1);
+      }
+
+      &.dragging {
+        border-color: rgb(var(--primary-rgb));
+        background: rgba(var(--primary-rgb), 0.15);
+        transform: scale(1.02);
+      }
+
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .upload-content {
+        .upload-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+          color: rgb(var(--primary-rgb));
+          margin-bottom: 16px;
+        }
+
+        .upload-text {
+          font-size: 16px;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.87);
+          margin-bottom: 8px;
+        }
+
+        .upload-hint {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .errors {
+      margin-top: 12px;
+
+      .error-message {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 8px;
+        color: #ef4444;
+        font-size: 14px;
+        margin-bottom: 8px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  .preview-section {
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+
+      &.single {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+      }
+
+      .preview-item {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 12px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+
+        &:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
+        }
+
+        .preview-image-container {
+          position: relative;
+          width: 100%;
+          padding-top: 75%; // 4:3 aspect ratio
+          background: #f5f5f5;
+
+          .preview-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .remove-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            backdrop-filter: blur(4px);
+
+            &:hover {
+              background: rgba(239, 68, 68, 0.9);
+            }
+
+            mat-icon {
+              font-size: 18px;
+              width: 18px;
+              height: 18px;
+            }
+          }
+        }
+
+        .preview-info {
+          padding: 12px;
+
+          .preview-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.87);
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .preview-size {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark mode support
+.dark {
+  .image-upload-container {
+    .upload-area {
+      background: rgba(255, 255, 255, 0.05);
+
+      .upload-content {
+        .upload-text {
+          color: rgba(255, 255, 255, 0.87);
+        }
+      }
+    }
+
+    .preview-section {
+      .preview-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.12);
+
+        .preview-image-container {
+          background: #1a1a1a;
+        }
+
+        .preview-info {
+          .preview-name {
+            color: rgba(255, 255, 255, 0.87);
+          }
+        }
+      }
+    }
+  }
+}
+

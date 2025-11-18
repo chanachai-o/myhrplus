@@ -130,6 +130,16 @@ export class UiKitComponent implements OnInit {
   // Date property for template
   currentDate = new Date();
 
+  // Image Upload Example
+  uploadedImages: any[] = [];
+
+  // Form Validation Example
+  validationForm: FormGroup;
+
+  // Rating Example
+  ratingValue = 0;
+  readOnlyRating = 4.5;
+
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -143,6 +153,13 @@ export class UiKitComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       description: [''],
       agree: [false, Validators.requiredTrue]
+    });
+
+    this.validationForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      age: ['', [Validators.required, Validators.min(18), Validators.max(100)]]
     });
   }
 
@@ -238,6 +255,16 @@ export class UiKitComponent implements OnInit {
 
   onFileError(error: string): void {
     this.notificationService.showError(error);
+  }
+
+  onImageSelect(images: any[]): void {
+    console.log('Images selected:', images);
+    this.uploadedImages = images;
+  }
+
+  onImageRemove(image: any): void {
+    console.log('Image removed:', image);
+    this.uploadedImages = this.uploadedImages.filter(img => img !== image);
   }
 
   // Table Actions

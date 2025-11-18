@@ -1,0 +1,164 @@
+<div class="preferences-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>settings</mat-icon>
+        User Preferences
+      </mat-card-title>
+      <mat-card-subtitle>จัดการการตั้งค่าส่วนตัวของคุณ</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
+        
+        <!-- Theme Settings -->
+        <div class="preference-section">
+          <h3>
+            <mat-icon>palette</mat-icon>
+            Theme Settings
+          </h3>
+          
+          <div class="form-group">
+            <label>Theme Mode</label>
+            <div class="theme-mode-options">
+              <button
+                *ngFor="let mode of themeModes"
+                type="button"
+                mat-stroked-button
+                [class.active]="getCurrentThemeMode() === mode.value"
+                (click)="onThemeModeChange(mode.value)">
+                <mat-icon>{{ mode.icon }}</mat-icon>
+                {{ mode.label }}
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Theme Color</label>
+            <div class="theme-color-options">
+              <button
+                *ngFor="let color of themeColors"
+                type="button"
+                mat-stroked-button
+                [class.active]="getCurrentThemeColor() === color.value"
+                [style.border-color]="color.color"
+                (click)="onThemeColorChange(color.value)">
+                <span class="color-dot" [style.background-color]="color.color"></span>
+                {{ color.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Language Settings -->
+        <div class="preference-section">
+          <h3>
+            <mat-icon>language</mat-icon>
+            Language Settings
+          </h3>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Language</mat-label>
+            <mat-select formControlName="language" (selectionChange)="onLanguageChange($event.value)">
+              <mat-option *ngFor="let lang of languages" [value]="lang.value">
+                <span class="language-option">
+                  <span class="flag">{{ lang.flag }}</span>
+                  <span>{{ lang.label }}</span>
+                </span>
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix>language</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Date & Time Settings -->
+        <div class="preference-section">
+          <h3>
+            <mat-icon>schedule</mat-icon>
+            Date & Time Settings
+          </h3>
+          
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Date Format</mat-label>
+              <mat-select formControlName="dateFormat">
+                <mat-option *ngFor="let format of dateFormats" [value]="format.value">
+                  {{ format.label }} ({{ format.example }})
+                </mat-option>
+              </mat-select>
+              <mat-icon matPrefix>calendar_today</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Time Format</mat-label>
+              <mat-select formControlName="timeFormat">
+                <mat-option *ngFor="let format of timeFormats" [value]="format.value">
+                  {{ format.label }} ({{ format.example }})
+                </mat-option>
+              </mat-select>
+              <mat-icon matPrefix>access_time</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Timezone</mat-label>
+            <mat-select formControlName="timezone">
+              <mat-option *ngFor="let tz of timezones" [value]="tz.value">
+                {{ tz.label }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix>public</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="preference-section">
+          <h3>
+            <mat-icon>notifications</mat-icon>
+            Notification Settings
+          </h3>
+          
+          <div formGroupName="notifications" class="notification-options">
+            <mat-checkbox formControlName="email">
+              <mat-icon>email</mat-icon>
+              Email Notifications
+            </mat-checkbox>
+            <mat-checkbox formControlName="push">
+              <mat-icon>notifications_active</mat-icon>
+              Push Notifications
+            </mat-checkbox>
+            <mat-checkbox formControlName="sms">
+              <mat-icon>sms</mat-icon>
+              SMS Notifications
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button
+            type="button"
+            mat-stroked-button
+            color="warn"
+            (click)="resetPreferences()"
+            [disabled]="saving">
+            <mat-icon>refresh</mat-icon>
+            Reset to Default
+          </button>
+          
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            [disabled]="saving || preferencesForm.invalid">
+            <mat-icon *ngIf="!saving">save</mat-icon>
+            <mat-spinner *ngIf="saving" diameter="20"></mat-spinner>
+            <span *ngIf="!saving">Save Preferences</span>
+            <span *ngIf="saving">Saving...</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+

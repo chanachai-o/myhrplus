@@ -46,6 +46,9 @@ import { StepperComponent } from './components/stepper/stepper.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-loader.component';
+import { ImageUploadComponent } from './components/image-upload/image-upload.component';
+import { FormValidationMessagesComponent } from './components/form-validation-messages/form-validation-messages.component';
+import { RatingComponent } from './components/rating/rating.component';
 
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
@@ -97,7 +100,10 @@ const COMPONENTS = [
   StepperComponent,
   TimelineComponent,
   DateRangePickerComponent,
-  SkeletonLoaderComponent
+  SkeletonLoaderComponent,
+  ImageUploadComponent,
+  FormValidationMessagesComponent,
+  RatingComponent
 ];
 
 const DIRECTIVES = [

@@ -10,6 +10,7 @@ import { NotificationService } from './services/notification.service';
 import { StorageService } from './services/storage.service';
 import { MenuService } from './services/menu.service';
 import { CacheService } from './services/cache.service';
+import { I18nService } from './services/i18n.service';
 import { HasRoleDirective } from './directives/has-role.directive';
 import { HasPermissionDirective } from './directives/has-permission.directive';
 
@@ -34,7 +35,8 @@ import { HasPermissionDirective } from './directives/has-permission.directive';
     NotificationService,
     StorageService,
     MenuService,
-    CacheService
+    CacheService,
+    I18nService
   ]
 })
 export class CoreModule {

@@ -1,0 +1,44 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "noData": "No data",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "company": "Company",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "invalidCredentials": "Invalid username or password"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "changePassword": "Change Password",
+    "preferences": "Preferences",
+    "saveSuccess": "Saved successfully",
+    "saveFailed": "Save failed"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "theme": "Theme",
+    "language": "Language",
+    "dateFormat": "Date Format",
+    "timeFormat": "Time Format",
+    "timezone": "Timezone",
+    "notifications": "Notifications",
+    "saveSuccess": "Preferences saved successfully"
+  }
+}
+

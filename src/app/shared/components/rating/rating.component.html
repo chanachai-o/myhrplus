@@ -1,0 +1,24 @@
+<div class="rating-container" [class.read-only]="readOnly">
+  <div class="rating-label" *ngIf="showLabel">
+    <span class="thai-text">{{ label }}</span>
+    <span class="rating-value" *ngIf="showValue && currentRating > 0">
+      ({{ currentRating }})
+    </span>
+  </div>
+  
+  <div class="stars-container" [class]="getSizeClass()">
+    <button
+      *ngFor="let star of getStars()"
+      type="button"
+      class="star-button"
+      [class]="getStarClass(star)"
+      [disabled]="readOnly"
+      [matTooltip]="getTooltip(star)"
+      (click)="onStarClick(star)"
+      (mouseenter)="onStarHover(star)"
+      (mouseleave)="onStarLeave()">
+      <mat-icon [class]="getStarClass(star)">{{ getStarIcon(star) }}</mat-icon>
+    </button>
+  </div>
+</div>
+

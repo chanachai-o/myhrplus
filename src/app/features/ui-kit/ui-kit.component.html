@@ -895,6 +895,188 @@
     </div>
   </section>
 
+  <!-- Priority 2: Useful Components Section -->
+  <section class="glass-card-strong p-6 animate-fade-in mb-8">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-500 text-white text-sm font-bold">P2</span>
+      <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100">
+        Priority 2 Components (Useful)
+      </h2>
+    </div>
+    <p class="text-slate-600 dark:text-slate-400 mb-6">
+      Components ที่มีประโยชน์และใช้บ่อยในหลายโมดูล
+    </p>
+  </section>
+
+  <!-- Image Upload Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Image Upload & Preview
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Single Image Upload</h3>
+        <app-image-upload
+          label="อัปโหลดรูปโปรไฟล์"
+          placeholder="ลากไฟล์มาวางที่นี่หรือคลิกเพื่อเลือก"
+          [multiple]="false"
+          [config]="{ maxSize: 5, maxFiles: 1, enablePreview: true }"
+          (fileSelect)="onImageSelect($event)"
+          (fileRemove)="onImageRemove($event)">
+        </app-image-upload>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Multiple Images Upload</h3>
+        <app-image-upload
+          label="อัปโหลดรูปภาพหลายไฟล์"
+          placeholder="ลากไฟล์มาวางที่นี่หรือคลิกเพื่อเลือก (สูงสุด 5 ไฟล์)"
+          [multiple]="true"
+          [config]="{ maxSize: 5, maxFiles: 5, enablePreview: true }"
+          (fileSelect)="onImageSelect($event)"
+          (fileRemove)="onImageRemove($event)">
+        </app-image-upload>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Validation Messages Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Form Validation Messages
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Validation Examples</h3>
+        <form [formGroup]="validationForm" class="space-y-4">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label class="thai-text">ชื่อ (Required)</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-icon matPrefix>person</mat-icon>
+            <app-form-validation-messages
+              [control]="validationForm.get('name')"
+              [customMessages]="{ required: 'กรุณากรอกชื่อ' }">
+            </app-form-validation-messages>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label class="thai-text">อีเมล (Email Validation)</mat-label>
+            <input matInput type="email" formControlName="email" required>
+            <mat-icon matPrefix>email</mat-icon>
+            <app-form-validation-messages
+              [control]="validationForm.get('email')"
+              [customMessages]="{ 
+                required: 'กรุณากรอกอีเมล',
+                email: 'รูปแบบอีเมลไม่ถูกต้อง'
+              }">
+            </app-form-validation-messages>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label class="thai-text">เบอร์โทรศัพท์ (Pattern Validation)</mat-label>
+            <input matInput formControlName="phone" required>
+            <mat-icon matPrefix>phone</mat-icon>
+            <app-form-validation-messages
+              [control]="validationForm.get('phone')"
+              [customMessages]="{ 
+                required: 'กรุณากรอกเบอร์โทรศัพท์',
+                pattern: 'กรุณากรอกเบอร์โทรศัพท์ 10 หลัก'
+              }">
+            </app-form-validation-messages>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label class="thai-text">อายุ (Min/Max Validation)</mat-label>
+            <input matInput type="number" formControlName="age" required>
+            <mat-icon matPrefix>cake</mat-icon>
+            <app-form-validation-messages
+              [control]="validationForm.get('age')"
+              [customMessages]="{ 
+                required: 'กรุณากรอกอายุ',
+                min: 'อายุต้องมากกว่า 18 ปี',
+                max: 'อายุต้องไม่เกิน 100 ปี'
+              }">
+            </app-form-validation-messages>
+          </mat-form-field>
+        </form>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Inline Validation</h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label class="thai-text">Inline Error Message</mat-label>
+          <input matInput [value]="''" required>
+          <app-form-validation-messages
+            [control]="validationForm.get('name')"
+            position="inline">
+          </app-form-validation-messages>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rating Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Rating Component
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Interactive Rating</h3>
+        <app-rating
+          [(ngModel)]="ratingValue"
+          [maxRating]="5"
+          [showLabel]="true"
+          label="ให้คะแนน"
+          [showValue]="true"
+          size="md">
+        </app-rating>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+          คะแนนที่เลือก: {{ ratingValue }}
+        </p>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Read-Only Rating</h3>
+        <app-rating
+          [currentRating]="readOnlyRating"
+          [readOnly]="true"
+          [showLabel]="true"
+          label="คะแนนเฉลี่ย"
+          [showValue]="true"
+          [allowHalf]="true"
+          size="lg">
+        </app-rating>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Size Variants</h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Small</p>
+            <app-rating [currentRating]="4" [readOnly]="true" size="sm"></app-rating>
+          </div>
+          <div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Medium</p>
+            <app-rating [currentRating]="4" [readOnly]="true" size="md"></app-rating>
+          </div>
+          <div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Large</p>
+            <app-rating [currentRating]="4" [readOnly]="true" size="lg"></app-rating>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Half Star Rating</h3>
+        <app-rating
+          [(ngModel)]="ratingValue"
+          [maxRating]="5"
+          [allowHalf]="true"
+          [showLabel]="true"
+          label="ให้คะแนน (ครึ่งดาว)"
+          [showValue]="true"
+          size="md">
+        </app-rating>
+      </div>
+    </div>
+  </section>
+
   <!-- Icons Section -->
   <section class="glass-card p-6 animate-slide-up">
     <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">

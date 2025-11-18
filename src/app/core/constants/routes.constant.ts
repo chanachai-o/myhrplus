@@ -19,6 +19,7 @@ export const ROUTES = {
   PERSONAL: {
     BASE: '/personal',
     PROFILE: '/personal/profile',
+    PREFERENCES: '/personal/preferences',
     ADDRESS: '/personal/address',
     FAMILY: '/personal/family',
     EDUCATION: '/personal/education',

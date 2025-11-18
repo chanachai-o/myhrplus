@@ -1,0 +1,44 @@
+{
+  "common": {
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "add": "เพิ่ม",
+    "search": "ค้นหา",
+    "filter": "กรอง",
+    "loading": "กำลังโหลด...",
+    "noData": "ไม่มีข้อมูล",
+    "confirm": "ยืนยัน",
+    "close": "ปิด"
+  },
+  "auth": {
+    "login": "เข้าสู่ระบบ",
+    "logout": "ออกจากระบบ",
+    "username": "ชื่อผู้ใช้",
+    "password": "รหัสผ่าน",
+    "company": "บริษัท",
+    "loginSuccess": "เข้าสู่ระบบสำเร็จ",
+    "loginFailed": "เข้าสู่ระบบล้มเหลว",
+    "invalidCredentials": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+  },
+  "profile": {
+    "title": "โปรไฟล์",
+    "personalInfo": "ข้อมูลส่วนตัว",
+    "changePassword": "เปลี่ยนรหัสผ่าน",
+    "preferences": "การตั้งค่า",
+    "saveSuccess": "บันทึกสำเร็จ",
+    "saveFailed": "บันทึกล้มเหลว"
+  },
+  "preferences": {
+    "title": "การตั้งค่า",
+    "theme": "ธีม",
+    "language": "ภาษา",
+    "dateFormat": "รูปแบบวันที่",
+    "timeFormat": "รูปแบบเวลา",
+    "timezone": "เขตเวลา",
+    "notifications": "การแจ้งเตือน",
+    "saveSuccess": "บันทึกการตั้งค่าสำเร็จ"
+  }
+}
+

@@ -46,11 +46,25 @@
         </mat-form-field>
 
         <!-- Company Field -->
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="full-width" *ngIf="companies.length > 0">
           <mat-label class="thai-text">บริษัท</mat-label>
+          <mat-select 
+            formControlName="dbcomp"
+            class="glass-input dark:!bg-slate-800/20 dark:!text-slate-200">
+            <mat-option *ngFor="let company of companies" [value]="company.id || company.code">
+              {{ company.name || company.code }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">business</mat-icon>
+        </mat-form-field>
+        
+        <!-- Company Input (fallback if no companies loaded) -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="companies.length === 0">
+          <mat-label class="thai-text">บริษัท (ถ้ามี)</mat-label>
           <input 
             matInput 
             formControlName="dbcomp"
+            placeholder="Optional"
             class="glass-input dark:!bg-slate-800/20 dark:!text-slate-200 dark:placeholder-slate-500">
           <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">business</mat-icon>
         </mat-form-field>

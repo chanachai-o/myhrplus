@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { ThemeService } from './core/services/theme.service';
+import { I18nService } from './core/services/i18n.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private i18nService: I18nService
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +31,10 @@ export class AppComponent implements OnInit {
       // Add current theme class
       body.classList.add(`theme-${theme.color}`);
     });
+
+    // Initialize i18n service (language is loaded automatically)
+    const currentLang = this.i18nService.getCurrentLanguage();
+    document.documentElement.setAttribute('lang', currentLang);
 
     // Check if user is already logged in
     if (this.authService.isAuthenticated()) {

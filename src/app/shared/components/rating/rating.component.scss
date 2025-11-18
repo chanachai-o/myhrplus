@@ -1,0 +1,131 @@
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .rating-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+
+    .rating-value {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: normal;
+    }
+  }
+
+  .stars-container {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    .star-button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:disabled {
+        cursor: default;
+      }
+
+      mat-icon {
+        transition: all 0.2s ease;
+        color: rgba(0, 0, 0, 0.26);
+      }
+
+      &.filled mat-icon,
+      &.half-filled mat-icon {
+        color: rgb(var(--primary-rgb));
+      }
+
+      &.hovered mat-icon {
+        color: rgba(var(--primary-rgb), 0.7);
+        transform: scale(1.1);
+      }
+
+      &:hover:not(:disabled) mat-icon {
+        transform: scale(1.15);
+      }
+
+      &.read-only {
+        cursor: default;
+      }
+    }
+
+    // Size variants
+    &.size-sm {
+      .star-button mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    &.size-md {
+      .star-button mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    &.size-lg {
+      .star-button mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  // Half star support
+  .half-filled {
+    position: relative;
+
+    mat-icon {
+      color: rgb(var(--primary-rgb));
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.26);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+}
+
+// Dark mode support
+.dark {
+  .rating-container {
+    .rating-label {
+      color: rgba(255, 255, 255, 0.87);
+
+      .rating-value {
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    .stars-container {
+      .star-button {
+        mat-icon {
+          color: rgba(255, 255, 255, 0.26);
+        }
+      }
+    }
+  }
+}
+

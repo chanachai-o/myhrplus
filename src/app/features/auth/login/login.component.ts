@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, LoginRequest } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { MenuService } from '../../../core/services/menu.service';
+import { ApiService } from '../../../core/services/api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private apiService: ApiService
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -45,8 +48,26 @@ export class LoginComponent implements OnInit {
   }
 
   loadCompanies(): void {
-    // This would typically come from an API
-    // For now, we'll leave it empty or load from a config
+    // Load companies from API
+    this.apiService.get<any[]>(
+      `${environment.apiEndpoints.core}/companies`,
+      {},
+      false
+    ).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.companies = response.data;
+        } else {
+          // Fallback: Use empty array or default companies
+          this.companies = [];
+        }
+      },
+      error: (error) => {
+        console.warn('Failed to load companies:', error);
+        // Continue with empty companies list
+        this.companies = [];
+      }
+    });
   }
 
   onSubmit(): void {
