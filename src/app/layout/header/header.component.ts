@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { I18nService, Language } from '../../core/services/i18n.service';
+import { MenuItemModel } from '@syncfusion/ej2-angular-navigations';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,9 @@ export class HeaderComponent {
     { value: 'en', label: 'English', flag: '🇬🇧' }
   ];
 
+  languageMenuItems: MenuItemModel[] = [];
+  userMenuItems: MenuItemModel[] = [];
+
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -27,7 +31,69 @@ export class HeaderComponent {
     // Subscribe to language changes
     this.i18nService.currentLanguage$.subscribe(lang => {
       this.currentLanguage = lang;
+      this.updateLanguageMenu();
     });
+
+    // Subscribe to user changes
+    this.authService.currentUser$.subscribe(() => {
+      this.updateUserMenu();
+    });
+
+    this.updateLanguageMenu();
+    this.updateUserMenu();
+  }
+
+  updateLanguageMenu(): void {
+    this.languageMenuItems = this.languages.map(lang => ({
+      text: `${lang.flag} ${lang.label}`,
+      iconCss: this.currentLanguage === lang.value ? 'e-icons e-check' : '',
+      id: lang.value
+    }));
+  }
+
+  updateUserMenu(): void {
+    this.userMenuItems = [
+      {
+        text: 'โปรไฟล์',
+        iconCss: 'e-icons e-user',
+        id: 'profile'
+      },
+      {
+        text: 'การตั้งค่า',
+        iconCss: 'e-icons e-settings',
+        id: 'preferences'
+      },
+      {
+        separator: true
+      },
+      {
+        text: 'ออกจากระบบ',
+        iconCss: 'e-icons e-logout',
+        id: 'logout'
+      }
+    ];
+  }
+
+  onLanguageSelect(args: any): void {
+    if (args.item.id) {
+      this.changeLanguage(args.item.id as Language);
+      this.showLanguageMenu = false;
+    }
+  }
+
+  onUserMenuSelect(args: any): void {
+    switch (args.item.id) {
+      case 'profile':
+        this.onProfile();
+        break;
+      case 'preferences':
+        this.onPreferences();
+        break;
+      case 'logout':
+        this.onLogout();
+        break;
+    }
+    this.showUserMenu = false;
   }
 
   onLogout(): void {

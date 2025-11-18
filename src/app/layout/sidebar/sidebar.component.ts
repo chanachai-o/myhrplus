@@ -4,6 +4,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MenuService, MenuItem } from '../../core/services/menu.service';
 import { AuthService } from '../../core/services/auth.service';
+import { MenuItemModel } from '@syncfusion/ej2-angular-navigations';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,6 +13,7 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   menuItems: MenuItem[] = [];
+  menuItemsForSyncfusion: MenuItemModel[] = [];
   activeRoute: string = '';
   private destroy$ = new Subject<void>();
 
@@ -47,6 +49,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       )
       .subscribe((event: any) => {
         this.activeRoute = event.url;
+        this.updateMenuItems();
       });
   }
 
@@ -54,7 +57,48 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.menuService.loadMenu().subscribe(menu => {
       // Menu is already filtered by permissions in MenuService
       this.menuItems = menu;
+      this.updateMenuItems();
     });
+  }
+
+  private updateMenuItems(): void {
+    this.menuItemsForSyncfusion = this.menuItems.map(item => {
+      const menuItem: MenuItemModel = {
+        text: item.edesc || item.name || '',
+        iconCss: this.getIconClass(item.icon || 'folder'),
+        id: item.route || ''
+      };
+
+      if (this.hasChildren(item)) {
+        menuItem.items = item.children!.map(child => ({
+          text: child.edesc || child.name || '',
+          iconCss: this.getIconClass(child.icon || 'folder'),
+          id: child.route || ''
+        }));
+      }
+
+      return menuItem;
+    });
+  }
+
+  private getIconClass(iconName: string): string {
+    // Map icon names to Syncfusion icon classes
+    const iconMap: { [key: string]: string } = {
+      'menu': 'e-icons e-menu',
+      'home': 'e-icons e-home',
+      'dashboard': 'e-icons e-dashboard',
+      'folder': 'e-icons e-folder',
+      'settings': 'e-icons e-settings',
+      'user': 'e-icons e-user',
+      'logout': 'e-icons e-logout'
+    };
+    return iconMap[iconName.toLowerCase()] || 'e-icons e-folder';
+  }
+
+  onMenuSelect(args: any): void {
+    if (args.item.id) {
+      this.router.navigate([args.item.id]);
+    }
   }
 
   ngOnDestroy(): void {

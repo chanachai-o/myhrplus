@@ -1,35 +1,25 @@
 <div class="layout-container min-h-screen transition-all duration-300">
-  <div class="sidenav-container flex relative">
-    <!-- Sidebar -->
-    <aside
-      #drawer
-      class="sidenav glass-nav w-64 md:w-72 min-h-screen border-r border-white/30 dark:border-slate-700/30 transition-all duration-300 ease-in-out"
-      [class.sidenav-open]="sidebarOpen"
-      [class.sidenav-closed]="!sidebarOpen"
-      [class.sidenav-mobile]="(isHandset$ | async)"
-      [class.sidenav-desktop]="!(isHandset$ | async)"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [attr.aria-hidden]="(isHandset$ | async) && !sidebarOpen">
-      <app-sidebar></app-sidebar>
-    </aside>
+  <!-- Syncfusion Sidebar -->
+  <ejs-sidebar
+    #sidebar
+    [width]="sidebarWidth"
+    [isOpen]="sidebarOpen"
+    [type]="sidebarType"
+    [position]="'Left'"
+    [closeOnDocumentClick]="(isHandset$ | async)"
+    (close)="onSidebarClose()"
+    class="syncfusion-sidebar">
+    <app-sidebar></app-sidebar>
+  </ejs-sidebar>
 
-    <!-- Overlay for mobile -->
-    <div
-      *ngIf="(isHandset$ | async) && sidebarOpen"
-      class="sidebar-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300"
-      (click)="closeSidebar()"
-      [attr.aria-label]="'Close sidebar'">
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-wrapper flex-1 min-h-screen flex flex-col transition-all duration-300"
-         [class.main-wrapper-sidebar-open]="sidebarOpen && !(isHandset$ | async)"
-         [class.main-wrapper-sidebar-closed]="!sidebarOpen && !(isHandset$ | async)">
-      <app-header (toggleSidenav)="toggleSidebar()"></app-header>
-      <main class="main-content flex-1 animate-fade-in p-4 md:p-6">
-        <router-outlet></router-outlet>
-      </main>
-      <app-footer></app-footer>
-    </div>
+  <!-- Main Content -->
+  <div class="main-wrapper flex-1 min-h-screen flex flex-col transition-all duration-300"
+       [class.main-wrapper-sidebar-open]="sidebarOpen && !(isHandset$ | async)"
+       [class.main-wrapper-sidebar-closed]="!sidebarOpen && !(isHandset$ | async)">
+    <app-header (toggleSidenav)="toggleSidebar()"></app-header>
+    <main class="main-content flex-1 animate-fade-in p-4 md:p-6">
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
   </div>
 </div>

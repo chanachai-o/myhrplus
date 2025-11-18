@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { SyncfusionModule } from '../shared/syncfusion/syncfusion.module';
 import { ThemeToggleComponent } from '../shared/components/theme-toggle/theme-toggle.component';
 // Import standalone components
 import { GlassButtonComponent } from '../shared/components/glass-button/glass-button.component';
@@ -23,6 +24,7 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     RouterModule,
     SharedModule,
+    SyncfusionModule, // Syncfusion UI-KIT components
     ThemeToggleComponent, // Standalone component
     GlassButtonComponent, // Standalone component
     GlassCardComponent // Standalone component

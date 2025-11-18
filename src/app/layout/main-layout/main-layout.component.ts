@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { SidebarComponent as EjsSidebar } from '@syncfusion/ej2-angular-navigations';
 
 @Component({
   selector: 'app-main-layout',
@@ -9,8 +10,12 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent implements OnInit {
+  @ViewChild('sidebar') sidebar!: EjsSidebar;
+
   isHandset$!: Observable<boolean>;
   sidebarOpen = false;
+  sidebarWidth: string = '280px';
+  sidebarType: 'Over' | 'Push' | 'Slide' = 'Over';
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 
@@ -20,22 +25,38 @@ export class MainLayoutComponent implements OnInit {
         map(result => result.matches),
         shareReplay()
       );
-    
+
     // Auto-open sidebar on desktop
     this.isHandset$.subscribe(isHandset => {
       if (!isHandset) {
         this.sidebarOpen = true;
+        this.sidebarType = 'Push';
+        this.sidebarWidth = '288px';
       } else {
         this.sidebarOpen = false;
+        this.sidebarType = 'Over';
+        this.sidebarWidth = '280px';
       }
     });
   }
 
   toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
+    if (this.sidebar) {
+      this.sidebar.toggle();
+    } else {
+      this.sidebarOpen = !this.sidebarOpen;
+    }
+  }
+
+  onSidebarClose(): void {
+    this.sidebarOpen = false;
   }
 
   closeSidebar(): void {
-    this.sidebarOpen = false;
+    if (this.sidebar) {
+      this.sidebar.hide();
+    } else {
+      this.sidebarOpen = false;
+    }
   }
 }

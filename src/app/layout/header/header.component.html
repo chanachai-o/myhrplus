@@ -1,119 +1,84 @@
-<header class="glass-nav bg-white/25 dark:bg-slate-900/25 backdrop-blur-lg border-b border-white/30 dark:border-slate-700/30 shadow-lg transition-all duration-300 flex items-center justify-between px-3 md:px-4 py-2 md:py-3 sticky top-0 z-30">
-  <div class="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
-    <app-glass-button
-      variant="secondary"
-      size="sm"
-      (clicked)="toggleSidenav.emit()"
-      [title]="'เมนู'"
-      customClass="flex-shrink-0">
-      <app-icon name="menu" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
-    </app-glass-button>
+<header class="glass-nav bg-white/25 dark:bg-slate-900/25 backdrop-blur-lg border-b border-white/30 dark:border-slate-700/30 shadow-lg transition-all duration-300 sticky top-0 z-30">
+  <div class="flex items-center justify-between px-3 md:px-4 py-2 md:py-3">
+    <div class="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+      <!-- Menu Toggle Button -->
+      <button
+        ejs-button
+        [cssClass]="'e-flat e-primary'"
+        [iconCss]="'e-icons e-menu'"
+        (click)="toggleSidenav.emit()"
+        [title]="'เมนู'"
+        class="e-control e-btn e-flat e-primary">
+      </button>
 
-    <!-- Logo Section -->
-    <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 min-w-0">
-      <div class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-lg flex-shrink-0">
-        <app-icon name="business_center" size="sm" class="md:hidden" color="text-white"></app-icon>
-        <app-icon name="business_center" size="md" class="hidden md:block" color="text-white"></app-icon>
+      <!-- Logo Section -->
+      <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 min-w-0">
+        <div class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-lg flex-shrink-0">
+          <app-icon name="business_center" size="sm" class="md:hidden" color="text-white"></app-icon>
+          <app-icon name="business_center" size="md" class="hidden md:block" color="text-white"></app-icon>
+        </div>
+        <div class="flex flex-col min-w-0 hidden sm:block">
+          <span class="app-title thai-text font-semibold text-slate-800 dark:text-slate-100 text-sm md:text-lg leading-tight truncate">
+            ระบบบริหารทรัพยากรบุคคล
+          </span>
+          <span class="app-title-en font-medium text-slate-600 dark:text-slate-400 text-xs hidden md:block">
+            HR System
+          </span>
+        </div>
       </div>
-      <div class="flex flex-col min-w-0 hidden sm:block">
-        <span class="app-title thai-text font-semibold text-slate-800 dark:text-slate-100 text-sm md:text-lg leading-tight truncate">
-          ระบบบริหารทรัพยากรบุคคล
-        </span>
-        <span class="app-title-en font-medium text-slate-600 dark:text-slate-400 text-xs hidden md:block">
-          HR System
-        </span>
-      </div>
+    </div>
+
+    <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
+      <!-- Language Switcher -->
+      <button
+        ejs-button
+        [cssClass]="'e-flat e-primary'"
+        [iconCss]="'e-icons e-globe'"
+        (click)="toggleLanguageMenu()"
+        [title]="'เปลี่ยนภาษา'"
+        class="e-control e-btn e-flat e-primary">
+      </button>
+
+      <!-- Theme Toggle -->
+      <app-theme-toggle></app-theme-toggle>
+
+      <!-- Notifications -->
+      <button
+        ejs-button
+        [cssClass]="'e-flat e-primary relative'"
+        [iconCss]="'e-icons e-bell'"
+        [title]="'การแจ้งเตือน'"
+        class="e-control e-btn e-flat e-primary relative">
+        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full"></span>
+      </button>
+
+      <!-- User Menu -->
+      <button
+        ejs-button
+        [cssClass]="'e-flat e-primary'"
+        [iconCss]="'e-icons e-user'"
+        (click)="toggleUserMenu()"
+        [title]="'เมนูผู้ใช้'"
+        class="e-control e-btn e-flat e-primary">
+      </button>
     </div>
   </div>
-
-  <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
-    <!-- Language Switcher -->
-    <div class="relative">
-      <app-glass-button
-        variant="secondary"
-        size="sm"
-        (clicked)="toggleLanguageMenu()"
-        [title]="'เปลี่ยนภาษา'">
-        <app-icon name="language" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
-      </app-glass-button>
-
-      <app-glass-card
-        *ngIf="showLanguageMenu"
-        padding="p-0"
-        customClass="absolute right-0 mt-2 w-48 z-50 shadow-xl"
-        variant="strong"
-        (click)="$event.stopPropagation()">
-        <button
-          *ngFor="let lang of languages"
-          (click)="changeLanguage(lang.value); showLanguageMenu = false"
-          [class.active]="currentLanguage === lang.value"
-          class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span>{{ lang.flag }}</span>
-            <span>{{ lang.label }}</span>
-          </div>
-          <app-icon *ngIf="currentLanguage === lang.value" name="check" size="sm" color="text-blue-500"></app-icon>
-        </button>
-      </app-glass-card>
-    </div>
-
-    <!-- Theme Toggle -->
-    <app-theme-toggle></app-theme-toggle>
-
-    <!-- Notifications -->
-    <app-glass-button
-      variant="secondary"
-      size="sm"
-      [title]="'การแจ้งเตือน'"
-      customClass="relative">
-      <app-icon name="notifications" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
-      <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full"></span>
-    </app-glass-button>
-
-    <!-- User Menu -->
-    <div class="relative">
-      <app-glass-button
-        variant="secondary"
-        size="sm"
-        (clicked)="toggleUserMenu()">
-        <app-icon name="account_circle" size="md" color="text-slate-700 dark:text-slate-200"></app-icon>
-      </app-glass-button>
-
-      <app-glass-card
-        *ngIf="showUserMenu"
-        padding="p-0"
-        customClass="absolute right-0 mt-2 w-56 z-50 shadow-xl"
-        variant="strong"
-        (click)="$event.stopPropagation()">
-        <div class="user-info px-4 py-3 min-w-[220px] border-b border-gray-200 dark:border-gray-700" *ngIf="authService.currentUser$ | async as user">
-          <div class="user-name thai-text font-semibold text-slate-800 dark:text-slate-100 mb-1">
-            {{ user.name }}
-          </div>
-          <div class="user-email text-sm text-slate-600 dark:text-slate-400">
-            {{ user.email || user.username }}
-          </div>
-        </div>
-        <div class="py-2">
-          <button
-            (click)="onProfile(); showUserMenu = false"
-            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
-            <app-icon name="person" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
-            <span class="thai-text">โปรไฟล์</span>
-          </button>
-          <button
-            (click)="onPreferences(); showUserMenu = false"
-            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
-            <app-icon name="settings" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
-            <span class="thai-text">การตั้งค่า</span>
-          </button>
-          <button
-            (click)="onLogout(); showUserMenu = false"
-            class="w-full px-4 py-2 text-left text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-slate-700/40 transition-all duration-200 flex items-center gap-3">
-            <app-icon name="logout" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
-            <span class="thai-text">ออกจากระบบ</span>
-          </button>
-        </div>
-      </app-glass-card>
-    </div>
-  </div>
+  
+  <!-- Language Menu Dropdown -->
+  <ejs-contextmenu
+    *ngIf="showLanguageMenu"
+    #languageMenu
+    [target]="'header'"
+    [items]="languageMenuItems"
+    (select)="onLanguageSelect($event)">
+  </ejs-contextmenu>
+  
+  <!-- User Menu Dropdown -->
+  <ejs-contextmenu
+    *ngIf="showUserMenu"
+    #userMenu
+    [target]="'header'"
+    [items]="userMenuItems"
+    (select)="onUserMenuSelect($event)">
+  </ejs-contextmenu>
 </header>

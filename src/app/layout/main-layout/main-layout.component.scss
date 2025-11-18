@@ -1,54 +1,22 @@
 .layout-container {
   width: 100%;
   overflow-x: hidden;
-}
-
-.sidenav-container {
-  height: 100vh;
-  background: transparent;
   position: relative;
 }
 
-/* Sidebar Styles */
-.sidenav {
-  background: transparent !important;
-  position: relative;
-  z-index: 30;
-  
-  /* Desktop: Always visible, fixed position */
-  &.sidenav-desktop {
-    position: relative;
-    flex-shrink: 0;
-  }
-  
-  /* Mobile: Fixed overlay */
-  &.sidenav-mobile {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 50;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    
-    &.sidenav-open {
-      transform: translateX(0);
-    }
-  }
+/* Syncfusion Sidebar Styles */
+::ng-deep .syncfusion-sidebar {
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
 }
 
-/* Sidebar Overlay */
-.sidebar-overlay {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+::ng-deep .dark .syncfusion-sidebar {
+  background: rgba(15, 23, 42, 0.25) !important;
+  border-right-color: rgba(51, 65, 85, 0.3) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Main Wrapper */

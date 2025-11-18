@@ -4,72 +4,13 @@
     <div class="h-px bg-gradient-to-r from-transparent via-white/30 dark:via-slate-700/30 to-transparent transition-colors duration-300"></div>
   </div>
 
-  <nav class="menu-list space-y-1 md:space-y-2">
-    <ng-container *ngFor="let item of menuItems">
-      <a
-        *ngIf="!hasChildren(item)"
-        [routerLink]="item.route"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: false}"
-        class="flex items-center px-3 md:px-4 py-2 md:py-3 rounded-lg mb-1 md:mb-2 mx-1 md:mx-2 transition-all duration-200 hover:bg-white/30 dark:hover:bg-slate-700/30 active:bg-white/40 dark:active:bg-slate-700/40 active:shadow-lg">
-        <app-icon 
-          [name]="item.icon || 'folder'" 
-          size="sm" 
-          class="md:hidden mr-2 md:mr-3"
-          color="text-slate-600 dark:text-slate-400">
-        </app-icon>
-        <app-icon 
-          [name]="item.icon || 'folder'" 
-          size="md" 
-          class="hidden md:block mr-2 md:mr-3"
-          color="text-slate-600 dark:text-slate-400">
-        </app-icon>
-        <span class="thai-text font-medium text-sm md:text-base text-slate-700 dark:text-slate-200 transition-colors duration-300 truncate">{{ item.edesc || item.name }}</span>
-      </a>
-      
-      <div 
-        *ngIf="hasChildren(item)" 
-        class="menu-group mb-2 bg-white/20 dark:bg-slate-900/20 backdrop-blur-sm border border-white/30 dark:border-slate-700/30 rounded-lg shadow-lg transition-all duration-300">
-        <details class="group">
-          <summary class="flex items-center px-3 md:px-4 py-2 cursor-pointer list-none hover:bg-white/30 dark:hover:bg-slate-700/30 transition-colors">
-            <app-icon 
-              [name]="item.icon || 'folder'" 
-              size="sm" 
-              class="md:hidden mr-2 md:mr-3"
-              color="text-slate-600 dark:text-slate-400">
-            </app-icon>
-            <app-icon 
-              [name]="item.icon || 'folder'" 
-              size="md" 
-              class="hidden md:block mr-2 md:mr-3"
-              color="text-slate-600 dark:text-slate-400">
-            </app-icon>
-            <span class="thai-text font-medium text-sm md:text-base text-slate-700 dark:text-slate-200 transition-colors duration-300 flex-1 truncate">{{ item.edesc || item.name }}</span>
-            <app-icon 
-              name="expand_more" 
-              size="sm" 
-              color="text-slate-600 dark:text-slate-400"
-              class="transform transition-transform group-open:rotate-180">
-            </app-icon>
-          </summary>
-          <div class="px-1 md:px-2 py-1 md:py-2 space-y-1">
-            <a
-              *ngFor="let child of item.children"
-              [routerLink]="child.route"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{exact: false}"
-              class="flex items-center px-3 md:px-4 py-1.5 md:py-2 rounded-lg transition-all duration-200 hover:bg-white/30 dark:hover:bg-slate-700/30 active:bg-white/40 dark:active:bg-slate-700/40">
-              <app-icon 
-                [name]="child.icon || 'folder'" 
-                size="sm" 
-                color="text-slate-500 dark:text-slate-500"
-                class="mr-2 md:mr-3 flex-shrink-0">
-              </app-icon>
-              <span class="thai-text text-xs md:text-sm text-slate-600 dark:text-slate-300 transition-colors duration-300 truncate">{{ child.edesc || child.name }}</span>
-            </a>
-          </div>
-        </details>
-      </div>
-    </ng-container>
-  </nav>
+  <!-- Syncfusion Menu -->
+  <ejs-menu
+    #menu
+    [items]="menuItemsForSyncfusion"
+    [orientation]="'Vertical'"
+    [enableRtl]="false"
+    (select)="onMenuSelect($event)"
+    class="syncfusion-menu">
+  </ejs-menu>
 </div>
