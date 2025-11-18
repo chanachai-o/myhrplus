@@ -4,13 +4,14 @@
     <div class="h-px bg-gradient-to-r from-transparent via-white/30 dark:via-slate-700/30 to-transparent transition-colors duration-300"></div>
   </div>
 
-  <!-- Syncfusion Menu -->
-  <ejs-menu
-    #menu
-    [items]="menuItemsForSyncfusion"
-    [orientation]="'Vertical'"
-    [enableRtl]="false"
-    (select)="onMenuSelect($event)"
-    class="syncfusion-menu">
-  </ejs-menu>
+  <!-- Syncfusion Nested ListView -->
+  <ejs-listview
+    #listview
+    [dataSource]="nestedMenuData"
+    [fields]="listViewFields"
+    [showIcon]="true"
+    [showCheckBox]="false"
+    (select)="onListItemSelect($event)"
+    class="syncfusion-nested-list">
+  </ejs-listview>
 </div>

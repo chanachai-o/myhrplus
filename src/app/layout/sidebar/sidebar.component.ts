@@ -1,10 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MenuService, MenuItem } from '../../core/services/menu.service';
 import { AuthService } from '../../core/services/auth.service';
-import { MenuItemModel } from '@syncfusion/ej2-angular-navigations';
+import { ListViewComponent } from '@syncfusion/ej2-angular-lists';
+
+interface NestedMenuItem {
+  text: string;
+  id: string;
+  iconCss?: string;
+  route?: string;
+  child?: NestedMenuItem[];
+}
 
 @Component({
   selector: 'app-sidebar',
@@ -12,8 +20,16 @@ import { MenuItemModel } from '@syncfusion/ej2-angular-navigations';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+  @ViewChild('listview') listview!: ListViewComponent;
+  
   menuItems: MenuItem[] = [];
-  menuItemsForSyncfusion: MenuItemModel[] = [];
+  nestedMenuData: NestedMenuItem[] = [];
+  listViewFields: any = {
+    id: 'id',
+    text: 'text',
+    iconCss: 'iconCss',
+    child: 'child'
+  };
   activeRoute: string = '';
   private destroy$ = new Subject<void>();
 
@@ -49,7 +65,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       )
       .subscribe((event: any) => {
         this.activeRoute = event.url;
-        this.updateMenuItems();
+        this.updateNestedMenuData();
       });
   }
 
@@ -57,27 +73,30 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.menuService.loadMenu().subscribe(menu => {
       // Menu is already filtered by permissions in MenuService
       this.menuItems = menu;
-      this.updateMenuItems();
+      this.updateNestedMenuData();
     });
   }
 
-  private updateMenuItems(): void {
-    this.menuItemsForSyncfusion = this.menuItems.map(item => {
-      const menuItem: MenuItemModel = {
+  private updateNestedMenuData(): void {
+    this.nestedMenuData = this.menuItems.map((item, index) => {
+      const nestedItem: NestedMenuItem = {
         text: item.edesc || item.name || '',
+        id: item.route || `menu-${index}`,
         iconCss: this.getIconClass(item.icon || 'folder'),
-        id: item.route || ''
+        route: item.route
       };
 
-      if (this.hasChildren(item)) {
-        menuItem.items = item.children!.map(child => ({
+      // Add children if exists
+      if (this.hasChildren(item) && item.children) {
+        nestedItem.child = item.children.map((child, childIndex) => ({
           text: child.edesc || child.name || '',
+          id: child.route || `child-${index}-${childIndex}`,
           iconCss: this.getIconClass(child.icon || 'folder'),
-          id: child.route || ''
+          route: child.route
         }));
       }
 
-      return menuItem;
+      return nestedItem;
     });
   }
 
@@ -90,14 +109,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
       'folder': 'e-icons e-folder',
       'settings': 'e-icons e-settings',
       'user': 'e-icons e-user',
-      'logout': 'e-icons e-logout'
+      'logout': 'e-icons e-logout',
+      'business_center': 'e-icons e-folder',
+      'work': 'e-icons e-briefcase',
+      'event': 'e-icons e-calendar',
+      'receipt': 'e-icons e-receipt',
+      'access_time': 'e-icons e-clock',
+      'person': 'e-icons e-user',
+      'arrow_forward': 'e-icons e-arrow-right'
     };
     return iconMap[iconName.toLowerCase()] || 'e-icons e-folder';
   }
 
-  onMenuSelect(args: any): void {
-    if (args.item.id) {
-      this.router.navigate([args.item.id]);
+  onListItemSelect(args: any): void {
+    if (args.item && args.item.route) {
+      this.router.navigate([args.item.route]);
     }
   }
 
