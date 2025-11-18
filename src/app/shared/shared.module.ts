@@ -36,6 +36,16 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { EmptyStateComponent } from './components/empty-state/empty-state.component';
+import { ErrorStateComponent } from './components/error-state/error-state.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
+import { StatusBadgeComponent } from './components/status-badge/status-badge.component';
+import { SearchFilterComponent } from './components/search-filter/search-filter.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { StepperComponent } from './components/stepper/stepper.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
+import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-loader.component';
 
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
@@ -77,7 +87,17 @@ const COMPONENTS = [
   LoadingSpinnerComponent,
   DataTableComponent,
   ConfirmDialogComponent,
-  FileUploadComponent
+  FileUploadComponent,
+  EmptyStateComponent,
+  ErrorStateComponent,
+  AvatarComponent,
+  StatusBadgeComponent,
+  SearchFilterComponent,
+  BreadcrumbsComponent,
+  StepperComponent,
+  TimelineComponent,
+  DateRangePickerComponent,
+  SkeletonLoaderComponent
 ];
 
 const DIRECTIVES = [

@@ -34,9 +34,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Start Date *</mat-label>
-            <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+            <input matInput [matDatepicker]="startPicker" [min]="minDate" [max]="maxDate" formControlName="startDate" required>
             <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-            <mat-datepicker #startPicker [min]="minDate" [max]="maxDate"></mat-datepicker>
+            <mat-datepicker #startPicker></mat-datepicker>
             <mat-icon matPrefix>calendar_today</mat-icon>
             <mat-error *ngIf="leaveForm.get('startDate')?.hasError('required')">
               Start date is required
@@ -45,9 +45,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>End Date *</mat-label>
-            <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+            <input matInput [matDatepicker]="endPicker" [min]="minDate" [max]="maxDate" formControlName="endDate" required>
             <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-            <mat-datepicker #endPicker [min]="minDate" [max]="maxDate"></mat-datepicker>
+            <mat-datepicker #endPicker></mat-datepicker>
             <mat-icon matPrefix>event</mat-icon>
             <mat-error *ngIf="leaveForm.get('endDate')?.hasError('required')">
               End date is required

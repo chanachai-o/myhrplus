@@ -16,9 +16,9 @@
             <div class="shift-fields">
               <mat-form-field appearance="outline">
                 <mat-label>Original Date *</mat-label>
-                <input matInput [matDatepicker]="originalDatePicker" formControlName="originalDate" required>
+                <input matInput [matDatepicker]="originalDatePicker" [min]="minDate" formControlName="originalDate" required>
                 <mat-datepicker-toggle matSuffix [for]="originalDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #originalDatePicker [min]="minDate"></mat-datepicker>
+                <mat-datepicker #originalDatePicker></mat-datepicker>
                 <mat-icon matPrefix>calendar_today</mat-icon>
                 <mat-error *ngIf="shiftChangeForm.get('originalDate')?.hasError('required')">
                   Original date is required
@@ -45,9 +45,9 @@
             <div class="shift-fields">
               <mat-form-field appearance="outline">
                 <mat-label>New Date *</mat-label>
-                <input matInput [matDatepicker]="newDatePicker" formControlName="newDate" required>
+                <input matInput [matDatepicker]="newDatePicker" [min]="minDate" formControlName="newDate" required>
                 <mat-datepicker-toggle matSuffix [for]="newDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #newDatePicker [min]="minDate"></mat-datepicker>
+                <mat-datepicker #newDatePicker></mat-datepicker>
                 <mat-icon matPrefix>calendar_today</mat-icon>
                 <mat-error *ngIf="shiftChangeForm.get('newDate')?.hasError('required')">
                   New date is required

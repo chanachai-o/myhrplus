@@ -20,6 +20,8 @@ export interface Training {
   courseId: string;
   courseName: string;
   title: string;
+  description?: string;
+  category?: string;
   startDate: string;
   endDate: string;
   startTime?: string;

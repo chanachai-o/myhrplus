@@ -1,0 +1,89 @@
+<div class="stepper-container" [ngClass]="'stepper-' + orientation">
+  <div class="stepper-steps" [ngClass]="'steps-' + orientation">
+    <div
+      *ngFor="let step of steps; let i = index"
+      class="stepper-step"
+      [ngClass]="[
+        'step-' + getStepStatus(i),
+        { 'step-disabled': step.disabled },
+        { 'step-optional': step.optional }
+      ]"
+      (click)="onStepClick(i)">
+      <!-- Step Connector (for horizontal) -->
+      <div
+        *ngIf="orientation === 'horizontal' && i > 0"
+        class="step-connector"
+        [class.connector-completed]="isStepCompleted(i - 1)">
+      </div>
+
+      <!-- Step Content -->
+      <div class="step-content">
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+          <div
+            *ngIf="showStepIcons && step.icon && !isStepCompleted(i)"
+            class="step-icon">
+            <mat-icon>{{ step.icon }}</mat-icon>
+          </div>
+          <div
+            *ngIf="isStepCompleted(i)"
+            class="step-check">
+            <mat-icon>check</mat-icon>
+          </div>
+          <div
+            *ngIf="!showStepIcons || (!step.icon && !isStepCompleted(i))"
+            class="step-number">
+            {{ showStepNumbers ? (i + 1) : '' }}
+          </div>
+        </div>
+
+        <!-- Step Label -->
+        <div class="step-label">
+          <span class="step-title thai-text">{{ step.label }}</span>
+          <span *ngIf="step.description" class="step-description thai-text text-sm">
+            {{ step.description }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Step Connector (for vertical) -->
+      <div
+        *ngIf="orientation === 'vertical' && i < steps.length - 1"
+        class="step-connector-vertical"
+        [class.connector-completed]="isStepCompleted(i)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="stepper-actions" *ngIf="orientation === 'horizontal'">
+    <button
+      mat-stroked-button
+      (click)="onPrevious()"
+      [disabled]="!canGoPrevious()"
+      class="thai-text">
+      <mat-icon>arrow_back</mat-icon>
+      <span class="ml-2">ย้อนกลับ</span>
+    </button>
+    <button
+      *ngIf="!isLastStep()"
+      mat-raised-button
+      color="primary"
+      (click)="onNext()"
+      [disabled]="!canGoNext()"
+      class="thai-text">
+      <span>ถัดไป</span>
+      <mat-icon class="ml-2">arrow_forward</mat-icon>
+    </button>
+    <button
+      *ngIf="isLastStep()"
+      mat-raised-button
+      color="primary"
+      (click)="onComplete()"
+      class="thai-text">
+      <mat-icon>check</mat-icon>
+      <span class="ml-2">เสร็จสิ้น</span>
+    </button>
+  </div>
+</div>
+

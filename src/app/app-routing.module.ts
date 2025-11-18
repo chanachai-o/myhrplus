@@ -58,6 +58,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'ui-kit',
+    loadChildren: () => import('./features/ui-kit/ui-kit.module').then(m => m.UiKitModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'unauthorized',
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },

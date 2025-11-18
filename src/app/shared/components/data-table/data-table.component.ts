@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 export interface TableColumn {
   key: string;
   label: string;
-  type?: 'text' | 'number' | 'date' | 'boolean' | 'action';
+  type?: 'text' | 'number' | 'date' | 'boolean' | 'action' | 'currency';
   format?: (value: any) => string;
 }
 
@@ -55,6 +55,9 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     const value = row[column.key];
     if (column.format) {
       return column.format(value);
+    }
+    if (column.type === 'currency' && typeof value === 'number') {
+      return new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(value);
     }
     return value;
   }

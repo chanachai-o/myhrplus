@@ -262,3 +262,4 @@ Theme settings ถูกบันทึกใน localStorage:
 
 Template พร้อมใช้งาน Dark Mode และ Theme Customization แล้ว! 🚀
 
+

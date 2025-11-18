@@ -1,22 +1,49 @@
 .file-upload-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .file-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
 .file-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.dark .file-item {
+  background: rgba(15, 23, 42, 0.2);
+  border-color: rgba(51, 65, 85, 0.3);
+}
+
+.file-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.dark .file-item:hover {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+.file-item mat-icon {
+  color: #475569;
+  transition: color 0.3s ease;
+}
+
+.dark .file-item mat-icon {
+  color: #94a3b8;
 }
 
 .file-name {
@@ -24,10 +51,39 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Inter', 'Sarabun', sans-serif;
+  color: #1e293b;
+  transition: color 0.3s ease;
+}
+
+.dark .file-name {
+  color: #f1f5f9;
 }
 
 .file-size {
-  color: #666;
+  color: #64748b;
   font-size: 0.875rem;
+  font-family: 'Inter', sans-serif;
+  transition: color 0.3s ease;
 }
 
+.dark .file-size {
+  color: #94a3b8;
+}
+
+.file-item button {
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.dark .file-item button {
+  color: #94a3b8;
+}
+
+.file-item button:hover {
+  color: #ef4444;
+}
+
+.dark .file-item button:hover {
+  color: #f87171;
+}

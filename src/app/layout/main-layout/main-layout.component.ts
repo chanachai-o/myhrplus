@@ -9,14 +9,15 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent implements OnInit {
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+  isHandset$!: Observable<boolean>;
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
+    this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
+      .pipe(
+        map(result => result.matches),
+        shareReplay()
+      );
   }
 }

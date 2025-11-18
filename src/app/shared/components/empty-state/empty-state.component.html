@@ -1,0 +1,24 @@
+<div class="empty-state" [ngClass]="['empty-state-' + size, 'empty-state-' + variant]">
+  <div class="empty-state-content">
+    <div class="empty-state-icon">
+      <mat-icon [class]="'icon-' + size">{{ icon }}</mat-icon>
+    </div>
+    <h3 class="empty-state-title thai-text font-semibold text-slate-800 dark:text-slate-100">
+      {{ title }}
+    </h3>
+    <p class="empty-state-description text-slate-600 dark:text-slate-400 thai-text" *ngIf="description">
+      {{ description }}
+    </p>
+    <button
+      *ngIf="showAction"
+      mat-raised-button
+      color="primary"
+      (click)="onActionClick()"
+      class="empty-state-action glass-button !mt-4">
+      <mat-icon *ngIf="actionIcon">{{ actionIcon }}</mat-icon>
+      <span class="thai-text ml-2">{{ actionText }}</span>
+    </button>
+  </div>
+</div>
+
+

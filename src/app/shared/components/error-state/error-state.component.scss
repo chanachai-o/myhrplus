@@ -1,0 +1,96 @@
+.error-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .error-state {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.error-state-content {
+  max-width: 500px;
+  width: 100%;
+}
+
+.error-state-icon {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-icon {
+  font-size: 64px !important;
+  width: 64px !important;
+  height: 64px !important;
+  color: #ef4444;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.dark .error-icon {
+  color: #f87171;
+}
+
+.error-state-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.error-state-message {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.error-state-code {
+  padding: 0.5rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .error-state-code {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.error-state-details {
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+.error-state-details details {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .error-state-details details {
+  background: rgba(15, 23, 42, 0.2);
+  border-color: rgba(51, 65, 85, 0.3);
+}
+
+.error-state-details summary {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.error-state-details summary:hover {
+  color: rgb(var(--primary-rgb));
+}
+
+.error-state-retry {
+  margin-top: 1rem;
+}
+
+

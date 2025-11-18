@@ -58,7 +58,9 @@ export class PerformanceAppraisalComponent implements OnInit {
       next: (response) => {
         if (response.success && response.data) {
           this.appraisal = response.data;
-          this.appraisalForm.patchValue(this.appraisal);
+          if (this.appraisal) {
+            this.appraisalForm.patchValue(this.appraisal);
+          }
           this.loadGoals(appraisalId);
         }
         this.loading = false;

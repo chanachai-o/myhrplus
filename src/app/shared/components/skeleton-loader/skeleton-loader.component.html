@@ -1,0 +1,54 @@
+<div class="skeleton-loader" [ngClass]="['skeleton-' + type, 'animate-' + animation]">
+  <!-- Text Skeleton -->
+  <ng-container *ngIf="type === 'text'">
+    <div *ngFor="let row of getRowsArray()" class="skeleton-text-line" [style.width]="getRandomWidth()"></div>
+  </ng-container>
+
+  <!-- Card Skeleton -->
+  <ng-container *ngIf="type === 'card'">
+    <div class="skeleton-card">
+      <div class="skeleton-card-header" *ngIf="showTitle">
+        <div class="skeleton-avatar" *ngIf="showAvatar"></div>
+        <div class="skeleton-title"></div>
+      </div>
+      <div class="skeleton-card-content">
+        <div *ngFor="let row of getRowsArray()" class="skeleton-text-line" [style.width]="getRandomWidth()"></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Table Skeleton -->
+  <ng-container *ngIf="type === 'table'">
+    <div class="skeleton-table">
+      <div class="skeleton-table-header">
+        <div *ngFor="let col of getColumnsArray()" class="skeleton-table-cell"></div>
+      </div>
+      <div *ngFor="let row of getRowsArray()" class="skeleton-table-row">
+        <div *ngFor="let col of getColumnsArray()" class="skeleton-table-cell"></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- List Skeleton -->
+  <ng-container *ngIf="type === 'list'">
+    <div *ngFor="let row of getRowsArray()" class="skeleton-list-item">
+      <div class="skeleton-avatar" *ngIf="showAvatar"></div>
+      <div class="skeleton-list-content">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-text-line" [style.width]="getRandomWidth()"></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Avatar Skeleton -->
+  <ng-container *ngIf="type === 'avatar'">
+    <div class="skeleton-avatar"></div>
+  </ng-container>
+
+  <!-- Custom Skeleton -->
+  <ng-container *ngIf="type === 'custom'">
+    <div class="skeleton-custom" [style.width]="width" [style.height]="height"></div>
+  </ng-container>
+</div>
+
+

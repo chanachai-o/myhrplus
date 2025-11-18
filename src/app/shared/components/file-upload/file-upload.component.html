@@ -7,20 +7,26 @@
     (change)="onFileSelected($event)"
     style="display: none">
   
-  <button mat-raised-button color="primary" (click)="triggerFileInput()">
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="triggerFileInput()"
+    class="glass-button !bg-gradient-to-r !from-blue-500 !to-indigo-600 dark:!from-blue-600 dark:!to-indigo-700 !text-white">
     <mat-icon>cloud_upload</mat-icon>
-    Choose File{{ multiple ? 's' : '' }}
+    <span class="thai-text ml-2">เลือกไฟล์{{ multiple ? ' (หลายไฟล์)' : '' }}</span>
   </button>
 
   <div class="file-list" *ngIf="selectedFiles.length > 0">
-    <div class="file-item" *ngFor="let file of selectedFiles; let i = index">
-      <mat-icon>description</mat-icon>
-      <span class="file-name">{{ file.name }}</span>
+    <div class="file-item glass-card-weak" *ngFor="let file of selectedFiles; let i = index">
+      <mat-icon class="!text-slate-600 dark:!text-slate-400">description</mat-icon>
+      <span class="file-name thai-text">{{ file.name }}</span>
       <span class="file-size">({{ getFileSize(file.size) }})</span>
-      <button mat-icon-button (click)="removeFile(i)">
+      <button 
+        mat-icon-button 
+        (click)="removeFile(i)"
+        class="!text-slate-600 dark:!text-slate-400 hover:!text-red-500 dark:hover:!text-red-400">
         <mat-icon>close</mat-icon>
       </button>
     </div>
   </div>
 </div>
-

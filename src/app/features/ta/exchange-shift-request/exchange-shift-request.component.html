@@ -16,9 +16,9 @@
             <div class="shift-fields">
               <mat-form-field appearance="outline">
                 <mat-label>My Date *</mat-label>
-                <input matInput [matDatepicker]="myDatePicker" formControlName="myDate" required>
+                <input matInput [matDatepicker]="myDatePicker" [min]="minDate" formControlName="myDate" required>
                 <mat-datepicker-toggle matSuffix [for]="myDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #myDatePicker [min]="minDate"></mat-datepicker>
+                <mat-datepicker #myDatePicker></mat-datepicker>
                 <mat-icon matPrefix>calendar_today</mat-icon>
                 <mat-error *ngIf="exchangeShiftForm.get('myDate')?.hasError('required')">
                   Date is required
@@ -55,9 +55,9 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>Exchange Date *</mat-label>
-                <input matInput [matDatepicker]="exchangeDatePicker" formControlName="exchangeDate" required>
+                <input matInput [matDatepicker]="exchangeDatePicker" [min]="minDate" formControlName="exchangeDate" required>
                 <mat-datepicker-toggle matSuffix [for]="exchangeDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #exchangeDatePicker [min]="minDate"></mat-datepicker>
+                <mat-datepicker #exchangeDatePicker></mat-datepicker>
                 <mat-icon matPrefix>calendar_today</mat-icon>
                 <mat-error *ngIf="exchangeShiftForm.get('exchangeDate')?.hasError('required')">
                   Exchange date is required

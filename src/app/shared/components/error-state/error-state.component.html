@@ -1,0 +1,33 @@
+<div class="error-state glass-card-weak p-6">
+  <div class="error-state-content">
+    <div class="error-state-icon">
+      <mat-icon class="error-icon">{{ errorIcon }}</mat-icon>
+    </div>
+    <h3 class="error-state-title thai-text font-semibold text-red-600 dark:text-red-400 mb-2">
+      {{ title || defaultTitle }}
+    </h3>
+    <p class="error-state-message text-slate-600 dark:text-slate-400 thai-text mb-4">
+      {{ message || defaultMessage }}
+    </p>
+    <div class="error-state-code text-xs text-slate-500 dark:text-slate-500 font-mono mb-4" *ngIf="errorCode">
+      Error Code: {{ errorCode }}
+    </div>
+    <div class="error-state-details text-sm text-slate-600 dark:text-slate-400 mb-4" *ngIf="showDetails && details">
+      <details class="cursor-pointer">
+        <summary class="thai-text font-medium">รายละเอียดเพิ่มเติม</summary>
+        <p class="mt-2 thai-text">{{ details }}</p>
+      </details>
+    </div>
+    <button
+      *ngIf="showRetry"
+      mat-raised-button
+      color="primary"
+      (click)="onRetry()"
+      class="error-state-retry glass-button">
+      <mat-icon>refresh</mat-icon>
+      <span class="thai-text ml-2">{{ retryText }}</span>
+    </button>
+  </div>
+</div>
+
+

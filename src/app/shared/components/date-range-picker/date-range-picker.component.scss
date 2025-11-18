@@ -1,0 +1,54 @@
+.date-range-picker {
+  transition: all 0.3s ease;
+}
+
+.picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.preset-btn {
+  transition: color 0.3s ease;
+}
+
+.preset-btn:hover {
+  color: rgb(var(--primary-rgb)) !important;
+}
+
+.date-range-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.date-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.date-field {
+  width: 100%;
+}
+
+.picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .picker-actions {
+  border-top-color: rgba(51, 65, 85, 0.3);
+}
+
+@media (max-width: 768px) {
+  .date-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+

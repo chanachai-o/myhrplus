@@ -1,0 +1,12 @@
+<span
+  class="status-badge"
+  [ngClass]="[
+    'status-' + statusColor,
+    'badge-' + size,
+    'badge-' + variant
+  ]">
+  <mat-icon *ngIf="showIcon" class="badge-icon">{{ statusIcon }}</mat-icon>
+  <span class="badge-label thai-text">{{ displayLabel }}</span>
+</span>
+
+

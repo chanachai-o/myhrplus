@@ -7,17 +7,26 @@ export class StorageService {
 
   constructor() { }
 
-  setItem(key: string, value: string): void {
+  setItem(key: string, value: any): void {
     try {
-      localStorage.setItem(key, value);
+      const serialized = typeof value === 'string' ? value : JSON.stringify(value);
+      localStorage.setItem(key, serialized);
     } catch (error) {
       console.error('Error saving to localStorage:', error);
     }
   }
 
-  getItem(key: string): string | null {
+  getItem<T = any>(key: string): T | null {
     try {
-      return localStorage.getItem(key);
+      const item = localStorage.getItem(key);
+      if (item === null) return null;
+      
+      // Try to parse as JSON, if fails return as string
+      try {
+        return JSON.parse(item) as T;
+      } catch {
+        return item as T;
+      }
     } catch (error) {
       console.error('Error reading from localStorage:', error);
       return null;

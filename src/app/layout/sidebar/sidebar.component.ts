@@ -47,7 +47,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   hasChildren(item: MenuItem): boolean {
-    return item.children && item.children.length > 0;
+    return !!(item.children && item.children.length > 0);
   }
 
   navigate(route: string): void {

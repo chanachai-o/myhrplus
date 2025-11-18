@@ -17,7 +17,7 @@ export class PayslipViewerComponent implements OnInit {
   constructor(
     private empviewService: EmpviewService,
     private route: ActivatedRoute,
-    private router: Router
+    public router: Router
   ) {}
 
   ngOnInit(): void {

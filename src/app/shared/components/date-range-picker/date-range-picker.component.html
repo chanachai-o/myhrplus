@@ -1,0 +1,69 @@
+<div class="date-range-picker glass-card-weak p-4">
+  <div class="picker-header">
+    <h3 class="thai-text font-semibold text-slate-800 dark:text-slate-100 mb-4">
+      เลือกช่วงวันที่
+    </h3>
+    <button
+      *ngIf="showPresets"
+      mat-icon-button
+      [matMenuTriggerFor]="presetMenu"
+      class="preset-btn !text-slate-600 dark:!text-slate-400"
+      matTooltip="ตัวเลือกเร็ว">
+      <mat-icon>event</mat-icon>
+    </button>
+  </div>
+
+  <mat-menu #presetMenu="matMenu" class="glass-card !bg-white/30 dark:!bg-slate-900/30 !backdrop-blur-lg">
+    <button
+      *ngFor="let preset of getPresets()"
+      mat-menu-item
+      (click)="onPresetSelect(preset)"
+      class="thai-text">
+      {{ preset.label }}
+    </button>
+  </mat-menu>
+
+  <form [formGroup]="dateRangeForm" class="date-range-form">
+    <div class="date-inputs">
+      <mat-form-field appearance="outline" class="date-field">
+        <mat-label class="thai-text">วันที่เริ่มต้น</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          formControlName="startDate"
+          [min]="minDate"
+          [max]="maxDate || endDate"
+          class="glass-input dark:!bg-slate-800/20">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">event</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="date-field">
+        <mat-label class="thai-text">วันที่สิ้นสุด</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endPicker"
+          formControlName="endDate"
+          [min]="startDate || minDate"
+          [max]="maxDate"
+          class="glass-input dark:!bg-slate-800/20">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        <mat-icon matPrefix class="!text-slate-500 dark:!text-slate-400">event</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="picker-actions">
+      <button
+        mat-stroked-button
+        (click)="clearDates()"
+        class="thai-text">
+        <mat-icon>clear</mat-icon>
+        <span class="ml-2">ล้าง</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+

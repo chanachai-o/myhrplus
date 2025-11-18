@@ -1,0 +1,30 @@
+<div class="avatar-container" [ngClass]="['avatar-' + size, 'avatar-' + shape]">
+  <div class="avatar-wrapper" [class.avatar-has-status]="status && showStatus">
+    <img
+      *ngIf="src && !hasError"
+      [src]="src"
+      [alt]="name"
+      (error)="onImageError()"
+      class="avatar-image">
+    <div
+      *ngIf="!src || hasError"
+      class="avatar-fallback"
+      [style.background]="'linear-gradient(135deg, rgb(var(--primary-rgb)), rgba(var(--primary-rgb), 0.7))'">
+      <span class="avatar-initials">{{ initials }}</span>
+    </div>
+    <div
+      *ngIf="status && showStatus"
+      class="avatar-status"
+      [class]="'status-' + status"
+      [style.background-color]="statusColor">
+    </div>
+  </div>
+  <div
+    *ngIf="badge && showBadge"
+    class="avatar-badge"
+    [class.badge-number]="isBadgeNumber()"
+    [class.badge-dot]="isBadgeDot()">
+    <span *ngIf="isBadgeNumber() && isBadgeGreaterThanZero()">{{ getBadgeValue() }}</span>
+  </div>
+</div>
+

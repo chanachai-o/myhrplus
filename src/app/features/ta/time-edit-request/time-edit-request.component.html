@@ -13,9 +13,9 @@
         <div class="form-grid">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Date *</mat-label>
-            <input matInput [matDatepicker]="datePicker" formControlName="date" required>
+            <input matInput [matDatepicker]="datePicker" [min]="minDate" [max]="maxDate" formControlName="date" required>
             <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-            <mat-datepicker #datePicker [min]="minDate" [max]="maxDate"></mat-datepicker>
+            <mat-datepicker #datePicker></mat-datepicker>
             <mat-icon matPrefix>calendar_today</mat-icon>
             <mat-error *ngIf="timeEditForm.get('date')?.hasError('required')">
               Date is required

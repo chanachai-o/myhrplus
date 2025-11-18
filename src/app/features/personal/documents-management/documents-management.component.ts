@@ -124,7 +124,7 @@ export class DocumentsManagementComponent implements OnInit {
     this.personalService.downloadDocument(document.documentId).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = window.document.createElement('a');
         link.href = url;
         link.download = document.fileName;
         link.click();

@@ -1,0 +1,63 @@
+<div class="timeline-container" [ngClass]="'timeline-' + orientation">
+  <div class="timeline-items">
+    <div
+      *ngFor="let item of items; let i = index"
+      class="timeline-item"
+      [ngClass]="{
+        'item-alternate': alternate && i % 2 === 1,
+        'item-expanded': isExpanded(i)
+      }">
+      <!-- Timeline Line -->
+      <div class="timeline-line" *ngIf="i < items.length - 1"></div>
+
+      <!-- Timeline Dot -->
+      <div
+        class="timeline-dot"
+        [style.background-color]="item.color || getStatusColor(item.status)"
+        [style.border-color]="item.color || getStatusColor(item.status)">
+        <mat-icon
+          *ngIf="showIcons && (item.icon || item.status)"
+          class="timeline-icon">
+          {{ item.icon || getDefaultIcon(item.status) }}
+        </mat-icon>
+      </div>
+
+      <!-- Timeline Content -->
+      <div class="timeline-content glass-card-weak">
+        <div class="timeline-header">
+          <div class="timeline-title-section">
+            <h4 class="timeline-title thai-text font-semibold text-slate-800 dark:text-slate-100">
+              {{ item.title }}
+            </h4>
+            <span
+              *ngIf="showDates && item.date"
+              class="timeline-date text-sm text-slate-500 dark:text-slate-400">
+              {{ formatDate(item.date) }}
+            </span>
+          </div>
+          <button
+            *ngIf="item.expandable"
+            mat-icon-button
+            (click)="toggleExpand(i)"
+            class="expand-btn !text-slate-600 dark:!text-slate-400">
+            <mat-icon>{{ isExpanded(i) ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+        </div>
+
+        <p
+          *ngIf="item.description"
+          class="timeline-description text-slate-600 dark:text-slate-400 thai-text">
+          {{ item.description }}
+        </p>
+
+        <div
+          *ngIf="item.expandable && isExpanded(i) && item.details"
+          class="timeline-details glass-card-weak mt-3 p-4">
+          <pre class="text-xs font-mono text-slate-600 dark:text-slate-400">{{ item.details | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
