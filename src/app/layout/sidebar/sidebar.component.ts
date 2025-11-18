@@ -4,6 +4,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MenuService, MenuItem } from '../../core/services/menu.service';
 import { AuthService } from '../../core/services/auth.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { ListViewComponent } from '@syncfusion/ej2-angular-lists';
 
 interface NestedMenuItem {
@@ -43,13 +44,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
   };
   activeRoute: string = '';
   private destroy$ = new Subject<void>();
+  isDarkMode: boolean = false;
 
   currentUser: any = null;
 
   constructor(
     private router: Router,
     private menuService: MenuService,
-    private authService: AuthService
+    private authService: AuthService,
+    public themeService: ThemeService
   ) {
     // Subscribe to current user
     this.authService.currentUser$.subscribe(user => {
@@ -64,6 +67,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Get current user
     this.currentUser = this.authService.getCurrentUser();
+    
+    // Subscribe to theme changes
+    this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$)).subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
+    this.isDarkMode = this.themeService.isDarkMode();
     
     // Load menu from service
     this.loadMenu();
@@ -94,44 +103,140 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private groupMenuByModule(): void {
-    // Group menu items by module
+    // Initialize predefined modules
+    const predefinedModules: MainModule[] = [
+      {
+        id: 'empview',
+        name: 'Home',
+        iconCss: 'e-icons e-home',
+        menuItems: []
+      },
+      {
+        id: 'workflow',
+        name: 'Workflow',
+        iconCss: 'e-icons e-flow',
+        menuItems: []
+      },
+      {
+        id: 'company',
+        name: 'Company Management',
+        iconCss: 'e-icons e-briefcase',
+        menuItems: []
+      },
+      {
+        id: 'personal',
+        name: 'Personal Management',
+        iconCss: 'e-icons e-user',
+        menuItems: []
+      },
+      {
+        id: 'ta',
+        name: 'Time Management',
+        iconCss: 'e-icons e-clock',
+        menuItems: []
+      },
+      {
+        id: 'payroll',
+        name: 'Payroll Management',
+        iconCss: 'e-icons e-money',
+        menuItems: []
+      },
+      {
+        id: 'welfare',
+        name: 'Welfare Management',
+        iconCss: 'e-icons e-favorite',
+        menuItems: []
+      },
+      {
+        id: 'training',
+        name: 'Training Management',
+        iconCss: 'e-icons e-book',
+        menuItems: []
+      },
+      {
+        id: 'recruit',
+        name: 'Recruit Management',
+        iconCss: 'e-icons e-people',
+        menuItems: []
+      },
+      {
+        id: 'appraisal',
+        name: 'Appraisal Management',
+        iconCss: 'e-icons e-chart',
+        menuItems: []
+      },
+      {
+        id: 'setting',
+        name: 'Setting Management',
+        iconCss: 'e-icons e-settings',
+        menuItems: []
+      }
+    ];
+
+    // Create module map
     const moduleMap = new Map<string, MainModule>();
-
-    this.menuItems.forEach(item => {
-      const moduleCode = this.getModuleCodeFromRoute(item.route || item.path || '');
-      const moduleId = moduleCode || 'other';
-
-      if (!moduleMap.has(moduleId)) {
-        moduleMap.set(moduleId, {
-          id: moduleId,
-          name: this.getModuleName(moduleCode),
-          iconCss: this.getModuleIcon(moduleCode),
-          menuItems: []
-        });
-      }
-
-      const module = moduleMap.get(moduleId)!;
-      const menuItem: NestedMenuItem = {
-        text: item.edesc || item.name || '',
-        id: item.route || `menu-${moduleId}-${module.menuItems.length}`,
-        iconCss: this.getIconClass(item.icon || 'folder'),
-        route: item.route
-      };
-
-      // Add children if exists
-      if (this.hasChildren(item) && item.children) {
-        menuItem.child = item.children.map((child, childIndex) => ({
-          text: child.edesc || child.name || '',
-          id: child.route || `child-${moduleId}-${module.menuItems.length}-${childIndex}`,
-          iconCss: this.getIconClass(child.icon || 'folder'),
-          route: child.route
-        }));
-      }
-
-      module.menuItems.push(menuItem);
+    predefinedModules.forEach(module => {
+      moduleMap.set(module.id, { ...module, menuItems: [] });
     });
 
-    this.mainModules = Array.from(moduleMap.values());
+    // Group menu items by module
+    this.menuItems.forEach(item => {
+      const moduleCode = this.getModuleCodeFromRoute(item.route || item.path || '');
+      const moduleId = this.mapRouteToModuleId(moduleCode);
+
+      if (moduleMap.has(moduleId)) {
+        const module = moduleMap.get(moduleId)!;
+        const menuItem: NestedMenuItem = {
+          text: item.edesc || item.name || '',
+          id: item.route || `menu-${moduleId}-${module.menuItems.length}`,
+          iconCss: this.getIconClass(item.icon || 'folder'),
+          route: item.route
+        };
+
+        // Add children if exists
+        if (this.hasChildren(item) && item.children) {
+          menuItem.child = item.children.map((child, childIndex) => ({
+            text: child.edesc || child.name || '',
+            id: child.route || `child-${moduleId}-${module.menuItems.length}-${childIndex}`,
+            iconCss: this.getIconClass(child.icon || 'folder'),
+            route: child.route
+          }));
+        }
+
+        module.menuItems.push(menuItem);
+      }
+    });
+
+    // Filter out modules with no menu items (optional - or keep all modules)
+    this.mainModules = Array.from(moduleMap.values()).filter(m => m.menuItems.length > 0 || 
+      ['empview', 'workflow', 'company', 'personal', 'ta', 'payroll', 'welfare', 'training', 'recruit', 'appraisal', 'setting'].includes(m.id));
+    
+    // If no modules have items, show all predefined modules
+    if (this.mainModules.length === 0) {
+      this.mainModules = predefinedModules;
+    }
+  }
+
+  private mapRouteToModuleId(moduleCode: string): string {
+    // Map route module codes to predefined module IDs
+    const routeToModuleMap: { [key: string]: string } = {
+      'dashboard': 'empview',
+      'home': 'empview',
+      'empview': 'empview',
+      'workflow': 'workflow',
+      'company': 'company',
+      'personal': 'personal',
+      'ta': 'ta',
+      'time': 'ta',
+      'payroll': 'payroll',
+      'welfare': 'welfare',
+      'training': 'training',
+      'recruit': 'recruit',
+      'appraisal': 'appraisal',
+      'setting': 'setting',
+      'settings': 'setting'
+    };
+    return routeToModuleMap[moduleCode.toLowerCase()] || 'empview';
   }
 
   private getModuleCodeFromRoute(route: string): string {
@@ -143,37 +248,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     return match ? match[1] : 'other';
   }
 
-  private getModuleName(moduleCode: string | null): string {
-    const moduleNames: { [key: string]: string } = {
-      'dashboard': 'Overview',
-      'home': 'Overview',
-      'ta': 'Time Attendance',
-      'personal': 'Personal',
-      'payroll': 'Payroll',
-      'training': 'Training',
-      'welfare': 'Welfare',
-      'recruit': 'Recruitment',
-      'empview': 'Employee View',
-      'other': 'Other'
-    };
-    return moduleNames[moduleCode || 'other'] || moduleCode || 'Other';
-  }
-
-  private getModuleIcon(moduleCode: string | null): string {
-    const moduleIcons: { [key: string]: string } = {
-      'dashboard': 'e-icons e-home',
-      'home': 'e-icons e-home',
-      'ta': 'e-icons e-clock',
-      'personal': 'e-icons e-user',
-      'payroll': 'e-icons e-briefcase',
-      'training': 'e-icons e-book',
-      'welfare': 'e-icons e-favorite',
-      'recruit': 'e-icons e-people',
-      'empview': 'e-icons e-folder',
-      'other': 'e-icons e-folder'
-    };
-    return moduleIcons[moduleCode || 'other'] || 'e-icons e-folder';
-  }
 
   selectModule(moduleId: string): void {
     this.selectedModule = moduleId;
@@ -184,10 +258,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (!this.activeRoute) return;
     
     const moduleCode = this.getModuleCodeFromRoute(this.activeRoute);
-    if (moduleCode && moduleCode !== this.selectedModule) {
-      const module = this.mainModules.find(m => m.id === moduleCode);
+    const moduleId = this.mapRouteToModuleId(moduleCode);
+    if (moduleId && moduleId !== this.selectedModule) {
+      const module = this.mainModules.find(m => m.id === moduleId);
       if (module) {
-        this.selectModule(moduleCode);
+        this.selectModule(moduleId);
       }
     }
   }
