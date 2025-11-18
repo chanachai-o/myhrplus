@@ -1,80 +1,173 @@
 <div class="home-container">
-  <!-- Welcome Section -->
-  <div class="welcome-section">
-    <div class="welcome-content">
-      <h1 class="welcome-title thai-text">
-        {{ getGreeting() }}, {{ currentUser?.fullname || currentUser?.name || 'ผู้ใช้งาน' }}!
-      </h1>
-      <p class="welcome-subtitle thai-text">
-        ยินดีต้อนรับสู่ระบบ HR Management
-      </p>
-      <div class="user-info" *ngIf="currentUser">
-        <div class="info-item">
-          <mat-icon>badge</mat-icon>
-          <span class="thai-text">รหัสพนักงาน: {{ currentUser.employeeid || currentUser.uid }}</span>
-        </div>
-        <div class="info-item" *ngIf="currentUser['emp_position']">
-          <mat-icon>work</mat-icon>
-          <span class="thai-text">ตำแหน่ง: {{ currentUser['emp_position'] }}</span>
-        </div>
-        <div class="info-item" *ngIf="currentUser['workarea']">
-          <mat-icon>business</mat-icon>
-          <span class="thai-text">แผนก: {{ currentUser['workarea'] }}</span>
+  <!-- Header -->
+  <app-home-header></app-home-header>
+
+  <!-- Main Content -->
+  <div class="home-content">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h1 class="welcome-title thai-text">
+          {{ getGreeting() }}, {{ currentUser?.fullname || currentUser?.name || 'ผู้ใช้งาน' }}!
+        </h1>
+        <p class="welcome-subtitle thai-text">
+          ยินดีต้อนรับสู่ระบบ HR Management
+        </p>
+        <div class="user-info" *ngIf="currentUser">
+          <div class="info-item">
+            <mat-icon>badge</mat-icon>
+            <span class="thai-text">รหัสพนักงาน: {{ currentUser.employeeid || currentUser.uid }}</span>
+          </div>
+          <div class="info-item" *ngIf="currentUser['emp_position']">
+            <mat-icon>work</mat-icon>
+            <span class="thai-text">ตำแหน่ง: {{ currentUser['emp_position'] }}</span>
+          </div>
+          <div class="info-item" *ngIf="currentUser['workarea']">
+            <mat-icon>business</mat-icon>
+            <span class="thai-text">แผนก: {{ currentUser['workarea'] }}</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="welcome-decoration">
-      <div class="decoration-circle circle-1"></div>
-      <div class="decoration-circle circle-2"></div>
-      <div class="decoration-circle circle-3"></div>
-    </div>
-  </div>
 
-  <!-- Loading State -->
-  <div *ngIf="loading" class="loading-container">
-    <mat-spinner></mat-spinner>
-    <p class="thai-text">กำลังโหลดเมนู...</p>
-  </div>
-
-  <!-- Menu Categories -->
-  <div *ngIf="!loading && menuCategories.length > 0" class="menu-categories-section">
-    <h2 class="section-title thai-text">เลือกเมนูที่ต้องการใช้งาน</h2>
-
-    <div class="categories-grid">
-      <div
-        *ngFor="let category of menuCategories"
-        class="category-card"
-        [style.background]="getGradientForCategory(category.code)"
-        [@fadeInUp]>
-        <div class="category-card-content" (click)="navigateToCategory(category)" [attr.aria-label]="category.thaiTitle">
-          <div class="category-header">
-            <div class="category-icon">
-              <mat-icon>{{ category.icon }}</mat-icon>
-            </div>
-            <div class="category-title-section">
-              <h3 class="category-title thai-text">{{ category.thaiTitle }}</h3>
-              <p class="category-subtitle">{{ category.englishTitle }}</p>
+    <!-- Dashboard Stats -->
+    <div class="dashboard-stats-section" *ngIf="!dashboardLoading">
+      <div class="stats-grid">
+        <!-- Leave Balance Card -->
+        <div class="stat-card leave-card" [@fadeInUp]>
+          <div class="stat-card-header">
+            <mat-icon class="stat-icon">event</mat-icon>
+            <h3 class="stat-title thai-text">ยอดการลาคงเหลือ</h3>
+          </div>
+          <div class="stat-card-content">
+            <div class="stat-value">{{ stats.totalLeaveBalance }}</div>
+            <div class="stat-unit thai-text">วัน</div>
+          </div>
+          <div class="stat-card-footer" *ngIf="leaveBalances.length > 0">
+            <div class="leave-details">
+              <div *ngFor="let balance of leaveBalances.slice(0, 3)" class="leave-item">
+                <span class="leave-type thai-text">{{ balance.leaveTypeName }}</span>
+                <span class="leave-balance">{{ balance.balance }} วัน</span>
+              </div>
             </div>
           </div>
-
-          <div class="category-footer">
-            <div class="category-description thai-text">
-              คลิกเพื่อเข้าสู่ระบบ EMPVIEW
-            </div>
-            <div class="category-arrow">
-              <mat-icon>arrow_forward</mat-icon>
-            </div>
-          </div>
+          <button mat-button class="view-more-btn" (click)="router.navigate(['/ta/leave'])">
+            <span class="thai-text">ดูรายละเอียด</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
         </div>
-        <div class="category-card-overlay"></div>
+
+        <!-- Payslip Card -->
+        <div class="stat-card payslip-card" [@fadeInUp]>
+          <div class="stat-card-header">
+            <mat-icon class="stat-icon">receipt</mat-icon>
+            <h3 class="stat-title thai-text">สลิปเงินเดือน</h3>
+          </div>
+          <div class="stat-card-content">
+            <div class="stat-value">{{ stats.recentPayslipsCount }}</div>
+            <div class="stat-unit thai-text">รายการล่าสุด</div>
+          </div>
+          <div class="stat-card-footer" *ngIf="recentPayslips.length > 0">
+            <div class="payslip-list">
+              <div *ngFor="let payslip of recentPayslips" class="payslip-item">
+                <div class="payslip-period">
+                  <span class="thai-text">{{ payslip.periodMonth }}/{{ payslip.periodYear }}</span>
+                </div>
+                <div class="payslip-amount">
+                  <span class="amount">{{ payslip.netSalary | number:'1.0-0' }}</span>
+                  <span class="currency">฿</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button mat-button class="view-more-btn" (click)="router.navigate(['/dashboard/payslip'])">
+            <span class="thai-text">ดูทั้งหมด</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <!-- Time Attendance Card -->
+        <div class="stat-card attendance-card" [@fadeInUp]>
+          <div class="stat-card-header">
+            <mat-icon class="stat-icon">access_time</mat-icon>
+            <h3 class="stat-title thai-text">การลงเวลา</h3>
+          </div>
+          <div class="stat-card-content">
+            <div class="stat-value">{{ stats.workingHours }}</div>
+            <div class="stat-unit thai-text">ชั่วโมง (วันนี้)</div>
+          </div>
+          <div class="stat-card-footer" *ngIf="timeAttendance.length > 0">
+            <div class="attendance-status">
+              <div class="status-badge" [ngClass]="getStatusClass(stats.todayStatus)">
+                <span class="thai-text">{{ getStatusText(stats.todayStatus) }}</span>
+              </div>
+            </div>
+            <div class="attendance-list">
+              <div *ngFor="let record of timeAttendance.slice(0, 5)" class="attendance-item">
+                <span class="attendance-date">{{ formatDate(record.date) }}</span>
+                <span class="attendance-time" *ngIf="record.checkIn">
+                  {{ record.checkIn }} - {{ record.checkOut || '-' }}
+                </span>
+                <span class="attendance-status-badge" [ngClass]="getStatusClass(record.status)">
+                  {{ getStatusText(record.status) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <button mat-button class="view-more-btn" (click)="router.navigate(['/ta'])">
+            <span class="thai-text">ดูรายละเอียด</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Empty State -->
-  <div *ngIf="!loading && menuCategories.length === 0" class="empty-state">
-    <mat-icon class="empty-icon">folder_open</mat-icon>
-    <h3 class="thai-text">ไม่มีเมนูที่สามารถเข้าถึงได้</h3>
-    <p class="thai-text">กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง</p>
+    <!-- Loading State -->
+    <div *ngIf="loading || dashboardLoading" class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p class="thai-text">กำลังโหลดข้อมูล...</p>
+    </div>
+
+    <!-- Menu Categories -->
+    <div *ngIf="!loading && menuCategories.length > 0" class="menu-categories-section">
+      <h2 class="section-title thai-text">เลือกเมนูที่ต้องการใช้งาน</h2>
+
+      <div class="categories-grid">
+        <div
+          *ngFor="let category of menuCategories"
+          class="category-card"
+          [style.background]="getGradientForCategory(category.code)"
+          [@fadeInUp]>
+          <div class="category-card-content" (click)="navigateToCategory(category)" [attr.aria-label]="category.thaiTitle">
+            <div class="category-header">
+              <div class="category-icon">
+                <mat-icon>{{ category.icon }}</mat-icon>
+              </div>
+              <div class="category-title-section">
+                <h3 class="category-title thai-text">{{ category.thaiTitle }}</h3>
+                <p class="category-subtitle">{{ category.englishTitle }}</p>
+              </div>
+            </div>
+
+            <div class="category-footer">
+              <div class="category-description thai-text">
+                คลิกเพื่อเข้าสู่ระบบ EMPVIEW
+              </div>
+              <div class="category-arrow">
+                <mat-icon>arrow_forward</mat-icon>
+              </div>
+            </div>
+          </div>
+          <div class="category-card-overlay"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && menuCategories.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">folder_open</mat-icon>
+      <h3 class="thai-text">ไม่มีเมนูที่สามารถเข้าถึงได้</h3>
+      <p class="thai-text">กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง</p>
+    </div>
   </div>
 </div>

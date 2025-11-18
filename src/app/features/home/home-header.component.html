@@ -1,0 +1,142 @@
+<nav class="home-header-nav">
+  <div class="header-container">
+    <!-- Left Section -->
+    <div class="header-left">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <mat-icon>business_center</mat-icon>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title thai-text">ระบบบริหารทรัพยากรบุคคล</span>
+          <span class="logo-subtitle">HR System</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="header-right">
+      <!-- Language Selector -->
+      <div class="nav-item">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="languageMenu"
+          class="nav-link"
+          type="button"
+          matTooltip="เปลี่ยนภาษา">
+          <span class="flag-emoji">{{ getFlagEmoji(selectedLanguageIcon) }}</span>
+        </button>
+        <mat-menu #languageMenu="matMenu" class="language-menu">
+          <button
+            *ngFor="let lang of languages"
+            mat-menu-item
+            (click)="changeLanguage(lang)"
+            [class.active]="selectedLanguage === lang.code">
+            <span class="flag-emoji">{{ getFlagEmoji(lang.icon) }}</span>
+            <span>{{ lang.language }}<span *ngIf="lang.type"> ({{ lang.type }})</span></span>
+            <mat-icon *ngIf="selectedLanguage === lang.code" class="check-icon">check</mat-icon>
+          </button>
+        </mat-menu>
+      </div>
+
+      <!-- Workflow Notifications -->
+      <div class="nav-item">
+        <button
+          mat-icon-button
+          class="nav-link"
+          (click)="navigateToWorkflow()"
+          matTooltip="การแจ้งเตือน">
+          <div class="notification">
+            <mat-icon>mail</mat-icon>
+            <span class="badge badge-danger" *ngIf="countNewNote > 0">
+              {{ countNewNote > 99 ? '99+' : countNewNote }}
+            </span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Private Messages -->
+      <div class="nav-item">
+        <button
+          mat-icon-button
+          class="nav-link"
+          (click)="navigateToPrivateMessage()"
+          matTooltip="ข้อความส่วนตัว">
+          <div class="notification">
+            <mat-icon>chat</mat-icon>
+            <span class="badge badge-danger" *ngIf="countNewMessage > 0">
+              {{ countNewMessage > 99 ? '99+' : countNewMessage }}
+            </span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Chat AI -->
+      <div class="nav-item">
+        <button
+          mat-icon-button
+          class="nav-link"
+          (click)="navigateToChatAI()"
+          matTooltip="Chat AI">
+          <mat-icon>smart_toy</mat-icon>
+        </button>
+      </div>
+
+      <!-- User Profile -->
+      <div class="nav-item" *ngIf="empProfile || currentUser">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="userMenu"
+          class="nav-link user-profile"
+          type="button">
+          <img
+            [src]="getProfilePictureUrl()"
+            [alt]="getFullname()"
+            class="profile-picture">
+        </button>
+        <mat-menu #userMenu="matMenu" class="user-menu">
+          <div class="user-header">
+            <div class="user-avatar">
+              <img
+                [src]="getProfilePictureUrl()"
+                [alt]="getFullname()"
+                class="avatar-large">
+            </div>
+            <div class="user-info">
+              <h4 class="user-name thai-text">{{ getFullname() }}</h4>
+              <p class="user-email">{{ getEmail() }}</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="navigateToProfile()">
+            <mat-icon>person</mat-icon>
+            <span class="thai-text">โปรไฟล์</span>
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="checkRole"
+            (click)="navigateToHRManagement()">
+            <mat-icon>settings</mat-icon>
+            <span class="thai-text">HR Management</span>
+          </button>
+          <button mat-menu-item (click)="navigateToSettings()">
+            <mat-icon>edit</mat-icon>
+            <span class="thai-text">การตั้งค่า</span>
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="wfMenu"
+            (click)="navigateToWorkflowAdmin()">
+            <mat-icon>folder_managed</mat-icon>
+            <span class="thai-text">จัดการเอกสาร</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span class="thai-text">ออกจากระบบ</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</nav>
+
