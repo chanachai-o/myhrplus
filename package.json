@@ -14,6 +14,18 @@
     "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
     "e2e": "ng e2e"
   },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.0",

@@ -1,0 +1,255 @@
+<div class="min-h-screen p-6 md:p-8 lg:p-12">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold mb-2 gradient-text">Component Demo Showcase</h1>
+      <p class="text-lg text-slate-600 dark:text-slate-400">
+        ตัวอย่างการใช้งาน Glass Morphism Components จาก Intelligent Video Analytics Platform
+      </p>
+    </div>
+
+    <!-- Glass Cards Section -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-slate-800 dark:text-slate-200">Glass Cards</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Default Glass Card -->
+        <app-glass-card variant="default" padding="p-6">
+          <h3 class="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-200">Default Glass Card</h3>
+          <p class="text-slate-600 dark:text-slate-400">
+            Glass card with default styling. Perfect for general content display.
+          </p>
+        </app-glass-card>
+
+        <!-- Strong Glass Card -->
+        <app-glass-card variant="strong" padding="p-6">
+          <h3 class="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-200">Strong Glass Card</h3>
+          <p class="text-slate-600 dark:text-slate-400">
+            Glass card with stronger blur effect. More opaque and prominent.
+          </p>
+        </app-glass-card>
+
+        <!-- Weak Glass Card -->
+        <app-glass-card variant="weak" padding="p-6">
+          <h3 class="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-200">Weak Glass Card</h3>
+          <p class="text-slate-600 dark:text-slate-400">
+            Glass card with subtle blur effect. More transparent and lightweight.
+          </p>
+        </app-glass-card>
+      </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-slate-800 dark:text-slate-200">Glass Buttons</h2>
+      <app-glass-card padding="p-6">
+        <div class="space-y-6">
+          <!-- Button Variants -->
+          <div>
+            <h3 class="text-lg font-medium mb-4 text-slate-700 dark:text-slate-300">Variants</h3>
+            <div class="flex flex-wrap gap-4">
+              <app-glass-button variant="primary" (clicked)="onButtonClick('primary')" [loading]="buttonLoading">
+                Primary Button
+              </app-glass-button>
+              <app-glass-button variant="secondary" (clicked)="onButtonClick('secondary')">
+                Secondary Button
+              </app-glass-button>
+              <app-glass-button variant="danger" (clicked)="onButtonClick('danger')">
+                Danger Button
+              </app-glass-button>
+            </div>
+          </div>
+
+          <!-- Button Sizes -->
+          <div>
+            <h3 class="text-lg font-medium mb-4 text-slate-700 dark:text-slate-300">Sizes</h3>
+            <div class="flex flex-wrap items-center gap-4">
+              <app-glass-button variant="primary" size="sm">
+                Small Button
+              </app-glass-button>
+              <app-glass-button variant="primary" size="md">
+                Medium Button
+              </app-glass-button>
+              <app-glass-button variant="primary" size="lg">
+                Large Button
+              </app-glass-button>
+            </div>
+          </div>
+
+          <!-- Button States -->
+          <div>
+            <h3 class="text-lg font-medium mb-4 text-slate-700 dark:text-slate-300">States</h3>
+            <div class="flex flex-wrap gap-4">
+              <app-glass-button variant="primary">
+                Normal Button
+              </app-glass-button>
+              <app-glass-button variant="primary" [disabled]="true">
+                Disabled Button
+              </app-glass-button>
+              <app-glass-button variant="primary" [loading]="true">
+                Loading Button
+              </app-glass-button>
+            </div>
+          </div>
+
+          <!-- Full Width Button -->
+          <div>
+            <h3 class="text-lg font-medium mb-4 text-slate-700 dark:text-slate-300">Full Width</h3>
+            <app-glass-button variant="primary" [fullWidth]="true">
+              Full Width Button
+            </app-glass-button>
+          </div>
+        </div>
+      </app-glass-card>
+    </section>
+
+    <!-- Form Inputs Section -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-slate-800 dark:text-slate-200">Glass Inputs</h2>
+      <app-glass-card padding="p-6">
+        <form [formGroup]="demoForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Username Input -->
+          <app-glass-input
+            label="Username"
+            formControlName="username"
+            placeholder="Enter your username"
+            [required]="true"
+            [errorMessage]="usernameError">
+          </app-glass-input>
+
+          <!-- Email Input -->
+          <app-glass-input
+            label="Email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            [required]="true"
+            [errorMessage]="emailError">
+          </app-glass-input>
+
+          <!-- Password Input -->
+          <app-glass-input
+            label="Password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [required]="true"
+            [errorMessage]="passwordError"
+            hint="Password must be at least 6 characters">
+          </app-glass-input>
+
+          <!-- Description Input -->
+          <app-glass-input
+            label="Description"
+            formControlName="description"
+            placeholder="Enter description (optional)">
+          </app-glass-input>
+
+          <!-- Submit Button -->
+          <div class="flex gap-4">
+            <app-glass-button type="submit" variant="primary" [disabled]="demoForm.invalid">
+              Submit Form
+            </app-glass-button>
+            <app-glass-button type="button" variant="secondary" (clicked)="demoForm.reset()">
+              Reset
+            </app-glass-button>
+          </div>
+        </form>
+      </app-glass-card>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-slate-800 dark:text-slate-200">Interactive Demo</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Card Selection -->
+        <app-glass-card padding="p-6">
+          <h3 class="text-lg font-medium mb-4 text-slate-700 dark:text-slate-300">Card Variant Selection</h3>
+          <div class="space-y-4">
+            <div class="flex gap-2">
+              <app-glass-button
+                variant="primary"
+                size="sm"
+                (clicked)="selectedCard = 'default'"
+                [customClass]="selectedCard === 'default' ? 'ring-2 ring-blue-500' : ''">
+                Default
+              </app-glass-button>
+              <app-glass-button
+                variant="primary"
+                size="sm"
+                (clicked)="selectedCard = 'strong'"
+                [customClass]="selectedCard === 'strong' ? 'ring-2 ring-blue-500' : ''">
+                Strong
+              </app-glass-button>
+              <app-glass-button
+                variant="primary"
+                size="sm"
+                (clicked)="selectedCard = 'weak'"
+                [customClass]="selectedCard === 'weak' ? 'ring-2 ring-blue-500' : ''">
+                Weak
+              </app-glass-button>
+            </div>
+            <app-glass-card [variant]="selectedCard" padding="p-4">
+              <p class="text-slate-600 dark:text-slate-400">
+                Selected variant: <strong>{{ selectedCard }}</strong>
+              </p>
+            </app-glass-card>
+          </div>
+        </app-glass-card>
+
+        <!-- Input Demo -->
+        <app-glass-card padding="p-6">
+          <h3 class="text-lg font-medium mb-4 text-slate-700 dark:text-slate-300">Input Demo</h3>
+          <div class="space-y-4">
+            <app-glass-input
+              label="Demo Input"
+              [(ngModel)]="inputValue"
+              placeholder="Type something..."
+              hint="This is a demo input field">
+            </app-glass-input>
+            <div *ngIf="inputValue" class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+              <p class="text-sm text-slate-600 dark:text-slate-400">Current value:</p>
+              <p class="font-mono text-slate-800 dark:text-slate-200">{{ inputValue }}</p>
+            </div>
+          </div>
+        </app-glass-card>
+      </div>
+    </section>
+
+    <!-- Usage Examples Section -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-slate-800 dark:text-slate-200">Usage Examples</h2>
+      <app-glass-card variant="strong" padding="p-6">
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-lg font-medium mb-2 text-slate-700 dark:text-slate-300">Glass Card</h3>
+            <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-glass-card variant="default" padding="p-6"&gt;
+  &lt;h3&gt;Title&lt;/h3&gt;
+  &lt;p&gt;Content here&lt;/p&gt;
+&lt;/app-glass-card&gt;</code></pre>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium mb-2 text-slate-700 dark:text-slate-300">Glass Button</h3>
+            <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-glass-button 
+  variant="primary" 
+  size="md"
+  (clicked)="handleClick()"&gt;
+  Click Me
+&lt;/app-glass-button&gt;</code></pre>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium mb-2 text-slate-700 dark:text-slate-300">Glass Input</h3>
+            <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-glass-input
+  label="Username"
+  placeholder="Enter username"
+  [required]="true"
+  [errorMessage]="errorMsg"&gt;
+&lt;/app-glass-input&gt;</code></pre>
+          </div>
+        </div>
+      </app-glass-card>
+    </section>
+  </div>
+</div>
+

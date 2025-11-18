@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
 module.exports = {
   content: [
     "./src/**/*.{html,ts}",
@@ -6,24 +8,40 @@ module.exports = {
   darkMode: 'class', // Enable class-based dark mode
   theme: {
     extend: {
+      backdropBlur: {
+        xs: '2px',
+      },
       fontFamily: {
-        'sans': ['Inter', 'Sarabun', 'system-ui', 'sans-serif'],
-        'thai': ['Sarabun', 'sans-serif'],
-        'mono': ['JetBrains Mono', 'monospace'],
+        // Modern fonts: Noto Sans (supports both English & Thai), Poppins (English), Kanit (Thai)
+        // Keep Inter and Sarabun for backward compatibility
+        sans: [
+          'Noto Sans',
+          'Noto Sans Thai',
+          'Poppins',
+          'Inter',
+          'Kanit',
+          'Sarabun',
+          ...fontFamily.sans
+        ],
+        mono: ['JetBrains Mono', ...fontFamily.mono],
+        // Separate font families for specific use cases
+        english: ['Poppins', 'Noto Sans', 'Inter', ...fontFamily.sans],
+        thai: ['Kanit', 'Noto Sans Thai', 'Sarabun', 'Noto Sans', ...fontFamily.sans],
       },
       colors: {
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          DEFAULT: 'rgb(var(--primary-rgb))',
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+          950: '#082f49',
+          DEFAULT: '#0ea5e9', // Match Intelligent-Video-Analytics-Platform
         },
         glass: {
           white: 'rgba(255, 255, 255, 0.25)',

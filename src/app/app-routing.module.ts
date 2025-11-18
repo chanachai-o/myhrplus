@@ -63,6 +63,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'demo',
+    loadChildren: () => import('./features/demo/demo.module').then(m => m.DemoModule)
+    // Removed AuthGuard to allow access without login for demo purposes
+  },
+  {
     path: 'unauthorized',
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },

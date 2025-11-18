@@ -1,6 +1,12 @@
 /* ============================================
    Google Fonts Import
    ============================================ */
+/* Modern fonts from Intelligent-Video-Analytics-Platform */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap');
+/* Legacy fonts for backward compatibility */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
@@ -41,7 +47,8 @@
 
 html, body {
   height: 100%;
-  font-family: 'Inter', 'Sarabun', system-ui, sans-serif;
+  /* Modern fonts from Intelligent-Video-Analytics-Platform */
+  font-family: 'Noto Sans', 'Noto Sans Thai', 'Poppins', 'Inter', 'Kanit', 'Sarabun', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -229,6 +236,58 @@ code, pre, kbd, samp {
     @apply transform scale-95;
   }
 
+  .glass-button-primary {
+    @apply bg-gradient-to-r from-blue-500 to-cyan-500 backdrop-blur-md rounded-lg border border-blue-400/50 px-6 py-2.5 font-semibold text-white transition-all duration-200;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px 0 rgba(59, 130, 246, 0.4);
+  }
+
+  .dark .glass-button-primary {
+    @apply bg-gradient-to-r from-blue-600 to-cyan-600 border-blue-500/50;
+    box-shadow: 0 4px 16px 0 rgba(59, 130, 246, 0.6);
+  }
+
+  .glass-button-primary:hover {
+    @apply from-blue-600 to-cyan-600 shadow-lg transform scale-105;
+    box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.5);
+  }
+
+  .dark .glass-button-primary:hover {
+    @apply from-blue-500 to-cyan-500;
+    box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.7);
+  }
+
+  .glass-button-primary:active {
+    @apply transform scale-95;
+  }
+
+  .glass-button-danger {
+    @apply bg-gradient-to-r from-red-500 to-pink-500 backdrop-blur-md rounded-lg border border-red-400/50 px-6 py-2.5 font-semibold text-white transition-all duration-200;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px 0 rgba(239, 68, 68, 0.4);
+  }
+
+  .dark .glass-button-danger {
+    @apply bg-gradient-to-r from-red-600 to-pink-600 border-red-500/50;
+    box-shadow: 0 4px 16px 0 rgba(239, 68, 68, 0.6);
+  }
+
+  .glass-button-danger:hover {
+    @apply from-red-600 to-pink-600 shadow-lg transform scale-105;
+    box-shadow: 0 6px 20px 0 rgba(239, 68, 68, 0.5);
+  }
+
+  .dark .glass-button-danger:hover {
+    @apply from-red-500 to-pink-500;
+    box-shadow: 0 6px 20px 0 rgba(239, 68, 68, 0.7);
+  }
+
+  .glass-button-danger:active {
+    @apply transform scale-95;
+  }
+
   .glass-input {
     @apply bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 px-4 py-2.5 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all duration-200;
     backdrop-filter: blur(6px);
@@ -237,6 +296,18 @@ code, pre, kbd, samp {
 
   .dark .glass-input {
     @apply bg-slate-800/20 backdrop-blur-sm rounded-lg border border-slate-700/30 px-4 py-2.5 text-slate-200 placeholder-slate-500;
+  }
+
+  .glass-input.error {
+    @apply border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium mb-1;
+  }
+
+  .dark .form-label {
+    @apply text-slate-200;
   }
 
   .glass-nav {
@@ -570,7 +641,7 @@ code, pre, kbd, samp {
   body {
     background: white;
   }
-  
+
   .glass-card {
     background: white;
     backdrop-filter: none;
