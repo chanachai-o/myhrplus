@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MenuService, MenuItem } from '../../core/services/menu.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,16 +15,29 @@ export class SidebarComponent implements OnInit, OnDestroy {
   activeRoute: string = '';
   private destroy$ = new Subject<void>();
 
+  currentUser: any = null;
+
   constructor(
     private router: Router,
-    private menuService: MenuService
-  ) {}
+    private menuService: MenuService,
+    private authService: AuthService
+  ) {
+    // Subscribe to current user
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      // Reload menu when user changes
+      if (user) {
+        this.loadMenu();
+      }
+    });
+  }
 
   ngOnInit(): void {
+    // Get current user
+    this.currentUser = this.authService.getCurrentUser();
+    
     // Load menu from service
-    this.menuService.loadMenu().subscribe(menu => {
-      this.menuItems = menu;
-    });
+    this.loadMenu();
 
     // Track active route
     this.router.events
@@ -34,6 +48,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
       .subscribe((event: any) => {
         this.activeRoute = event.url;
       });
+  }
+
+  private loadMenu(): void {
+    this.menuService.loadMenu().subscribe(menu => {
+      // Menu is already filtered by permissions in MenuService
+      this.menuItems = menu;
+    });
   }
 
   ngOnDestroy(): void {

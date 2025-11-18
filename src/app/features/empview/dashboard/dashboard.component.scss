@@ -213,6 +213,124 @@ mat-card {
   }
 }
 
+.modules-card {
+  grid-column: 1 / -1;
+  
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .module-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px;
+    height: auto;
+    min-height: 120px;
+    
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+    }
+
+    .module-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+    }
+
+    .module-name {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .module-desc {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+  }
+}
+
+.attendance-card {
+  grid-column: 1 / -1;
+  
+  .attendance-list {
+    margin-bottom: 16px;
+  }
+
+  .attendance-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 16px;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .attendance-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .attendance-time {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    
+    span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .attendance-status {
+    min-width: 100px;
+    text-align: right;
+  }
+
+  .attendance-actions {
+    margin-top: 16px;
+    text-align: center;
+  }
+}
+
+.user-info {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: #666;
+  
+  span {
+    margin-right: 8px;
+  }
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;

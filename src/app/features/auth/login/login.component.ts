@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   dbSelected: string = '';
   errorMessage: string = '';
   rememberMe: boolean = false;
-  
+
   // For Syncfusion components
   username: string = '';
   password: string = '';
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Get return url from route parameters or default to '/dashboard' (EMPVIEW)
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
-    
+
     // If already logged in, redirect
     if (this.authService.isAuthenticated()) {
       this.router.navigate([this.returnUrl]);
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
           dbName: db.dbName,
           dbDisplay: db.dbDisplay || db.dbName || db.db
         }));
-        
+
         if (result && result.length > 0) {
           this.dbSelected = result[0].db;
           this.loginForm.patchValue({ dbName: result[0].db });
@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loading = true;
       this.errorMessage = '';
-      
+
       // Clear session if username changed
       const currentUsername = sessionStorage.getItem('userName');
       if (currentUsername && currentUsername !== this.username) {
@@ -131,7 +131,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(credentials)
         .then((result: any) => {
           console.log('Login successful. Result:', result);
-          
+
           if (result && result.accessToken) {
             // Check getSetPass for defaultpage and accountactive
             this.employeeService.getSetPass()
@@ -152,11 +152,11 @@ export class LoginComponent implements OnInit {
 
                   if (accountActive) {
                     if (accountActive === 'true') {
-                      // Account is active, proceed to EMPVIEW
+                      // Account is active, proceed to HOME
                       this.notificationService.showSuccess('Login successful');
                       this.menuService.clearCache();
-                      // Navigate to EMPVIEW (dashboard)
-                      this.router.navigate(['/dashboard']);
+                      // Navigate to HOME
+                      this.router.navigate(['/home']);
                     } else if (accountActive === 'waiting') {
                       this.loading = false;
                       this.loginForm.patchValue({ password: '' });
@@ -169,17 +169,17 @@ export class LoginComponent implements OnInit {
                       this.notificationService.showError(this.errorMessage);
                     }
                   } else {
-                    // No accountactive field, proceed to EMPVIEW
+                    // No accountactive field, proceed to HOME
                     this.notificationService.showSuccess('Login successful');
                     this.menuService.clearCache();
-                    this.router.navigate(['/dashboard']);
+                    this.router.navigate(['/home']);
                   }
                 } catch (error) {
                   console.error('Error decoding token:', error);
                   // Proceed anyway
                   this.notificationService.showSuccess('Login successful');
                   this.menuService.clearCache();
-                  this.router.navigate(['/dashboard']);
+                  this.router.navigate(['/home']);
                 }
               })
               .catch((error) => {
@@ -187,7 +187,7 @@ export class LoginComponent implements OnInit {
                 // Proceed anyway if getSetPass fails
                 this.notificationService.showSuccess('Login successful');
                 this.menuService.clearCache();
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/home']);
               });
           } else {
             this.loading = false;
@@ -198,7 +198,7 @@ export class LoginComponent implements OnInit {
         .catch((error: HttpErrorResponse) => {
           console.error('Login failed. Reason:', error);
           this.loading = false;
-          
+
           if (error.status === 401) {
             this.errorMessage = 'Invalid Username or Password';
             this.notificationService.showError(this.errorMessage);
@@ -206,7 +206,7 @@ export class LoginComponent implements OnInit {
             this.errorMessage = error.message || 'Login failed. Please try again.';
             this.notificationService.showError(this.errorMessage);
           }
-          
+
           this.loginForm.patchValue({ password: '' });
         });
     } else {

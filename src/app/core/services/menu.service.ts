@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { AuthService } from './auth.service';
 
 export interface MenuItem {
   name: string;
@@ -29,7 +30,10 @@ export class MenuService {
   private menuConfig: MenuConfig | null = null;
   private menuCache: MenuItem[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   loadMenu(): Observable<MenuItem[]> {
     if (this.menuCache.length > 0) {
@@ -65,26 +69,103 @@ export class MenuService {
   }
 
   private transformMenuItems(items: MenuItem[]): MenuItem[] {
-    return items.map(item => {
-      const transformed: MenuItem = {
-        ...item,
-        route: this.convertJspPathToRoute(item.path),
-        icon: this.getIconForMenu(item.name, item.id)
+    return items
+      .filter(item => this.hasPermission(item)) // Filter by permissions
+      .map(item => {
+        const transformed: MenuItem = {
+          ...item,
+          route: this.convertJspPathToRoute(item.path),
+          icon: this.getIconForMenu(item.name, item.id)
+        };
+
+        if (item.children) {
+          transformed.children = this.transformMenuItems(item.children);
+        }
+
+        return transformed;
+      });
+  }
+
+  private hasPermission(item: MenuItem): boolean {
+    const user = this.authService.getCurrentUser();
+    if (!user) return false;
+
+    // Check if user has access to this menu item
+    // Based on user_role, roles, or permissions from JWT token
+
+    // If user_role is "All", allow all menus
+    if (user.user_role === 'All') {
+      return true;
+    }
+
+    // Check module access based on menu path
+    const moduleCode = this.getModuleCodeFromPath(item.path);
+    if (moduleCode) {
+      return this.checkModuleAccess(moduleCode, user);
+    }
+
+    // Default: allow if no specific permission check
+    return true;
+  }
+
+  private getModuleCodeFromPath(path: string): string | null {
+    if (!path) return null;
+
+    // Extract module code from JSP path
+    // Example: /hr/PERSONAL/PWF001.jsp -> PERSONAL
+    // Example: /hr/TA/TAU_CSCWF_001.jsp -> TA
+    const moduleMatch = path.match(/\/(PERSONAL|TA|PAYROLL|TRAINING|APPRAISAL|RECRUIT|WELFARE|WORKFLOW|COMPANY|SETTING|EMPVIEW)/);
+    return moduleMatch ? moduleMatch[1] : null;
+  }
+
+  private checkModuleAccess(moduleCode: string, user: any): boolean {
+    // Check if user has access to this module
+    // This can be based on:
+    // 1. user_role from JWT token
+    // 2. roles array from JWT token
+    // 3. permissions array from JWT token
+    // 4. Module-specific access flags
+
+    // For now, allow access if user_role is "All" or if roles include module access
+    if (user.user_role === 'All') {
+      return true;
+    }
+
+    // Check roles array
+    if (user.roles && Array.isArray(user.roles)) {
+      // Map module codes to role names
+      const moduleRoleMap: { [key: string]: string[] } = {
+        'PERSONAL': ['HR', 'ADMIN', 'USER'],
+        'TA': ['HR', 'ADMIN', 'USER'],
+        'PAYROLL': ['HR', 'ADMIN', 'PAYROLL'],
+        'TRAINING': ['HR', 'ADMIN', 'USER'],
+        'APPRAISAL': ['HR', 'ADMIN', 'USER'],
+        'RECRUIT': ['HR', 'ADMIN', 'RECRUIT'],
+        'WELFARE': ['HR', 'ADMIN', 'USER'],
+        'WORKFLOW': ['HR', 'ADMIN', 'USER'],
+        'COMPANY': ['HR', 'ADMIN'],
+        'SETTING': ['ADMIN'],
+        'EMPVIEW': ['USER', 'HR', 'ADMIN'] // All users can access EMPVIEW
       };
 
-      if (item.children) {
-        transformed.children = this.transformMenuItems(item.children);
-      }
+      const allowedRoles = moduleRoleMap[moduleCode] || ['USER'];
+      return user.roles.some((role: string) => allowedRoles.includes(role));
+    }
 
-      return transformed;
-    });
+    // Default: allow EMPVIEW for all authenticated users
+    if (moduleCode === 'EMPVIEW') {
+      return true;
+    }
+
+    // Default: deny if no specific permission
+    return false;
   }
 
   private convertJspPathToRoute(jspPath: string): string {
     // Convert JSP paths to Angular routes
     // Example: /hr/PERSONAL/PWF001.jsp -> /personal/workflow/2001
     // Example: /hr/TA/TAU_CSCWF_001.jsp -> /ta/leave
-    
+
     if (!jspPath) return '';
 
     // Remove /hr prefix and .jsp extension
@@ -126,46 +207,34 @@ export class MenuService {
   }
 
   private getDefaultMenu(): MenuItem[] {
-    return [
+    const user = this.authService.getCurrentUser();
+    const menuItems: MenuItem[] = [
       {
         name: 'Dashboard',
         path: '/dashboard',
         id: 'dashboard',
-        tdesc: 'แดชบอร์ด',
-        edesc: 'Dashboard',
-        icon: 'dashboard',
+        tdesc: 'หน้าแรก',
+        edesc: 'Home',
+        icon: 'home',
         route: '/dashboard'
-      },
-      {
+      }
+    ];
+
+    // Add modules based on user permissions
+    if (this.hasModuleAccess('PERSONAL', user)) {
+      menuItems.push({
         name: 'Personal',
         path: '/personal',
         id: 'personal',
         tdesc: 'ข้อมูลส่วนบุคคล',
         edesc: 'Personal',
         icon: 'person',
-        route: '/personal',
-        children: [
-          {
-            name: 'Profile',
-            path: '/personal/profile',
-            id: 'personal-profile',
-            tdesc: 'ข้อมูลส่วนตัว',
-            edesc: 'Profile',
-            icon: 'person',
-            route: '/personal/profile'
-          },
-          {
-            name: 'Documents',
-            path: '/personal/documents',
-            id: 'personal-documents',
-            tdesc: 'เอกสาร',
-            edesc: 'Documents',
-            icon: 'folder',
-            route: '/personal/documents'
-          }
-        ]
-      },
-      {
+        route: '/personal'
+      });
+    }
+
+    if (this.hasModuleAccess('TA', user)) {
+      menuItems.push({
         name: 'Time Attendance',
         path: '/ta',
         id: 'ta',
@@ -173,8 +242,11 @@ export class MenuService {
         edesc: 'Time Attendance',
         icon: 'access_time',
         route: '/ta'
-      },
-      {
+      });
+    }
+
+    if (this.hasModuleAccess('PAYROLL', user)) {
+      menuItems.push({
         name: 'Payroll',
         path: '/payroll',
         id: 'payroll',
@@ -182,8 +254,113 @@ export class MenuService {
         edesc: 'Payroll',
         icon: 'account_balance_wallet',
         route: '/payroll'
-      }
-    ];
+      });
+    }
+
+    if (this.hasModuleAccess('WORKFLOW', user)) {
+      menuItems.push({
+        name: 'Workflow',
+        path: '/workflow',
+        id: 'workflow',
+        tdesc: 'เวิร์กโฟล์',
+        edesc: 'Workflow',
+        icon: 'assignment',
+        route: '/workflow'
+      });
+    }
+
+    if (this.hasModuleAccess('TRAINING', user)) {
+      menuItems.push({
+        name: 'Training',
+        path: '/training',
+        id: 'training',
+        tdesc: 'การฝึกอบรม',
+        edesc: 'Training',
+        icon: 'school',
+        route: '/training'
+      });
+    }
+
+    if (this.hasModuleAccess('APPRAISAL', user)) {
+      menuItems.push({
+        name: 'Appraisal',
+        path: '/appraisal',
+        id: 'appraisal',
+        tdesc: 'การประเมินผล',
+        edesc: 'Appraisal',
+        icon: 'assessment',
+        route: '/appraisal'
+      });
+    }
+
+    if (this.hasModuleAccess('WELFARE', user)) {
+      menuItems.push({
+        name: 'Welfare',
+        path: '/welfare',
+        id: 'welfare',
+        tdesc: 'สวัสดิการ',
+        edesc: 'Welfare',
+        icon: 'favorite',
+        route: '/welfare'
+      });
+    }
+
+    if (this.hasModuleAccess('RECRUIT', user)) {
+      menuItems.push({
+        name: 'Recruitment',
+        path: '/recruit',
+        id: 'recruit',
+        tdesc: 'การสรรหา',
+        edesc: 'Recruitment',
+        icon: 'people',
+        route: '/recruit'
+      });
+    }
+
+    if (this.hasModuleAccess('COMPANY', user)) {
+      menuItems.push({
+        name: 'Company',
+        path: '/company',
+        id: 'company',
+        tdesc: 'บริษัท',
+        edesc: 'Company',
+        icon: 'business',
+        route: '/company'
+      });
+    }
+
+    return menuItems;
+  }
+
+  private hasModuleAccess(moduleCode: string, user: any): boolean {
+    if (!user) return false;
+
+    // EMPVIEW is accessible to all authenticated users
+    if (moduleCode === 'EMPVIEW') return true;
+
+    // Check user_role
+    if (user.user_role === 'All') return true;
+
+    // Check roles array
+    if (user.roles && Array.isArray(user.roles)) {
+      const moduleRoleMap: { [key: string]: string[] } = {
+        'PERSONAL': ['HR', 'ADMIN', 'USER'],
+        'TA': ['HR', 'ADMIN', 'USER'],
+        'PAYROLL': ['HR', 'ADMIN', 'PAYROLL'],
+        'TRAINING': ['HR', 'ADMIN', 'USER'],
+        'APPRAISAL': ['HR', 'ADMIN', 'USER'],
+        'RECRUIT': ['HR', 'ADMIN', 'RECRUIT'],
+        'WELFARE': ['HR', 'ADMIN', 'USER'],
+        'WORKFLOW': ['HR', 'ADMIN', 'USER'],
+        'COMPANY': ['HR', 'ADMIN'],
+        'SETTING': ['ADMIN']
+      };
+
+      const allowedRoles = moduleRoleMap[moduleCode] || ['USER'];
+      return user.roles.some((role: string) => allowedRoles.includes(role));
+    }
+
+    return false;
   }
 
   clearCache(): void {

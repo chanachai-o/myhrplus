@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
 
     // Check if user is already logged in
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/home']);
     }
   }
 }

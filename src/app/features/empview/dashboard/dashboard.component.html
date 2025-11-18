@@ -1,8 +1,13 @@
 <div class="dashboard-container">
   <div class="dashboard-header">
-    <h1>Employee Dashboard</h1>
-    <p class="welcome-text" *ngIf="employeeProfile">
-      Welcome, {{ employeeProfile.name }}!
+    <h1 class="thai-text">หน้าแรก - Employee Homepage</h1>
+    <p class="welcome-text thai-text" *ngIf="employeeProfile || currentUser">
+      ยินดีต้อนรับ, {{ employeeProfile?.name || currentUser?.fullname || currentUser?.name || 'ผู้ใช้งาน' }}!
+    </p>
+    <p class="user-info" *ngIf="currentUser">
+      <span class="thai-text">รหัสพนักงาน: {{ currentUser.employeeid || currentUser.uid }}</span>
+      <span *ngIf="currentUser['emp_position']" class="thai-text"> | ตำแหน่ง: {{ currentUser['emp_position'] }}</span>
+      <span *ngIf="currentUser['workarea']" class="thai-text"> | แผนก: {{ currentUser['workarea'] }}</span>
     </p>
   </div>
 
@@ -145,6 +150,68 @@
           <button mat-button color="primary" (click)="navigateTo('/personal/profile')">
             <mat-icon>edit</mat-icon>
             View Full Profile
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Available Modules -->
+    <mat-card class="modules-card" *ngIf="menuModules.length > 0">
+      <mat-card-header>
+        <mat-card-title class="thai-text">โมดูลที่สามารถเข้าถึงได้</mat-card-title>
+        <mat-card-subtitle class="thai-text">คลิกเพื่อเข้าสู่โมดูลต่างๆ</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="modules-grid">
+          <button
+            mat-raised-button
+            *ngFor="let module of menuModules"
+            [color]="getModuleColor(module.id)"
+            (click)="navigateTo(module.route || module.path)"
+            class="module-button">
+            <mat-icon>{{ module.icon || 'folder' }}</mat-icon>
+            <div class="module-info">
+              <span class="module-name thai-text">{{ module.tdesc || module.edesc || module.name }}</span>
+              <span class="module-desc" *ngIf="module.edesc && module.tdesc">{{ module.edesc }}</span>
+            </div>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Time Attendance Summary -->
+    <mat-card class="attendance-card" *ngIf="timeAttendance.length > 0">
+      <mat-card-header>
+        <mat-card-title class="thai-text">สรุปการลงเวลาล่าสุด</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="attendance-list">
+          <div class="attendance-item" *ngFor="let record of timeAttendance">
+            <div class="attendance-date">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ record.date | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="attendance-time">
+              <span *ngIf="record.checkIn">
+                <mat-icon>login</mat-icon>
+                เข้า: {{ record.checkIn }}
+              </span>
+              <span *ngIf="record.checkOut">
+                <mat-icon>logout</mat-icon>
+                ออก: {{ record.checkOut }}
+              </span>
+            </div>
+            <div class="attendance-status">
+              <mat-chip [color]="getStatusColor(record.status)">
+                {{ record.status }}
+              </mat-chip>
+            </div>
+          </div>
+        </div>
+        <div class="attendance-actions">
+          <button mat-button color="primary" (click)="navigateTo('/ta')" class="thai-text">
+            <mat-icon>visibility</mat-icon>
+            ดูรายละเอียดทั้งหมด
           </button>
         </div>
       </mat-card-content>
