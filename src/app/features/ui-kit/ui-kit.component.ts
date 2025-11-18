@@ -140,6 +140,161 @@ export class UiKitComponent implements OnInit {
   ratingValue = 0;
   readOnlyRating = 4.5;
 
+  // ============================================
+  // Syncfusion Data Display Components
+  // ============================================
+
+  // Data Grid
+  gridData: any[] = [
+    { OrderID: 10248, CustomerName: 'สมชาย ใจดี', Freight: 32.38, ShipCity: 'กรุงเทพ', ShipCountry: 'ไทย' },
+    { OrderID: 10249, CustomerName: 'สมหญิง รักงาน', Freight: 11.61, ShipCity: 'เชียงใหม่', ShipCountry: 'ไทย' },
+    { OrderID: 10250, CustomerName: 'วิชัย เก่งมาก', Freight: 65.83, ShipCity: 'ภูเก็ต', ShipCountry: 'ไทย' },
+    { OrderID: 10251, CustomerName: 'มาลี สวยงาม', Freight: 41.34, ShipCity: 'พัทยา', ShipCountry: 'ไทย' },
+    { OrderID: 10252, CustomerName: 'ประยุทธ์ ทำงานดี', Freight: 51.3, ShipCity: 'กรุงเทพ', ShipCountry: 'ไทย' },
+    { OrderID: 10253, CustomerName: 'สุรชัย ขยันมาก', Freight: 58.17, ShipCity: 'เชียงใหม่', ShipCountry: 'ไทย' },
+    { OrderID: 10254, CustomerName: 'นิดา ใจดี', Freight: 22.98, ShipCity: 'ภูเก็ต', ShipCountry: 'ไทย' },
+    { OrderID: 10255, CustomerName: 'สมศักดิ์ เก่งมาก', Freight: 148.33, ShipCity: 'กรุงเทพ', ShipCountry: 'ไทย' }
+  ];
+  gridColumns: any[] = [
+    { field: 'OrderID', headerText: 'Order ID', width: 120, textAlign: 'Right' },
+    { field: 'CustomerName', headerText: 'ชื่อลูกค้า', width: 150 },
+    { field: 'Freight', headerText: 'ค่าขนส่ง', width: 120, format: 'C2', textAlign: 'Right' },
+    { field: 'ShipCity', headerText: 'เมือง', width: 120 },
+    { field: 'ShipCountry', headerText: 'ประเทศ', width: 120 }
+  ];
+  gridPageSettings = { pageSize: 5 };
+
+  // Tree Grid
+  treeGridData: any[] = [
+    {
+      TaskID: 1,
+      TaskName: 'การวางแผน',
+      StartDate: new Date('2024-01-01'),
+      Duration: 5,
+      Progress: 100,
+      subtasks: [
+        { TaskID: 2, TaskName: 'วิเคราะห์ความต้องการ', StartDate: new Date('2024-01-01'), Duration: 2, Progress: 100 },
+        { TaskID: 3, TaskName: 'ออกแบบระบบ', StartDate: new Date('2024-01-03'), Duration: 3, Progress: 100 }
+      ]
+    },
+    {
+      TaskID: 4,
+      TaskName: 'การพัฒนา',
+      StartDate: new Date('2024-01-06'),
+      Duration: 10,
+      Progress: 60,
+      subtasks: [
+        { TaskID: 5, TaskName: 'พัฒนา Frontend', StartDate: new Date('2024-01-06'), Duration: 5, Progress: 80 },
+        { TaskID: 6, TaskName: 'พัฒนา Backend', StartDate: new Date('2024-01-11'), Duration: 5, Progress: 40 }
+      ]
+    },
+    {
+      TaskID: 7,
+      TaskName: 'การทดสอบ',
+      StartDate: new Date('2024-01-16'),
+      Duration: 5,
+      Progress: 0
+    }
+  ];
+  treeGridColumns: any[] = [
+    { field: 'TaskName', headerText: 'งาน', width: 200 },
+    { field: 'StartDate', headerText: 'วันที่เริ่ม', width: 120, format: 'yMd' },
+    { field: 'Duration', headerText: 'ระยะเวลา (วัน)', width: 120, textAlign: 'Right' },
+    { field: 'Progress', headerText: 'ความคืบหน้า (%)', width: 150, textAlign: 'Right' }
+  ];
+  treeGridChildMapping = 'subtasks';
+
+  // Pivot Table
+  pivotData: any[] = [
+    { Amount: 100, Country: 'ไทย', Product: 'สินค้า A', Year: '2023', Quarter: 'Q1' },
+    { Amount: 200, Country: 'ไทย', Product: 'สินค้า B', Year: '2023', Quarter: 'Q1' },
+    { Amount: 150, Country: 'ไทย', Product: 'สินค้า A', Year: '2023', Quarter: 'Q2' },
+    { Amount: 300, Country: 'ไทย', Product: 'สินค้า B', Year: '2023', Quarter: 'Q2' },
+    { Amount: 120, Country: 'สหรัฐอเมริกา', Product: 'สินค้า A', Year: '2023', Quarter: 'Q1' },
+    { Amount: 250, Country: 'สหรัฐอเมริกา', Product: 'สินค้า B', Year: '2023', Quarter: 'Q1' },
+    { Amount: 180, Country: 'สหรัฐอเมริกา', Product: 'สินค้า A', Year: '2023', Quarter: 'Q2' },
+    { Amount: 350, Country: 'สหรัฐอเมริกา', Product: 'สินค้า B', Year: '2023', Quarter: 'Q2' }
+  ];
+  pivotDataSettings: any;
+
+  // Chart Data
+  chartData: any[] = [
+    { month: 'มกราคม', sales: 35, profit: 20 },
+    { month: 'กุมภาพันธ์', sales: 28, profit: 15 },
+    { month: 'มีนาคม', sales: 34, profit: 22 },
+    { month: 'เมษายน', sales: 32, profit: 18 },
+    { month: 'พฤษภาคม', sales: 40, profit: 25 },
+    { month: 'มิถุนายน', sales: 38, profit: 23 }
+  ];
+  chartPrimaryXAxis: any = {
+    valueType: 'Category',
+    title: 'เดือน'
+  };
+  chartPrimaryYAxis: any = {
+    title: 'จำนวน (ล้านบาท)'
+  };
+  chartLegend: any = {
+    visible: true,
+    position: 'Bottom'
+  };
+  chartTooltip: any = {
+    enable: true
+  };
+  pieChartDataLabel: any = {
+    visible: true,
+    name: 'text',
+    position: 'Outside'
+  };
+
+  // ============================================
+  // Syncfusion Editor Components
+  // ============================================
+
+  // Rich Text Editor
+  rteValue: string = '<p>ยินดีต้อนรับสู่ <b>Rich Text Editor</b></p><p>คุณสามารถแก้ไขข้อความนี้ได้</p><ul><li>รายการที่ 1</li><li>รายการที่ 2</li></ul>';
+  rteTools: any = {
+    items: [
+      'Bold', 'Italic', 'Underline', 'StrikeThrough',
+      'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+      'LowerCase', 'UpperCase', '|',
+      'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
+      'Outdent', 'Indent', '|',
+      'CreateLink', 'Image', '|', 'ClearFormat', 'Print',
+      'SourceCode', 'FullScreen', '|', 'Undo', 'Redo'
+    ]
+  };
+
+  // Document Editor
+  documentEditorServiceUrl: string = 'https://ej2services.syncfusion.com/production/web-services/api/documenteditor/';
+
+  // PDF Viewer
+  pdfViewerServiceUrl: string = 'https://ej2services.syncfusion.com/production/web-services/api/pdfviewer';
+  pdfDocumentPath: string = 'https://cdn.syncfusion.com/content/pdf/pdf-succinctly.pdf';
+
+  // Spreadsheet
+  spreadsheetData: any[] = [
+    { range: 'A1:F1', data: [['สินค้า', 'Q1', 'Q2', 'Q3', 'Q4', 'รวม']], format: { fontWeight: 'bold', textAlign: 'center' } },
+    { range: 'A2:A5', data: [['สินค้า A'], ['สินค้า B'], ['สินค้า C'], ['รวม']], format: { fontWeight: 'bold' } },
+    { range: 'B2:E4', data: [[100, 120, 110, 130], [150, 160, 170, 180], [200, 210, 220, 230]] },
+    { range: 'B5:E5', formula: '=SUM(B2:B4)', format: { fontWeight: 'bold' } },
+    { range: 'F2:F5', formula: '=SUM(B2:E2)', format: { fontWeight: 'bold' } }
+  ];
+
+  // Image Editor
+  @ViewChild('imageEditor') imageEditor: any;
+  imageEditorImageUrl: string = 'https://ej2.syncfusion.com/demos/src/image-editor/images/bridge.png';
+  
+  // Method to load image in Image Editor
+  onImageEditorCreated(): void {
+    // Image will be loaded programmatically if needed
+  }
+
+  loadImageToEditor(): void {
+    if (this.imageEditor && this.imageEditor.imageEditor) {
+      this.imageEditor.imageEditor.open(this.imageEditorImageUrl);
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -161,6 +316,17 @@ export class UiKitComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       age: ['', [Validators.required, Validators.min(18), Validators.max(100)]]
     });
+
+    // Initialize Pivot Table settings
+    this.pivotDataSettings = {
+      dataSource: this.pivotData,
+      expandAll: false,
+      enableSorting: true,
+      columns: [{ name: 'Year', caption: 'ปี' }, { name: 'Quarter', caption: 'ไตรมาส' }],
+      rows: [{ name: 'Country', caption: 'ประเทศ' }, { name: 'Product', caption: 'สินค้า' }],
+      values: [{ name: 'Amount', caption: 'จำนวนเงิน' }],
+      valueSortSettings: { headerText: 'จำนวนเงิน' }
+    };
   }
 
   ngOnInit(): void {

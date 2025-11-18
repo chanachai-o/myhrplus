@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { ThemeService } from './core/services/theme.service';
 import { I18nService } from './core/services/i18n.service';
+import { SyncfusionThemeService } from './shared/syncfusion/syncfusion-theme.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private themeService: ThemeService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private syncfusionThemeService: SyncfusionThemeService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,15 @@ export class AppComponent implements OnInit {
     // Initialize i18n service (language is loaded automatically)
     const currentLang = this.i18nService.getCurrentLanguage();
     document.documentElement.setAttribute('lang', currentLang);
+
+    // Initialize Syncfusion theme service
+    this.syncfusionThemeService.initialize();
+    
+    // Sync dark mode between ThemeService and SyncfusionThemeService
+    this.themeService.theme$.subscribe(theme => {
+      const isDark = theme.mode === 'dark';
+      this.syncfusionThemeService.setDarkMode(isDark, false);
+    });
 
     // Check if user is already logged in
     if (this.authService.isAuthenticated()) {

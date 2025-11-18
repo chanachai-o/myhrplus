@@ -26,6 +26,11 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 /* ============================================
+   Syncfusion Theme
+   ============================================ */
+@import 'app/shared/syncfusion/styles/syncfusion-theme.scss';
+
+/* ============================================
    Base Styles
    ============================================ */
 * {

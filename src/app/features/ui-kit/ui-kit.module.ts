@@ -6,6 +6,7 @@ import { LayoutModule } from '../../layout/layout.module';
 import { UiKitRoutingModule } from './ui-kit-routing.module';
 import { UiKitComponent } from './ui-kit.component';
 import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
+import { SyncfusionModule } from '../../shared/syncfusion/syncfusion.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme
     SharedModule,
     LayoutModule,
     UiKitRoutingModule,
-    ThemeToggleComponent // Standalone component
+    ThemeToggleComponent, // Standalone component
+    SyncfusionModule // Syncfusion components
   ]
 })
 export class UiKitModule { }

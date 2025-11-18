@@ -1197,6 +1197,306 @@
     </div>
   </section>
 
+  <!-- ============================================
+       Syncfusion Data Display Components
+       ============================================ -->
+  <section class="glass-card-strong p-6 animate-fade-in mb-8">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-bold">SF</span>
+      <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100">
+        Syncfusion Data Display Components
+      </h2>
+    </div>
+    <p class="text-slate-600 dark:text-slate-400 mb-6">
+      Components สำหรับแสดงข้อมูลแบบตาราง กราฟ และวิเคราะห์ข้อมูล
+    </p>
+  </section>
+
+  <!-- Data Grid Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Data Grid
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Basic Data Grid with Pagination</h3>
+        <div class="overflow-x-auto">
+          <ejs-grid 
+            [dataSource]="gridData" 
+            [columns]="gridColumns"
+            [allowPaging]="true"
+            [pageSettings]="gridPageSettings"
+            [allowSorting]="true"
+            [allowFiltering]="true"
+            height="400">
+          </ejs-grid>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tree Grid Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Tree Grid
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Hierarchical Data Display</h3>
+        <div class="overflow-x-auto">
+          <ejs-treegrid 
+            [dataSource]="treeGridData" 
+            [columns]="treeGridColumns"
+            [childMapping]="treeGridChildMapping"
+            [allowPaging]="true"
+            [pageSettings]="{ pageSize: 5 }"
+            [allowSorting]="true"
+            height="400">
+          </ejs-treegrid>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pivot Table Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Pivot Table
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Data Analysis with Pivot Table</h3>
+        <div class="overflow-x-auto">
+          <ejs-pivotview 
+            #pivotview
+            [dataSourceSettings]="pivotDataSettings"
+            width="100%"
+            height="400">
+          </ejs-pivotview>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Charts
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Line Chart</h3>
+        <div class="overflow-x-auto">
+          <ejs-chart 
+            [primaryXAxis]="chartPrimaryXAxis"
+            [primaryYAxis]="chartPrimaryYAxis"
+            [legendSettings]="chartLegend"
+            [tooltip]="chartTooltip"
+            title="ยอดขายรายเดือน">
+            <e-series-collection>
+              <e-series 
+                [dataSource]="chartData" 
+                type="Line" 
+                xName="month" 
+                yName="sales" 
+                name="ยอดขาย"
+                [marker]="{ visible: true }">
+              </e-series>
+              <e-series 
+                [dataSource]="chartData" 
+                type="Line" 
+                xName="month" 
+                yName="profit" 
+                name="กำไร"
+                [marker]="{ visible: true }">
+              </e-series>
+            </e-series-collection>
+          </ejs-chart>
+        </div>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Column Chart</h3>
+        <div class="overflow-x-auto">
+          <ejs-chart 
+            [primaryXAxis]="chartPrimaryXAxis"
+            [primaryYAxis]="chartPrimaryYAxis"
+            [legendSettings]="chartLegend"
+            [tooltip]="chartTooltip"
+            title="ยอดขายรายเดือน (Column)">
+            <e-series-collection>
+              <e-series 
+                [dataSource]="chartData" 
+                type="Column" 
+                xName="month" 
+                yName="sales" 
+                name="ยอดขาย">
+              </e-series>
+              <e-series 
+                [dataSource]="chartData" 
+                type="Column" 
+                xName="month" 
+                yName="profit" 
+                name="กำไร">
+              </e-series>
+            </e-series-collection>
+          </ejs-chart>
+        </div>
+      </div>
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Pie Chart</h3>
+        <div class="overflow-x-auto">
+          <ejs-accumulationchart 
+            [legendSettings]="chartLegend"
+            [tooltip]="chartTooltip"
+            title="ยอดขายรายเดือน (Pie)">
+            <e-accumulation-series-collection>
+              <e-accumulation-series 
+                [dataSource]="chartData" 
+                xName="month" 
+                yName="sales" 
+                type="Pie"
+                [dataLabel]="pieChartDataLabel">
+              </e-accumulation-series>
+            </e-accumulation-series-collection>
+          </ejs-accumulationchart>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       Syncfusion Editor Components
+       ============================================ -->
+  <section class="glass-card-strong p-6 animate-fade-in mb-8">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-500 text-white text-sm font-bold">SF</span>
+      <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100">
+        Syncfusion Editor Components
+      </h2>
+    </div>
+    <p class="text-slate-600 dark:text-slate-400 mb-6">
+      Components สำหรับแก้ไขและดูเอกสาร รูปภาพ และข้อมูล
+    </p>
+  </section>
+
+  <!-- Rich Text Editor Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Rich Text Editor
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">WYSIWYG Editor</h3>
+        <div class="overflow-x-auto">
+          <ejs-richtexteditor 
+            [value]="rteValue"
+            [toolbarSettings]="rteTools"
+            height="400">
+          </ejs-richtexteditor>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Document Editor Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Document Editor
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Word-like Document Editor</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
+          หมายเหตุ: Document Editor ต้องการ service URL สำหรับทำงานเต็มรูปแบบ
+        </p>
+        <div class="overflow-x-auto">
+          <ejs-documenteditor 
+            [serviceUrl]="documentEditorServiceUrl"
+            height="500"
+            [enableSelection]="true"
+            [enableEditor]="true"
+            [enableSfdtExport]="true"
+            [enableWordExport]="true"
+            [enableOptionsPane]="true">
+          </ejs-documenteditor>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PDF Viewer Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      PDF Viewer
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">PDF Document Viewer</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
+          หมายเหตุ: PDF Viewer ต้องการ service URL สำหรับทำงานเต็มรูปแบบ
+        </p>
+        <div class="overflow-x-auto">
+          <ejs-pdfviewer 
+            [serviceUrl]="pdfViewerServiceUrl"
+            [documentPath]="pdfDocumentPath"
+            height="600"
+            [enableToolbar]="true"
+            [enableNavigation]="true"
+            [enableDownload]="true"
+            [enablePrint]="true">
+          </ejs-pdfviewer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spreadsheet Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Spreadsheet
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Excel-like Spreadsheet</h3>
+        <div class="overflow-x-auto">
+          <ejs-spreadsheet 
+            [sheets]="spreadsheetData"
+            height="500"
+            [showRibbon]="true"
+            [showFormulaBar]="true"
+            [showSheetTabs]="true"
+            [allowInsert]="true"
+            [allowDelete]="true"
+            [allowEditing]="true"
+            [allowSorting]="true"
+            [allowFiltering]="true">
+          </ejs-spreadsheet>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Editor Section -->
+  <section class="glass-card p-6 animate-slide-up">
+    <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
+      Image Editor
+    </h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="thai-text font-semibold text-lg mb-3 text-slate-700 dark:text-slate-300">Image Editing Tool</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
+          ใช้เครื่องมือแก้ไขรูปภาพ: Crop, Rotate, Flip, Resize, และอื่นๆ
+        </p>
+        <div class="overflow-x-auto">
+          <ejs-imageeditor 
+            height="600"
+            [toolbar]="['Annotate', 'Crop', 'Transform', 'Finetune', 'Filter']">
+          </ejs-imageeditor>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Spacing & Layout Section -->
   <section class="glass-card p-6 animate-slide-up">
     <h2 class="thai-text font-bold text-2xl text-slate-800 dark:text-slate-100 mb-6">
