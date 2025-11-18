@@ -37,6 +37,33 @@ export class HomeComponent implements OnInit {
     workingHours: 0
   };
 
+  // Statistics cards for StatisticsGrid
+  get statisticsCards() {
+    return [
+      {
+        icon: '📅',
+        label: 'ยอดการลาคงเหลือ',
+        value: this.stats.totalLeaveBalance,
+        suffix: ' วัน',
+        iconBgClass: 'bg-indigo-100 dark:bg-indigo-900'
+      },
+      {
+        icon: '💰',
+        label: 'สลิปเงินเดือน',
+        value: this.stats.recentPayslipsCount,
+        suffix: ' รายการ',
+        iconBgClass: 'bg-cyan-100 dark:bg-cyan-900'
+      },
+      {
+        icon: '⏰',
+        label: 'การลงเวลา',
+        value: this.stats.workingHours,
+        suffix: ' ชั่วโมง',
+        iconBgClass: 'bg-pink-100 dark:bg-pink-900'
+      }
+    ];
+  }
+
   constructor(
     private authService: AuthService,
     private homeService: HomeService,

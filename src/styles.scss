@@ -55,16 +55,32 @@ html, body {
 
 body {
   margin: 0;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  /* Light Mode: Vertical gradient beige/cream ตาม Design System */
+  background-color: #f5f1e8; /* Fallback */
+  background: linear-gradient(180deg,
+    #faf8f3 0%,     /* Light beige */
+    #f5f1e8 50%,    /* Beige */
+    #ede8d8 100%    /* Cream */
+  );
   background-attachment: fixed;
   min-height: 100vh;
   transition: background 0.3s ease;
 }
 
-/* Dark Mode Base */
+/* Dark Mode Base - Vertical gradient ตาม Design System */
 .dark body {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-  color: #f1f5f9;
+  /* Dark Mode: Vertical gradient from black to dark blue */
+  background-color: #000000; /* Fallback */
+  background: linear-gradient(180deg,
+    #000000 0%,      /* Black */
+    #000000 15%,
+    #0a0a0f 35%,    /* Dark gray */
+    #0f172a 55%,    /* Slate-900 */
+    #1e293b 75%,    /* Slate-800 */
+    #1e293b 100%
+  );
+  background-attachment: fixed;
+  color: #ffffff;
 }
 
 /* Theme-based Background Gradients */
@@ -135,19 +151,63 @@ body.theme-pink {
 /* ============================================
    Typography
    ============================================ */
-h1, h2, h3, h4, h5, h6 {
+/* Typography Scale ตาม Design System */
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700; /* Bold */
+  line-height: 1.375;
+  color: #1e293b;
+  transition: color 0.3s ease;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600; /* Semibold */
+  line-height: 1.375;
+  color: #1e293b;
+  transition: color 0.3s ease;
+}
+
+h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600; /* Semibold */
+  line-height: 1.375;
+  color: #1e293b;
+  transition: color 0.3s ease;
+}
+
+h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600; /* Semibold */
+  line-height: 1.375;
+  color: #1e293b;
+  transition: color 0.3s ease;
+}
+
+h5, h6 {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.375;
   color: #1e293b;
   transition: color 0.3s ease;
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-  color: #f1f5f9;
+  color: #ffffff;
 }
 
-p, span, div, a, button, input, textarea, select {
+p {
+  font-family: 'Inter', 'Sarabun', sans-serif;
+  font-size: 1rem; /* 16px */
+  font-weight: 400; /* Normal */
+  line-height: 1.625;
+}
+
+span, div, a, button, input, textarea, select {
   font-family: 'Inter', 'Sarabun', sans-serif;
 }
 
@@ -165,19 +225,38 @@ code, pre, kbd, samp {
    ============================================ */
 @layer components {
   .glass-card {
-    @apply bg-white/25 backdrop-blur-md rounded-2xl border border-white/30 shadow-glass;
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    /* Light Mode Glass Card ตาม Design System */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+
+    /* Hover effect */
+    &:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.25);
+    }
   }
 
   .dark .glass-card {
-    @apply bg-slate-900/25 backdrop-blur-md rounded-2xl border border-slate-700/30 shadow-glass-dark;
-    background: rgba(15, 23, 42, 0.25);
-    border-color: rgba(51, 65, 85, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    /* Dark Mode Glass Card ตาม Design System */
+    background: rgba(26, 26, 46, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+
+    /* Hover effect */
+    &:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.25);
+    }
   }
 
   .glass-card-strong {
@@ -213,23 +292,44 @@ code, pre, kbd, samp {
   }
 
   .glass-button {
-    @apply bg-white/30 backdrop-blur-md rounded-lg border border-white/40 px-6 py-2.5 font-medium text-slate-700 transition-all duration-200;
+    /* Light Mode Secondary Button ตาม Design System */
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 600; /* Semibold */
+    color: rgb(15 23 42);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.85);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
   }
 
   .dark .glass-button {
-    @apply bg-slate-800/30 backdrop-blur-md rounded-lg border border-slate-700/40 px-6 py-2.5 font-medium text-slate-200;
-    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
-  }
+    /* Dark Mode Secondary Button ตาม Design System */
+    background: rgba(26, 26, 46, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 600; /* Semibold */
+    color: #ffffff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 
-  .glass-button:hover {
-    @apply bg-white/40 shadow-lg transform scale-105;
-  }
-
-  .dark .glass-button:hover {
-    @apply bg-slate-700/40;
+    &:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.2);
+    }
   }
 
   .glass-button:active {
@@ -289,13 +389,52 @@ code, pre, kbd, samp {
   }
 
   .glass-input {
-    @apply bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 px-4 py-2.5 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all duration-200;
+    /* Light Mode Glass Input ตาม Design System */
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 12px;
+    color: rgb(15 23 42);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgb(100 116 139); /* slate-500 */
+    }
+
+    /* Focus effect */
+    &:focus {
+      outline: none;
+      border-color: rgb(245, 158, 11); /* amber-500 */
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
   }
 
   .dark .glass-input {
-    @apply bg-slate-800/20 backdrop-blur-sm rounded-lg border border-slate-700/30 px-4 py-2.5 text-slate-200 placeholder-slate-500;
+    /* Dark Mode Glass Input ตาม Design System */
+    background: rgba(26, 26, 46, 0.5);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    color: #ffffff;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Focus effect */
+    &:focus {
+      outline: none;
+      border-color: rgba(59, 130, 246, 0.6);
+      background: rgba(26, 26, 46, 0.7);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2),
+                  0 0 20px rgba(59, 130, 246, 0.1);
+    }
   }
 
   .glass-input.error {
@@ -303,11 +442,21 @@ code, pre, kbd, samp {
   }
 
   .form-label {
-    @apply block text-sm font-medium mb-1;
+    /* Form Label ตาม Design System */
+    display: block;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500; /* Medium */
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
   }
 
   .dark .form-label {
-    @apply text-slate-200;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  :root.light .form-label,
+  html.light .form-label {
+    color: rgb(51 65 85); /* slate-700 */
   }
 
   .glass-nav {
@@ -603,6 +752,69 @@ code, pre, kbd, samp {
 .p-5 { padding: 3rem; }
 
 /* ============================================
+   Animation Keyframes
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes themeTransition {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ============================================
    Animation Classes
    ============================================ */
 .animate-fade-in {
@@ -644,6 +856,7 @@ code, pre, kbd, samp {
 
   .glass-card {
     background: white;
+    -webkit-backdrop-filter: none;
     backdrop-filter: none;
     box-shadow: none;
     border: 1px solid #e5e7eb;

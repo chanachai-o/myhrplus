@@ -5,7 +5,7 @@
   <!-- Main Content -->
   <div class="flex-1 px-5 pb-10 max-w-7xl mx-auto w-full">
     <!-- Welcome Section -->
-    <div class="relative my-10 p-10 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/90 dark:to-gray-800/70 rounded-3xl shadow-2xl backdrop-blur-lg overflow-hidden animate-fade-in">
+    <app-glass-card padding="p-10" customClass="my-10" [animate]="'fade-in'">
       <div class="relative z-10">
         <h1 class="text-5xl font-bold mb-4 thai-text bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animate-fade-in-up">
           {{ getGreeting() }}, {{ currentUser?.fullname || currentUser?.name || 'ผู้ใช้งาน' }}!
@@ -28,13 +28,16 @@
           </div>
         </div>
       </div>
-    </div>
+    </app-glass-card>
 
     <!-- Dashboard Stats -->
     <div class="my-10" *ngIf="!dashboardLoading">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <app-statistics-grid [stats]="statisticsCards" [columns]="3"></app-statistics-grid>
+      
+      <!-- Detailed Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 mt-6">
         <!-- Leave Balance Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" [@fadeInUp]>
+        <app-glass-card padding="p-6" [animate]="'fade-in'">
           <div class="flex items-center gap-3 mb-5">
             <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
               <app-icon name="event" size="sm" color="text-white"></app-icon>
@@ -53,16 +56,18 @@
               </div>
             </div>
           </div>
-          <button 
-            class="w-full mt-4 px-4 py-2 text-indigo-600 dark:text-indigo-400 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors flex items-center justify-center gap-2"
-            (click)="router.navigate(['/ta/leave'])">
+          <app-glass-button 
+            variant="secondary"
+            size="md"
+            [fullWidth]="true"
+            (clicked)="router.navigate(['/ta/leave'])">
             <span class="thai-text">ดูรายละเอียด</span>
             <app-icon name="arrow_forward" size="sm" color="text-indigo-600 dark:text-indigo-400"></app-icon>
-          </button>
-        </div>
+          </app-glass-button>
+        </app-glass-card>
 
         <!-- Payslip Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" [@fadeInUp]>
+        <app-glass-card padding="p-6" [animate]="'fade-in'">
           <div class="flex items-center gap-3 mb-5">
             <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center">
               <app-icon name="receipt" size="sm" color="text-white"></app-icon>
@@ -84,16 +89,18 @@
               </div>
             </div>
           </div>
-          <button 
-            class="w-full mt-4 px-4 py-2 text-cyan-600 dark:text-cyan-400 font-medium hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors flex items-center justify-center gap-2"
-            (click)="router.navigate(['/dashboard/payslip'])">
+          <app-glass-button 
+            variant="secondary"
+            size="md"
+            [fullWidth]="true"
+            (clicked)="router.navigate(['/dashboard/payslip'])">
             <span class="thai-text">ดูทั้งหมด</span>
             <app-icon name="arrow_forward" size="sm" color="text-cyan-600 dark:text-cyan-400"></app-icon>
-          </button>
-        </div>
+          </app-glass-button>
+        </app-glass-card>
 
         <!-- Time Attendance Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" [@fadeInUp]>
+        <app-glass-card padding="p-6" [animate]="'fade-in'">
           <div class="flex items-center gap-3 mb-5">
             <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
               <app-icon name="access_time" size="sm" color="text-white"></app-icon>
@@ -137,31 +144,32 @@
               </div>
             </div>
           </div>
-          <button 
-            class="w-full mt-4 px-4 py-2 text-pink-600 dark:text-pink-400 font-medium hover:bg-pink-50 dark:hover:bg-pink-900/20 rounded-lg transition-colors flex items-center justify-center gap-2"
-            (click)="router.navigate(['/ta'])">
+          <app-glass-button 
+            variant="secondary"
+            size="md"
+            [fullWidth]="true"
+            (clicked)="router.navigate(['/ta'])">
             <span class="thai-text">ดูรายละเอียด</span>
             <app-icon name="arrow_forward" size="sm" color="text-pink-600 dark:text-pink-400"></app-icon>
-          </button>
-        </div>
+          </app-glass-button>
+        </app-glass-card>
       </div>
     </div>
 
     <!-- Loading State -->
-    <div *ngIf="loading || dashboardLoading" class="flex flex-col items-center justify-center py-24 px-5 max-w-7xl mx-auto">
-      <app-spinner size="lg" message="กำลังโหลดข้อมูล..."></app-spinner>
-    </div>
+    <app-loading *ngIf="loading || dashboardLoading" message="กำลังโหลดข้อมูล..."></app-loading>
 
     <!-- Menu Categories -->
     <div *ngIf="!loading && menuCategories.length > 0" class="max-w-7xl mx-auto">
       <h2 class="text-3xl font-semibold mb-10 text-center text-gray-800 dark:text-gray-200 thai-text">เลือกเมนูที่ต้องการใช้งาน</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
-          *ngFor="let category of menuCategories"
-          class="relative rounded-2xl p-0 cursor-pointer transition-all duration-300 overflow-hidden shadow-lg min-h-[200px] flex flex-col hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
-          [style.background]="getGradientForCategory(category.code)"
-          [@fadeInUp]>
+      <app-glass-card
+        *ngFor="let category of menuCategories"
+        padding="p-8"
+        customClass="cursor-pointer min-h-[200px] flex flex-col"
+        [style.background]="getGradientForCategory(category.code)"
+        [animate]="'fade-in'">
           <div class="relative z-10 p-8 flex-1 flex flex-col text-white cursor-pointer" (click)="navigateToCategory(category)" [attr.aria-label]="category.thaiTitle">
             <div class="flex items-center gap-4 mb-6">
               <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center transition-all duration-300 backdrop-blur-lg flex-shrink-0 hover:scale-110 hover:rotate-6">
@@ -182,16 +190,16 @@
               </div>
             </div>
           </div>
-          <div class="absolute inset-0 bg-black/10 opacity-0 transition-opacity duration-300 z-0 hover:opacity-100"></div>
-        </div>
+        </app-glass-card>
       </div>
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="!loading && menuCategories.length === 0" class="flex flex-col items-center justify-center py-24 px-5 max-w-7xl mx-auto text-center">
-      <app-icon name="folder_open" size="xl" color="text-gray-400 dark:text-gray-600" class="mb-6"></app-icon>
-      <h3 class="text-2xl text-gray-600 dark:text-gray-400 mb-3 thai-text">ไม่มีเมนูที่สามารถเข้าถึงได้</h3>
-      <p class="text-base text-gray-500 dark:text-gray-500 thai-text">กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง</p>
-    </div>
+    <app-empty-state
+      *ngIf="!loading && menuCategories.length === 0"
+      icon="folder_open"
+      title="ไม่มีเมนูที่สามารถเข้าถึงได้"
+      description="กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง">
+    </app-empty-state>
   </div>
 </div>

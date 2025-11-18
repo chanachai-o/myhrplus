@@ -22,9 +22,7 @@
     <div class="flex-1 min-h-screen flex flex-col">
       <app-header (toggleSidenav)="toggleSidebar()"></app-header>
       <main class="main-content flex-1 animate-fade-in p-6">
-        <div class="glass-card dark:bg-slate-900/25 dark:border-slate-700/30 p-6 rounded-lg animate-slide-up transition-all duration-300">
-          <router-outlet></router-outlet>
-        </div>
+        <router-outlet></router-outlet>
       </main>
       <app-footer></app-footer>
     </div>
