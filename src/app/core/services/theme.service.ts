@@ -119,12 +119,29 @@ export class ThemeService {
       body.classList.remove('dark');
     }
 
+    // Switch Syncfusion UI Kit theme stylesheet
+    this.switchSyncfusionTheme(isDark);
+
     // Set primary color CSS variable
     html.style.setProperty('--primary-rgb', theme.primaryColor);
 
     // Update subjects
     this.themeSubject.next(theme);
     this.isDarkModeSubject.next(isDark);
+  }
+
+  /**
+   * Switch Syncfusion UI Kit theme stylesheet based on dark mode
+   */
+  private switchSyncfusionTheme(isDark: boolean): void {
+    const themeLink = document.getElementById('syncfusion-theme') as HTMLLinkElement;
+    if (themeLink) {
+      if (isDark) {
+        themeLink.href = 'https://cdn.syncfusion.com/ej2/29.2.10/tailwind-dark.css';
+      } else {
+        themeLink.href = 'https://cdn.syncfusion.com/ej2/29.2.10/tailwind.css';
+      }
+    }
   }
 
   /**

@@ -94,6 +94,22 @@ export const ROUTES = {
 
   // UI Kit
   UI_KIT: '/ui-kit',
+  UI_KIT_BLOCKS: {
+    BASE: '/ui-kit/blocks',
+    SHOWCASE: '/ui-kit/blocks/showcase',
+    AUTH: {
+      SIGNIN: '/ui-kit/blocks/auth/signin',
+      SIGNUP: '/ui-kit/blocks/auth/signup',
+      FORGOT_PASSWORD: '/ui-kit/blocks/auth/forgot-password',
+      RESET_PASSWORD: '/ui-kit/blocks/auth/reset-password'
+    },
+    DASHBOARD: {
+      ANALYTICS: '/ui-kit/blocks/dashboard/analytics'
+    },
+    FORMS: {
+      CONTACT: '/ui-kit/blocks/forms/contact'
+    }
+  },
 
   // Wildcard
   NOT_FOUND: '/404'
