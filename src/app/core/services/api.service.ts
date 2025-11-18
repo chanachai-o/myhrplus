@@ -19,7 +19,8 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = environment.apiBaseUrl;
+  // Use jbossUrl for /hr endpoints (same as hrplus-std-rd)
+  private baseUrl = environment.jbossUrl;
   private maxRetries = 3;
   private retryDelay = 1000; // 1 second
 

@@ -49,7 +49,7 @@ export class MenuService {
       }),
       catchError(() => {
         // Fallback to API
-        return this.http.get<MenuConfig>(`${environment.apiBaseUrl}${environment.apiEndpoints.unsecure}/menu`).pipe(
+        return this.http.get<MenuConfig>(`${environment.jbossUrl}${environment.apiEndpoints.unsecure}/menu`).pipe(
           map(config => {
             this.menuConfig = config;
             this.menuCache = this.transformMenuItems(config.menu || []);

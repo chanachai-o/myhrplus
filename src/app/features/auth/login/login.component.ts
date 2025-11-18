@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit {
                 if (manageResult.defaultpage === '1') {
                   const userToken = result.accessToken;
                   const lang = 'th'; // Default to Thai
-                  const urlHr = environment.apiBaseUrl;
+                  const urlHr = environment.jbossUrl;
                   window.location.href = `${urlHr}/TOKENVERFY.jsp?t=${userToken}&lang=${lang}`;
                   return;
                 }

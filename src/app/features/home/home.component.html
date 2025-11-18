@@ -33,111 +33,48 @@
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-container">
     <mat-spinner></mat-spinner>
-    <p class="thai-text">กำลังโหลดโมดูล...</p>
+    <p class="thai-text">กำลังโหลดเมนู...</p>
   </div>
 
-  <!-- Modules Grid -->
-  <div *ngIf="!loading && modules.length > 0" class="modules-section">
-    <h2 class="section-title thai-text">เลือกโมดูลที่ต้องการใช้งาน</h2>
-    
-    <!-- Employee Modules -->
-    <div *ngIf="getModulesByCategory('employee').length > 0" class="module-category">
-      <h3 class="category-title thai-text">
-        <mat-icon>person</mat-icon>
-        สำหรับพนักงาน
-      </h3>
-      <div class="modules-grid">
-        <div
-          *ngFor="let module of getModulesByCategory('employee')"
-          class="module-card"
-          [style.background]="module.gradient"
-          (click)="navigateToModule(module.route)"
-          [@fadeInUp]>
-          <div class="module-card-content">
-            <div class="module-icon">
-              <mat-icon>{{ module.icon }}</mat-icon>
-            </div>
-            <div class="module-info">
-              <h3 class="module-name thai-text">{{ module.thaiName }}</h3>
-              <p class="module-english">{{ module.englishName }}</p>
-              <p class="module-description thai-text">{{ module.thaiDescription }}</p>
-            </div>
-            <div class="module-arrow">
-              <mat-icon>arrow_forward</mat-icon>
-            </div>
-          </div>
-          <div class="module-card-overlay"></div>
-        </div>
-      </div>
-    </div>
+  <!-- Menu Categories -->
+  <div *ngIf="!loading && menuCategories.length > 0" class="menu-categories-section">
+    <h2 class="section-title thai-text">เลือกเมนูที่ต้องการใช้งาน</h2>
 
-    <!-- Management Modules -->
-    <div *ngIf="getModulesByCategory('management').length > 0" class="module-category">
-      <h3 class="category-title thai-text">
-        <mat-icon>supervisor_account</mat-icon>
-        สำหรับผู้จัดการ
-      </h3>
-      <div class="modules-grid">
-        <div
-          *ngFor="let module of getModulesByCategory('management')"
-          class="module-card"
-          [style.background]="module.gradient"
-          (click)="navigateToModule(module.route)"
-          [@fadeInUp]>
-          <div class="module-card-content">
-            <div class="module-icon">
-              <mat-icon>{{ module.icon }}</mat-icon>
+    <div class="categories-grid">
+      <div
+        *ngFor="let category of menuCategories"
+        class="category-card"
+        [style.background]="getGradientForCategory(category.code)"
+        [@fadeInUp]>
+        <div class="category-card-content" (click)="navigateToCategory(category)" [attr.aria-label]="category.thaiTitle">
+          <div class="category-header">
+            <div class="category-icon">
+              <mat-icon>{{ category.icon }}</mat-icon>
             </div>
-            <div class="module-info">
-              <h3 class="module-name thai-text">{{ module.thaiName }}</h3>
-              <p class="module-english">{{ module.englishName }}</p>
-              <p class="module-description thai-text">{{ module.thaiDescription }}</p>
-            </div>
-            <div class="module-arrow">
-              <mat-icon>arrow_forward</mat-icon>
+            <div class="category-title-section">
+              <h3 class="category-title thai-text">{{ category.thaiTitle }}</h3>
+              <p class="category-subtitle">{{ category.englishTitle }}</p>
             </div>
           </div>
-          <div class="module-card-overlay"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Admin Modules -->
-    <div *ngIf="getModulesByCategory('admin').length > 0" class="module-category">
-      <h3 class="category-title thai-text">
-        <mat-icon>admin_panel_settings</mat-icon>
-        สำหรับผู้ดูแลระบบ
-      </h3>
-      <div class="modules-grid">
-        <div
-          *ngFor="let module of getModulesByCategory('admin')"
-          class="module-card"
-          [style.background]="module.gradient"
-          (click)="navigateToModule(module.route)"
-          [@fadeInUp]>
-          <div class="module-card-content">
-            <div class="module-icon">
-              <mat-icon>{{ module.icon }}</mat-icon>
+          <div class="category-footer">
+            <div class="category-description thai-text">
+              คลิกเพื่อเข้าสู่ระบบ EMPVIEW
             </div>
-            <div class="module-info">
-              <h3 class="module-name thai-text">{{ module.thaiName }}</h3>
-              <p class="module-english">{{ module.englishName }}</p>
-              <p class="module-description thai-text">{{ module.thaiDescription }}</p>
-            </div>
-            <div class="module-arrow">
+            <div class="category-arrow">
               <mat-icon>arrow_forward</mat-icon>
             </div>
           </div>
-          <div class="module-card-overlay"></div>
         </div>
+        <div class="category-card-overlay"></div>
       </div>
     </div>
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="!loading && modules.length === 0" class="empty-state">
+  <div *ngIf="!loading && menuCategories.length === 0" class="empty-state">
     <mat-icon class="empty-icon">folder_open</mat-icon>
-    <h3 class="thai-text">ไม่มีโมดูลที่สามารถเข้าถึงได้</h3>
+    <h3 class="thai-text">ไม่มีเมนูที่สามารถเข้าถึงได้</h3>
     <p class="thai-text">กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การเข้าถึง</p>
   </div>
 </div>

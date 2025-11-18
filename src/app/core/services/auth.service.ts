@@ -130,8 +130,9 @@ export class AuthService {
         lang: credentials.lang || 'th'
       };
 
+      // Use jbossUrl for /hr endpoints (same as hrplus-std-rd)
       this.http.post<any>(
-        `${environment.apiBaseUrl}${environment.apiEndpoints.unsecure}/authen`,
+        `${environment.jbossUrl}${environment.apiEndpoints.unsecure}/authen`,
         body
       ).subscribe({
         next: (response) => {
@@ -215,13 +216,13 @@ export class AuthService {
 
   getDatabase(): Observable<DatabaseModel[]> {
     return this.http.get<DatabaseModel[]>(
-      `${environment.apiBaseUrl}${environment.apiEndpoints.unsecure}/system/get-db-list`
+      `${environment.jbossUrl}${environment.apiEndpoints.unsecure}/system/get-db-list`
     );
   }
 
   logout(): void {
     // Call logout API if needed
-    this.http.post(`${environment.apiBaseUrl}${environment.apiEndpoints.auth}/logout`, {})
+    this.http.post(`${environment.jbossUrl}${environment.apiEndpoints.auth}/logout`, {})
       .subscribe({
         next: () => {},
         error: () => {}
@@ -243,7 +244,7 @@ export class AuthService {
     }
 
     return this.http.post<LoginResponse>(
-      `${environment.apiBaseUrl}${environment.apiEndpoints.auth}/refresh`,
+      `${environment.jbossUrl}${environment.apiEndpoints.auth}/refresh`,
       { refreshToken }
     ).pipe(
       map(response => {

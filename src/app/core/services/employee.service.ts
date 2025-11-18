@@ -22,8 +22,8 @@ export class EmployeeService {
       // Use baseUrl from environment (matching hrplus-std-rd pattern)
       // In hrplus-std-rd, it uses environment.baseUrl + "/user/manage"
       // We need to construct the correct URL
-      const baseUrl = environment.apiBaseUrl.replace('/hr', ''); // Remove /hr to get base
-      const url = `${baseUrl}/plus/user/manage`; // Match hrplus-std-rd pattern
+      // Use baseUrl for /plus endpoints (same as hrplus-std-rd)
+      const url = `${environment.baseUrl}/user/manage`;
 
       this.http.get<SetCharacter>(url)
         .subscribe({
