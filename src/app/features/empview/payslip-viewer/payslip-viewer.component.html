@@ -1,8 +1,9 @@
-<div class="payslip-viewer-container">
-  <div class="glass-card-weak p-6 rounded-lg">
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 thai-text">e-Payslip</h2>
-    </div>
+<app-page-layout
+  title="e-Payslip"
+  description="สลิปเงินเดือนอิเล็กทรอนิกส์"
+  icon="💰">
+  
+  <app-glass-card padding="p-6" [animate]="'fade-in'">
     
     <div class="form-section flex items-center gap-4 mb-6">
       <div class="flex-1">
@@ -17,13 +18,14 @@
       </div>
 
       <div class="flex items-end">
-        <button 
-          (click)="loadPDF()" 
+        <app-glass-button 
+          variant="primary"
+          size="md"
           [disabled]="isLoading || !periodSelect"
-          class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 thai-text">
-          <app-spinner *ngIf="isLoading" size="sm"></app-spinner>
-          <span *ngIf="!isLoading">Load Payslip</span>
-        </button>
+          [loading]="isLoading"
+          (clicked)="loadPDF()">
+          Load Payslip
+        </app-glass-button>
       </div>
     </div>
 
@@ -37,5 +39,5 @@
         <a [href]="pdfSrc" target="_blank" class="underline hover:text-green-700 dark:hover:text-green-300">click here</a>.
       </p>
     </div>
-  </div>
-</div>
+  </app-glass-card>
+</app-page-layout>

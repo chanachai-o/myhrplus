@@ -311,5 +311,17 @@ export class TimeAttendanceViewComponent implements OnInit, OnDestroy {
   }
 
   Math = Math; // Expose Math to template
+
+  // Page actions for PageLayoutComponent
+  get pageActions() {
+    return [
+      {
+        label: 'Request Time Edit',
+        icon: '✏️',
+        variant: 'primary' as const,
+        onClick: () => this.requestTimeEdit()
+      }
+    ];
+  }
 }
 

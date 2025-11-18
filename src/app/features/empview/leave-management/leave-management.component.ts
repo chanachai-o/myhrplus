@@ -108,5 +108,17 @@ export class LeaveManagementComponent implements OnInit {
     { key: 'status', label: 'Status' },
     { key: 'reason', label: 'Reason' }
   ];
+
+  // Page actions for PageLayoutComponent
+  get pageActions() {
+    return [
+      {
+        label: 'Request Leave',
+        icon: '➕',
+        variant: 'primary' as const,
+        onClick: () => this.requestLeave()
+      }
+    ];
+  }
 }
 

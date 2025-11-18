@@ -1,14 +1,10 @@
-<div class="leave-management-container">
-  <div class="glass-card-weak p-6 rounded-lg">
-    <div class="mb-6 flex items-center justify-between">
-      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 thai-text">Leave Management</h2>
-      <button 
-        (click)="requestLeave()"
-        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2">
-        <app-icon name="add" size="sm" color="text-white"></app-icon>
-        <span>Request Leave</span>
-      </button>
-    </div>
+<app-page-layout
+  title="Leave Management"
+  description="จัดการการลาของพนักงาน"
+  icon="📅"
+  [actions]="pageActions">
+  
+  <app-glass-card padding="p-6" [animate]="'fade-in'">
     
     <!-- Tabs -->
     <div class="tabs-container">
@@ -36,13 +32,11 @@
       <div class="tabs-content">
         <!-- Leave Balance Tab -->
         <div *ngIf="activeTab === 0" class="tab-content">
-          <div *ngIf="loading; else balanceContent" class="loading-container flex items-center justify-center py-12">
-            <app-spinner size="lg"></app-spinner>
-          </div>
+          <app-loading *ngIf="loading" message="กำลังโหลดข้อมูล..."></app-loading>
 
-          <ng-template #balanceContent>
+          <div *ngIf="!loading">
             <div class="leave-balance-list space-y-4" *ngIf="leaveBalances.length > 0; else noBalance">
-              <div class="leave-balance-item glass-card-weak p-4 rounded-lg" *ngFor="let balance of leaveBalances">
+              <app-glass-card padding="p-4" variant="weak" *ngFor="let balance of leaveBalances" [animate]="'fade-in'">
                 <div class="balance-header flex items-center justify-between mb-4">
                   <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-100">{{ balance.leaveTypeName }}</h3>
                   <span class="balance-badge px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
@@ -71,16 +65,17 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </app-glass-card>
             </div>
 
             <ng-template #noBalance>
-              <div class="no-data text-center py-12">
-                <app-icon name="info" size="xl" color="text-gray-400 dark:text-gray-500" class="mb-4"></app-icon>
-                <p class="text-slate-600 dark:text-slate-400 thai-text">No leave balance information available</p>
-              </div>
+              <app-empty-state
+                icon="info"
+                title="ไม่มีข้อมูลการลาคงเหลือ"
+                description="ไม่พบข้อมูลการลาคงเหลือ">
+              </app-empty-state>
             </ng-template>
-          </ng-template>
+          </div>
         </div>
 
         <!-- Leave History Tab -->
@@ -99,11 +94,9 @@
             </div>
           </div>
 
-          <div *ngIf="loading; else historyContent" class="loading-container flex items-center justify-center py-12">
-            <app-spinner size="lg"></app-spinner>
-          </div>
+          <app-loading *ngIf="loading" message="กำลังโหลดข้อมูล..."></app-loading>
 
-          <ng-template #historyContent>
+          <div *ngIf="!loading">
             <div class="leave-history-list" *ngIf="leaveHistory.length > 0; else noHistory">
               <app-data-table
                 [columns]="historyColumns"
@@ -113,14 +106,15 @@
             </div>
 
             <ng-template #noHistory>
-              <div class="no-data text-center py-12">
-                <app-icon name="history" size="xl" color="text-gray-400 dark:text-gray-500" class="mb-4"></app-icon>
-                <p class="text-slate-600 dark:text-slate-400 thai-text">No leave history for {{ selectedYear }}</p>
-              </div>
+              <app-empty-state
+                icon="history"
+                title="ไม่มีประวัติการลา"
+                [description]="'ไม่พบประวัติการลาสำหรับปี ' + selectedYear">
+              </app-empty-state>
             </ng-template>
-          </ng-template>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </app-glass-card>
+</app-page-layout>

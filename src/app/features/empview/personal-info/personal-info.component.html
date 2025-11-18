@@ -1,20 +1,23 @@
-<div class="personal-info-container">
-  <div class="glass-card-weak p-6 rounded-lg">
+<app-page-layout
+  title="Personal Information"
+  description="ข้อมูลส่วนตัวของพนักงาน"
+  icon="👤">
+  
+  <app-glass-card padding="p-6" [animate]="'fade-in'">
     <div class="mb-6 flex items-center justify-between">
       <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 thai-text">Personal Information</h2>
-      <button 
-        (click)="editProfile()" 
-        class="p-2 text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+      <app-glass-button 
+        variant="secondary"
+        size="sm"
+        (clicked)="editProfile()"
         [title]="'Edit Profile'">
         <app-icon name="edit" size="sm"></app-icon>
-      </button>
+      </app-glass-button>
     </div>
     
-    <div *ngIf="loading; else profileContent" class="loading-container flex items-center justify-center py-12">
-      <app-spinner size="lg"></app-spinner>
-    </div>
+    <app-loading *ngIf="loading" message="กำลังโหลดข้อมูล..."></app-loading>
 
-    <ng-template #profileContent>
+    <div *ngIf="!loading">
       <div class="profile-content" *ngIf="profileData">
         <div class="profile-header mb-6">
           <div class="profile-picture" *ngIf="profileData.picture">
@@ -104,16 +107,17 @@
             <!-- Documents Tab -->
             <div *ngIf="activeTab === 2" class="tab-content">
               <p class="text-slate-600 dark:text-slate-400 thai-text mb-4">Employee documents will be displayed here.</p>
-              <button 
-                (click)="navigateToDocuments()"
-                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2 thai-text">
+              <app-glass-button 
+                variant="primary"
+                size="md"
+                (clicked)="navigateToDocuments()">
                 <app-icon name="folder" size="sm" color="text-white"></app-icon>
                 <span>View All Documents</span>
-              </button>
+              </app-glass-button>
             </div>
           </div>
         </div>
       </div>
-    </ng-template>
-  </div>
-</div>
+    </div>
+  </app-glass-card>
+</app-page-layout>
