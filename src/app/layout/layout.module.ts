@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { SyncfusionModule } from '../shared/syncfusion/syncfusion.module';
 import { ThemeToggleComponent } from '../shared/components/theme-toggle/theme-toggle.component';
@@ -23,6 +24,7 @@ import { FooterComponent } from './footer/footer.component';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule, // For ngModel in search input
     SharedModule,
     SyncfusionModule, // Syncfusion UI-KIT components
     ThemeToggleComponent, // Standalone component

@@ -398,3 +398,4 @@ background: linear-gradient(180deg,
 
 **สรุป**: Login component ยังไม่ได้ปรับปรุงตาม Design System ครบถ้วน ต้องปรับปรุงหลายส่วน โดยเฉพาะการใช้ Glass Components และ Background Gradients
 
+

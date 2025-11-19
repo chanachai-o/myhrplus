@@ -63,6 +63,16 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'company',
+    loadChildren: () => import('./features/company/company.module').then(m => m.CompanyModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'setting',
+    loadChildren: () => import('./features/setting/setting.module').then(m => m.SettingModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'demo',
     loadChildren: () => import('./features/demo/demo.module').then(m => m.DemoModule)
     // Removed AuthGuard to allow access without login for demo purposes

@@ -27,3 +27,4 @@ export class LoadingComponent {
   @Input() containerClass: string = 'min-h-[200px]';
 }
 
+

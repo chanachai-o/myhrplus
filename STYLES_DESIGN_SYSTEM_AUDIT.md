@@ -467,3 +467,4 @@ label {
 
 **สรุป**: styles.scss ยังไม่ได้ปรับตาม Design System ครบถ้วน ต้องแก้ไขหลายส่วน โดยเฉพาะ Background Gradients, Glass Card, และ Glass Input styles
 
+

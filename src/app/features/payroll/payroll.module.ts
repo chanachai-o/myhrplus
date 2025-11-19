@@ -12,8 +12,12 @@ import { GlassInputComponent } from '../../shared/components/glass-input/glass-i
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 
+import { PayrollHomeComponent } from './payroll-home/payroll-home.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [
+    PayrollHomeComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

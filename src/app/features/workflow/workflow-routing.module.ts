@@ -1,12 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from '../../layout/main-layout/main-layout.component';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { WorkflowHomeComponent } from './workflow-home/workflow-home.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    children: []
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        component: WorkflowHomeComponent,
+        data: {
+          title: 'Workflow Home',
+          urls: [
+            { title: 'Workflow', url: '/workflow' },
+            { title: 'Home' }
+          ]
+        }
+      }
+    ]
   }
 ];
 

@@ -1,16 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from '../../layout/main-layout/main-layout.component';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { PayrollHomeComponent } from './payroll-home/payroll-home.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: 'home',
         pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        component: PayrollHomeComponent,
+        data: {
+          title: 'Payroll Management Home',
+          urls: [
+            { title: 'Payroll Management', url: '/payroll' },
+            { title: 'Home' }
+          ]
+        }
       }
     ]
   }

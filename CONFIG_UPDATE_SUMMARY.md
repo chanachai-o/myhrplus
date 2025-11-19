@@ -164,3 +164,4 @@ font-family: 'Noto Sans', 'Noto Sans Thai', 'Poppins', 'Inter', 'Kanit', 'Sarabu
 - [Intelligent-Video-Analytics-Platform Package.json](../Intelligent-Video-Analytics-Platform/frontend/package.json)
 - [Intelligent-Video-Analytics-Platform Styles](../Intelligent-Video-Analytics-Platform/frontend/src/styles.scss)
 
+

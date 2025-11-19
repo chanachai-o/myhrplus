@@ -12,8 +12,12 @@ import { GlassInputComponent } from '../../shared/components/glass-input/glass-i
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 
+import { RecruitHomeComponent } from './recruit-home/recruit-home.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [
+    RecruitHomeComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

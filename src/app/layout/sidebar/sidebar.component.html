@@ -3,7 +3,12 @@
   <div class="icon-bar flex flex-col items-center py-4 border-r transition-colors duration-300">
     <!-- Logo -->
     <div class="mb-6">
-      <div class="logo-container w-12 h-12 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110">
+      <div class="logo-container w-12 h-12 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"
+           [attr.aria-label]="'Home'"
+           role="button"
+           tabindex="0"
+           (click)="navigateToHome()"
+           (keydown.enter)="navigateToHome()">
         <span class="text-white text-xl font-bold">H</span>
       </div>
     </div>
@@ -13,32 +18,70 @@
       <button
         *ngFor="let module of mainModules"
         [class.active]="selectedModule === module.id"
-        [title]="module.name"
+        [attr.aria-label]="module.name"
+        [attr.aria-current]="selectedModule === module.id ? 'true' : 'false'"
+        [attr.title]="module.name"
         (click)="selectModule(module.id)"
-        class="module-icon-btn w-full h-12 flex items-center justify-center rounded-xl transition-all duration-300 relative group">
+        (keydown.enter)="selectModule(module.id)"
+        (keydown.space)="selectModule(module.id); $event.preventDefault()"
+        class="module-icon-btn w-full h-12 flex items-center justify-center rounded-xl transition-all duration-300 relative group"
+        type="button">
         <span [class]="module.iconCss" class="text-xl transition-colors duration-300"></span>
         <!-- Active Indicator -->
         <span *ngIf="selectedModule === module.id" class="active-indicator"></span>
+        <!-- Tooltip -->
+        <span class="module-tooltip">{{ module.name }}</span>
       </button>
     </div>
   </div>
 
   <!-- Right Menu Panel - Module Menu -->
-  <div class="menu-panel flex-1 overflow-y-auto transition-colors duration-300">
-    <div class="p-5">
-      <!-- Module Header -->
+  <div class="menu-panel flex-1 flex flex-col overflow-hidden transition-colors duration-300">
+    <div class="p-5 flex-1 overflow-y-auto">
+      <!-- Module Header with Search -->
       <div class="mb-6" *ngIf="selectedModuleData">
-        <h2 class="module-title text-xl font-bold mb-2 thai-text transition-colors duration-300">
-          {{ selectedModuleData.name }}
-        </h2>
-        <div class="module-divider h-px transition-colors duration-300"></div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="module-title text-2xl font-bold thai-text transition-colors duration-300">
+            {{ selectedModuleData.name }}
+          </h2>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-container mb-4 relative" *ngIf="selectedModuleData.menuItems.length > 3">
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+            [placeholder]="'ค้นหาเมนู...'"
+            class="search-input w-full px-4 py-2 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2"
+            [attr.aria-label]="'ค้นหาเมนู'">
+          <span class="e-icons e-search search-icon"></span>
+          <button
+            *ngIf="searchQuery"
+            (click)="clearSearch()"
+            class="clear-search-btn"
+            [attr.aria-label]="'ล้างการค้นหา'"
+            type="button">
+            <span class="e-icons e-close"></span>
+          </button>
+        </div>
+
+        <div class="module-divider h-px transition-colors duration-300 mb-4"></div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="skeleton-loader" *ngFor="let item of [1,2,3,4,5]">
+          <div class="skeleton-icon"></div>
+          <div class="skeleton-text"></div>
+        </div>
       </div>
 
       <!-- Module Menu Items -->
       <ejs-listview
-        *ngIf="selectedModuleData && selectedModuleData.menuItems.length > 0"
+        *ngIf="!isLoading && selectedModuleData && filteredMenuItems.length > 0"
         #listview
-        [dataSource]="selectedModuleData.menuItems"
+        [dataSource]="filteredMenuItems"
         [fields]="listViewFields"
         [showIcon]="true"
         [showCheckBox]="false"
@@ -46,8 +89,22 @@
         class="syncfusion-module-menu">
       </ejs-listview>
 
+      <!-- Search No Results -->
+      <div *ngIf="!isLoading && selectedModuleData && searchQuery && filteredMenuItems.length === 0"
+           class="empty-menu-state flex flex-col items-center justify-center py-12">
+        <span class="e-icons e-search text-5xl mb-4 opacity-50"></span>
+        <p class="empty-text thai-text text-center">ไม่พบเมนูที่ค้นหา</p>
+        <button
+          (click)="clearSearch()"
+          class="mt-4 px-4 py-2 rounded-lg transition-all duration-300"
+          type="button">
+          ล้างการค้นหา
+        </button>
+      </div>
+
       <!-- Empty State - No Menu Items -->
-      <div *ngIf="selectedModuleData && selectedModuleData.menuItems.length === 0" class="empty-menu-state flex flex-col items-center justify-center py-12">
+      <div *ngIf="!isLoading && selectedModuleData && !searchQuery && selectedModuleData.menuItems.length === 0"
+           class="empty-menu-state flex flex-col items-center justify-center py-12">
         <span class="e-icons e-folder text-5xl mb-4 opacity-50"></span>
         <p class="empty-text thai-text text-center">ไม่มีเมนูในโมดูลนี้</p>
       </div>
@@ -56,6 +113,86 @@
       <div *ngIf="!selectedModuleData" class="empty-state flex flex-col items-center justify-center h-full py-12">
         <span class="e-icons e-folder text-5xl mb-4 opacity-50"></span>
         <p class="empty-text thai-text text-center">เลือกโมดูลเพื่อดูเมนู</p>
+      </div>
+    </div>
+
+    <!-- User Avatar Section - Bottom of Menu Panel -->
+    <div class="user-avatar-section border-t transition-colors duration-300" *ngIf="currentUser" #userMenuContainer>
+      <div class="p-4">
+        <div class="user-info-container flex items-center gap-3 cursor-pointer group"
+             (click)="toggleUserMenu()"
+             (keydown.enter)="toggleUserMenu()"
+             (keydown.space)="toggleUserMenu(); $event.preventDefault()"
+             [attr.aria-label]="'เมนูผู้ใช้งาน'"
+             [attr.aria-expanded]="showUserMenu"
+             role="button"
+             tabindex="0">
+          <!-- Avatar -->
+          <div class="user-avatar relative flex-shrink-0">
+            <div class="avatar-circle w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-sm transition-all duration-300 group-hover:scale-110"
+                 [style.background]="getAvatarColor()">
+              <img *ngIf="getAvatarUrl()"
+                   [src]="getAvatarUrl()"
+                   [alt]="getUserDisplayName()"
+                   class="w-full h-full rounded-full object-cover"
+                   (load)="onAvatarImageLoad()"
+                   (error)="onAvatarImageError($event)">
+              <span class="avatar-initials" [class.hidden]="avatarImageLoaded && getAvatarUrl()">
+                {{ getInitials() }}
+              </span>
+            </div>
+            <!-- Online Status Indicator -->
+            <span class="status-indicator"></span>
+          </div>
+
+          <!-- User Info -->
+          <div class="user-info flex-1 min-w-0">
+            <div class="user-name text-sm font-semibold thai-text transition-colors duration-300 truncate">
+              {{ getUserDisplayName() }}
+            </div>
+            <div class="user-role text-xs transition-colors duration-300 truncate" *ngIf="getUserRole()">
+              {{ getUserRole() }}
+            </div>
+          </div>
+
+          <!-- Dropdown Icon -->
+          <div class="dropdown-icon transition-transform duration-300" [class.rotated]="showUserMenu">
+            <span class="e-icons e-chevron-down"></span>
+          </div>
+        </div>
+
+        <!-- User Menu Dropdown -->
+        <div class="user-menu-dropdown"
+             *ngIf="showUserMenu"
+             @slideDown>
+          <div class="user-menu-items">
+            <button
+              class="user-menu-item"
+              (click)="navigateToProfile()"
+              [attr.aria-label]="'โปรไฟล์'"
+              type="button">
+              <span class="e-icons e-user"></span>
+              <span class="thai-text">โปรไฟล์</span>
+            </button>
+            <button
+              class="user-menu-item"
+              (click)="navigateToSettings()"
+              [attr.aria-label]="'ตั้งค่า'"
+              type="button">
+              <span class="e-icons e-settings"></span>
+              <span class="thai-text">ตั้งค่า</span>
+            </button>
+            <div class="user-menu-divider"></div>
+            <button
+              class="user-menu-item text-red-500 dark:text-red-400"
+              (click)="logout()"
+              [attr.aria-label]="'ออกจากระบบ'"
+              type="button">
+              <span class="e-icons e-logout"></span>
+              <span class="thai-text">ออกจากระบบ</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
