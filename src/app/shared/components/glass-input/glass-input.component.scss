@@ -1,0 +1,198 @@
+/* ============================================
+   Glass Input Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.glass-input-container {
+  @include flex-column();
+  gap: $spacing-2;
+  width: 100%;
+}
+
+.glass-input-label {
+  font-size: $text-sm;
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+  margin-bottom: $spacing-1;
+
+  .required-asterisk {
+    color: $error-500;
+    margin-left: $spacing-1;
+  }
+}
+
+.dark .glass-input-label {
+  color: $gray-200;
+}
+
+.glass-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.glass-input {
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  @include glass-morphism('default', 'light');
+  border-radius: $radius-md;
+  font-size: $text-base;
+  color: $gray-900;
+  transition: $transition-all;
+  box-shadow: $shadow-sm;
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:focus {
+    @include glass-morphism('strong', 'light');
+    @include focus-ring($primary-500);
+    box-shadow: $shadow-md;
+    outline: none;
+  }
+
+  &:disabled {
+    @include disabled-state();
+    cursor: not-allowed;
+  }
+
+  /* Error State */
+  &.error {
+    border-color: $error-500;
+    box-shadow: 0 0 0 2px rgba($error-500, 0.2);
+  }
+
+  /* Success State */
+  &.success {
+    border-color: $success-500;
+    box-shadow: 0 0 0 2px rgba($success-500, 0.2);
+  }
+}
+
+/* Dark Mode */
+.dark {
+  .glass-input {
+    @include glass-morphism('default', 'dark');
+    color: $gray-100;
+    box-shadow: $shadow-glass-dark-sm;
+
+    &::placeholder {
+      color: $gray-500;
+    }
+
+    &:focus {
+      @include glass-morphism('strong', 'dark');
+      box-shadow: $shadow-glass-dark;
+    }
+
+    &.error {
+      border-color: $error-400;
+      box-shadow: 0 0 0 2px rgba($error-400, 0.3);
+    }
+
+    &.success {
+      border-color: $success-400;
+      box-shadow: 0 0 0 2px rgba($success-400, 0.3);
+    }
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .glass-input {
+    @include glass-gemini('default');
+    color: $gray-100;
+    border-color: $glass-border-gemini;
+
+    &::placeholder {
+      color: $gray-400;
+    }
+
+    &:focus {
+      @include glass-gemini('strong');
+      @include focus-ring-gemini();
+      @include gemini-glow('weak');
+    }
+
+    &.error {
+      border-color: $error-400;
+      box-shadow: 
+        0 0 0 2px rgba($error-400, 0.3),
+        0 0 20px rgba($error-500, 0.2);
+    }
+
+    &.success {
+      border-color: $success-400;
+      box-shadow: 
+        0 0 0 2px rgba($success-400, 0.3),
+        0 0 20px rgba($success-500, 0.2);
+    }
+  }
+}
+
+/* Helper Text */
+.glass-input-helper {
+  font-size: $text-xs;
+  color: $gray-500;
+  margin-top: $spacing-1;
+}
+
+.dark .glass-input-helper {
+  color: $gray-400;
+}
+
+body.theme-gemini .glass-input-helper {
+  color: $gray-400;
+}
+
+/* Error Message */
+.glass-input-error {
+  font-size: $text-xs;
+  color: $error-500;
+  margin-top: $spacing-1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+}
+
+.dark .glass-input-error {
+  color: $error-400;
+}
+
+body.theme-gemini .glass-input-error {
+  color: $error-400;
+}
+
+/* Success Message */
+.glass-input-success {
+  font-size: $text-xs;
+  color: $success-500;
+  margin-top: $spacing-1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+}
+
+.dark .glass-input-success {
+  color: $success-400;
+}
+
+body.theme-gemini .glass-input-success {
+  color: $success-400;
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .glass-input {
+    font-size: $text-sm;
+    padding: $spacing-2 $spacing-3;
+  }
+}
+

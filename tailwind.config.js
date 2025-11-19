@@ -7,6 +7,15 @@ module.exports = {
   ],
   darkMode: 'class', // Enable class-based dark mode
   theme: {
+    // Override default breakpoints to match design tokens
+    screens: {
+      'xs': '0px',      // Extra small devices (phones)
+      'sm': '640px',    // Small devices (tablets)
+      'md': '768px',    // Medium devices (small laptops)
+      'lg': '1024px',   // Large devices (desktops)
+      'xl': '1280px',   // Extra large devices (large desktops)
+      '2xl': '1536px',  // 2X Extra large devices (larger desktops)
+    },
     extend: {
       backdropBlur: {
         xs: '2px',

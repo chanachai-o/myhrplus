@@ -1,0 +1,22 @@
+<div class="border-b border-slate-200 dark:border-slate-700">
+  <nav class="-mb-px flex space-x-8 overflow-x-auto">
+    <button
+      *ngFor="let tab of tabs"
+      (click)="selectTab(tab.id)"
+      [disabled]="tab.disabled"
+      [class]="getTabClasses(tab.id)"
+      class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+      <span *ngIf="tab.icon" class="mr-2">{{ tab.icon }}</span>
+      {{ tab.label }}
+      <span *ngIf="tab.badge" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
+        {{ tab.badge }}
+      </span>
+    </button>
+  </nav>
+</div>
+
+<!-- Tab Content -->
+<div class="mt-6">
+  <ng-content></ng-content>
+</div>
+

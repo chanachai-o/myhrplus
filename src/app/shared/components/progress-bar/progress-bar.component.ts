@@ -5,29 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-progress-bar',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="w-full">
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">
-          {{ label }}
-        </span>
-        <span class="text-sm font-medium text-slate-600 dark:text-slate-400">
-          {{ value }}%{{ showValue ? '' : '' }}
-        </span>
-      </div>
-      <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
-        <div
-          class="h-full rounded-full transition-all duration-500"
-          [ngClass]="progressClass"
-          [style.width.%]="value">
-        </div>
-      </div>
-      <p *ngIf="description" class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-        {{ description }}
-      </p>
-    </div>
-  `,
-  styles: []
+  templateUrl: './progress-bar.component.html',
+  styleUrls: ['./progress-bar.component.scss']
 })
 export class ProgressBarComponent {
   @Input() value: number = 0;

@@ -13,34 +13,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/f
       multi: true
     }
   ],
-  template: `
-    <div [class]="containerClass">
-      <label *ngIf="label" [for]="inputId" class="form-label mb-2">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500">*</span>
-      </label>
-      <input
-        [id]="inputId"
-        [type]="type"
-        [placeholder]="placeholder"
-        [disabled]="disabled"
-        [readonly]="readonly"
-        [value]="value"
-        (input)="onInput($event)"
-        (blur)="onBlur()"
-        (focus)="onFocus()"
-        class="glass-input w-full"
-        [class.error]="hasError"
-      />
-      <div *ngIf="hasError && errorMessage" class="text-red-500 text-sm mt-1">
-        {{ errorMessage }}
-      </div>
-      <div *ngIf="hint && !hasError" class="text-gray-500 text-sm mt-1">
-        {{ hint }}
-      </div>
-    </div>
-  `,
-  styles: []
+  templateUrl: './glass-input.component.html',
+  styleUrls: ['./glass-input.component.scss']
 })
 export class GlassInputComponent implements ControlValueAccessor {
   @Input() label: string = '';

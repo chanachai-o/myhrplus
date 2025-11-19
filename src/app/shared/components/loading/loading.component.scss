@@ -1,0 +1,148 @@
+/* ============================================
+   Loading Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+/* Container */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.min-h-\[200px\] {
+  min-height: 200px;
+}
+
+/* Loading Spinner */
+.relative {
+  position: relative;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.border-4 {
+  border-width: 4px;
+}
+
+.border-primary-200 {
+  border-color: $primary-200;
+}
+
+.border-primary-500 {
+  border-color: $primary-500;
+}
+
+.border-primary-800 {
+  border-color: $primary-800;
+}
+
+.border-t-transparent {
+  border-top-color: transparent;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.absolute {
+  position: absolute;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+/* Message */
+.text-slate-700 {
+  color: $gray-700;
+}
+
+.text-slate-300 {
+  color: $gray-300;
+}
+
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+
+/* Dark Mode */
+.dark {
+  .border-primary-200 {
+    border-color: $primary-800;
+  }
+  
+  .border-primary-800 {
+    border-color: $primary-200;
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .border-primary-200 {
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+  
+  .border-primary-500 {
+    border-color: $gemini-gradient-end;
+  }
+  
+  .border-primary-800 {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+  
+  .animate-spin {
+    @include gemini-glow('default');
+  }
+  
+  .text-slate-700 {
+    @include gradient-text-gemini();
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .w-16 {
+    width: 3rem;
+  }
+  
+  .h-16 {
+    height: 3rem;
+  }
+}
+

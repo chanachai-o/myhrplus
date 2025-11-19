@@ -1,0 +1,12 @@
+<div class="statistics-grid" [ngClass]="gridClass">
+  <app-statistics-card
+    *ngFor="let stat of stats"
+    [icon]="stat.icon"
+    [label]="stat.label"
+    [value]="stat.value"
+    [suffix]="stat.suffix"
+    [change]="stat.change"
+    [iconBgClass]="stat.iconBgClass || 'bg-blue-100 dark:bg-blue-900'"
+  ></app-statistics-card>
+</div>
+

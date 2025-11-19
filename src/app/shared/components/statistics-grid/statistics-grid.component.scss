@@ -1,0 +1,72 @@
+/* ============================================
+   Statistics Grid Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+/* Statistics Grid */
+.statistics-grid {
+  display: grid;
+  gap: $spacing-6;
+}
+
+/* Grid Columns */
+.statistics-grid.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.statistics-grid.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.statistics-grid.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.statistics-grid.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Dark Mode */
+.dark {
+  // Grid layout doesn't need dark mode specific styles
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .statistics-grid {
+    // Grid layout doesn't need Gemini specific styles
+    // Individual cards will handle Gemini styling
+  }
+}
+
+/* Responsive */
+@include respond-to-down(lg) {
+  .statistics-grid.grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include respond-to-down(md) {
+  .statistics-grid.grid-cols-2,
+  .statistics-grid.grid-cols-3,
+  .statistics-grid.grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .statistics-grid {
+    gap: $spacing-4;
+  }
+}
+
+@include respond-to-down(sm) {
+  .statistics-grid {
+    gap: $spacing-3;
+  }
+}
+

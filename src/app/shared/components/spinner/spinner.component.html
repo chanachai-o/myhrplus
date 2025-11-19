@@ -1,0 +1,10 @@
+<div class="spinner-container" [class]="containerClass">
+  <div class="spinner" [class]="spinnerClass">
+    <div class="spinner-circle"></div>
+    <div class="spinner-circle"></div>
+    <div class="spinner-circle"></div>
+    <div class="spinner-circle"></div>
+  </div>
+  <p *ngIf="message" class="spinner-message thai-text">{{ message }}</p>
+</div>
+

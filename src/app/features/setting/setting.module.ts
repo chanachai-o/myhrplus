@@ -22,3 +22,4 @@ import { SettingHomeComponent } from './setting-home/setting-home.component';
 export class SettingModule { }
 
 
+

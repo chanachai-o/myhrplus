@@ -1,0 +1,191 @@
+/* ============================================
+   Glass Button Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: inline-block;
+}
+
+/* Base Button Styles */
+.glass-button,
+.glass-button-primary,
+.glass-button-danger {
+  @include flex-center();
+  border-radius: $radius-md;
+  font-weight: $font-weight-medium;
+  transition: $transition-all;
+  cursor: pointer;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+
+  &:disabled,
+  &[disabled] {
+    @include disabled-state();
+  }
+}
+
+/* Primary Button */
+.glass-button-primary {
+  background: linear-gradient(135deg, $primary-500, $primary-600);
+  color: white;
+  box-shadow: $shadow-md;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $primary-600, $primary-700);
+    @include hover-lift(2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+
+  &:focus-visible {
+    @include focus-ring($primary-500);
+  }
+}
+
+/* Secondary Button (Default) */
+.glass-button {
+  @include glass-morphism('default', 'light');
+  color: $gray-700;
+  box-shadow: $shadow-sm;
+
+  &:hover:not(:disabled) {
+    @include glass-morphism('strong', 'light');
+    @include hover-lift(2px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    @include focus-ring($primary-500);
+  }
+}
+
+/* Danger Button */
+.glass-button-danger {
+  background: linear-gradient(135deg, $error-500, $error-600);
+  color: white;
+  box-shadow: $shadow-md;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $error-600, $error-700);
+    @include hover-lift(2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+
+  &:focus-visible {
+    @include focus-ring($error-500);
+  }
+}
+
+/* Dark Mode */
+.dark {
+  .glass-button {
+    @include glass-morphism('default', 'dark');
+    color: $gray-200;
+    box-shadow: $shadow-glass-dark-sm;
+
+    &:hover:not(:disabled) {
+      @include glass-morphism('strong', 'dark');
+      box-shadow: $shadow-glass-dark;
+    }
+  }
+
+  .glass-button-primary {
+    background: linear-gradient(135deg, $primary-600, $primary-700);
+  }
+
+  .glass-button-danger {
+    background: linear-gradient(135deg, $error-600, $error-700);
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .glass-button-primary {
+    background: linear-gradient(135deg, $gemini-gradient-start, $gemini-gradient-mid, $gemini-gradient-end);
+    box-shadow: $shadow-gemini;
+    border-color: $glass-border-gemini;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, $gemini-gradient-mid, $gemini-gradient-end);
+      @include gemini-glow('default');
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    &:focus-visible {
+      @include focus-ring-gemini();
+    }
+  }
+
+  .glass-button {
+    @include glass-gemini('default');
+    color: $gray-200;
+    border-color: $glass-border-gemini;
+
+    &:hover:not(:disabled) {
+      @include glass-gemini('strong');
+      @include gemini-glow('weak');
+      transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+      @include focus-ring-gemini();
+    }
+  }
+}
+
+/* Loading State */
+.glass-button[disabled],
+.glass-button-primary[disabled],
+.glass-button-danger[disabled] {
+  position: relative;
+  color: transparent;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .glass-button,
+  .glass-button-primary,
+  .glass-button-danger {
+    font-size: $text-sm;
+    padding: $spacing-2 $spacing-4;
+  }
+}
+

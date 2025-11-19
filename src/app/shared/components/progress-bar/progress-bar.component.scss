@@ -1,0 +1,167 @@
+/* ============================================
+   Progress Bar Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Progress Track */
+.bg-slate-200 {
+  background: $gray-200;
+  border-radius: $radius-full;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.dark .bg-slate-200 {
+  background: $gray-700;
+}
+
+body.theme-gemini .bg-slate-200 {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Progress Fill */
+.h-full {
+  border-radius: $radius-full;
+  transition: width $duration-500 $ease-out;
+  position: relative;
+  overflow: hidden;
+
+  /* Primary Variant */
+  &.bg-primary-500 {
+    background: linear-gradient(90deg, $primary-500, $primary-600);
+    box-shadow: 0 0 10px rgba($primary-500, 0.5);
+  }
+
+  /* Success Variant */
+  &.bg-green-500 {
+    background: linear-gradient(90deg, $success-500, $success-600);
+    box-shadow: 0 0 10px rgba($success-500, 0.5);
+  }
+
+  /* Warning Variant */
+  &.bg-yellow-500 {
+    background: linear-gradient(90deg, $warning-500, $warning-600);
+    box-shadow: 0 0 10px rgba($warning-500, 0.5);
+  }
+
+  /* Danger Variant */
+  &.bg-red-500 {
+    background: linear-gradient(90deg, $error-500, $error-600);
+    box-shadow: 0 0 10px rgba($error-500, 0.5);
+  }
+
+  /* Animated Shine Effect */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    animation: progressShine 2s infinite;
+  }
+}
+
+@keyframes progressShine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Dark Mode */
+.dark .h-full {
+  &.bg-primary-500 {
+    background: linear-gradient(90deg, $primary-400, $primary-500);
+  }
+
+  &.bg-green-500 {
+    background: linear-gradient(90deg, $success-400, $success-500);
+  }
+
+  &.bg-yellow-500 {
+    background: linear-gradient(90deg, $warning-400, $warning-500);
+  }
+
+  &.bg-red-500 {
+    background: linear-gradient(90deg, $error-400, $error-500);
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini .h-full {
+  &.bg-primary-500 {
+    background: linear-gradient(90deg, 
+      $gemini-gradient-start,
+      $gemini-gradient-mid,
+      $gemini-gradient-end
+    );
+    @include gemini-glow('default');
+  }
+
+  &.bg-green-500 {
+    background: linear-gradient(90deg, $success-400, $success-500);
+    box-shadow: 0 0 15px rgba($success-500, 0.4);
+  }
+
+  &.bg-yellow-500 {
+    background: linear-gradient(90deg, $warning-400, $warning-500);
+    box-shadow: 0 0 15px rgba($warning-500, 0.4);
+  }
+
+  &.bg-red-500 {
+    background: linear-gradient(90deg, $error-400, $error-500);
+    box-shadow: 0 0 15px rgba($error-500, 0.4);
+  }
+}
+
+/* Label & Value */
+.text-slate-700 {
+  color: $gray-700;
+  font-weight: $font-weight-medium;
+}
+
+.dark .text-slate-700 {
+  color: $gray-200;
+}
+
+body.theme-gemini .text-slate-700 {
+  color: $gray-200;
+}
+
+/* Description */
+.text-slate-500 {
+  color: $gray-500;
+}
+
+.dark .text-slate-500 {
+  color: $gray-400;
+}
+
+body.theme-gemini .text-slate-500 {
+  color: $gray-400;
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .bg-slate-200 {
+    height: 6px;
+  }
+}
+

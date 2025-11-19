@@ -1,20 +1,27 @@
-<div class="empty-state" [ngClass]="['empty-state-' + size, 'empty-state-' + variant]">
-  <div class="empty-state-content">
-    <div class="empty-state-icon">
-      <app-icon [name]="icon" [size]="size === 'lg' ? 'xl' : size === 'md' ? 'lg' : 'sm'"></app-icon>
+<app-glass-card padding="p-12" customClass="text-center">
+  <div class="flex flex-col items-center justify-center">
+    <!-- Icon -->
+    <div class="mb-4" [class]="iconSizeClass">
+      {{ icon || defaultIcon }}
     </div>
-    <h3 class="empty-state-title thai-text font-semibold text-slate-800 dark:text-slate-100">
-      {{ title }}
+
+    <!-- Title -->
+    <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-slate-200">
+      {{ title || 'ไม่มีข้อมูล' }}
     </h3>
-    <p class="empty-state-description text-slate-600 dark:text-slate-400 thai-text" *ngIf="description">
-      {{ description }}
+
+    <!-- Description -->
+    <p class="text-slate-600 dark:text-slate-400 mb-6 max-w-md">
+      {{ description || 'ยังไม่มีข้อมูลในส่วนนี้' }}
     </p>
-    <button
-      *ngIf="showAction"
-      (click)="onActionClick()"
-      class="empty-state-action glass-button !mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-2">
-      <app-icon *ngIf="actionIcon" [name]="actionIcon" size="sm"></app-icon>
-      <span class="thai-text">{{ actionText }}</span>
-    </button>
+
+    <!-- Action Button -->
+    <app-glass-button
+      *ngIf="action"
+      [variant]="action.variant || 'primary'"
+      (clicked)="action.onClick()">
+      <span *ngIf="action.icon" class="mr-2">{{ action.icon }}</span>
+      {{ action.label }}
+    </app-glass-button>
   </div>
-</div>
+</app-glass-card>

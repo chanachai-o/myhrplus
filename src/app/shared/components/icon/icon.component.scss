@@ -1,0 +1,123 @@
+/* ============================================
+   Icon Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: inline-block;
+}
+
+/* Material Icons Base */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  transition: $transition-all;
+}
+
+/* Size Variants */
+.text-xs {
+  font-size: 0.75rem; // 12px
+}
+
+.text-base {
+  font-size: 1rem; // 16px
+}
+
+.text-xl {
+  font-size: 1.25rem; // 20px
+}
+
+.text-2xl {
+  font-size: 1.5rem; // 24px
+}
+
+.text-4xl {
+  font-size: 2.25rem; // 36px
+}
+
+/* Width & Height for Icons */
+.w-3 {
+  width: 0.75rem;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.w-4 {
+  width: 1rem;
+}
+
+.h-4 {
+  height: 1rem;
+}
+
+.w-5 {
+  width: 1.25rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.w-6 {
+  width: 1.5rem;
+}
+
+.h-6 {
+  height: 1.5rem;
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+/* Dark Mode */
+.dark {
+  .material-icons {
+    // Icon colors handled via color classes
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .material-icons {
+    @include gemini-glow('subtle');
+    
+    &:hover {
+      @include gemini-glow('default');
+    }
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .text-4xl {
+    font-size: 1.875rem; // 30px
+  }
+  
+  .w-10 {
+    width: 2rem;
+  }
+  
+  .h-10 {
+    height: 2rem;
+  }
+}
+

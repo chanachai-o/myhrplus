@@ -137,6 +137,11 @@ angular-hr-migration/
 - **[TIME_MODULE_INVENTORY.md](./TIME_MODULE_INVENTORY.md)** - Time Attendance Module
 - และอื่นๆ...
 
+### UX/UI Improvement Plans
+- **[UX_UI_COMPONENTS_IMPROVEMENT_PLAN.md](./UX_UI_COMPONENTS_IMPROVEMENT_PLAN.md)** ⭐ - แผนการปรับปรุง UX/UI Components
+- **[UX_UI_COMPONENTS_CHECKLIST.md](./UX_UI_COMPONENTS_CHECKLIST.md)** - Checklist สำหรับการปรับปรุง
+- **[PHASE_1_PROGRESS_REPORT.md](./PHASE_1_PROGRESS_REPORT.md)** - รายงานความคืบหน้า Phase 1
+
 ## 🎯 Key Features
 
 ### Authentication

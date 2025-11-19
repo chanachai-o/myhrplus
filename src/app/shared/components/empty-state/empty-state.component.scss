@@ -1,71 +1,130 @@
-.empty-state {
+/* ============================================
+   Empty State Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+/* Layout */
+.flex {
   display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
   align-items: center;
+}
+
+.justify-center {
   justify-content: center;
-  padding: 3rem 1.5rem;
+}
+
+.text-center {
   text-align: center;
-  transition: all 0.3s ease;
 }
 
-.empty-state-content {
-  max-width: 400px;
-  width: 100%;
+/* Icon */
+.mb-4 {
+  margin-bottom: $spacing-4;
 }
 
-.empty-state-icon {
-  margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #94a3b8;
-  transition: color 0.3s ease;
+.text-4xl {
+  font-size: $text-4xl;
 }
 
-.dark .empty-state-icon {
-  color: #64748b;
+.text-6xl {
+  font-size: $text-6xl;
 }
 
-
-.empty-state-title {
-  margin-bottom: 0.75rem;
-  font-size: 1.25rem;
-  transition: color 0.3s ease;
+.text-8xl {
+  font-size: 6rem; // 96px
 }
 
-.empty-state-sm .empty-state-title {
-  font-size: 1rem;
+/* Title */
+.text-xl {
+  font-size: $text-xl;
 }
 
-.empty-state-lg .empty-state-title {
-  font-size: 1.5rem;
+.font-bold {
+  font-weight: $font-weight-bold;
 }
 
-.empty-state-description {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 0;
-  transition: color 0.3s ease;
+.mb-2 {
+  margin-bottom: $spacing-2;
 }
 
-.empty-state-sm .empty-state-description {
-  font-size: 0.75rem;
+.text-slate-800 {
+  color: $gray-800;
 }
 
-.empty-state-lg .empty-state-description {
-  font-size: 1rem;
+.dark .text-slate-200 {
+  color: $gray-200;
 }
 
-.empty-state-action {
-  margin-top: 1.5rem;
+/* Description */
+.text-slate-600 {
+  color: $gray-600;
 }
 
-.empty-state-minimal {
-  padding: 2rem 1rem;
+.dark .text-slate-400 {
+  color: $gray-400;
 }
 
-.empty-state-minimal .empty-state-icon {
-  margin-bottom: 1rem;
+.mb-6 {
+  margin-bottom: $spacing-6;
 }
 
+.max-w-md {
+  max-width: 28rem;
+}
 
+/* Action Button */
+.mr-2 {
+  margin-right: $spacing-2;
+}
 
+/* Dark Mode */
+.dark {
+  .text-slate-800 {
+    color: $gray-200;
+  }
+  
+  .text-slate-600 {
+    color: $gray-400;
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .text-slate-800,
+  .dark .text-slate-200 {
+    @include gradient-text-gemini();
+  }
+  
+  .text-slate-600,
+  .dark .text-slate-400 {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .text-8xl {
+    font-size: 4rem; // 64px
+  }
+  
+  .text-6xl {
+    font-size: $text-4xl;
+  }
+  
+  .text-4xl {
+    font-size: $text-3xl;
+  }
+}

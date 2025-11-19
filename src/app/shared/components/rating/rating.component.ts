@@ -5,27 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-rating',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="flex items-center">
-      <div class="flex space-x-1">
-        <button
-          *ngFor="let star of stars; let i = index"
-          type="button"
-          (click)="onStarClick(i + 1)"
-          (mouseenter)="hoveredRating = i + 1"
-          (mouseleave)="hoveredRating = 0"
-          [disabled]="readonly"
-          class="text-2xl transition-colors disabled:cursor-default"
-          [ngClass]="getStarClass(i + 1)">
-          {{ getStarIcon(i + 1) }}
-        </button>
-      </div>
-      <span *ngIf="showValue" class="ml-2 text-sm text-slate-600 dark:text-slate-400">
-        ({{ rating }}/{{ maxRating }})
-      </span>
-    </div>
-  `,
-  styles: []
+  templateUrl: './rating.component.html',
+  styleUrls: ['./rating.component.scss']
 })
 export class RatingComponent {
   @Input() rating: number = 0;

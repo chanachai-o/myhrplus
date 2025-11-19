@@ -1,0 +1,250 @@
+/* ============================================
+   Page Layout Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Page Layout */
+.page-layout {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page Header */
+.page-header {
+  margin-bottom: $spacing-6;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin-bottom: $spacing-4;
+  font-size: $text-sm;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  color: $gray-500;
+  text-decoration: none;
+  transition: $transition-all;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $radius-md;
+  
+  &:hover {
+    color: $primary-600;
+    background: rgba($primary-500, 0.05);
+  }
+  
+  &.current {
+    color: $gray-900;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.breadcrumb-icon {
+  font-size: $text-base;
+}
+
+.breadcrumb-separator {
+  color: $gray-500;
+  opacity: 0.5;
+}
+
+/* Header Content */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $spacing-8;
+  flex-wrap: wrap;
+}
+
+.title-section {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-4;
+  flex: 1;
+}
+
+.page-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  padding: $spacing-3;
+  background: linear-gradient(135deg, $primary-600, $primary-400);
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-title {
+  font-size: 2.25rem; // text-4xl
+  font-weight: $font-weight-bold;
+  color: $gray-900;
+  margin: 0;
+  line-height: 1.375; // leading-snug
+  margin-bottom: $spacing-6;
+}
+
+.page-description {
+  margin: $spacing-2 0 0 0;
+  color: $gray-700;
+  font-size: $text-base;
+  line-height: 1.625; // leading-relaxed
+  max-width: 600px;
+}
+
+/* Actions Section */
+.actions-section {
+  display: flex;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.header-extra {
+  width: 100%;
+  margin-top: $spacing-4;
+}
+
+/* Page Content */
+.page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+/* Page Footer */
+.page-footer {
+  margin-top: $spacing-8;
+  padding-top: $spacing-8;
+  border-top: 1px solid rgba($gray-300, 0.2);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark Mode */
+.dark {
+  .breadcrumb-item {
+    color: $gray-400;
+    
+    &:hover {
+      color: $primary-400;
+      background: rgba($primary-500, 0.1);
+    }
+    
+    &.current {
+      color: $gray-100;
+    }
+  }
+  
+  .breadcrumb-separator {
+    color: $gray-400;
+  }
+  
+  .page-icon {
+    background: linear-gradient(135deg, $primary-500, $primary-300);
+  }
+  
+  .page-title {
+    color: $gray-100;
+  }
+  
+  .page-description {
+    color: $gray-300;
+  }
+  
+  .page-footer {
+    border-top-color: rgba($gray-700, 0.3);
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .page-header {
+    @include gemini-border-glow();
+  }
+  
+  .breadcrumb-item {
+    @include glass-gemini('weak');
+    
+    &:hover {
+      @include gemini-glow('subtle');
+    }
+    
+    &.current {
+      @include gradient-text-gemini();
+    }
+  }
+  
+  .page-icon {
+    @include glass-gemini('default');
+    @include gemini-glow('default');
+    background: linear-gradient(135deg, $gemini-gradient-end, $gemini-gradient-start);
+  }
+  
+  .page-title {
+    @include gradient-text-gemini();
+  }
+  
+  .page-description {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .page-footer {
+    border-top-color: rgba($gemini-gradient-end, 0.3);
+    @include gemini-border-glow();
+  }
+}
+
+/* Responsive */
+@include respond-to-down(md) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-icon {
+    font-size: 2rem;
+    padding: $spacing-2;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: $spacing-4;
+  }
+  
+  .actions-section {
+    width: 100%;
+  }
+}
+

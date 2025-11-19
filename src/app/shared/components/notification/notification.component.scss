@@ -1,0 +1,286 @@
+/* ============================================
+   Notification Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+/* Notification Container */
+.fixed {
+  position: fixed;
+}
+
+.top-4 {
+  top: 1rem;
+}
+
+.right-4 {
+  right: 1rem;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.rounded-lg {
+  border-radius: $radius-lg;
+}
+
+.shadow-lg {
+  box-shadow: $shadow-lg;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.p-4 {
+  padding: $spacing-4;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.gap-3 {
+  gap: $spacing-3;
+}
+
+/* Notification Types */
+.bg-green-50 {
+  background-color: $success-50;
+}
+
+.bg-green-900\/30 {
+  background-color: rgba($success-900, 0.3);
+}
+
+.border-green-200 {
+  border-color: $success-200;
+}
+
+.border-green-800 {
+  border-color: $success-800;
+}
+
+.bg-red-50 {
+  background-color: $error-50;
+}
+
+.bg-red-900\/30 {
+  background-color: rgba($error-900, 0.3);
+}
+
+.border-red-200 {
+  border-color: $error-200;
+}
+
+.border-red-800 {
+  border-color: $error-800;
+}
+
+.bg-yellow-50 {
+  background-color: $warning-50;
+}
+
+.bg-yellow-900\/30 {
+  background-color: rgba($warning-900, 0.3);
+}
+
+.border-yellow-200 {
+  border-color: $warning-200;
+}
+
+.border-yellow-800 {
+  border-color: $warning-800;
+}
+
+.bg-blue-50 {
+  background-color: $primary-50;
+}
+
+.bg-blue-900\/30 {
+  background-color: rgba($primary-900, 0.3);
+}
+
+.border-blue-200 {
+  border-color: $primary-200;
+}
+
+.border-blue-800 {
+  border-color: $primary-800;
+}
+
+/* Icon Container */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Content */
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+.text-sm {
+  font-size: $text-sm;
+}
+
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+
+/* Text Colors */
+.text-green-800 {
+  color: $success-800;
+}
+
+.text-green-200 {
+  color: $success-200;
+}
+
+.text-red-800 {
+  color: $error-800;
+}
+
+.text-red-200 {
+  color: $error-200;
+}
+
+.text-yellow-800 {
+  color: $warning-800;
+}
+
+.text-yellow-200 {
+  color: $warning-200;
+}
+
+.text-blue-800 {
+  color: $primary-800;
+}
+
+.text-blue-200 {
+  color: $primary-200;
+}
+
+/* Close Button */
+.text-gray-400 {
+  color: $gray-400;
+}
+
+.hover\:text-gray-600:hover {
+  color: $gray-600;
+}
+
+.dark .hover\:text-gray-300:hover {
+  color: $gray-300;
+}
+
+.transition-colors {
+  transition: $transition-colors;
+}
+
+/* Animation */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+/* Dark Mode */
+.dark {
+  .bg-green-50 {
+    background-color: rgba($success-900, 0.3);
+  }
+  
+  .bg-red-50 {
+    background-color: rgba($error-900, 0.3);
+  }
+  
+  .bg-yellow-50 {
+    background-color: rgba($warning-900, 0.3);
+  }
+  
+  .bg-blue-50 {
+    background-color: rgba($primary-900, 0.3);
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .bg-green-50,
+  .bg-green-900\/30 {
+    @include glass-gemini('weak');
+    border-color: rgba($success-400, 0.3);
+  }
+  
+  .bg-red-50,
+  .bg-red-900\/30 {
+    @include glass-gemini('weak');
+    border-color: rgba($error-400, 0.3);
+  }
+  
+  .bg-yellow-50,
+  .bg-yellow-900\/30 {
+    @include glass-gemini('weak');
+    border-color: rgba($warning-400, 0.3);
+  }
+  
+  .bg-blue-50,
+  .bg-blue-900\/30 {
+    @include glass-gemini('weak');
+    border-color: rgba($primary-400, 0.3);
+  }
+  
+  .animate-slide-in-right {
+    @include gemini-glow('subtle');
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .top-4 {
+    top: 0.5rem;
+  }
+  
+  .right-4 {
+    right: 0.5rem;
+  }
+  
+  .max-w-md {
+    max-width: calc(100vw - 1rem);
+  }
+  
+  .p-4 {
+    padding: $spacing-3;
+  }
+}
+

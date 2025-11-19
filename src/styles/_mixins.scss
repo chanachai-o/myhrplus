@@ -1,0 +1,389 @@
+/* ============================================
+   Mixins
+   ============================================
+   Reusable mixins for common patterns
+   Last Updated: 2024-12-19
+   ============================================ */
+
+@import './design-tokens';
+
+/* ============================================
+   Responsive Mixins
+   ============================================ */
+
+/* Mobile First Approach */
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+    @media (min-width: $breakpoint-value) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}";
+  }
+}
+
+/* Desktop First Approach */
+@mixin respond-to-down($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+    @media (max-width: $breakpoint-value - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}";
+  }
+}
+
+/* Between Breakpoints */
+@mixin respond-to-between($min, $max) {
+  $min-value: map-get($breakpoints, $min);
+  $max-value: map-get($breakpoints, $max);
+  @media (min-width: $min-value) and (max-width: $max-value - 1px) {
+    @content;
+  }
+}
+
+/* ============================================
+   Glass Morphism Mixins
+   ============================================ */
+
+@mixin glass-morphism($variant: 'default', $mode: 'light') {
+  @if $mode == 'light' {
+    @if $variant == 'strong' {
+      background: $glass-bg-light-strong;
+      border: 1px solid $glass-border-light-strong;
+      backdrop-filter: blur($blur-xl);
+      -webkit-backdrop-filter: blur($blur-xl);
+    } @else if $variant == 'weak' {
+      background: $glass-bg-light-weak;
+      border: 1px solid $glass-border-light-weak;
+      backdrop-filter: blur($blur-sm);
+      -webkit-backdrop-filter: blur($blur-sm);
+    } @else {
+      background: $glass-bg-light;
+      border: 1px solid $glass-border-light;
+      backdrop-filter: blur($blur-lg);
+      -webkit-backdrop-filter: blur($blur-lg);
+    }
+  } @else {
+    @if $variant == 'strong' {
+      background: $glass-bg-dark-strong;
+      border: 1px solid $glass-border-dark-strong;
+      backdrop-filter: blur($blur-xl);
+      -webkit-backdrop-filter: blur($blur-xl);
+    } @else if $variant == 'weak' {
+      background: $glass-bg-dark-weak;
+      border: 1px solid $glass-border-dark-weak;
+      backdrop-filter: blur($blur-sm);
+      -webkit-backdrop-filter: blur($blur-sm);
+    } @else {
+      background: $glass-bg-dark;
+      border: 1px solid $glass-border-dark;
+      backdrop-filter: blur($blur-lg);
+      -webkit-backdrop-filter: blur($blur-lg);
+    }
+  }
+}
+
+/* Gemini Theme Glass */
+@mixin glass-gemini($variant: 'default') {
+  background: $glass-bg-gemini;
+  border: 1px solid $glass-border-gemini;
+  backdrop-filter: blur($blur-2xl);
+  -webkit-backdrop-filter: blur($blur-2xl);
+  
+  @if $variant == 'strong' {
+    box-shadow: $shadow-gemini-lg;
+  } @else if $variant == 'weak' {
+    box-shadow: $shadow-gemini-sm;
+  } @else {
+    box-shadow: $shadow-gemini;
+  }
+}
+
+/* ============================================
+   Focus States
+   ============================================ */
+
+@mixin focus-ring($color: $primary-500, $width: 2px) {
+  outline: none;
+  box-shadow: 0 0 0 $width $color;
+  
+  &:focus-visible {
+    box-shadow: 0 0 0 $width $color, 0 0 0 calc($width * 2) rgba($color, 0.2);
+  }
+}
+
+@mixin focus-ring-gemini() {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px $gemini-gradient-mid,
+    0 0 0 4px rgba(96, 165, 250, 0.2),
+    0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* ============================================
+   Hover States
+   ============================================ */
+
+@mixin hover-lift($amount: 4px) {
+  transition: transform $duration-200 $ease-out, box-shadow $duration-200 $ease-out;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-$amount);
+  }
+}
+
+@mixin hover-scale($amount: 1.05) {
+  transition: transform $duration-200 $ease-out;
+  
+  &:hover:not(:disabled) {
+    transform: scale($amount);
+  }
+}
+
+@mixin hover-glow($color: $primary-500) {
+  transition: box-shadow $duration-200 $ease-out;
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 0 20px rgba($color, 0.4);
+  }
+}
+
+/* ============================================
+   Disabled States
+   ============================================ */
+
+@mixin disabled-state() {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Loading States
+   ============================================ */
+
+@mixin loading-skeleton($bg: $gray-200, $highlight: $gray-100) {
+  background: linear-gradient(
+    90deg,
+    $bg 0%,
+    $highlight 50%,
+    $bg 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================
+   Text Utilities
+   ============================================ */
+
+@mixin text-truncate() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin gradient-text($start: $primary-500, $end: $primary-700) {
+  background: linear-gradient(135deg, $start, $end);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin gradient-text-gemini() {
+  background: linear-gradient(135deg, $gemini-gradient-start, $gemini-gradient-mid, $gemini-gradient-end);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: geminiGradient 3s ease infinite;
+}
+
+/* ============================================
+   Flexbox Utilities
+   ============================================ */
+
+@mixin flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column() {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   Grid Utilities
+   ============================================ */
+
+@mixin grid-responsive($columns: 1, $gap: $spacing-4) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+  
+  @include respond-to(sm) {
+    grid-template-columns: repeat(min(2, $columns), 1fr);
+  }
+  
+  @include respond-to(md) {
+    grid-template-columns: repeat(min(3, $columns), 1fr);
+  }
+  
+  @include respond-to(lg) {
+    grid-template-columns: repeat($columns, 1fr);
+  }
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
+@mixin custom-scrollbar($thumb-color: $gray-400, $track-color: $gray-200) {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $radius-full;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $radius-full;
+    
+    &:hover {
+      background: darken($thumb-color, 10%);
+    }
+  }
+}
+
+/* ============================================
+   Gemini Theme Mixins
+   ============================================ */
+
+@mixin gemini-glow($intensity: 'default') {
+  @if $intensity == 'strong' {
+    box-shadow: 
+      0 0 20px $gemini-glow-strong,
+      0 0 40px rgba(59, 130, 246, 0.3);
+  } @else if $intensity == 'weak' {
+    box-shadow: 0 0 10px $gemini-glow-weak;
+  } @else {
+    box-shadow: 
+      0 0 15px $gemini-glow,
+      0 0 30px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@mixin gemini-border-glow() {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(147, 197, 253, 0.5) 20%,
+      rgba(96, 165, 250, 0.5) 50%,
+      rgba(59, 130, 246, 0.5) 80%,
+      transparent 100%
+    );
+    background-size: 100% 200%;
+    animation: geminiGradient 3s ease infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+/* ============================================
+   Animation Mixins
+   ============================================ */
+
+@mixin fade-in($duration: $duration-300) {
+  animation: fadeIn $duration $ease-in-out;
+}
+
+@mixin slide-up($duration: $duration-300) {
+  animation: slideUp $duration $ease-out;
+}
+
+@mixin slide-down($duration: $duration-300) {
+  animation: slideDown $duration $ease-out;
+}
+
+@mixin scale-in($duration: $duration-200) {
+  animation: scaleIn $duration $ease-out;
+}
+
+@mixin gemini-float() {
+  animation: geminiFloat 6s ease-in-out infinite;
+}
+
+@mixin gemini-pulse() {
+  animation: geminiPulse 2s ease-in-out infinite;
+}
+
+@mixin gemini-shimmer() {
+  animation: geminiShimmer 3s infinite;
+}
+
+/* ============================================
+   Accessibility Mixins
+   ============================================ */
+
+@mixin sr-only() {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@mixin not-sr-only() {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+

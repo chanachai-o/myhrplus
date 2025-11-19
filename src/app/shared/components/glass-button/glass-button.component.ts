@@ -5,18 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-glass-button',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <button
-      [type]="type"
-      [disabled]="disabled || loading"
-      [class]="buttonClasses"
-      (click)="handleClick($event)"
-    >
-      <span *ngIf="loading" class="inline-block animate-spin mr-2">⟳</span>
-      <ng-content></ng-content>
-    </button>
-  `,
-  styles: []
+  templateUrl: './glass-button.component.html',
+  styleUrls: ['./glass-button.component.scss']
 })
 export class GlassButtonComponent {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';

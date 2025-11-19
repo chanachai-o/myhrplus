@@ -1,0 +1,76 @@
+/* ============================================
+   Modal Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+.glass-modal {
+  @include glass-morphism('strong', 'light');
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  background: white;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: $z-50;
+
+  /* Header */
+  .border-b {
+    border-bottom: 1px solid $gray-200;
+  }
+
+  /* Dark Mode */
+  .dark & {
+    @include glass-morphism('strong', 'dark');
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: $shadow-dark-xl;
+
+    .border-b,
+    .border-t {
+      border-color: $gray-700;
+    }
+  }
+}
+
+/* Backdrop */
+.backdrop-blur-sm {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur($blur-sm);
+  -webkit-backdrop-filter: blur($blur-sm);
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .glass-modal {
+    @include glass-gemini('strong');
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: $shadow-gemini-lg;
+    border-color: $glass-border-gemini;
+
+    .border-b,
+    .border-t {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+  }
+
+  .backdrop-blur-sm {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur($blur-md);
+    -webkit-backdrop-filter: blur($blur-md);
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .glass-modal {
+    border-radius: $radius-lg;
+    margin: $spacing-4;
+  }
+}
+

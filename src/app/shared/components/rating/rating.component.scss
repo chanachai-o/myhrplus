@@ -1,131 +1,117 @@
-.rating-container {
+/* ============================================
+   Rating Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: inline-block;
+}
+
+/* Base Styles */
+.flex {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  .rating-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
-
-    .rating-value {
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.6);
-      font-weight: normal;
-    }
-  }
-
-  .stars-container {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-
-    .star-button {
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:disabled {
-        cursor: default;
-      }
-
-      mat-icon {
-        transition: all 0.2s ease;
-        color: rgba(0, 0, 0, 0.26);
-      }
-
-      &.filled mat-icon,
-      &.half-filled mat-icon {
-        color: rgb(var(--primary-rgb));
-      }
-
-      &.hovered mat-icon {
-        color: rgba(var(--primary-rgb), 0.7);
-        transform: scale(1.1);
-      }
-
-      &:hover:not(:disabled) mat-icon {
-        transform: scale(1.15);
-      }
-
-      &.read-only {
-        cursor: default;
-      }
-    }
-
-    // Size variants
-    &.size-sm {
-      .star-button mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-      }
-    }
-
-    &.size-md {
-      .star-button mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-      }
-    }
-
-    &.size-lg {
-      .star-button mat-icon {
-        font-size: 32px;
-        width: 32px;
-        height: 32px;
-      }
-    }
-  }
-
-  // Half star support
-  .half-filled {
-    position: relative;
-
-    mat-icon {
-      color: rgb(var(--primary-rgb));
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.26);
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-  }
 }
 
-// Dark mode support
+.items-center {
+  align-items: center;
+}
+
+.space-x-1 {
+  gap: $spacing-1;
+}
+
+.text-2xl {
+  font-size: $text-2xl;
+}
+
+.transition-colors {
+  transition: $transition-colors;
+}
+
+.disabled\:cursor-default:disabled {
+  cursor: default;
+}
+
+.ml-2 {
+  margin-left: $spacing-2;
+}
+
+.text-sm {
+  font-size: $text-sm;
+}
+
+.text-slate-600 {
+  color: $gray-600;
+}
+
+.dark .text-slate-400 {
+  color: $gray-400;
+}
+
+/* Star Colors */
+.text-yellow-400 {
+  color: $warning-400;
+}
+
+.hover\:text-yellow-500:hover {
+  color: $warning-500;
+}
+
+.text-slate-300 {
+  color: $gray-300;
+}
+
+.dark .text-slate-600 {
+  color: $gray-600;
+}
+
+.hover\:text-yellow-400:hover {
+  color: $warning-400;
+}
+
+/* Heart Colors */
+.text-red-500 {
+  color: $error-500;
+}
+
+.hover\:text-red-600:hover {
+  color: $error-600;
+}
+
+.hover\:text-red-400:hover {
+  color: $error-400;
+}
+
+/* Dark Mode */
 .dark {
-  .rating-container {
-    .rating-label {
-      color: rgba(255, 255, 255, 0.87);
-
-      .rating-value {
-        color: rgba(255, 255, 255, 0.6);
-      }
-    }
-
-    .stars-container {
-      .star-button {
-        mat-icon {
-          color: rgba(255, 255, 255, 0.26);
-        }
-      }
-    }
+  .text-slate-600 {
+    color: $gray-400;
   }
 }
 
+/* Gemini Theme */
+body.theme-gemini {
+  .text-yellow-400 {
+    color: $gemini-gradient-mid;
+    @include gemini-glow('subtle');
+  }
+  
+  .text-red-500 {
+    color: $error-400;
+    @include gemini-glow('subtle');
+  }
+  
+  .text-slate-600,
+  .dark .text-slate-400 {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .text-2xl {
+    font-size: $text-xl;
+  }
+}

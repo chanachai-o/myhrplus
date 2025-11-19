@@ -1,0 +1,108 @@
+/* ============================================
+   Glass Card Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+/* Base Glass Card */
+.glass-card,
+.glass-card-strong,
+.glass-card-weak {
+  @include glass-morphism('default', 'light');
+  border-radius: $radius-lg;
+  box-shadow: $shadow-glass;
+  transition: $transition-all;
+  position: relative;
+  overflow: hidden;
+
+  /* Hover State */
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-glass-lg;
+  }
+}
+
+/* Strong Variant */
+.glass-card-strong {
+  @include glass-morphism('strong', 'light');
+  box-shadow: $shadow-glass-lg;
+}
+
+/* Weak Variant */
+.glass-card-weak {
+  @include glass-morphism('weak', 'light');
+  box-shadow: $shadow-glass-sm;
+}
+
+/* Dark Mode */
+.dark {
+  .glass-card {
+    @include glass-morphism('default', 'dark');
+    box-shadow: $shadow-glass-dark;
+  }
+
+  .glass-card-strong {
+    @include glass-morphism('strong', 'dark');
+    box-shadow: $shadow-glass-dark-lg;
+  }
+
+  .glass-card-weak {
+    @include glass-morphism('weak', 'dark');
+    box-shadow: $shadow-glass-dark-sm;
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .glass-card,
+  .glass-card-strong,
+  .glass-card-weak {
+    @include glass-gemini('default');
+    @include gemini-border-glow();
+
+    &:hover {
+      @include gemini-glow('default');
+      transform: translateY(-4px) scale(1.02);
+    }
+  }
+
+  .glass-card-strong {
+    @include glass-gemini('strong');
+  }
+
+  .glass-card-weak {
+    @include glass-gemini('weak');
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .glass-card,
+  .glass-card-strong,
+  .glass-card-weak {
+    border-radius: $radius-md;
+  }
+}
+
+/* Animations */
+.animate-fade-in {
+  @include fade-in();
+}
+
+.animate-slide-up {
+  @include slide-up();
+}
+
+.animate-slide-down {
+  @include slide-down();
+}
+
+.animate-scale-in {
+  @include scale-in();
+}
+
