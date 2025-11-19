@@ -1,6 +1,7 @@
 # 📚 Components Index - เอกสารอ้างอิง
 
-**อัปเดตล่าสุด**: 2024-12-19
+**อัปเดตล่าสุด**: 2024-12-19  
+**เวอร์ชัน**: 2.0.0
 
 ---
 
@@ -51,16 +52,36 @@
 2. **GlassButtonComponent** - `src/app/shared/components/glass-button/`
 3. **GlassInputComponent** - `src/app/shared/components/glass-input/`
 
-### UI Components (9)
+### UI Components (30+)
 4. **EmptyStateComponent** - `src/app/shared/components/empty-state/` (Standalone)
 5. **LoadingComponent** - `src/app/shared/components/loading/` (Standalone)
 6. **StatisticsCardComponent** - `src/app/shared/components/statistics-card/` (Standalone)
-7. **TabsComponent** - `src/app/shared/components/tabs/` (Standalone)
-8. **ProgressBarComponent** - `src/app/shared/components/progress-bar/` (Standalone)
-9. **RatingComponent** - `src/app/shared/components/rating/` (Standalone - มี component เดิมใน SharedModule)
-10. **TooltipComponent** - `src/app/shared/components/tooltip/` (Standalone)
-11. **ModalComponent** - `src/app/shared/components/modal/` (Standalone)
-12. **PageLayoutComponent** - `src/app/shared/components/page-layout/` (Standalone)
+7. **StatisticsGridComponent** - `src/app/shared/components/statistics-grid/` (Standalone)
+8. **TabsComponent** - `src/app/shared/components/tabs/` (Standalone)
+9. **ProgressBarComponent** - `src/app/shared/components/progress-bar/` (Standalone)
+10. **RatingComponent** - `src/app/shared/components/rating/` (Standalone)
+11. **TooltipComponent** - `src/app/shared/components/tooltip/` (Standalone)
+12. **ModalComponent** - `src/app/shared/components/modal/` (Standalone)
+13. **PageLayoutComponent** - `src/app/shared/components/page-layout/` (Standalone)
+14. **DataTableComponent** - `src/app/shared/components/data-table/` (Standalone)
+15. **FileUploadComponent** - `src/app/shared/components/file-upload/` (Standalone)
+16. **ConfirmDialogComponent** - `src/app/shared/components/confirm-dialog/` (Standalone)
+17. **LoadingSpinnerComponent** - `src/app/shared/components/loading-spinner/` (Standalone)
+18. **IconComponent** - `src/app/shared/components/icon/` (Standalone)
+19. **FormValidationMessagesComponent** - `src/app/shared/components/form-validation-messages/` (Standalone)
+20. **ImageUploadComponent** - `src/app/shared/components/image-upload/` (Standalone)
+21. **SkeletonLoaderComponent** - `src/app/shared/components/skeleton-loader/` (Standalone)
+22. **DateRangePickerComponent** - `src/app/shared/components/date-range-picker/` (Standalone)
+23. **TimelineComponent** - `src/app/shared/components/timeline/` (Standalone)
+24. **StepperComponent** - `src/app/shared/components/stepper/` (Standalone)
+25. **BreadcrumbsComponent** - `src/app/shared/components/breadcrumbs/` (Standalone)
+26. **SearchFilterComponent** - `src/app/shared/components/search-filter/` (Standalone)
+27. **StatusBadgeComponent** - `src/app/shared/components/status-badge/` (Standalone)
+28. **AvatarComponent** - `src/app/shared/components/avatar/` (Standalone)
+29. **ErrorStateComponent** - `src/app/shared/components/error-state/` (Standalone)
+30. **ThemeToggleComponent** - `src/app/shared/components/theme-toggle/` (Standalone)
+31. **NotificationComponent** - `src/app/shared/components/notification/` (Standalone)
+32. **SpinnerComponent** - `src/app/shared/components/spinner/` (Standalone)
 
 ### Legacy Components (ใน SharedModule)
 - EmptyStateComponent (เดิม) - มี .html และ .scss
@@ -113,6 +134,14 @@ import { SharedModule } from '@shared/shared.module';
 ---
 
 ## 🔄 Version History
+
+### v2.0.0 (2024-12-19)
+- ✅ เพิ่ม Gemini 1.5 Theme support
+- ✅ อัปเดต Layout components (Header, Sidebar, Footer)
+- ✅ เพิ่ม animations และ vector effects
+- ✅ อัปเดต components ให้รองรับ Gemini theme
+- ✅ เพิ่ม 20+ components (รวม 30+ components)
+- ✅ อัปเดต Documentation
 
 ### v1.0.0 (2024-12-19)
 - ✅ สร้าง Glass Components (3 components)

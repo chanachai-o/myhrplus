@@ -1,7 +1,10 @@
 # UI Component Kit Guide
 
+**อัปเดตล่าสุด**: 2024-12-19  
+**เวอร์ชัน**: 2.0.0
+
 ## 🎨 Overview
-UI Kit page ที่แสดงตัวอย่างการใช้งาน Components, Directives, และ Pipes ทั้งหมดในระบบ พร้อม Glassmorphism และ Dark Mode support
+UI Kit page ที่แสดงตัวอย่างการใช้งาน Components, Directives, และ Pipes ทั้งหมดในระบบ พร้อม Glassmorphism, Dark Mode, และ **Gemini 1.5 Theme** support
 
 ## 📍 Access
 เข้าถึงได้ที่: `/ui-kit` (ต้อง login ก่อน)
@@ -158,6 +161,14 @@ UI Kit page ที่แสดงตัวอย่างการใช้ง�
 - เปลี่ยนสีธีมได้ผ่าน Theme Toggle
 - Primary color เปลี่ยนตาม theme
 - Background gradients เปลี่ยนตาม theme
+- **Gemini 1.5 Theme** - ธีมสีฟ้าเข้มพร้อม gradient effects และ animations
+
+### Gemini 1.5 Theme Features
+- Gradient text effects (ฟ้าอ่อน→ฟ้าเข้ม)
+- Animated border glows
+- Vector particles และ patterns
+- Enhanced shadows พร้อม blue tints
+- Smooth animations (float, pulse, shimmer, wave)
 
 ### Glassmorphism
 - Glass cards ในทุก section

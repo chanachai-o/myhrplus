@@ -1,7 +1,7 @@
 # 🎨 Glass Morphism Template & Components Guide
 
 **อัปเดตล่าสุด**: 2024-12-19  
-**เวอร์ชัน**: 1.0.0
+**เวอร์ชัน**: 2.0.0
 
 ---
 
@@ -20,13 +20,15 @@
 
 ## 🎯 ภาพรวม
 
-โปรเจคนี้ใช้ **Glass Morphism Design System** ที่ดึงมาจาก Intelligent-Video-Analytics-Platform โดยมีลักษณะ:
+โปรเจคนี้ใช้ **Glass Morphism Design System** และ **Gemini 1.5 Theme** ที่ทันสมัย โดยมีลักษณะ:
 
 - ✨ **Glass Morphism Effects** - เอฟเฟกต์กระจกใสพร้อม backdrop blur
+- 🎨 **Gemini 1.5 Theme** - ธีมสีฟ้าเข้มพร้อม gradient effects และ animations
 - 🌓 **Dark/Light Mode** - รองรับทั้งโหมดมืดและสว่าง
 - 📱 **Responsive Design** - Mobile-first approach
-- 🎨 **Modern Typography** - รองรับทั้งภาษาไทยและอังกฤษ
-- ⚡ **Standalone Components** - ใช้ Angular standalone components
+- 🎭 **Modern Typography** - รองรับทั้งภาษาไทยและอังกฤษ
+- ⚡ **Standalone Components** - ใช้ Angular standalone components (30+ components)
+- 🎬 **Animations** - Smooth animations และ vector effects
 
 ---
 
@@ -62,6 +64,12 @@ Primary 950: #082f49
 - Blue Theme: `#1e3a8a → #2563eb`
 - Indigo Theme: `#312e81 → #4338ca`
 - Purple Theme: `#581c87 → #7c3aed`
+
+**Gemini 1.5 Theme:**
+- Background: `#000000` (Almost black)
+- Gradient: `#93c5fd → #60a5fa → #3b82f6 → #2563eb` (Light blue to darker blue)
+- Particles: Animated blue particles overlay
+- Pattern: Diagonal vector patterns
 
 ### Typography
 
@@ -121,6 +129,35 @@ border: 1px solid rgba(51, 65, 85, 0.4)
 background: rgba(15, 23, 42, 0.1)
 backdrop-filter: blur(6px)
 border: 1px solid rgba(51, 65, 85, 0.2)
+```
+
+### Gemini 1.5 Theme
+
+#### Theme Features
+- **Background**: Almost black (#000000) with blue gradient overlays
+- **Gradient Colors**: Light blue (#93c5fd) → Medium blue (#60a5fa) → Blue (#3b82f6) → Darker blue (#2563eb)
+- **Vector Effects**: Animated particles และ diagonal patterns
+- **Text Effects**: Gradient text สำหรับ headings
+- **Animations**: gemini-float, gemini-pulse, gemini-shimmer, gemini-wave, gemini-gradient, gemini-glow
+
+#### Usage
+```typescript
+// เปิดใช้งานผ่าน ThemeService
+this.themeService.setTheme({ color: 'gemini', mode: 'dark' });
+```
+
+```html
+<!-- ใช้ Gemini animation classes -->
+<div class="animate-gemini-float">Floating Element</div>
+<div class="animate-gemini-pulse">Pulsing Element</div>
+<h1 class="gemini-text-glow">Glowing Text</h1>
+<div class="gemini-vector">Vector Element</div>
+```
+
+#### Gemini Gradient Classes
+```html
+<div class="bg-gradient-gemini">Gradient Background</div>
+<h1 class="bg-gradient-gemini-text">Gradient Text</h1>
 ```
 
 ---

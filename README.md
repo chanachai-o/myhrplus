@@ -1,51 +1,26 @@
 # HR System Angular Migration
 
-## Overview
-This is the Angular frontend application for the HR System migration from JSP/Servlet to Angular.
+**เวอร์ชัน**: 2.0.0  
+**อัปเดตล่าสุด**: 2024-12-19
 
-## 🎨 Glass Morphism Template & Components
+## 📋 ภาพรวม
 
-โปรเจคนี้ใช้ **Glass Morphism Design System** ที่ดึงมาจาก Intelligent-Video-Analytics-Platform
+ระบบบริหารทรัพยากรบุคคล (HR System) ที่พัฒนาโดยใช้ Angular 17+ พร้อม Design System ที่ทันสมัย
 
-### Quick Links
-- **[TEMPLATE_AND_COMPONENTS_GUIDE.md](./TEMPLATE_AND_COMPONENTS_GUIDE.md)** - เอกสารหลักที่ครอบคลุมทุกอย่าง
-- **[COMPONENTS_INDEX.md](./COMPONENTS_INDEX.md)** - เอกสารอ้างอิง Components
-- **[Demo Page](./src/app/features/demo/)** - `/demo` - หน้าแสดง components ทั้งหมด
+## ✨ Features
 
-### Components ที่มี (12 components)
-- **Glass Components**: GlassCard, GlassButton, GlassInput
-- **UI Components**: EmptyState, Loading, StatisticsCard, Tabs, ProgressBar, Rating, Tooltip, Modal, PageLayout
+- 🎨 **Gemini 1.5 Theme** - ธีมสีฟ้าเข้มพร้อม gradient effects และ animations
+- 🌓 **Dark/Light Mode** - รองรับทั้งโหมดมืดและสว่าง
+- 📱 **Responsive Design** - Mobile-first approach
+- 🎭 **Glass Morphism** - Modern UI design system
+- ⚡ **Standalone Components** - Angular standalone components
+- 🔄 **Syncfusion UI-KIT** - Enterprise UI components
+- 🌐 **Multi-language** - รองรับภาษาไทยและอังกฤษ
 
-ดูรายละเอียดเพิ่มเติม: [TEMPLATE_AND_COMPONENTS_GUIDE.md](./TEMPLATE_AND_COMPONENTS_GUIDE.md)
-
-## Project Structure
-
-```
-angular-hr-migration/
-├── src/
-│   ├── app/
-│   │   ├── core/           # Core services, guards, interceptors
-│   │   ├── shared/          # Shared components, directives, pipes
-│   │   ├── features/        # Feature modules
-│   │   │   ├── auth/        # Authentication module
-│   │   │   ├── empview/     # Employee view module
-│   │   │   ├── ta/          # Time attendance module
-│   │   │   ├── personal/    # Personal information module
-│   │   │   ├── payroll/     # Payroll module
-│   │   │   └── ...
-│   │   └── layout/          # Layout components
-│   ├── assets/              # Static assets
-│   ├── environments/        # Environment configurations
-│   └── styles.scss          # Global styles
-├── angular.json
-├── package.json
-└── tsconfig.json
-```
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 18+
 - npm 9+ or yarn
 
 ### Installation
@@ -64,48 +39,179 @@ npm run build
 npm test
 ```
 
-## Development
-
 ### Development Server
 The app will be available at `http://localhost:4200`
 
-### Proxy Configuration
-API calls are proxied to the backend server. See `proxy.conf.json` for configuration.
+## 🎨 Design System
 
-## Project Phases
+### Gemini 1.5 Theme
 
-- **Phase 0**: Foundation (Current)
-- **Phase 1**: Core Infrastructure & Authentication
-- **Phase 2**: Employee View Module
-- **Phase 3**: Time Attendance Module
-- **Phase 4**: Personal Information Module
-- **Phase 5**: Payroll Module
-- And more...
+ระบบรองรับธีม **Gemini 1.5** ที่มีลักษณะ:
+- พื้นหลังสีเข้มเกือบดำ (#000000)
+- Gradient สีฟ้าอ่อนไปฟ้าเข้ม (Light blue → Darker blue)
+- Vector effects และ animated particles
+- Text gradient effects
+- Animated border glows
 
-See the plan document for detailed phase information.
+**วิธีใช้งาน:**
+```typescript
+// เปิดใช้งานผ่าน ThemeService
+this.themeService.setTheme({ color: 'gemini', mode: 'dark' });
+```
 
-## Technology Stack
+### Glass Morphism Components
+
+โปรเจคใช้ **Glass Morphism Design System** พร้อม components:
+
+#### Glass Components (3)
+- **GlassCard** - Card component with glass effect
+- **GlassButton** - Button component with glass styling
+- **GlassInput** - Input component with glass styling
+
+#### UI Components (30+)
+- EmptyState, Loading, StatisticsCard, Tabs, ProgressBar
+- Rating, Tooltip, Modal, PageLayout, DataTable
+- และอื่นๆ...
+
+ดูรายละเอียด: [TEMPLATE_AND_COMPONENTS_GUIDE.md](./TEMPLATE_AND_COMPONENTS_GUIDE.md)
+
+## 📁 Project Structure
+
+```
+angular-hr-migration/
+├── src/
+│   ├── app/
+│   │   ├── core/              # Core services, guards, interceptors
+│   │   ├── shared/            # Shared components, directives, pipes
+│   │   │   └── components/     # 30+ reusable components
+│   │   ├── features/          # Feature modules
+│   │   │   ├── auth/          # Authentication
+│   │   │   ├── home/          # Dashboard/Home
+│   │   │   ├── empview/       # Employee view
+│   │   │   ├── ta/            # Time attendance
+│   │   │   ├── personal/      # Personal information
+│   │   │   ├── payroll/       # Payroll
+│   │   │   └── ...            # Other modules
+│   │   └── layout/            # Layout components
+│   │       ├── main-layout/   # Main layout
+│   │       ├── header/        # Header component
+│   │       ├── sidebar/       # Sidebar component
+│   │       └── footer/        # Footer component
+│   ├── assets/                # Static assets
+│   ├── environments/          # Environment configurations
+│   └── styles.scss            # Global styles (Gemini theme)
+├── angular.json
+├── package.json
+├── tailwind.config.js         # Tailwind + Gemini config
+└── tsconfig.json
+```
+
+## 🛠️ Technology Stack
 
 - **Angular**: 17+
-- **Angular Material**: UI Component Library
+- **TypeScript**: 5+
+- **Tailwind CSS**: 3+ (Utility-first CSS)
 - **Syncfusion**: Enterprise UI Components
-- **Tailwind CSS**: Utility-first CSS framework
 - **RxJS**: Reactive programming
-- **TypeScript**: Type-safe JavaScript
-- **Glass Morphism**: Modern UI design system
+- **Angular Material**: UI Component Library (optional)
 
-## Documentation
+## 📚 Documentation
 
-### Glass Morphism Template & Components
-- **[TEMPLATE_AND_COMPONENTS_GUIDE.md](./TEMPLATE_AND_COMPONENTS_GUIDE.md)** - เอกสารหลักที่ครอบคลุมทุกอย่าง
+### เอกสารหลัก
+- **[TEMPLATE_AND_COMPONENTS_GUIDE.md](./TEMPLATE_AND_COMPONENTS_GUIDE.md)** ⭐ - เอกสารหลักที่ครอบคลุมทุกอย่าง
 - **[COMPONENTS_INDEX.md](./COMPONENTS_INDEX.md)** - เอกสารอ้างอิง Components
-- **[GLASS_MORPHISM_COMPONENTS_ANALYSIS.md](./GLASS_MORPHISM_COMPONENTS_ANALYSIS.md)** - การวิเคราะห์ Glass Morphism Components
-- **[SHARED_COMPONENTS_SUMMARY.md](./SHARED_COMPONENTS_SUMMARY.md)** - สรุป Shared Components
-- **[CONFIG_UPDATE_SUMMARY.md](./CONFIG_UPDATE_SUMMARY.md)** - สรุปการอัปเดต Configuration
+- **[UI_KIT_GUIDE.md](./UI_KIT_GUIDE.md)** - Syncfusion UI-KIT Guide
 
-### Other Documentation
-- [API Documentation](./API_DOCUMENTATION.md)
-- [JSP Inventory](./JSP_INVENTORY.md)
-- [Dependencies Analysis](./DEPENDENCIES_ANALYSIS.md)
+### เอกสาร Design System
+- **[GLASSMORPHISM_TEMPLATE_GUIDE.md](./GLASSMORPHISM_TEMPLATE_GUIDE.md)** - Glass Morphism Guide
+- **[DARK_MODE_THEME_GUIDE.md](./DARK_MODE_THEME_GUIDE.md)** - Dark Mode Guide
+- **[TAILWIND_SETUP.md](./TAILWIND_SETUP.md)** - Tailwind Configuration
 
-# myhrplus
+### เอกสาร API & Integration
+- **[API_DOCUMENTATION.md](./API_DOCUMENTATION.md)** - API Documentation
+- **[SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md)** - Setup Guide
+
+### Module Inventories
+- **[EMPVIEW_MODULE_INVENTORY.md](./EMPVIEW_MODULE_INVENTORY.md)** - Employee View Module
+- **[PAYROLL_MODULE_INVENTORY.md](./PAYROLL_MODULE_INVENTORY.md)** - Payroll Module
+- **[TIME_MODULE_INVENTORY.md](./TIME_MODULE_INVENTORY.md)** - Time Attendance Module
+- และอื่นๆ...
+
+## 🎯 Key Features
+
+### Authentication
+- JWT-based authentication
+- Role-based access control
+- Session management
+- Multi-database support
+
+### Layout System
+- Two-layer sidebar design
+- Responsive header
+- Modern footer
+- Gemini theme support
+
+### Components
+- 30+ reusable components
+- Glass morphism design
+- Dark/Light mode support
+- Responsive design
+
+## 🔧 Configuration
+
+### Environment Variables
+See `src/environments/` for environment configurations
+
+### Proxy Configuration
+API calls are proxied to the backend server. See `proxy.conf.json`
+
+### Theme Configuration
+Themes are managed through `ThemeService`. Available themes:
+- `blue`, `indigo`, `purple`, `green`, `orange`, `red`, `teal`, `pink`
+- **`gemini`** - Gemini 1.5 theme (new)
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+npm test
+
+# E2E tests
+npm run e2e
+
+# Coverage
+npm run test:coverage
+```
+
+## 📦 Build & Deploy
+
+```bash
+# Development build
+npm run build
+
+# Production build
+npm run build:prod
+
+# Analyze bundle
+npm run build:analyze
+```
+
+## 🤝 Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Test thoroughly
+4. Submit a pull request
+
+## 📝 Changelog
+
+See [DOCUMENTATION_CHANGELOG.md](./DOCUMENTATION_CHANGELOG.md) for detailed changelog
+
+## 📄 License
+
+Proprietary - Enterprise PT
+
+---
+
+**Maintainer**: Development Team  
+**Last Updated**: 2024-12-19
