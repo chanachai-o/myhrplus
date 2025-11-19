@@ -12,12 +12,14 @@ export const ROUTES = {
     FORBIDDEN: '/forbidden'
   },
 
-  // Dashboard
+  // Dashboard & Home
+  HOME: '/home',
   DASHBOARD: '/dashboard',
 
   // Feature Modules
   PERSONAL: {
     BASE: '/personal',
+    HOME: '/personal/home',
     PROFILE: '/personal/profile',
     PREFERENCES: '/personal/preferences',
     ADDRESS: '/personal/address',
@@ -29,6 +31,7 @@ export const ROUTES = {
 
   TA: {
     BASE: '/ta',
+    HOME: '/ta/home',
     LEAVE_REQUEST: '/ta/leave-request',
     TIME_EDIT: '/ta/time-edit',
     SHIFT_CHANGE: '/ta/shift-change',
@@ -40,6 +43,7 @@ export const ROUTES = {
 
   PAYROLL: {
     BASE: '/payroll',
+    HOME: '/payroll/home',
     PAYSLIP: '/payroll/payslip',
     TAX_INFO: '/payroll/tax-information',
     DEDUCTIONS: '/payroll/deductions',
@@ -48,6 +52,7 @@ export const ROUTES = {
 
   TRAINING: {
     BASE: '/training',
+    HOME: '/training/home',
     CATALOG: '/training/catalog',
     REGISTRATION: '/training/registration',
     HISTORY: '/training/history',
@@ -58,6 +63,7 @@ export const ROUTES = {
 
   APPRAISAL: {
     BASE: '/appraisal',
+    HOME: '/appraisal/home',
     GOAL_SETTING: '/appraisal/goal-setting',
     PERFORMANCE: '/appraisal/performance',
     REVIEW: '/appraisal/review',
@@ -67,6 +73,7 @@ export const ROUTES = {
 
   RECRUIT: {
     BASE: '/recruit',
+    HOME: '/recruit/home',
     JOB_POSTINGS: '/recruit/job-postings',
     JOB_DETAILS: '/recruit/job-details',
     CANDIDATE_MANAGEMENT: '/recruit/candidate-management',
@@ -78,6 +85,7 @@ export const ROUTES = {
 
   WELFARE: {
     BASE: '/welfare',
+    HOME: '/welfare/home',
     BENEFITS: '/welfare/benefits',
     BENEFIT_DETAILS: '/welfare/benefit-details',
     ENROLLMENT: '/welfare/enrollment',
@@ -87,10 +95,24 @@ export const ROUTES = {
 
   WORKFLOW: {
     BASE: '/workflow',
+    HOME: '/workflow/home',
     INBOX: '/workflow/inbox',
     SENTBOX: '/workflow/sentbox',
     CREATE: '/workflow/create'
   },
+
+  COMPANY: {
+    BASE: '/company',
+    HOME: '/company/home'
+  },
+
+  SETTING: {
+    BASE: '/setting',
+    HOME: '/setting/home'
+  },
+
+  // Demo
+  DEMO: '/demo',
 
   // UI Kit
   UI_KIT: '/ui-kit',
