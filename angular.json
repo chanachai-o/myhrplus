@@ -31,7 +31,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/balkanapp/orgchart.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -103,7 +105,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/balkanapp/orgchart.js"
+            ]
           }
         }
       }
