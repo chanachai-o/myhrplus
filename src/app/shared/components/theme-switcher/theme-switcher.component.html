@@ -1,0 +1,87 @@
+<div class="theme-switcher glass-card p-4 rounded-lg">
+  <div class="flex flex-col gap-4">
+    <!-- Theme Mode Toggle -->
+    <div class="flex items-center justify-between">
+      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">
+        Theme Mode
+      </label>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="setMode('light')"
+          [class.active]="currentMode === 'light'"
+          class="px-3 py-1.5 rounded-md text-sm font-medium transition-all
+                 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600
+                 hover:bg-slate-50 dark:hover:bg-slate-700
+                 active:bg-primary-500 active:text-white active:border-primary-500">
+          Light
+        </button>
+        <button
+          type="button"
+          (click)="setMode('dark')"
+          [class.active]="currentMode === 'dark'"
+          class="px-3 py-1.5 rounded-md text-sm font-medium transition-all
+                 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600
+                 hover:bg-slate-50 dark:hover:bg-slate-700
+                 active:bg-primary-500 active:text-white active:border-primary-500">
+          Dark
+        </button>
+        <button
+          type="button"
+          (click)="setMode('auto')"
+          [class.active]="currentMode === 'auto'"
+          class="px-3 py-1.5 rounded-md text-sm font-medium transition-all
+                 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600
+                 hover:bg-slate-50 dark:hover:bg-slate-700
+                 active:bg-primary-500 active:text-white active:border-primary-500">
+          Auto
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Toggle -->
+    <div class="flex items-center justify-between">
+      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">
+        Quick Toggle
+      </label>
+      <button
+        type="button"
+        (click)="toggleMode()"
+        class="px-4 py-2 rounded-md text-sm font-medium transition-all
+               bg-primary-500 hover:bg-primary-600 text-white
+               dark:bg-primary-600 dark:hover:bg-primary-700">
+        {{ isDarkMode ? 'Switch to Light' : 'Switch to Dark' }}
+      </button>
+    </div>
+
+    <!-- Theme Colors -->
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium text-slate-700 dark:text-slate-300">
+        Theme Color
+      </label>
+      <div class="grid grid-cols-4 gap-2">
+        <button
+          *ngFor="let color of themeColors"
+          type="button"
+          (click)="setColor(color)"
+          [class.active]="currentColor === color"
+          [attr.data-color]="color"
+          class="h-10 rounded-md border-2 transition-all
+                 border-slate-300 dark:border-slate-600
+                 active:border-primary-500 active:ring-2 active:ring-primary-500/50">
+        </button>
+      </div>
+    </div>
+
+    <!-- Reset Button -->
+    <button
+      type="button"
+      (click)="resetTheme()"
+      class="px-4 py-2 rounded-md text-sm font-medium transition-all
+             bg-slate-200 hover:bg-slate-300 text-slate-700
+             dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-200">
+      Reset to Default
+    </button>
+  </div>
+</div>
+

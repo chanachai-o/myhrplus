@@ -1,0 +1,31 @@
+<div class="content-layout min-h-screen flex flex-col">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Main Content Area -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Main Content -->
+    <div class="main-content flex-1" (click)="toggleSidebarBody()">
+      <ngx-simplebar class="h-full">
+        <div class="content-wrapper p-4 md:p-6">
+          <router-outlet></router-outlet>
+        </div>
+      </ngx-simplebar>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+
+  <!-- Responsive Overlay -->
+  <div 
+    *ngIf="navService.isMobile() && !navService.collapseSidebar"
+    id="responsive-overlay" 
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+    (click)="clearToggle()">
+  </div>
+</div>
+

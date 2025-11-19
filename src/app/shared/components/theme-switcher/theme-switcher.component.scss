@@ -1,0 +1,42 @@
+.theme-switcher {
+  min-width: 280px;
+}
+
+button[data-color="blue"] {
+  background-color: #3b82f6;
+}
+
+button[data-color="indigo"] {
+  background-color: #6366f1;
+}
+
+button[data-color="purple"] {
+  background-color: #a855f7;
+}
+
+button[data-color="green"] {
+  background-color: #22c55e;
+}
+
+button[data-color="orange"] {
+  background-color: #f97316;
+}
+
+button[data-color="red"] {
+  background-color: #ef4444;
+}
+
+button[data-color="teal"] {
+  background-color: #14b8a6;
+}
+
+button[data-color="pink"] {
+  background-color: #ec4899;
+}
+
+button.active {
+  @apply ring-2 ring-primary-500 ring-offset-2;
+}
+
+
+

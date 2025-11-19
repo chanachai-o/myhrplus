@@ -1,0 +1,73 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Bar Rating</h1>
+    <p class="demo-description">
+      Star rating component with customizable themes and interactive/readonly modes.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-preview space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Interactive Rating</h3>
+          <bar-rating
+            [(rate)]="rating1"
+            [max]="5"
+            (rateChange)="onRatingChange($event)">
+          </bar-rating>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            Current rating: {{ rating1 }}/5
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Readonly Rating</h3>
+          <bar-rating
+            [(rate)]="rating2"
+            [max]="5"
+            [readOnly]="true">
+          </bar-rating>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            Rating: {{ rating2 }}/5 (Readonly)
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Custom Max Rating (10)</h3>
+          <bar-rating
+            [(rate)]="rating3"
+            [max]="10">
+          </bar-rating>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            Current rating: {{ rating3 }}/10
+          </p>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Code Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Basic Rating</h3>
+          <app-code-viewer [code]="basicExample" language="html"></app-code-viewer>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Readonly Rating</h3>
+          <app-code-viewer [code]="readonlyExample" language="html"></app-code-viewer>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+</div>
+
+

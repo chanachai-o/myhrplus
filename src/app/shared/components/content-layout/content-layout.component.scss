@@ -1,0 +1,27 @@
+.content-layout {
+  @apply transition-all duration-300;
+}
+
+.main-content {
+  @apply transition-all duration-300;
+  
+  // Simplebar styling
+  .simplebar-scrollbar::before {
+    @apply bg-slate-400/50 dark:bg-slate-600/50;
+  }
+  
+  .simplebar-track.simplebar-vertical {
+    @apply w-2;
+  }
+}
+
+.content-wrapper {
+  @apply min-h-full;
+}
+
+#responsive-overlay {
+  @apply transition-opacity duration-300;
+}
+
+
+

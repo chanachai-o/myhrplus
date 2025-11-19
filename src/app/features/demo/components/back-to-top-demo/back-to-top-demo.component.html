@@ -1,0 +1,63 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Back To Top</h1>
+    <p class="demo-description">
+      Scroll to top button component that appears when user scrolls down. Features glassmorphism styling and smooth animations.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-preview space-y-6">
+        <div>
+          <p class="mb-4 text-slate-600 dark:text-slate-400">
+            Scroll down this page to see the back-to-top button appear. Click it to smoothly scroll back to the top.
+          </p>
+          
+          <!-- Add some content to make the page scrollable -->
+          <div class="space-y-4">
+            <div class="h-96 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Section 1</h3>
+              <p>Scroll down to see the back-to-top button...</p>
+            </div>
+            
+            <div class="h-96 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Section 2</h3>
+              <p>Keep scrolling...</p>
+            </div>
+            
+            <div class="h-96 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Section 3</h3>
+              <p>The button should appear now. Click it to go back to top!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+    
+    <!-- Back to top component -->
+    <app-back-to-top></app-back-to-top>
+  </section>
+
+  <!-- Code Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Basic Usage</h3>
+          <app-code-viewer [code]="basicExample" language="html"></app-code-viewer>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            {{ usageNote }}
+          </p>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+</div>
+
+

@@ -1,0 +1,68 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Fullscreen Directive</h1>
+    <p class="demo-description">
+      Directive for toggling fullscreen mode. Supports multiple browsers with fallback support.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-preview space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Basic Fullscreen Toggle</h3>
+          <button
+            appFullscreen
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            Toggle Fullscreen
+          </button>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            Click the button to toggle fullscreen mode
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold mb-4">With Icon</h3>
+          <button
+            appFullscreen
+            class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+            </svg>
+            Fullscreen
+          </button>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Code Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Basic Usage</h3>
+          <app-code-viewer [code]="basicExample" language="html"></app-code-viewer>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-2">With Icon</h3>
+          <app-code-viewer [code]="withIconExample" language="html"></app-code-viewer>
+        </div>
+        
+        <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <p class="text-sm text-slate-700 dark:text-slate-300">
+            <strong>Note:</strong> {{ usageNote }}
+          </p>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+</div>
+
+
