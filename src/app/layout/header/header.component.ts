@@ -180,14 +180,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showNotificationMenu = false;
   }
 
-  getNotificationIcon(type: string): string {
+  getNotificationIconName(type: string): string {
     const iconMap: { [key: string]: string } = {
-      'info': 'e-info text-blue-500',
-      'success': 'e-success text-green-500',
-      'warning': 'e-warning text-yellow-500',
-      'error': 'e-error text-red-500'
+      'info': 'info',
+      'success': 'check_circle',
+      'warning': 'warning',
+      'error': 'error'
     };
-    return iconMap[type] || 'e-info text-blue-500';
+    return iconMap[type] || 'info';
+  }
+
+  getNotificationIconColor(type: string): string {
+    const colorMap: { [key: string]: string } = {
+      'info': 'text-blue-500',
+      'success': 'text-green-500',
+      'warning': 'text-yellow-500',
+      'error': 'text-red-500'
+    };
+    return colorMap[type] || 'text-blue-500';
   }
 
   getTimeAgo(date: Date): string {

@@ -52,14 +52,14 @@
             [placeholder]="'ค้นหาเมนู...'"
             class="search-input w-full px-4 py-2 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2"
             [attr.aria-label]="'ค้นหาเมนู'">
-          <span class="e-icons e-search search-icon"></span>
+          <app-icon name="search" size="sm" color="text-slate-500 dark:text-slate-400" class="search-icon absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></app-icon>
           <button
             *ngIf="searchQuery"
             (click)="clearSearch()"
             class="clear-search-btn"
             [attr.aria-label]="'ล้างการค้นหา'"
             type="button">
-            <span class="e-icons e-close"></span>
+            <app-icon name="close" size="sm" color="text-slate-500 dark:text-slate-400"></app-icon>
           </button>
         </div>
 
@@ -89,7 +89,7 @@
       <!-- Search No Results -->
       <div *ngIf="!isLoading && selectedModuleData && searchQuery && filteredMenuItems.length === 0"
            class="empty-menu-state flex flex-col items-center justify-center py-12">
-        <span class="e-icons e-search text-5xl mb-4 opacity-50"></span>
+        <app-icon name="search_off" size="xl" color="text-slate-400 dark:text-slate-600" class="mb-4 opacity-50"></app-icon>
         <p class="empty-text thai-text text-center">ไม่พบเมนูที่ค้นหา</p>
         <button
           (click)="clearSearch()"
@@ -102,13 +102,13 @@
       <!-- Empty State - No Menu Items -->
       <div *ngIf="!isLoading && selectedModuleData && !searchQuery && selectedModuleData.menuItems.length === 0"
            class="empty-menu-state flex flex-col items-center justify-center py-12">
-        <span class="e-icons e-folder text-5xl mb-4 opacity-50"></span>
+        <app-icon name="folder_open" size="xl" color="text-slate-400 dark:text-slate-600" class="mb-4 opacity-50"></app-icon>
         <p class="empty-text thai-text text-center">ไม่มีเมนูในโมดูลนี้</p>
       </div>
 
       <!-- Empty State - No Module Selected -->
       <div *ngIf="!selectedModuleData" class="empty-state flex flex-col items-center justify-center h-full py-12">
-        <span class="e-icons e-folder text-5xl mb-4 opacity-50"></span>
+        <app-icon name="folder" size="xl" color="text-slate-400 dark:text-slate-600" class="mb-4 opacity-50"></app-icon>
         <p class="empty-text thai-text text-center">เลือกโมดูลเพื่อดูเมนู</p>
       </div>
     </div>
@@ -167,14 +167,14 @@
                class="user-menu-item"
                (click)="showUserMenu = false"
                [attr.aria-label]="'โปรไฟล์'">
-              <span class="e-icons e-user"></span>
+              <app-icon name="person" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
               <span class="thai-text">โปรไฟล์</span>
             </a>
             <a routerLink="/setting/home"
                class="user-menu-item"
                (click)="showUserMenu = false"
                [attr.aria-label]="'ตั้งค่า'">
-              <span class="e-icons e-settings"></span>
+              <app-icon name="settings" size="sm" color="text-slate-600 dark:text-slate-400"></app-icon>
               <span class="thai-text">ตั้งค่า</span>
             </a>
             <div class="user-menu-divider"></div>
@@ -183,7 +183,7 @@
               (click)="logout()"
               [attr.aria-label]="'ออกจากระบบ'"
               type="button">
-              <span class="e-icons e-logout"></span>
+              <app-icon name="logout" size="sm" color="text-red-500 dark:text-red-400"></app-icon>
               <span class="thai-text">ออกจากระบบ</span>
             </button>
           </div>
