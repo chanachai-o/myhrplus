@@ -1,21 +1,24 @@
 <header class="glass-nav bg-white/25 dark:bg-slate-900/25 backdrop-blur-lg border-b border-white/30 dark:border-slate-700/30 shadow-lg transition-all duration-300 sticky top-0 z-30 gemini-header">
-  <div class="flex items-center justify-between px-3 md:px-4 py-2 md:py-3">
+  <div class="flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
     <div class="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
       <!-- Menu Toggle Button -->
       <button
-        ejs-button
-        [cssClass]="'e-flat e-primary'"
-        [iconCss]="'e-icons e-menu'"
+        type="button"
         (click)="toggleSidenav.emit()"
         [title]="'เมนู'"
-        class="e-control e-btn e-flat e-primary">
+        class="header-icon-btn w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <span class="e-icons e-menu text-xl text-slate-700 dark:text-slate-300"></span>
       </button>
 
       <!-- Logo Section -->
       <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 min-w-0">
-        <div class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-lg flex-shrink-0">
-          <app-icon name="business_center" size="sm" class="md:hidden" color="text-white"></app-icon>
-          <app-icon name="business_center" size="md" class="hidden md:block" color="text-white"></app-icon>
+        <div class="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 shadow-lg flex-shrink-0 relative overflow-hidden">
+          <app-icon
+            name="business_center"
+            size="sm"
+            color="text-white"
+            class="logo-icon">
+          </app-icon>
         </div>
         <div class="flex flex-col min-w-0 hidden sm:block">
           <span class="app-title thai-text font-semibold text-slate-800 dark:text-slate-100 text-sm md:text-lg leading-tight truncate">
@@ -28,57 +31,151 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
+    <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
       <!-- Language Switcher -->
-      <button
-        ejs-button
-        [cssClass]="'e-flat e-primary'"
-        [iconCss]="'e-icons e-globe'"
-        (click)="toggleLanguageMenu()"
-        [title]="'เปลี่ยนภาษา'"
-        class="e-control e-btn e-flat e-primary">
-      </button>
+      <div class="relative" #languageMenuContainer>
+        <button
+          type="button"
+          (click)="toggleLanguageMenu()"
+          [title]="'เปลี่ยนภาษา'"
+          class="header-icon-btn relative w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <span class="e-icons e-globe text-xl text-slate-700 dark:text-slate-300"></span>
+        </button>
+
+        <!-- Language Dropdown -->
+        <div *ngIf="showLanguageMenu"
+             class="language-dropdown absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 z-50 overflow-hidden">
+          <div class="py-1">
+            <button
+              *ngFor="let lang of languages"
+              type="button"
+              (click)="changeLanguage(lang.value); showLanguageMenu = false"
+              [class.active]="currentLanguage === lang.value"
+              class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+              <span class="text-lg">{{ lang.flag }}</span>
+              <span class="flex-1 thai-text text-sm font-medium text-slate-700 dark:text-slate-300">{{ lang.label }}</span>
+              <span *ngIf="currentLanguage === lang.value" class="e-icons e-check text-blue-500"></span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- Theme Toggle -->
       <app-theme-toggle></app-theme-toggle>
 
       <!-- Notifications -->
-      <button
-        ejs-button
-        [cssClass]="'e-flat e-primary relative'"
-        [iconCss]="'e-icons e-bell'"
-        [title]="'การแจ้งเตือน'"
-        class="e-control e-btn e-flat e-primary relative">
-        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full"></span>
-      </button>
+      <div class="relative" #notificationMenu>
+        <button
+          type="button"
+          (click)="toggleNotificationMenu()"
+          [title]="'การแจ้งเตือน'"
+          class="header-icon-btn relative w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <span class="e-icons e-bell text-xl text-slate-700 dark:text-slate-300"></span>
+          <span *ngIf="unreadCount > 0"
+                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 dark:bg-red-400 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg animate-pulse z-10">
+            {{ unreadCount > 9 ? '9+' : unreadCount }}
+          </span>
+        </button>
+
+        <!-- Notification Dropdown -->
+        <div *ngIf="showNotificationMenu"
+             class="notification-dropdown absolute right-0 top-full mt-2 w-80 md:w-96 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 z-50 max-h-96 overflow-hidden flex flex-col">
+          <!-- Header -->
+          <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-900">
+            <h3 class="font-semibold text-slate-800 dark:text-slate-200 thai-text">การแจ้งเตือน</h3>
+            <button
+              *ngIf="unreadCount > 0"
+              (click)="markAllAsRead()"
+              class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
+              ทำเครื่องหมายว่าอ่านแล้วทั้งหมด
+            </button>
+          </div>
+
+          <!-- Notifications List -->
+          <div class="overflow-y-auto flex-1">
+            <div *ngIf="notifications.length === 0"
+                 class="p-8 text-center">
+              <span class="e-icons e-bell text-4xl text-slate-400 dark:text-slate-600 mb-2 block"></span>
+              <p class="text-slate-500 dark:text-slate-400 thai-text text-sm">ไม่มีการแจ้งเตือน</p>
+            </div>
+
+            <div *ngFor="let notification of notifications"
+                 (click)="handleNotificationClick(notification)"
+                 [class.unread]="!notification.read"
+                 class="notification-item px-4 py-3 border-b border-slate-100 dark:border-slate-700 cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-700/50">
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0 mt-1">
+                  <span [class]="'e-icons notification-icon ' + getNotificationIcon(notification.type)"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2 mb-1">
+                    <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-200 thai-text truncate">
+                      {{ notification.title }}
+                    </h4>
+                    <span *ngIf="!notification.read"
+                          class="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-1"></span>
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 thai-text line-clamp-2 mb-1">
+                    {{ notification.message }}
+                  </p>
+                  <span class="text-xs text-slate-400 dark:text-slate-500">
+                    {{ getTimeAgo(notification.timestamp) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div *ngIf="notifications.length > 0"
+               class="px-4 py-2 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-center">
+            <button
+              class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
+              ดูทั้งหมด
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- User Menu -->
-      <button
-        ejs-button
-        [cssClass]="'e-flat e-primary'"
-        [iconCss]="'e-icons e-user'"
-        (click)="toggleUserMenu()"
-        [title]="'เมนูผู้ใช้'"
-        class="e-control e-btn e-flat e-primary">
-      </button>
+      <div class="relative" #userMenuContainer>
+        <button
+          type="button"
+          (click)="toggleUserMenu()"
+          [title]="'เมนูผู้ใช้'"
+          class="header-icon-btn relative w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <span class="e-icons e-user text-xl text-slate-700 dark:text-slate-300"></span>
+        </button>
+
+        <!-- User Menu Dropdown -->
+        <div *ngIf="showUserMenu"
+             class="user-dropdown absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 z-50 overflow-hidden">
+          <div class="py-1">
+            <button
+              type="button"
+              (click)="onProfile(); showUserMenu = false"
+              class="user-menu-item w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+              <span class="e-icons e-user text-slate-600 dark:text-slate-400"></span>
+              <span class="thai-text text-sm font-medium text-slate-700 dark:text-slate-300">โปรไฟล์</span>
+            </button>
+            <button
+              type="button"
+              (click)="onPreferences(); showUserMenu = false"
+              class="user-menu-item w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+              <span class="e-icons e-settings text-slate-600 dark:text-slate-400"></span>
+              <span class="thai-text text-sm font-medium text-slate-700 dark:text-slate-300">การตั้งค่า</span>
+            </button>
+            <div class="border-t border-slate-200 dark:border-slate-700 my-1"></div>
+            <button
+              type="button"
+              (click)="onLogout(); showUserMenu = false"
+              class="user-menu-item w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-red-600 dark:text-red-400">
+              <span class="e-icons e-logout"></span>
+              <span class="thai-text text-sm font-medium">ออกจากระบบ</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Language Menu Dropdown -->
-  <ejs-contextmenu
-    *ngIf="showLanguageMenu"
-    #languageMenu
-    [target]="'header'"
-    [items]="languageMenuItems"
-    (select)="onLanguageSelect($event)">
-  </ejs-contextmenu>
-
-  <!-- User Menu Dropdown -->
-  <ejs-contextmenu
-    *ngIf="showUserMenu"
-    #userMenu
-    [target]="'header'"
-    [items]="userMenuItems"
-    (select)="onUserMenuSelect($event)">
-  </ejs-contextmenu>
 </header>

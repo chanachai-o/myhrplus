@@ -80,15 +80,15 @@ body.theme-gemini ::ng-deep .syncfusion-sidebar {
   
   /* Responsive padding */
   @media (max-width: 640px) {
-    padding: 1rem;
+    padding: 1.25rem;
   }
   
   @media (min-width: 641px) and (max-width: 1024px) {
-    padding: 1.5rem;
+    padding: 1.75rem;
   }
   
   @media (min-width: 1025px) {
-    padding: 2rem;
+    padding: 2.5rem;
   }
 }
 

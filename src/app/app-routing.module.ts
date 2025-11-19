@@ -6,11 +6,6 @@ import { ROUTES } from './core/constants/routes.constant';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: ROUTES.AUTH.LOGIN,
-    pathMatch: 'full'
-  },
-  {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
@@ -23,6 +18,11 @@ const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
       {
         path: 'home',
         loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
@@ -80,7 +80,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: ROUTES.AUTH.LOGIN
+    redirectTo: ROUTES.HOME
   }
 ];
 

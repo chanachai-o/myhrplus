@@ -14,7 +14,7 @@ export class MainLayoutComponent implements OnInit {
 
   isHandset$!: Observable<boolean>;
   sidebarOpen = false;
-  sidebarWidth: string = '320px'; // Wider for two-layer design (80px icon bar + 240px menu)
+  sidebarWidth: string = '368px'; // Wider for two-layer design (88px icon bar + 280px menu)
   sidebarType: 'Over' | 'Push' | 'Slide' = 'Over';
 
   constructor(private breakpointObserver: BreakpointObserver) {}
@@ -31,11 +31,11 @@ export class MainLayoutComponent implements OnInit {
       if (!isHandset) {
         this.sidebarOpen = true;
         this.sidebarType = 'Push';
-        this.sidebarWidth = '320px'; // Two-layer: 80px icon bar + 240px menu
+        this.sidebarWidth = '368px'; // Two-layer: 88px icon bar + 280px menu
       } else {
         this.sidebarOpen = false;
         this.sidebarType = 'Over';
-        this.sidebarWidth = '320px'; // Two-layer: 80px icon bar + 240px menu
+        this.sidebarWidth = '368px'; // Two-layer: 88px icon bar + 280px menu
       }
     });
   }

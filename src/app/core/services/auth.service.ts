@@ -269,27 +269,69 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = this.getToken();
-    if (!token) return false;
+    if (!token) {
+      // Also check sessionStorage as fallback
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        const sessionToken = sessionStorage.getItem('userToken');
+        if (sessionToken && !this.isTokenExpired(sessionToken)) {
+          // Migrate to localStorage
+          this.storage.setItem(this.TOKEN_KEY, sessionToken);
+          return true;
+        }
+      }
+      return false;
+    }
 
     // Check if token is expired
     if (this.isTokenExpired(token)) {
-      // Try to refresh token
-      this.refreshToken().subscribe({
-        next: () => {},
-        error: () => this.logout()
-      });
+      // Token expired, but don't logout immediately
+      // Return false and let guard handle navigation
       return false;
+    }
+
+    // Ensure user is loaded
+    if (!this.currentUserSubject.value) {
+      this.loadUserFromStorage();
     }
 
     return true;
   }
 
   getToken(): string | null {
-    return this.storage.getItem(this.TOKEN_KEY);
+    // Check localStorage first
+    let token = this.storage.getItem(this.TOKEN_KEY);
+    
+    // If not found, check sessionStorage (for backward compatibility)
+    if (!token && typeof window !== 'undefined' && window.sessionStorage) {
+      const sessionToken = sessionStorage.getItem('userToken');
+      if (sessionToken) {
+        // Migrate to localStorage
+        this.storage.setItem(this.TOKEN_KEY, sessionToken);
+        token = sessionToken;
+      }
+    }
+    
+    return token;
   }
 
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
+  }
+
+  /**
+   * Restore session from storage (used when page refreshes)
+   * This method is called by AuthGuard to restore session immediately
+   */
+  restoreSession(user: User, token: string): void {
+    this.storage.setItem(this.TOKEN_KEY, token);
+    this.storage.setItem(this.USER_KEY, JSON.stringify(user));
+    this.currentUserSubject.next(user);
+    
+    // Also update sessionStorage for backward compatibility
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.setItem('userToken', token);
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
+    }
   }
 
   hasRole(role: string): boolean {
@@ -366,20 +408,46 @@ export class AuthService {
   }
 
   private loadUserFromStorage(): void {
-    const userData = this.storage.getItem(this.USER_KEY);
+    // Check localStorage first (from StorageService)
+    let userData = this.storage.getItem(this.USER_KEY);
+    let token = this.getToken();
+
+    // If not found in localStorage, check sessionStorage (for backward compatibility)
+    if (!userData && typeof window !== 'undefined' && window.sessionStorage) {
+      const sessionUser = sessionStorage.getItem('currentUser');
+      const sessionToken = sessionStorage.getItem('userToken');
+      
+      if (sessionUser && sessionToken) {
+        try {
+          userData = JSON.parse(sessionUser);
+          // Migrate to localStorage for persistence
+          this.storage.setItem(this.USER_KEY, sessionUser);
+          this.storage.setItem(this.TOKEN_KEY, sessionToken);
+          token = sessionToken;
+        } catch (error) {
+          console.error('Error parsing sessionStorage user data:', error);
+        }
+      }
+    }
+
     if (userData) {
       try {
-        const user = JSON.parse(userData);
-        const token = this.getToken();
-
+        const user = typeof userData === 'string' ? JSON.parse(userData) : userData;
+        
         if (token && !this.isTokenExpired(token)) {
           this.currentUserSubject.next(user);
-        } else {
+        } else if (token) {
           // Token expired, try to refresh
           this.refreshToken().subscribe({
             next: () => {},
-            error: () => this.clearSession()
+            error: () => {
+              // If refresh fails, clear session
+              this.clearSession();
+            }
           });
+        } else {
+          // No token found, clear session
+          this.clearSession();
         }
       } catch (error) {
         console.error('Error parsing user data:', error);
