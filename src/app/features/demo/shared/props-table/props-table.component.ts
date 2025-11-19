@@ -51,3 +51,4 @@ export class PropsTableComponent {
   @Input() title: string = 'Properties';
 }
 
+

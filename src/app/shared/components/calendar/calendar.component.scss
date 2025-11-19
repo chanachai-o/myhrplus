@@ -1,0 +1,256 @@
+/* ============================================
+   Calendar Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+.calendar-container {
+  padding: $spacing-4;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+  @include glass-morphism('default', 'light');
+}
+
+.calendar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-4;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+}
+
+.calendar-content {
+  position: relative;
+}
+
+/* Angular Calendar Overrides */
+:host ::ng-deep .cal-month-view,
+:host ::ng-deep .cal-week-view,
+:host ::ng-deep .cal-day-view {
+  @include glass-morphism('default', 'light');
+  border-radius: $radius-lg;
+  border: 1px solid rgba($primary-500, 0.2);
+}
+
+:host ::ng-deep .cal-header {
+  background: rgba($gray-700, 0.8);
+  color: $gray-100;
+  padding: $spacing-3;
+  border-bottom: 1px solid rgba($gray-600, 0.5);
+}
+
+:host ::ng-deep .cal-cell-row {
+  border-bottom: 1px solid rgba($gray-600, 0.3);
+}
+
+:host ::ng-deep .cal-cell-row:last-child {
+  border-bottom: none;
+}
+
+:host ::ng-deep .cal-day-cell,
+:host ::ng-deep .cal-hour-segment {
+  border-right: 1px solid rgba($gray-600, 0.3);
+}
+
+:host ::ng-deep .cal-day-cell:last-child,
+:host ::ng-deep .cal-hour-segment:last-child {
+  border-right: none;
+}
+
+:host ::ng-deep .cal-day-number {
+  color: $gray-300;
+  font-weight: $font-weight-medium;
+}
+
+:host ::ng-deep .cal-today {
+  background: rgba($primary-600, 0.3);
+  border: 2px solid $primary-500;
+}
+
+:host ::ng-deep .cal-weekend {
+  background: rgba($gray-700, 0.5);
+}
+
+:host ::ng-deep .cal-event {
+  background: $primary-600;
+  color: $white;
+  border-radius: $radius-md;
+  padding: $spacing-1 $spacing-2;
+  font-size: $text-sm;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: $transition-all;
+
+  &:hover {
+    background: $primary-700;
+    transform: scale(1.05);
+  }
+}
+
+:host ::ng-deep .cal-event-title {
+  color: $white;
+  font-weight: $font-weight-medium;
+}
+
+:host ::ng-deep .cal-drag-active .cal-event {
+  opacity: 0.5;
+}
+
+/* Event Colors */
+:host ::ng-deep .cal-event.category-meeting { 
+  background: $primary-600; 
+}
+:host ::ng-deep .cal-event.category-task { 
+  background: $success-600; 
+}
+:host ::ng-deep .cal-event.category-personal { 
+  background: $primary-700; 
+}
+:host ::ng-deep .cal-event.category-holiday { 
+  background: $error-600; 
+}
+
+/* Priority Colors */
+:host ::ng-deep .cal-event.priority-high { 
+  border-left: 4px solid $error-500; 
+}
+:host ::ng-deep .cal-event.priority-medium { 
+  border-left: 4px solid $warning-500; 
+}
+:host ::ng-deep .cal-event.priority-low { 
+  border-left: 4px solid $success-500; 
+}
+
+/* Status Colors */
+:host ::ng-deep .cal-event.status-completed {
+  opacity: 0.7;
+  text-decoration: line-through;
+  background: $gray-600;
+}
+
+:host ::ng-deep .cal-event.status-cancelled {
+  opacity: 0.5;
+  text-decoration: line-through;
+  background: $error-600;
+}
+
+/* Dark Mode */
+.dark {
+  .calendar-container {
+    @include glass-morphism('default', 'dark');
+  }
+
+  :host ::ng-deep .cal-month-view,
+  :host ::ng-deep .cal-week-view,
+  :host ::ng-deep .cal-day-view {
+    @include glass-morphism('default', 'dark');
+    border-color: rgba($primary-400, 0.2);
+  }
+
+  :host ::ng-deep .cal-header {
+    background: rgba($gray-800, 0.8);
+    color: $gray-200;
+    border-bottom-color: rgba($gray-700, 0.5);
+  }
+
+  :host ::ng-deep .cal-cell-row {
+    border-bottom-color: rgba($gray-700, 0.3);
+  }
+
+  :host ::ng-deep .cal-day-cell,
+  :host ::ng-deep .cal-hour-segment {
+    border-right-color: rgba($gray-700, 0.3);
+  }
+
+  :host ::ng-deep .cal-day-number {
+    color: $gray-300;
+  }
+
+  :host ::ng-deep .cal-today {
+    background: rgba($primary-500, 0.3);
+    border-color: $primary-400;
+  }
+
+  :host ::ng-deep .cal-weekend {
+    background: rgba($gray-800, 0.5);
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .calendar-container {
+    @include glass-gemini('default');
+    @include gemini-border-glow();
+  }
+
+  .calendar-toolbar {
+    @include glass-gemini('default');
+    @include gemini-border-glow();
+  }
+
+  :host ::ng-deep .cal-month-view,
+  :host ::ng-deep .cal-week-view,
+  :host ::ng-deep .cal-day-view {
+    @include glass-gemini('default');
+    border-color: rgba($gemini-gradient-end, 0.3);
+  }
+
+  :host ::ng-deep .cal-header {
+    background: rgba($gemini-gradient-end, 0.2);
+    @include gradient-text-gemini();
+    border-bottom-color: rgba($gemini-gradient-end, 0.3);
+  }
+
+  :host ::ng-deep .cal-day-number {
+    @include gradient-text-gemini();
+  }
+
+  :host ::ng-deep .cal-today {
+    background: rgba($gemini-gradient-end, 0.3);
+    border-color: $gemini-gradient-end;
+    @include gemini-glow('subtle');
+  }
+
+  :host ::ng-deep .cal-event {
+    background: linear-gradient(135deg, $gemini-gradient-end, $gemini-gradient-start);
+    @include gemini-glow('subtle');
+
+    &:hover {
+      @include gemini-glow('default');
+    }
+  }
+}
+
+/* Responsive Design */
+@include respond-to-down(md) {
+  .calendar-toolbar {
+    flex-direction: column;
+    gap: $spacing-2;
+  }
+
+  .calendar-container {
+    padding: $spacing-3;
+  }
+}
+
+@include respond-to-down(sm) {
+  .calendar-toolbar {
+    h2 {
+      font-size: $text-lg;
+    }
+  }
+
+  :host ::ng-deep .cal-event {
+    font-size: $text-xs;
+    padding: $spacing-1;
+  }
+}
+

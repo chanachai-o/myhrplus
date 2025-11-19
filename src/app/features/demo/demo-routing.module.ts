@@ -34,6 +34,7 @@ import { ImageUploadDemoComponent } from './components/image-upload-demo/image-u
 import { SkeletonLoaderDemoComponent } from './components/skeleton-loader-demo/skeleton-loader-demo.component';
 import { FormValidationMessagesDemoComponent } from './components/form-validation-messages-demo/form-validation-messages-demo.component';
 import { LoadingSpinnerDemoComponent } from './components/loading-spinner-demo/loading-spinner-demo.component';
+import { CalendarDemoComponent } from './components/calendar-demo/calendar-demo.component';
 
 const routes: Routes = [
   {
@@ -171,6 +172,10 @@ const routes: Routes = [
       {
         path: 'loading-spinner',
         component: LoadingSpinnerDemoComponent
+      },
+      {
+        path: 'calendar',
+        component: CalendarDemoComponent
       }
     ]
   }
@@ -181,4 +186,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class DemoRoutingModule { }
+
 

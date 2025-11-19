@@ -62,6 +62,7 @@
     "@syncfusion/ej2-angular-splitbuttons": "^29.2.4",
     "@syncfusion/ej2-angular-spreadsheet": "^29.2.10",
     "@syncfusion/ej2-angular-treegrid": "^29.2.8",
+    "angular-calendar": "^0.31.1",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
     "jwt-decode": "^3.1.2",

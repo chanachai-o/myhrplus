@@ -320,3 +320,4 @@ body.theme-gemini {
 4. **Variants**: แสดง variants หรือ states ที่มี
 5. **Responsive**: ทดสอบในหน้าจอขนาดต่างๆ
 
+

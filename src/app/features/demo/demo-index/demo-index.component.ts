@@ -58,6 +58,7 @@ export class DemoIndexComponent {
     { name: 'Progress Bar', route: 'progress-bar', description: 'Progress bar with variants', category: 'Form', icon: '📊' },
     { name: 'Rating', route: 'rating', description: 'Star and heart rating component', category: 'Form', icon: '⭐' },
     { name: 'Date Range Picker', route: 'date-range-picker', description: 'Date range picker component', category: 'Form', icon: '📅' },
+    { name: 'Calendar', route: 'calendar', description: 'Calendar component with events management', category: 'Data Display', icon: '📅' },
     { name: 'Search Filter', route: 'search-filter', description: 'Search and filter component', category: 'Form', icon: '🔍' },
     { name: 'File Upload', route: 'file-upload', description: 'File upload component', category: 'Form', icon: '📁' },
     { name: 'Image Upload', route: 'image-upload', description: 'Image upload component', category: 'Form', icon: '🖼️' },
@@ -77,4 +78,5 @@ export class DemoIndexComponent {
     return this.components.filter(c => c.category === category);
   }
 }
+
 
