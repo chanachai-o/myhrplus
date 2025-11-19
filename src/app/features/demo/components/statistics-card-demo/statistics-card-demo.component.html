@@ -1,0 +1,103 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Statistics Card Component</h1>
+    <p class="demo-description">
+      Card component for displaying statistics with icons, values, suffixes, and change indicators.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <div class="statistics-grid">
+      <app-statistics-card
+        *ngFor="let stat of statistics"
+        [icon]="stat.icon"
+        [label]="stat.label"
+        [value]="stat.value"
+        [suffix]="stat.suffix"
+        [change]="stat.change">
+      </app-statistics-card>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Examples</h2>
+    
+    <div class="space-y-6">
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">With Positive Change</h3>
+        <app-statistics-card
+          icon="📈"
+          label="Growth"
+          value="24"
+          suffix="%"
+          [change]="15">
+        </app-statistics-card>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">With Negative Change</h3>
+        <app-statistics-card
+          icon="📉"
+          label="Decline"
+          value="12"
+          suffix="%"
+          [change]="-8">
+        </app-statistics-card>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">With Currency</h3>
+        <app-statistics-card
+          icon="💰"
+          label="Revenue"
+          value="฿"
+          suffix="125,000"
+          [change]="12">
+        </app-statistics-card>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Custom Icon Background</h3>
+        <app-statistics-card
+          icon="🎯"
+          label="Target"
+          value="95"
+          suffix="%"
+          iconBgClass="bg-green-100 dark:bg-green-900"
+          [change]="5">
+        </app-statistics-card>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Statistics Card"></app-code-viewer>
+
+    <h3 class="subsection-title">With Change Indicator</h3>
+    <app-code-viewer [code]="withChangeExample" language="html" title="Statistics Card with Change"></app-code-viewer>
+
+    <h3 class="subsection-title">With Suffix</h3>
+    <app-code-viewer [code]="withSuffixExample" language="html" title="Statistics Card with Suffix"></app-code-viewer>
+
+    <h3 class="subsection-title">Negative Change</h3>
+    <app-code-viewer [code]="negativeChangeExample" language="html" title="Statistics Card with Negative Change"></app-code-viewer>
+
+    <h3 class="subsection-title">Custom Icon Background</h3>
+    <app-code-viewer [code]="customIconBgExample" language="html" title="Custom Icon Background"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+</div>
+

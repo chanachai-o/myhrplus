@@ -1,0 +1,128 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Glass Card Component</h1>
+    <p class="demo-description">
+      Glass morphism card component with variants and animations. Perfect for displaying content with a modern, translucent effect.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>Variant:</label>
+        <select [(ngModel)]="selectedVariant" class="control-select">
+          <option value="default">Default</option>
+          <option value="strong">Strong</option>
+          <option value="weak">Weak</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>Animation:</label>
+        <select [(ngModel)]="selectedAnimation" class="control-select">
+          <option [ngValue]="null">None</option>
+          <option value="fade-in">Fade In</option>
+          <option value="slide-up">Slide Up</option>
+          <option value="slide-down">Slide Down</option>
+          <option value="scale-in">Scale In</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="demo-preview">
+      <app-glass-card 
+        [variant]="selectedVariant"
+        [animate]="selectedAnimation"
+        padding="p-6">
+        <h3 class="text-xl font-semibold mb-2">Glass Card Demo</h3>
+        <p class="text-slate-600 dark:text-slate-400">
+          This is a {{ selectedVariant }} glass card with {{ selectedAnimation || 'no' }} animation.
+        </p>
+        <p class="text-sm text-slate-500 dark:text-slate-500 mt-4">
+          Variant: <strong>{{ selectedVariant }}</strong> | 
+          Animation: <strong>{{ selectedAnimation || 'None' }}</strong>
+        </p>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Variants Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Variants</h2>
+    <div class="variants-grid">
+      <app-glass-card variant="default" padding="p-6">
+        <h3 class="text-lg font-semibold mb-2">Default</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">
+          Standard glass card with balanced blur effect.
+        </p>
+      </app-glass-card>
+
+      <app-glass-card variant="strong" padding="p-6">
+        <h3 class="text-lg font-semibold mb-2">Strong</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">
+          Stronger blur effect, more opaque and prominent.
+        </p>
+      </app-glass-card>
+
+      <app-glass-card variant="weak" padding="p-6">
+        <h3 class="text-lg font-semibold mb-2">Weak</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">
+          Subtle blur effect, more transparent and lightweight.
+        </p>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Animations Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Animations</h2>
+    <div class="animations-grid">
+      <app-glass-card variant="default" padding="p-6" animate="fade-in">
+        <h3 class="text-lg font-semibold mb-2">Fade In</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Fade in animation</p>
+      </app-glass-card>
+
+      <app-glass-card variant="default" padding="p-6" animate="slide-up">
+        <h3 class="text-lg font-semibold mb-2">Slide Up</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Slide up animation</p>
+      </app-glass-card>
+
+      <app-glass-card variant="default" padding="p-6" animate="slide-down">
+        <h3 class="text-lg font-semibold mb-2">Slide Down</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Slide down animation</p>
+      </app-glass-card>
+
+      <app-glass-card variant="default" padding="p-6" animate="scale-in">
+        <h3 class="text-lg font-semibold mb-2">Scale In</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Scale in animation</p>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Glass Card"></app-code-viewer>
+
+    <h3 class="subsection-title">Variants</h3>
+    <app-code-viewer [code]="variantExample" language="html" title="Glass Card Variants"></app-code-viewer>
+
+    <h3 class="subsection-title">Animations</h3>
+    <app-code-viewer [code]="animationExample" language="html" title="Glass Card Animations"></app-code-viewer>
+
+    <h3 class="subsection-title">Custom Styling</h3>
+    <app-code-viewer [code]="customExample" language="html" title="Custom Padding and Classes"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+</div>
+

@@ -1,0 +1,135 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Glass Button Component</h1>
+    <p class="demo-description">
+      Glass morphism button component with variants, sizes, and states. Supports loading and disabled states.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <div class="demo-controls">
+      <div class="control-group">
+        <label>Variant:</label>
+        <select [(ngModel)]="selectedVariant" class="control-select">
+          <option value="primary">Primary</option>
+          <option value="secondary">Secondary</option>
+          <option value="danger">Danger</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>Size:</label>
+        <select [(ngModel)]="selectedSize" class="control-select">
+          <option value="sm">Small</option>
+          <option value="md">Medium</option>
+          <option value="lg">Large</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="buttonLoading"> Loading
+        </label>
+      </div>
+
+      <div class="control-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="buttonDisabled"> Disabled
+        </label>
+      </div>
+
+      <div class="control-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="fullWidth"> Full Width
+        </label>
+      </div>
+    </div>
+
+    <div class="demo-preview">
+      <app-glass-card padding="p-6">
+        <app-glass-button
+          [variant]="selectedVariant"
+          [size]="selectedSize"
+          [loading]="buttonLoading"
+          [disabled]="buttonDisabled"
+          [fullWidth]="fullWidth"
+          (clicked)="onButtonClick()">
+          Interactive Button
+        </app-glass-button>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Variants Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Variants</h2>
+    <div class="variants-grid">
+      <app-glass-card padding="p-6">
+        <app-glass-button variant="primary">Primary Button</app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <app-glass-button variant="secondary">Secondary Button</app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <app-glass-button variant="danger">Danger Button</app-glass-button>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Sizes Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Sizes</h2>
+    <app-glass-card padding="p-6">
+      <div class="flex flex-wrap items-center gap-4">
+        <app-glass-button variant="primary" size="sm">Small</app-glass-button>
+        <app-glass-button variant="primary" size="md">Medium</app-glass-button>
+        <app-glass-button variant="primary" size="lg">Large</app-glass-button>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- States Section -->
+  <section class="demo-section">
+    <h2 class="section-title">States</h2>
+    <app-glass-card padding="p-6">
+      <div class="flex flex-wrap gap-4">
+        <app-glass-button variant="primary">Normal</app-glass-button>
+        <app-glass-button variant="primary" [disabled]="true">Disabled</app-glass-button>
+        <app-glass-button variant="primary" [loading]="true">Loading</app-glass-button>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Button"></app-code-viewer>
+
+    <h3 class="subsection-title">Variants</h3>
+    <app-code-viewer [code]="variantsExample" language="html" title="Button Variants"></app-code-viewer>
+
+    <h3 class="subsection-title">Sizes</h3>
+    <app-code-viewer [code]="sizesExample" language="html" title="Button Sizes"></app-code-viewer>
+
+    <h3 class="subsection-title">States</h3>
+    <app-code-viewer [code]="statesExample" language="html" title="Button States"></app-code-viewer>
+
+    <h3 class="subsection-title">Event Handling</h3>
+    <app-code-viewer [code]="eventExample" language="html" title="Button Click Event"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+    <app-props-table [props]="outputs" title="Outputs"></app-props-table>
+  </section>
+</div>
+

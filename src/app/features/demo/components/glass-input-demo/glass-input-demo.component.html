@@ -1,0 +1,151 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Glass Input Component</h1>
+    <p class="demo-description">
+      Glass morphism input field component with validation support, hints, and various states.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-controls">
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="inputValue" [value]="'test'"> Enable Live Input
+          </label>
+        </div>
+      </div>
+
+      <div class="demo-preview space-y-4">
+        <app-glass-input
+          label="Interactive Input"
+          placeholder="Type something..."
+          [(ngModel)]="inputValue"
+          hint="This is a live demo input">
+        </app-glass-input>
+
+        <div *ngIf="inputValue" class="result-box">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Current value:</p>
+          <p class="font-mono text-slate-800 dark:text-slate-200">{{ inputValue }}</p>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Input Types Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Input Types</h2>
+    <app-glass-card padding="p-6">
+      <div class="space-y-4">
+        <app-glass-input
+          label="Text Input"
+          placeholder="Enter text"
+          [(ngModel)]="inputValue">
+        </app-glass-input>
+
+        <app-glass-input
+          label="Email Input"
+          type="email"
+          placeholder="Enter your email"
+          [(ngModel)]="emailValue">
+        </app-glass-input>
+
+        <app-glass-input
+          label="Password Input"
+          type="password"
+          placeholder="Enter your password"
+          [(ngModel)]="passwordValue">
+        </app-glass-input>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- States Section -->
+  <section class="demo-section">
+    <h2 class="section-title">States</h2>
+    <app-glass-card padding="p-6">
+      <div class="space-y-4">
+        <app-glass-input
+          label="Normal Input"
+          placeholder="Normal state">
+        </app-glass-input>
+
+        <app-glass-input
+          label="Disabled Input"
+          [disabled]="true"
+          [(ngModel)]="disabledValue">
+        </app-glass-input>
+
+        <app-glass-input
+          label="Readonly Input"
+          [readonly]="true"
+          [(ngModel)]="readonlyValue">
+        </app-glass-input>
+
+        <app-glass-input
+          label="Required Input"
+          placeholder="This field is required"
+          [required]="true"
+          [(ngModel)]="errorValue"
+          [errorMessage]="errorValue ? '' : 'This field is required'">
+        </app-glass-input>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Validation Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Validation</h2>
+    <app-glass-card padding="p-6">
+      <div class="space-y-4">
+        <app-glass-input
+          label="With Error Message"
+          placeholder="Enter value"
+          [(ngModel)]="errorValue"
+          [errorMessage]="errorValue ? '' : 'Please enter a value'"
+          [required]="true">
+        </app-glass-input>
+
+        <app-glass-input
+          label="With Hint"
+          placeholder="Enter value"
+          hint="This is a helpful hint"
+          [(ngModel)]="hintValue">
+        </app-glass-input>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Glass Input"></app-code-viewer>
+
+    <h3 class="subsection-title">Input Types</h3>
+    <app-code-viewer [code]="typesExample" language="html" title="Different Input Types"></app-code-viewer>
+
+    <h3 class="subsection-title">Validation</h3>
+    <app-code-viewer [code]="validationExample" language="html" title="Input Validation"></app-code-viewer>
+
+    <h3 class="subsection-title">States</h3>
+    <app-code-viewer [code]="statesExample" language="html" title="Input States"></app-code-viewer>
+
+    <h3 class="subsection-title">With Hint</h3>
+    <app-code-viewer [code]="hintExample" language="html" title="Input with Hint"></app-code-viewer>
+
+    <h3 class="subsection-title">Reactive Forms</h3>
+    <app-code-viewer [code]="reactiveFormExample" language="typescript" title="Using with Reactive Forms"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+</div>
+

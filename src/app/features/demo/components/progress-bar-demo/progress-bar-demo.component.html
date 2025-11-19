@@ -1,0 +1,117 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Progress Bar Component</h1>
+    <p class="demo-description">
+      Progress bar component with variants, labels, and descriptions. Perfect for showing task completion or loading states.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-controls">
+        <div class="control-group">
+          <label>Progress Value:</label>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            [(ngModel)]="progressValue"
+            class="control-range">
+          <span class="value-display">{{ progressValue }}%</span>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <app-progress-bar
+          [value]="progressValue"
+          label="Interactive Progress"
+          [description]="'Current progress: ' + progressValue + '%'">
+        </app-progress-bar>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Variants Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Variants</h2>
+    <app-glass-card padding="p-6">
+      <div class="space-y-6">
+        <app-progress-bar
+          [value]="85"
+          label="Success Progress"
+          variant="success"
+          description="Completed successfully">
+        </app-progress-bar>
+
+        <app-progress-bar
+          [value]="65"
+          label="Primary Progress"
+          variant="primary"
+          description="In progress">
+        </app-progress-bar>
+
+        <app-progress-bar
+          [value]="45"
+          label="Warning Progress"
+          variant="warning"
+          description="Needs attention">
+        </app-progress-bar>
+
+        <app-progress-bar
+          [value]="20"
+          label="Danger Progress"
+          variant="danger"
+          description="Critical level">
+        </app-progress-bar>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Animated Progress Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Animated Progress</h2>
+    <app-glass-card padding="p-6">
+      <div class="space-y-4">
+        <app-progress-bar
+          [value]="animatedValue"
+          label="Animated Progress"
+          [description]="animatedValue < 100 ? 'Loading...' : 'Complete!'">
+        </app-progress-bar>
+        
+        <app-glass-button
+          variant="primary"
+          (clicked)="startAnimation()"
+          [disabled]="isAnimating">
+          {{ isAnimating ? 'Animating...' : 'Start Animation' }}
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Progress Bar"></app-code-viewer>
+
+    <h3 class="subsection-title">Variants</h3>
+    <app-code-viewer [code]="variantsExample" language="html" title="Progress Bar Variants"></app-code-viewer>
+
+    <h3 class="subsection-title">With Description</h3>
+    <app-code-viewer [code]="withDescriptionExample" language="html" title="Progress Bar with Description"></app-code-viewer>
+
+    <h3 class="subsection-title">Animated Progress</h3>
+    <app-code-viewer [code]="animatedExample" language="typescript" title="Animated Progress Bar"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+</div>
+

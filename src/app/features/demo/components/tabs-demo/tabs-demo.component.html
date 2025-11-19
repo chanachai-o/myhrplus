@@ -1,0 +1,138 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Tabs Component</h1>
+    <p class="demo-description">
+      Tab navigation component with icons, badges, and disabled states.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <app-tabs
+        [tabs]="tabs"
+        [activeTab]="activeTab"
+        (activeTabChange)="onTabChange($event)">
+      </app-tabs>
+
+      <div class="tab-content mt-6">
+        <div *ngIf="activeTab === 'tab1'" class="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+          <h3 class="text-lg font-semibold mb-2">Tab 1 Content</h3>
+          <p class="text-slate-600 dark:text-slate-400">This is the content for Tab 1.</p>
+        </div>
+        <div *ngIf="activeTab === 'tab2'" class="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+          <h3 class="text-lg font-semibold mb-2">Tab 2 Content</h3>
+          <p class="text-slate-600 dark:text-slate-400">This is the content for Tab 2 with badge.</p>
+        </div>
+        <div *ngIf="activeTab === 'tab3'" class="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+          <h3 class="text-lg font-semibold mb-2">Tab 3 Content</h3>
+          <p class="text-slate-600 dark:text-slate-400">This is the content for Tab 3.</p>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Examples</h2>
+    
+    <div class="space-y-8">
+      <!-- Tabs with Badges -->
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Tabs with Badges</h3>
+        <app-tabs
+          [tabs]="tabsWithBadges"
+          [activeTab]="activeTab2"
+          (activeTabChange)="activeTab2 = $event">
+        </app-tabs>
+        <div class="tab-content mt-4">
+          <p class="text-sm text-slate-600 dark:text-slate-400">
+            Active tab: {{ activeTab2 }}
+          </p>
+        </div>
+      </app-glass-card>
+
+      <!-- Tabs with Disabled -->
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Tabs with Disabled State</h3>
+        <app-tabs
+          [tabs]="tabsWithDisabled"
+          [activeTab]="activeTab"
+          (activeTabChange)="activeTab = $event">
+        </app-tabs>
+        <div class="tab-content mt-4">
+          <p class="text-sm text-slate-600 dark:text-slate-400">
+            The middle tab is disabled and cannot be clicked.
+          </p>
+        </div>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Tabs"></app-code-viewer>
+
+    <h3 class="subsection-title">With Icons</h3>
+    <app-code-viewer [code]="withIconsExample" language="html" title="Tabs with Icons"></app-code-viewer>
+
+    <h3 class="subsection-title">With Badges</h3>
+    <app-code-viewer [code]="withBadgesExample" language="typescript" title="Tabs with Badges"></app-code-viewer>
+
+    <h3 class="subsection-title">Disabled Tabs</h3>
+    <app-code-viewer [code]="disabledExample" language="typescript" title="Disabled Tabs"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+    <app-props-table [props]="outputs" title="Outputs"></app-props-table>
+    
+    <h3 class="subsection-title">Tab Interface</h3>
+    <div class="interface-table">
+      <table class="props-table">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>id</code></td>
+            <td><code>string</code></td>
+            <td>Unique identifier for the tab</td>
+          </tr>
+          <tr>
+            <td><code>label</code></td>
+            <td><code>string</code></td>
+            <td>Tab label text</td>
+          </tr>
+          <tr>
+            <td><code>icon</code></td>
+            <td><code>string</code></td>
+            <td>Optional icon (emoji or text)</td>
+          </tr>
+          <tr>
+            <td><code>badge</code></td>
+            <td><code>string | number</code></td>
+            <td>Optional badge value</td>
+          </tr>
+          <tr>
+            <td><code>disabled</code></td>
+            <td><code>boolean</code></td>
+            <td>Disable tab interaction</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+

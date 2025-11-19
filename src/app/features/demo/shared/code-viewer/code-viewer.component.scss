@@ -1,0 +1,112 @@
+/* ============================================
+   Code Viewer Component Styles
+   ============================================ */
+
+@import '../../../../../styles/design-tokens';
+@import '../../../../../styles/mixins';
+
+.code-viewer {
+  @include glass-morphism('default', 'light');
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin: $spacing-4 0;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-3 $spacing-4;
+  background: rgba($gray-50, 0.5);
+  border-bottom: 1px solid rgba($gray-200, 0.5);
+}
+
+.code-title {
+  font-size: $text-sm;
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+}
+
+.copy-button {
+  padding: $spacing-1 $spacing-3;
+  font-size: $text-xs;
+  background: rgba($primary-500, 0.1);
+  color: $primary-600;
+  border: 1px solid rgba($primary-500, 0.2);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: $transition-all;
+
+  &:hover {
+    background: rgba($primary-500, 0.2);
+  }
+}
+
+.code-block {
+  margin: 0;
+  padding: $spacing-4;
+  background: $gray-900;
+  color: $gray-100;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  line-height: 1.6;
+  overflow-x: auto;
+
+  code {
+    color: inherit;
+    font-family: inherit;
+  }
+}
+
+/* Dark Mode */
+.dark {
+  .code-header {
+    background: rgba($gray-800, 0.5);
+    border-bottom-color: rgba($gray-700, 0.5);
+  }
+
+  .code-title {
+    color: $gray-300;
+  }
+
+  .code-block {
+    background: $gray-950;
+    color: $gray-100;
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .code-viewer {
+    @include glass-gemini('default');
+    @include gemini-border-glow();
+  }
+
+  .code-header {
+    background: rgba($gemini-gradient-end, 0.1);
+    border-bottom-color: rgba($gemini-gradient-end, 0.3);
+  }
+
+  .code-title {
+    @include gradient-text-gemini();
+  }
+
+  .copy-button {
+    background: rgba($gemini-gradient-end, 0.2);
+    color: $gemini-gradient-start;
+    border-color: rgba($gemini-gradient-end, 0.3);
+
+    &:hover {
+      @include gemini-glow('subtle');
+    }
+  }
+}
+
+/* Responsive */
+@include respond-to-down(sm) {
+  .code-block {
+    font-size: $text-xs;
+    padding: $spacing-3;
+  }
+}
+

@@ -1,0 +1,31 @@
+<div class="demo-index">
+  <div class="intro-section">
+    <h1 class="intro-title">Component Demo Showcase</h1>
+    <p class="intro-description">
+      ตัวอย่างการใช้งาน Components ทั้งหมดพร้อมโค้ดตัวอย่างและ API Documentation
+    </p>
+  </div>
+
+  <div class="components-grid">
+    @for (category of categories; track category) {
+      <section class="category-section">
+        <h2 class="category-title">{{ category }}</h2>
+        <div class="components-list">
+          @for (component of getComponentsByCategory(category); track component.route) {
+            <a [routerLink]="['/demo', component.route]" class="component-card">
+              <app-glass-card padding="p-6" customClass="h-full hover:scale-105 transition-transform">
+                <div class="component-card-content">
+                  <div class="component-icon">{{ component.icon }}</div>
+                  <h3 class="component-name">{{ component.name }}</h3>
+                  <p class="component-description">{{ component.description }}</p>
+                  <span class="view-demo-link">View Demo →</span>
+                </div>
+              </app-glass-card>
+            </a>
+          }
+        </div>
+      </section>
+    }
+  </div>
+</div>
+

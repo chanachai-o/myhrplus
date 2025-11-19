@@ -1,0 +1,115 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Notification Component</h1>
+    <p class="demo-description">
+      Toast notification component with different types, auto-close functionality, and customizable duration.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-preview">
+        <div class="buttons-grid">
+          <app-glass-button variant="primary" (clicked)="showSuccess()">
+            Show Success
+          </app-glass-button>
+          <app-glass-button variant="danger" (clicked)="showError()">
+            Show Error
+          </app-glass-button>
+          <app-glass-button variant="secondary" (clicked)="showWarning()">
+            Show Warning
+          </app-glass-button>
+          <app-glass-button variant="secondary" (clicked)="showInfo()">
+            Show Info
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Notification Types</h2>
+    
+    <div class="examples-grid">
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Success</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Green notification for successful operations
+        </p>
+        <app-glass-button variant="primary" (clicked)="showSuccess()">
+          Show Success Notification
+        </app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Error</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Red notification for errors
+        </p>
+        <app-glass-button variant="danger" (clicked)="showError()">
+          Show Error Notification
+        </app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Warning</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Yellow notification for warnings
+        </p>
+        <app-glass-button variant="secondary" (clicked)="showWarning()">
+          Show Warning Notification
+        </app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Info</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Blue notification for information
+        </p>
+        <app-glass-button variant="secondary" (clicked)="showInfo()">
+          Show Info Notification
+        </app-glass-button>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Notification"></app-code-viewer>
+
+    <h3 class="subsection-title">Notification Types</h3>
+    <app-code-viewer [code]="typesExample" language="html" title="Different Notification Types"></app-code-viewer>
+
+    <h3 class="subsection-title">With Custom Duration</h3>
+    <app-code-viewer [code]="withDurationExample" language="html" title="Notification with Custom Duration"></app-code-viewer>
+
+    <h3 class="subsection-title">Persistent Notification</h3>
+    <app-code-viewer [code]="persistentExample" language="html" title="Persistent Notification"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+
+  <!-- Notifications Container -->
+  <div class="notifications-container">
+    @for (notification of notifications; track notification.id) {
+      <app-notification
+        [message]="notification.message"
+        [type]="notification.type"
+        [duration]="3000"
+        [onClose]="getRemoveNotificationHandler(notification.id)">
+      </app-notification>
+    }
+  </div>
+</div>
+

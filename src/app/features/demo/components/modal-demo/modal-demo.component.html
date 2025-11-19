@@ -1,0 +1,154 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Modal Component</h1>
+    <p class="demo-description">
+      Modal dialog component with various sizes, customizable footer, and event handling.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-glass-card padding="p-6">
+      <div class="demo-controls">
+        <div class="control-group">
+          <label>Size:</label>
+          <select [(ngModel)]="selectedSize" class="control-select">
+            <option value="sm">Small</option>
+            <option value="md">Medium</option>
+            <option value="lg">Large</option>
+            <option value="xl">Extra Large</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <app-glass-button variant="primary" (clicked)="showBasicModal = true">
+          Open Modal ({{ selectedSize }})
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Examples</h2>
+    
+    <div class="examples-grid">
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Basic Modal</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Standard modal with default settings
+        </p>
+        <app-glass-button variant="primary" (clicked)="showBasicModal = true">
+          Open Basic Modal
+        </app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Large Modal</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Modal with large size
+        </p>
+        <app-glass-button variant="primary" (clicked)="showLargeModal = true">
+          Open Large Modal
+        </app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">No Footer</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Modal without footer buttons
+        </p>
+        <app-glass-button variant="primary" (clicked)="showNoFooterModal = true">
+          Open Modal (No Footer)
+        </app-glass-button>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Danger Modal</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Modal with danger confirm button
+        </p>
+        <app-glass-button variant="danger" (clicked)="showDangerModal = true">
+          Open Danger Modal
+        </app-glass-button>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Modal"></app-code-viewer>
+
+    <h3 class="subsection-title">Sizes</h3>
+    <app-code-viewer [code]="sizesExample" language="html" title="Modal Sizes"></app-code-viewer>
+
+    <h3 class="subsection-title">Without Footer</h3>
+    <app-code-viewer [code]="noFooterExample" language="html" title="Modal Without Footer"></app-code-viewer>
+
+    <h3 class="subsection-title">Event Handling</h3>
+    <app-code-viewer [code]="eventsExample" language="html" title="Modal Events"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+    <app-props-table [props]="outputs" title="Outputs"></app-props-table>
+  </section>
+
+  <!-- Modals -->
+  <app-modal
+    [show]="showBasicModal"
+    [title]="'Basic Modal (' + selectedSize + ')'"
+    [size]="selectedSize"
+    (closeEvent)="showBasicModal = false"
+    (confirmEvent)="onConfirm()">
+    <p class="text-slate-700 dark:text-slate-300">
+      This is a {{ selectedSize }} modal. You can customize the content here.
+    </p>
+  </app-modal>
+
+  <app-modal
+    [show]="showLargeModal"
+    title="Large Modal"
+    size="lg"
+    (closeEvent)="showLargeModal = false">
+    <div class="space-y-4">
+      <p class="text-slate-700 dark:text-slate-300">
+        This is a large modal with more space for content.
+      </p>
+      <app-glass-card padding="p-4">
+        <p class="text-sm">You can add any content here, including other components.</p>
+      </app-glass-card>
+    </div>
+  </app-modal>
+
+  <app-modal
+    [show]="showNoFooterModal"
+    title="Modal Without Footer"
+    [showFooter]="false"
+    (closeEvent)="showNoFooterModal = false">
+    <p class="text-slate-700 dark:text-slate-300">
+      This modal doesn't have footer buttons. You can close it using the X button or clicking outside.
+    </p>
+  </app-modal>
+
+  <app-modal
+    [show]="showDangerModal"
+    title="Danger Action"
+    confirmText="Delete"
+    [confirmVariant]="'danger'"
+    (closeEvent)="showDangerModal = false"
+    (confirmEvent)="onDangerConfirm()">
+    <p class="text-slate-700 dark:text-slate-300">
+      Are you sure you want to perform this dangerous action? This cannot be undone.
+    </p>
+  </app-modal>
+</div>
+

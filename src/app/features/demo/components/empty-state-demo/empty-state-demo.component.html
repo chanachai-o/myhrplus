@@ -1,0 +1,159 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Empty State Component</h1>
+    <p class="demo-description">
+      Empty state component for displaying when there's no data. Supports custom icons, titles, descriptions, and action buttons.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <div class="demo-grid">
+      <app-empty-state
+        icon="📭"
+        title="ไม่มีข้อมูล"
+        description="ยังไม่มีข้อมูลในส่วนนี้"
+        [action]="emptyStateAction1">
+      </app-empty-state>
+
+      <app-empty-state
+        icon="🔍"
+        title="ไม่พบผลลัพธ์"
+        description="ลองค้นหาด้วยคำอื่น"
+        [action]="emptyStateAction2">
+      </app-empty-state>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Examples</h2>
+    
+    <div class="examples-grid">
+      <app-empty-state
+        icon="📭"
+        title="ไม่มีข้อมูล"
+        description="ยังไม่มีข้อมูลในส่วนนี้"
+        [action]="emptyStateAction1">
+      </app-empty-state>
+
+      <app-empty-state
+        icon="🔍"
+        title="ไม่พบผลลัพธ์"
+        description="ลองค้นหาด้วยคำอื่น"
+        [action]="emptyStateAction2">
+      </app-empty-state>
+
+      <app-empty-state
+        icon="📦"
+        title="ไม่มีสินค้า"
+        description="ยังไม่มีสินค้าในหมวดหมู่นี้"
+        [action]="emptyStateAction3">
+      </app-empty-state>
+
+      <app-empty-state
+        icon="👤"
+        title="ไม่มีผู้ใช้"
+        description="ยังไม่มีผู้ใช้ในระบบ"
+        iconSize="lg">
+      </app-empty-state>
+    </div>
+  </section>
+
+  <!-- Icon Sizes Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Icon Sizes</h2>
+    <div class="icon-sizes-grid">
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Small Icon</h3>
+        <app-empty-state
+          icon="📭"
+          iconSize="sm"
+          title="Small Icon"
+          description="Icon size: sm">
+        </app-empty-state>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Medium Icon (Default)</h3>
+        <app-empty-state
+          icon="📭"
+          iconSize="md"
+          title="Medium Icon"
+          description="Icon size: md">
+        </app-empty-state>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">Large Icon</h3>
+        <app-empty-state
+          icon="📭"
+          iconSize="lg"
+          title="Large Icon"
+          description="Icon size: lg">
+        </app-empty-state>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Empty State"></app-code-viewer>
+
+    <h3 class="subsection-title">With Action Button</h3>
+    <app-code-viewer [code]="withActionExample" language="html" title="Empty State with Action"></app-code-viewer>
+
+    <h3 class="subsection-title">Different Icons</h3>
+    <app-code-viewer [code]="differentIconsExample" language="html" title="Different Empty State Icons"></app-code-viewer>
+
+    <h3 class="subsection-title">Icon Sizes</h3>
+    <app-code-viewer [code]="iconSizesExample" language="html" title="Empty State Icon Sizes"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+    
+    <h3 class="subsection-title">EmptyStateAction Interface</h3>
+    <div class="interface-table">
+      <table class="props-table">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>label</code></td>
+            <td><code>string</code></td>
+            <td>Button label text</td>
+          </tr>
+          <tr>
+            <td><code>icon</code></td>
+            <td><code>string</code></td>
+            <td>Optional icon</td>
+          </tr>
+          <tr>
+            <td><code>variant</code></td>
+            <td><code>'primary' | 'secondary' | 'danger'</code></td>
+            <td>Button variant</td>
+          </tr>
+          <tr>
+            <td><code>onClick</code></td>
+            <td><code>() => void</code></td>
+            <td>Click handler function</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+

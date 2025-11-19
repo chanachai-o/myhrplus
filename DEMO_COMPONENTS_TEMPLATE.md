@@ -1,0 +1,322 @@
+# 📋 Demo Components Template
+
+Template สำหรับสร้าง demo component ใหม่
+
+## 📁 โครงสร้างไฟล์
+
+```
+src/app/features/demo/components/[component-name]-demo/
+  ├── [component-name]-demo.component.ts
+  ├── [component-name]-demo.component.html
+  └── [component-name]-demo.component.scss
+```
+
+## 📝 Template TypeScript
+
+```typescript
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { [ComponentName]Component } from '../../../../shared/components/[component-name]/[component-name].component';
+import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
+import { CodeViewerComponent } from '../../shared/code-viewer/code-viewer.component';
+import { PropsTableComponent, PropDefinition } from '../../shared/props-table/props-table.component';
+
+@Component({
+  selector: 'app-[component-name]-demo',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    [ComponentName]Component, 
+    GlassCardComponent, 
+    CodeViewerComponent, 
+    PropsTableComponent
+  ],
+  templateUrl: './[component-name]-demo.component.html',
+  styleUrls: ['./[component-name]-demo.component.scss']
+})
+export class [ComponentName]DemoComponent {
+  // Demo state variables
+  demoValue: any = '';
+
+  // Props definition
+  props: PropDefinition[] = [
+    {
+      name: 'propName',
+      type: 'string | number | boolean',
+      default: "'default'",
+      description: 'Property description',
+      required: false
+    }
+  ];
+
+  // Code examples
+  basicExample = \`<app-[component-name]>
+  Content
+</app-[component-name]>\`;
+
+  // Methods
+  onAction(): void {
+    // Handle action
+  }
+}
+```
+
+## 📝 Template HTML
+
+```html
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">[Component Name] Component</h1>
+    <p class="demo-description">
+      Component description and usage information.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <div class="demo-controls">
+      <!-- Add controls here -->
+    </div>
+
+    <div class="demo-preview">
+      <app-glass-card padding="p-6">
+        <!-- Component demo here -->
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Variants/Examples Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Examples</h2>
+    <!-- Examples here -->
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic [Component]"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+</div>
+```
+
+## 📝 Template SCSS
+
+```scss
+/* ============================================
+   [Component Name] Demo Component Styles
+   ============================================ */
+
+@import '../../../../../styles/design-tokens';
+@import '../../../../../styles/mixins';
+
+.demo-page {
+  width: 100%;
+  padding: $spacing-6 0;
+}
+
+.demo-header {
+  margin-bottom: $spacing-8;
+}
+
+.demo-title {
+  font-size: $text-3xl;
+  font-weight: $font-weight-bold;
+  color: $gray-900;
+  margin-bottom: $spacing-2;
+}
+
+.demo-description {
+  font-size: $text-base;
+  color: $gray-600;
+  line-height: 1.6;
+}
+
+.demo-section {
+  margin-bottom: $spacing-12;
+}
+
+.section-title {
+  font-size: $text-2xl;
+  font-weight: $font-weight-semibold;
+  color: $gray-800;
+  margin-bottom: $spacing-6;
+  padding-bottom: $spacing-2;
+  border-bottom: 2px solid $gray-200;
+}
+
+.subsection-title {
+  font-size: $text-xl;
+  font-weight: $font-weight-semibold;
+  color: $gray-700;
+  margin: $spacing-6 0 $spacing-4 0;
+}
+
+.demo-controls {
+  display: flex;
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.control-group label {
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+}
+
+.control-select {
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid $gray-300;
+  border-radius: $radius-md;
+  background: white;
+  color: $gray-900;
+  font-size: $text-sm;
+  cursor: pointer;
+  transition: $transition-all;
+
+  &:hover {
+    border-color: $primary-500;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-500;
+    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+  }
+}
+
+.demo-preview {
+  margin-bottom: $spacing-6;
+}
+
+/* Dark Mode */
+.dark {
+  .demo-title {
+    color: $gray-100;
+  }
+
+  .demo-description {
+    color: $gray-400;
+  }
+
+  .section-title {
+    color: $gray-200;
+    border-bottom-color: $gray-700;
+  }
+
+  .subsection-title {
+    color: $gray-300;
+  }
+
+  .control-group label {
+    color: $gray-300;
+  }
+
+  .control-select {
+    background: $gray-800;
+    color: $gray-100;
+    border-color: $gray-700;
+
+    &:hover {
+      border-color: $primary-400;
+    }
+
+    &:focus {
+      border-color: $primary-400;
+      box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
+    }
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .demo-title {
+    @include gradient-text-gemini();
+  }
+
+  .demo-description {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .section-title {
+    @include gradient-text-gemini();
+    border-bottom-color: rgba($gemini-gradient-end, 0.3);
+  }
+
+  .subsection-title {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .control-group label {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .control-select {
+    @include glass-gemini('weak');
+    color: white;
+    border-color: rgba($gemini-gradient-end, 0.3);
+
+    &:hover {
+      @include gemini-glow('subtle');
+      border-color: $gemini-gradient-end;
+    }
+
+    &:focus {
+      @include gemini-glow('default');
+      border-color: $gemini-gradient-end;
+    }
+  }
+}
+
+/* Responsive */
+@include respond-to-down(md) {
+  .demo-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .control-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+```
+
+## 📋 Checklist สำหรับสร้าง Demo Component
+
+- [ ] สร้าง component TypeScript file
+- [ ] สร้าง component HTML file
+- [ ] สร้าง component SCSS file
+- [ ] เพิ่ม route ใน `demo-routing.module.ts`
+- [ ] Import component ใน `demo.module.ts`
+- [ ] เพิ่ม component ใน `demo-index.component.ts`
+- [ ] กำหนด props ใน PropsTable
+- [ ] สร้าง code examples
+- [ ] สร้าง live demo section
+- [ ] ทดสอบ responsive design
+
+## 🎯 Best Practices
+
+1. **Live Demo**: ควรมี interactive controls สำหรับทดสอบ props ต่างๆ
+2. **Code Examples**: แสดงตัวอย่างการใช้งานที่หลากหลาย
+3. **API Documentation**: ระบุ props, outputs, และ events ครบถ้วน
+4. **Variants**: แสดง variants หรือ states ที่มี
+5. **Responsive**: ทดสอบในหน้าจอขนาดต่างๆ
+

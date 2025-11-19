@@ -1,0 +1,64 @@
+<div class="demo-page">
+  <div class="demo-header">
+    <h1 class="demo-title">Statistics Grid Component</h1>
+    <p class="demo-description">
+      Grid layout component for displaying multiple statistics cards in a responsive grid.
+    </p>
+  </div>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Live Demo</h2>
+    
+    <app-statistics-grid [stats]="stats"></app-statistics-grid>
+  </section>
+
+  <!-- Grid Layouts Section -->
+  <section class="demo-section">
+    <h2 class="section-title">Grid Layouts</h2>
+    
+    <div class="space-y-8">
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">2 Columns</h3>
+        <app-statistics-grid
+          [stats]="stats2Cols"
+          gridClass="grid-cols-1 md:grid-cols-2">
+        </app-statistics-grid>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">3 Columns</h3>
+        <app-statistics-grid
+          [stats]="stats3Cols"
+          gridClass="grid-cols-1 md:grid-cols-3">
+        </app-statistics-grid>
+      </app-glass-card>
+
+      <app-glass-card padding="p-6">
+        <h3 class="text-lg font-semibold mb-4">4 Columns (Default)</h3>
+        <app-statistics-grid [stats]="stats"></app-statistics-grid>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="demo-section">
+    <h2 class="section-title">Code Examples</h2>
+    
+    <h3 class="subsection-title">Basic Usage</h3>
+    <app-code-viewer [code]="basicExample" language="html" title="Basic Statistics Grid"></app-code-viewer>
+
+    <h3 class="subsection-title">Custom Grid Layout</h3>
+    <app-code-viewer [code]="customGridExample" language="html" title="Custom Grid Layout"></app-code-viewer>
+
+    <h3 class="subsection-title">Data Structure</h3>
+    <app-code-viewer [code]="dataExample" language="typescript" title="Statistics Data Structure"></app-code-viewer>
+  </section>
+
+  <!-- API Documentation -->
+  <section class="demo-section">
+    <h2 class="section-title">API Documentation</h2>
+    <app-props-table [props]="props" title="Inputs"></app-props-table>
+  </section>
+</div>
+

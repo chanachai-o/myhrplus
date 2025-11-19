@@ -1,0 +1,101 @@
+/* ============================================
+   Rating Demo Component Styles
+   ============================================ */
+
+@import '../../../../../styles/design-tokens';
+@import '../../../../../styles/mixins';
+
+.demo-page {
+  width: 100%;
+  padding: $spacing-6 0;
+}
+
+.demo-header {
+  margin-bottom: $spacing-8;
+}
+
+.demo-title {
+  font-size: $text-3xl;
+  font-weight: $font-weight-bold;
+  color: $gray-900;
+  margin-bottom: $spacing-2;
+}
+
+.demo-description {
+  font-size: $text-base;
+  color: $gray-600;
+  line-height: 1.6;
+}
+
+.demo-section {
+  margin-bottom: $spacing-12;
+}
+
+.section-title {
+  font-size: $text-2xl;
+  font-weight: $font-weight-semibold;
+  color: $gray-800;
+  margin-bottom: $spacing-6;
+  padding-bottom: $spacing-2;
+  border-bottom: 2px solid $gray-200;
+}
+
+.subsection-title {
+  font-size: $text-xl;
+  font-weight: $font-weight-semibold;
+  color: $gray-700;
+  margin: $spacing-6 0 $spacing-4 0;
+}
+
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: $spacing-6;
+}
+
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: $spacing-8;
+}
+
+.mt-2 {
+  margin-top: $spacing-2;
+}
+
+/* Dark Mode */
+.dark {
+  .demo-title {
+    color: $gray-100;
+  }
+
+  .demo-description {
+    color: $gray-400;
+  }
+
+  .section-title {
+    color: $gray-200;
+    border-bottom-color: $gray-700;
+  }
+
+  .subsection-title {
+    color: $gray-300;
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .demo-title {
+    @include gradient-text-gemini();
+  }
+
+  .demo-description {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .section-title {
+    @include gradient-text-gemini();
+    border-bottom-color: rgba($gemini-gradient-end, 0.3);
+  }
+
+  .subsection-title {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+

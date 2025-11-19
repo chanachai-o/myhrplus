@@ -1,0 +1,180 @@
+/* ============================================
+   Demo Index Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+.demo-index {
+  width: 100%;
+  padding: $spacing-6 0;
+}
+
+.intro-section {
+  text-align: center;
+  margin-bottom: $spacing-12;
+}
+
+.intro-title {
+  font-size: $text-4xl;
+  font-weight: $font-weight-bold;
+  color: $gray-900;
+  margin-bottom: $spacing-4;
+}
+
+.intro-description {
+  font-size: $text-lg;
+  color: $gray-600;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.components-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+}
+
+.category-section {
+  margin-bottom: $spacing-8;
+}
+
+.category-title {
+  font-size: $text-2xl;
+  font-weight: $font-weight-semibold;
+  color: $gray-800;
+  margin-bottom: $spacing-6;
+  padding-bottom: $spacing-2;
+  border-bottom: 2px solid $gray-200;
+}
+
+.components-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $spacing-6;
+}
+
+.component-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform $transition-all;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.component-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.component-icon {
+  font-size: 3rem;
+  margin-bottom: $spacing-4;
+}
+
+.component-name {
+  font-size: $text-xl;
+  font-weight: $font-weight-semibold;
+  color: $gray-900;
+  margin-bottom: $spacing-2;
+}
+
+.component-description {
+  font-size: $text-sm;
+  color: $gray-600;
+  margin-bottom: $spacing-4;
+  flex: 1;
+}
+
+.view-demo-link {
+  font-size: $text-sm;
+  font-weight: $font-weight-medium;
+  color: $primary-600;
+  margin-top: auto;
+}
+
+/* Dark Mode */
+.dark {
+  .intro-title {
+    color: $gray-100;
+  }
+
+  .intro-description {
+    color: $gray-400;
+  }
+
+  .category-title {
+    color: $gray-200;
+    border-bottom-color: $gray-700;
+  }
+
+  .component-name {
+    color: $gray-100;
+  }
+
+  .component-description {
+    color: $gray-400;
+  }
+
+  .view-demo-link {
+    color: $primary-400;
+  }
+}
+
+/* Gemini Theme */
+body.theme-gemini {
+  .intro-title {
+    @include gradient-text-gemini();
+  }
+
+  .intro-description {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .category-title {
+    @include gradient-text-gemini();
+    border-bottom-color: rgba($gemini-gradient-end, 0.3);
+  }
+
+  .component-name {
+    @include gradient-text-gemini();
+  }
+
+  .component-description {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .view-demo-link {
+    color: $gemini-gradient-start;
+    @include gemini-glow('subtle');
+  }
+}
+
+/* Responsive */
+@include respond-to-down(md) {
+  .intro-title {
+    font-size: $text-3xl;
+  }
+
+  .components-list {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: $spacing-4;
+  }
+}
+
+@include respond-to-down(sm) {
+  .components-list {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-title {
+    font-size: $text-2xl;
+  }
+}
+
