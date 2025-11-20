@@ -1,0 +1,35 @@
+<div class="file-manager-container" [ngClass]="customClass" [style.height]="height" [style.width]="width">
+  <ejs-filemanager
+    #filemanager
+    [ajaxSettings]="ajaxSettings"
+    [view]="view"
+    [allowMultiSelection]="allowMultiSelection"
+    [showFileExtension]="showFileExtension"
+    [showHiddenItems]="showHiddenItems"
+    [showThumbnail]="showThumbnail"
+    [enablePersistence]="enablePersistence"
+    [enableRtl]="enableRtl"
+    [locale]="locale"
+    [navigationPaneSettings]="navigationPaneSettings"
+    [toolbarSettings]="toolbarSettings"
+    [detailsViewSettings]="detailsViewSettings"
+    [contextMenuSettings]="contextMenuSettings"
+    [uploadSettings]="uploadSettings"
+    [height]="height"
+    [width]="width"
+    (fileLoad)="onFileLoad($event)"
+    (fileOpen)="onFileOpen($event)"
+    (fileSelect)="onFileSelect($event)"
+    (fileDeselect)="onFileDeselect($event)"
+    (beforeFileLoad)="onBeforeFileLoad($event)"
+    (beforeFileOpen)="onBeforeFileOpen($event)"
+    (beforeDownload)="onBeforeDownload($event)"
+    (beforeUpload)="onBeforeUpload($event)"
+    (beforeImageLoad)="onBeforeImageLoad($event)"
+    (beforeSend)="onBeforeSend($event)"
+    (successFileUpload)="onSuccessFileUpload($event)"
+    (failureFileUpload)="onFailureFileUpload($event)"
+    (created)="onCreated($event)">
+  </ejs-filemanager>
+</div>
+

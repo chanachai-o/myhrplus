@@ -1,0 +1,158 @@
+<div class="file-manager-demo-container">
+  <app-glass-card>
+    <div class="demo-header">
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+        Syncfusion File Manager Component
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        A comprehensive file management component for browsing, uploading, downloading, and managing files and folders with a modern interface.
+      </p>
+      <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+        <p class="text-sm text-yellow-800 dark:text-yellow-200">
+          <strong>Note:</strong> This demo uses Syncfusion's sample service. For production use, configure your own file server endpoint.
+        </p>
+      </div>
+    </div>
+
+    <div class="demo-content">
+      <!-- Basic File Manager -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          File Manager
+        </h2>
+        <div class="file-manager-wrapper">
+          <app-file-manager
+            #filemanager
+            [ajaxSettings]="ajaxSettings"
+            [view]="view"
+            [allowMultiSelection]="allowMultiSelection"
+            [showFileExtension]="showFileExtension"
+            [showHiddenItems]="showHiddenItems"
+            [showThumbnail]="showThumbnail"
+            [enablePersistence]="enablePersistence"
+            [height]="'600px'"
+            [width]="'100%'"
+            (fileLoad)="onFileLoad($event)"
+            (fileOpen)="onFileOpen($event)"
+            (fileSelect)="onFileSelect($event)"
+            (beforeUpload)="onBeforeUpload($event)"
+            (successFileUpload)="onSuccessFileUpload($event)"
+            (failureFileUpload)="onFailureFileUpload($event)">
+          </app-file-manager>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Controls
+        </h2>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Actions
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="refresh()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Refresh
+              </button>
+              <button
+                (click)="getCurrentPath()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Get Current Path
+              </button>
+              <button
+                (click)="getSelectedItems()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Get Selected Items
+              </button>
+              <button
+                (click)="clearSelection()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Clear Selection
+              </button>
+              <button
+                (click)="toggleView()"
+                class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">
+                Toggle View ({{ view === 'Details' ? 'Large Icons' : 'Details' }})
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Settings
+            </label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="allowMultiSelection"
+                  (change)="allowMultiSelection = !allowMultiSelection"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Allow Multi Selection</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="showFileExtension"
+                  (change)="showFileExtension = !showFileExtension"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Show File Extension</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="showHiddenItems"
+                  (change)="showHiddenItems = !showHiddenItems"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Show Hidden Items</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="showThumbnail"
+                  (change)="showThumbnail = !showThumbnail"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Show Thumbnail</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="enablePersistence"
+                  (change)="enablePersistence = !enablePersistence"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Enable Persistence</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Code Example -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Usage Example
+        </h2>
+        <div class="code-example">
+          <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-file-manager
+  [ajaxSettings]="ajaxSettings"
+  [view]="'Details'"
+  [allowMultiSelection]="true"
+  [showFileExtension]="true"
+  [showThumbnail]="true"
+  [height]="'600px'"
+  [width]="'100%'"
+  (fileLoad)="onFileLoad($event)"
+  (fileOpen)="onFileOpen($event)"
+  (fileSelect)="onFileSelect($event)"
+  (successFileUpload)="onSuccessFileUpload($event)"&gt;
+&lt;/app-file-manager&gt;</code></pre>
+        </div>
+      </section>
+    </div>
+  </app-glass-card>
+</div>
+

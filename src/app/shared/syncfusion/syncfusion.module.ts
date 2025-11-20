@@ -67,6 +67,9 @@ import { ChatUIModule, AIAssistViewModule } from '@syncfusion/ej2-angular-intera
 // Syncfusion Lists
 import { ListViewModule } from '@syncfusion/ej2-angular-lists';
 
+// Syncfusion File Manager
+import { FileManagerModule } from '@syncfusion/ej2-angular-filemanager';
+
 /**
  * Syncfusion Module
  *
@@ -157,7 +160,10 @@ import { ListViewModule } from '@syncfusion/ej2-angular-lists';
     AIAssistViewModule,
 
     // Lists
-    ListViewModule
+    ListViewModule,
+
+    // File Manager
+    FileManagerModule
   ],
   exports: [
     // Buttons & Inputs
@@ -238,7 +244,10 @@ import { ListViewModule } from '@syncfusion/ej2-angular-lists';
     AIAssistViewModule,
 
     // Lists
-    ListViewModule
+    ListViewModule,
+
+    // File Manager
+    FileManagerModule
   ]
 })
 export class SyncfusionModule { }

@@ -46,6 +46,7 @@
     "@syncfusion/ej2-angular-diagrams": "^29.2.8",
     "@syncfusion/ej2-angular-documenteditor": "^29.2.11",
     "@syncfusion/ej2-angular-dropdowns": "^29.2.11",
+    "@syncfusion/ej2-angular-filemanager": "^29.2.10",
     "@syncfusion/ej2-angular-gantt": "^29.2.11",
     "@syncfusion/ej2-angular-grids": "^29.2.11",
     "@syncfusion/ej2-angular-image-editor": "^29.2.5",
