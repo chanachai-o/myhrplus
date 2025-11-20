@@ -41,6 +41,7 @@ import { SchedulerDemoComponent } from './components/scheduler-demo/scheduler-de
 import { ChartDemoComponent } from './components/chart-demo/chart-demo.component';
 import { RichTextEditorDemoComponent } from './components/rich-text-editor-demo/rich-text-editor-demo.component';
 import { QueryBuilderDemoComponent } from './components/query-builder-demo/query-builder-demo.component';
+import { DocumentEditorDemoComponent } from './components/document-editor-demo/document-editor-demo.component';
 
 const routes: Routes = [
   {
@@ -206,6 +207,10 @@ const routes: Routes = [
       {
         path: 'query-builder',
         component: QueryBuilderDemoComponent
+      },
+      {
+        path: 'document-editor',
+        component: DocumentEditorDemoComponent
       }
     ]
   }

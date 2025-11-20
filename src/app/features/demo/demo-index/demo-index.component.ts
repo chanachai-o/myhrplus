@@ -65,6 +65,7 @@ export class DemoIndexComponent {
     { name: 'Chart', route: 'chart', description: 'Chart component for data visualization (Syncfusion)', category: 'Data Display', icon: '📈' },
     { name: 'Rich Text Editor', route: 'rich-text-editor', description: 'Rich text editor component (Syncfusion)', category: 'Form', icon: '✏️' },
     { name: 'Query Builder', route: 'query-builder', description: 'Query builder component for creating filter conditions (Syncfusion)', category: 'Form', icon: '🔍' },
+    { name: 'Document Editor', route: 'document-editor', description: 'Word-like document editor component (Syncfusion)', category: 'Form', icon: '📄' },
     { name: 'Search Filter', route: 'search-filter', description: 'Search and filter component', category: 'Form', icon: '🔍' },
     { name: 'File Upload', route: 'file-upload', description: 'File upload component', category: 'Form', icon: '📁' },
     { name: 'Image Upload', route: 'image-upload', description: 'Image upload component', category: 'Form', icon: '🖼️' },
