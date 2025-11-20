@@ -1,0 +1,187 @@
+<div class="signature-demo-container p-6 space-y-6">
+  <app-glass-card>
+    <div class="space-y-6">
+      <!-- Header -->
+      <div>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          Signature Component Demo
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400">
+          A signature pad component for capturing digital signatures with undo/redo, save, and download capabilities.
+        </p>
+      </div>
+
+      <!-- Basic Usage -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Basic Usage
+        </h2>
+        <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+import {{ '{' }} SignatureComponent {{ '}' }} from '../../shared/components/signature/signature.component';
+
+&#64;ViewChild('signature') signature!: SignatureComponent;
+
+// HTML
+&lt;app-signature
+  #signature
+  [backgroundColor]="'#ffffff'"
+  [strokeColor]="'#000000'"
+  [height]="'300px'"
+  [width]="'100%'"&gt;
+&lt;/app-signature&gt;</code></pre>
+      </div>
+
+      <!-- Settings -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Settings
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Stroke Color
+            </label>
+            <div class="flex gap-2">
+              <input
+                type="color"
+                [value]="strokeColor"
+                (change)="onStrokeColorChange($event)"
+                class="w-16 h-10 rounded-lg border border-slate-300 dark:border-slate-600 cursor-pointer">
+              <input
+                type="text"
+                [value]="strokeColor"
+                (change)="onStrokeColorChange($event)"
+                class="flex-1 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Background Color
+            </label>
+            <div class="flex gap-2">
+              <input
+                type="color"
+                [value]="backgroundColor"
+                (change)="onBackgroundColorChange($event)"
+                class="w-16 h-10 rounded-lg border border-slate-300 dark:border-slate-600 cursor-pointer">
+              <input
+                type="text"
+                [value]="backgroundColor"
+                (change)="onBackgroundColorChange($event)"
+                class="flex-1 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              [checked]="isReadOnly"
+              (change)="toggleReadOnly()"
+              class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+            <span class="text-sm text-slate-700 dark:text-slate-300">Read Only</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              [checked]="saveWithBackground"
+              (change)="saveWithBackground = !saveWithBackground"
+              class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+            <span class="text-sm text-slate-700 dark:text-slate-300">Save with Background</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Actions
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button
+            type="button"
+            class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+            (click)="clear()">
+            Clear
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="undo()">
+            Undo
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="redo()">
+            Redo
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            (click)="download()">
+            Download
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            (click)="saveAsBase64()">
+            Copy Base64
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+            (click)="saveAsBlob()">
+            Save as Blob
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+            (click)="checkEmpty()">
+            Check Empty
+          </button>
+        </div>
+      </div>
+
+      <!-- Signature -->
+      <div class="mb-8">
+        <app-signature
+          #signature
+          [backgroundColor]="backgroundColor"
+          [strokeColor]="strokeColor"
+          [minStrokeWidth]="minStrokeWidth"
+          [maxStrokeWidth]="maxStrokeWidth"
+          [velocity]="velocity"
+          [isReadOnly]="isReadOnly"
+          [saveWithBackground]="saveWithBackground"
+          [allowClear]="true"
+          [height]="'400px'"
+          [width]="'100%'">
+        </app-signature>
+      </div>
+
+      <!-- Features -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Features
+        </h2>
+        <ul class="list-disc list-inside space-y-2 text-slate-600 dark:text-slate-400">
+          <li>Digital signature capture</li>
+          <li>Customizable stroke color and width</li>
+          <li>Background color customization</li>
+          <li>Undo/Redo functionality</li>
+          <li>Clear signature</li>
+          <li>Save as base64 string</li>
+          <li>Save as blob/image</li>
+          <li>Download as image</li>
+          <li>Read-only mode</li>
+          <li>Check if signature is empty</li>
+          <li>Load signature from base64 or URL</li>
+          <li>Glass Morphism styling</li>
+          <li>Dark Mode support</li>
+        </ul>
+      </div>
+    </div>
+  </app-glass-card>
+</div>
+

@@ -48,6 +48,7 @@ import { TreeGridDemoComponent } from './components/tree-grid-demo/tree-grid-dem
 import { SpreadsheetDemoComponent } from './components/spreadsheet-demo/spreadsheet-demo.component';
 import { PdfViewerDemoComponent } from './components/pdf-viewer-demo/pdf-viewer-demo.component';
 import { DiagramsDemoComponent } from './components/diagrams-demo/diagrams-demo.component';
+import { SignatureDemoComponent } from './components/signature-demo/signature-demo.component';
 
 const routes: Routes = [
   {
@@ -241,6 +242,10 @@ const routes: Routes = [
       {
         path: 'diagrams',
         component: DiagramsDemoComponent
+      },
+      {
+        path: 'signature',
+        component: SignatureDemoComponent
       }
     ]
   }

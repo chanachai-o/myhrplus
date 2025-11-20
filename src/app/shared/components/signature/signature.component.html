@@ -1,0 +1,18 @@
+<div class="signature-container" [ngClass]="customClass">
+  <canvas
+    ejs-signature
+    #signature
+    [backgroundColor]="backgroundColor"
+    [strokeColor]="strokeColor"
+    [minStrokeWidth]="minStrokeWidth"
+    [maxStrokeWidth]="maxStrokeWidth"
+    [velocity]="velocity"
+    [isReadOnly]="isReadOnly"
+    [saveWithBackground]="saveWithBackground"
+    [style.height]="height"
+    [style.width]="width"
+    (change)="onChange($event)"
+    (created)="onCreated($event)">
+  </canvas>
+</div>
+
