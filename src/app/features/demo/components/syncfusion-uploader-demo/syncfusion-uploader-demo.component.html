@@ -1,0 +1,213 @@
+<div class="syncfusion-uploader-demo-container">
+  <app-glass-card>
+    <div class="demo-header">
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+        Syncfusion Uploader Component
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        A powerful file upload component with drag & drop, progress tracking, pause/resume, and multiple file support.
+      </p>
+      <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+        <p class="text-sm text-yellow-800 dark:text-yellow-200">
+          <strong>Note:</strong> This demo uses Syncfusion's sample service. For production use, configure your own upload endpoint.
+        </p>
+      </div>
+    </div>
+
+    <div class="demo-content">
+      <!-- Basic Uploader -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          File Upload
+        </h2>
+        <div class="uploader-wrapper">
+          <app-syncfusion-uploader
+            #uploader
+            [asyncSettings]="asyncSettings"
+            [allowedExtensions]="allowedExtensions"
+            [autoUpload]="autoUpload"
+            [multiple]="multiple"
+            [maxFileSize]="maxFileSize"
+            [minFileSize]="minFileSize"
+            [showFileList]="showFileList"
+            [sequentialUpload]="sequentialUpload"
+            [directoryUpload]="directoryUpload"
+            [width]="'100%'"
+            (uploading)="onUploading($event)"
+            (success)="onSuccess($event)"
+            (failure)="onFailure($event)"
+            (fileSelected)="onFileSelected($event)"
+            (progress)="onProgress($event)">
+          </app-syncfusion-uploader>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Controls
+        </h2>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Actions
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="upload()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Upload
+              </button>
+              <button
+                (click)="remove()"
+                class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
+                Remove
+              </button>
+              <button
+                (click)="clearAll()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Clear All
+              </button>
+              <button
+                (click)="cancel()"
+                class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors">
+                Cancel
+              </button>
+              <button
+                (click)="pause()"
+                class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors">
+                Pause
+              </button>
+              <button
+                (click)="resume()"
+                class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                Resume
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Information
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="getFiles()"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                Get Files
+              </button>
+              <button
+                (click)="getSelectedFiles()"
+                class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">
+                Get Selected
+              </button>
+              <button
+                (click)="refresh()"
+                class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors">
+                Refresh
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Settings
+            </label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="autoUpload"
+                  (change)="toggleAutoUpload()"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Auto Upload</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="multiple"
+                  (change)="toggleMultiple()"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Multiple Files</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="showFileList"
+                  (change)="showFileList = !showFileList"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Show File List</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="sequentialUpload"
+                  (change)="sequentialUpload = !sequentialUpload"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Sequential Upload</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="directoryUpload"
+                  (change)="directoryUpload = !directoryUpload"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Directory Upload</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Max File Size (MB)
+            </label>
+            <input
+              type="number"
+              [value]="maxFileSize / (1024 * 1024)"
+              (change)="onMaxFileSizeChange($event)"
+              min="1"
+              max="100"
+              step="1"
+              class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500">
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Allowed Extensions
+            </label>
+            <input
+              type="text"
+              [value]="allowedExtensions"
+              (change)="onAllowedExtensionsChange($event)"
+              placeholder=".pdf,.doc,.jpg,.png"
+              class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 w-full">
+          </div>
+        </div>
+      </section>
+
+      <!-- Code Example -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Usage Example
+        </h2>
+        <div class="code-example">
+          <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-syncfusion-uploader
+  [asyncSettings]="asyncSettings"
+  [allowedExtensions]="'.pdf,.doc,.jpg,.png'"
+  [autoUpload]="false"
+  [multiple]="true"
+  [maxFileSize]="10485760"
+  [showFileList]="true"
+  [width]="'100%'"
+  (uploading)="onUploading($event)"
+  (success)="onSuccess($event)"
+  (failure)="onFailure($event)"
+  (fileSelected)="onFileSelected($event)"
+  (progress)="onProgress($event)"&gt;
+&lt;/app-syncfusion-uploader&gt;</code></pre>
+        </div>
+      </section>
+    </div>
+  </app-glass-card>
+</div>
+

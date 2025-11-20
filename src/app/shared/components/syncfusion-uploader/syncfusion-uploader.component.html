@@ -1,0 +1,39 @@
+<div class="syncfusion-uploader-container" [ngClass]="customClass" [style.height]="height" [style.width]="width">
+  <ejs-uploader
+    #uploader
+    [asyncSettings]="asyncSettings"
+    [allowedExtensions]="allowedExtensions"
+    [autoUpload]="autoUpload"
+    [buttons]="buttons"
+    [directoryUpload]="directoryUpload"
+    [dropArea]="dropArea"
+    [enablePersistence]="enablePersistence"
+    [enableRtl]="enableRtl"
+    [files]="files"
+    [htmlAttributes]="htmlAttributes"
+    [locale]="locale"
+    [maxFileSize]="maxFileSize"
+    [minFileSize]="minFileSize"
+    [multiple]="multiple"
+    [sequentialUpload]="sequentialUpload"
+    [showFileList]="showFileList"
+    [template]="template"
+    (uploading)="onUploading($event)"
+    (success)="onSuccess($event)"
+    (failure)="onFailure($event)"
+    (removing)="onRemoving($event)"
+    (removed)="onRemoved($event)"
+    (selected)="onFileSelected($event)"
+    (beforeUpload)="onBeforeUpload($event)"
+    (beforeRemove)="onBeforeRemove($event)"
+    (progress)="onProgress($event)"
+    (canceling)="onCanceling($event)"
+    (cancelled)="onCancelled($event)"
+    (pausing)="onPausing($event)"
+    (paused)="onPaused($event)"
+    (resuming)="onResuming($event)"
+    (resumed)="onResumed($event)"
+    (created)="onCreated($event)">
+  </ejs-uploader>
+</div>
+

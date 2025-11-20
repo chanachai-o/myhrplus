@@ -76,6 +76,7 @@ export class DemoIndexComponent {
     { name: 'Carousel', route: 'carousel', description: 'Carousel component for displaying slides with navigation and autoplay (Syncfusion)', category: 'Data Display', icon: '🎠' },
     { name: 'Gantt Chart', route: 'gantt', description: 'Project management Gantt chart component with timeline, dependencies, and progress tracking (Syncfusion)', category: 'Data Display', icon: '📊' },
     { name: 'File Manager', route: 'file-manager', description: 'File management component for browsing, uploading, downloading, and managing files and folders (Syncfusion)', category: 'Data Display', icon: '📁' },
+    { name: 'Syncfusion Uploader', route: 'syncfusion-uploader', description: 'File upload component with drag & drop, progress tracking, pause/resume, and multiple file support (Syncfusion)', category: 'Form', icon: '📤' },
     { name: 'Search Filter', route: 'search-filter', description: 'Search and filter component', category: 'Form', icon: '🔍' },
     { name: 'File Upload', route: 'file-upload', description: 'File upload component', category: 'Form', icon: '📁' },
     { name: 'Image Upload', route: 'image-upload', description: 'Image upload component', category: 'Form', icon: '🖼️' },

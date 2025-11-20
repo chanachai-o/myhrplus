@@ -52,6 +52,7 @@ import { SignatureDemoComponent } from './components/signature-demo/signature-de
 import { CarouselDemoComponent } from './components/carousel-demo/carousel-demo.component';
 import { GanttDemoComponent } from './components/gantt-demo/gantt-demo.component';
 import { FileManagerDemoComponent } from './components/file-manager-demo/file-manager-demo.component';
+import { SyncfusionUploaderDemoComponent } from './components/syncfusion-uploader-demo/syncfusion-uploader-demo.component';
 
 const routes: Routes = [
   {
@@ -261,6 +262,10 @@ const routes: Routes = [
       {
         path: 'file-manager',
         component: FileManagerDemoComponent
+      },
+      {
+        path: 'syncfusion-uploader',
+        component: SyncfusionUploaderDemoComponent
       }
     ]
   }
