@@ -1,0 +1,30 @@
+<div class="pdf-viewer-container" [ngClass]="customClass">
+  <ejs-pdfviewer
+    #pdfviewer
+    [documentPath]="documentPath"
+    [serviceUrl]="serviceUrl"
+    [enableToolbar]="enableToolbar"
+    [enableNavigation]="enableNavigation"
+    [enableThumbnail]="enableThumbnail"
+    [enableBookmark]="enableBookmark"
+    [enableTextSelection]="enableTextSelection"
+    [enableTextSearch]="enableTextSearch"
+    [enablePrint]="enablePrint"
+    [enableDownload]="enableDownload"
+    [enableFormFields]="enableFormFields"
+    [enableMagnification]="enableMagnification"
+    [height]="height"
+    [width]="width"
+    (documentLoad)="onDocumentLoad($event)"
+    (pageChange)="onPageChange($event)"
+    (zoomChange)="onZoomChange($event)"
+    (annotationAdd)="onAnnotationAdd($event)"
+    (annotationRemove)="onAnnotationRemove($event)"
+    (annotationSelect)="onAnnotationSelect($event)"
+    (hyperlinkClick)="onHyperlinkClick($event)"
+    (textSelection)="onTextSelection($event)"
+    (formFieldFocus)="onFormFieldFocus($event)"
+    (formFieldBlur)="onFormFieldBlur($event)">
+  </ejs-pdfviewer>
+</div>
+

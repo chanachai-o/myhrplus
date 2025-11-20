@@ -46,6 +46,7 @@ import { SpeechToTextDemoComponent } from './components/speech-to-text-demo/spee
 import { ImageEditorDemoComponent } from './components/image-editor-demo/image-editor-demo.component';
 import { TreeGridDemoComponent } from './components/tree-grid-demo/tree-grid-demo.component';
 import { SpreadsheetDemoComponent } from './components/spreadsheet-demo/spreadsheet-demo.component';
+import { PdfViewerDemoComponent } from './components/pdf-viewer-demo/pdf-viewer-demo.component';
 
 const routes: Routes = [
   {
@@ -231,6 +232,10 @@ const routes: Routes = [
       {
         path: 'spreadsheet',
         component: SpreadsheetDemoComponent
+      },
+      {
+        path: 'pdf-viewer',
+        component: PdfViewerDemoComponent
       }
     ]
   }

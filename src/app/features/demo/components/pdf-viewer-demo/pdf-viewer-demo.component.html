@@ -1,0 +1,186 @@
+<div class="pdf-viewer-demo-container p-6 space-y-6">
+  <app-glass-card>
+    <div class="space-y-6">
+      <!-- Header -->
+      <div>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          PDF Viewer Component Demo
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400">
+          A comprehensive PDF viewer component with annotation, form filling, text search, and more.
+        </p>
+      </div>
+
+      <!-- Basic Usage -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Basic Usage
+        </h2>
+        <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+import {{ '{' }} PdfViewerComponent {{ '}' }} from '../../shared/components/pdf-viewer/pdf-viewer.component';
+
+&#64;ViewChild('pdfviewer') pdfviewer!: PdfViewerComponent;
+
+documentPath = 'https://example.com/document.pdf';
+
+// HTML
+&lt;app-pdf-viewer
+  #pdfviewer
+  [documentPath]="documentPath"
+  [height]="'800px'"
+  [width]="'100%'"&gt;
+&lt;/app-pdf-viewer&gt;</code></pre>
+      </div>
+
+      <!-- Actions -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Actions
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <button
+            type="button"
+            class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+            (click)="loadSamplePdf()">
+            Load Sample PDF
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            (click)="print()">
+            Print
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            (click)="download()">
+            Download
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+            (click)="fitToPage()">
+            Fit to Page
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="goToFirstPage()">
+            First Page
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="goToPreviousPage()">
+            Previous
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="goToNextPage()">
+            Next
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="goToLastPage()">
+            Last Page
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="zoomIn()">
+            Zoom In
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="zoomOut()">
+            Zoom Out
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="fitToWidth()">
+            Fit to Width
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="setZoom(1)">
+            Reset Zoom
+          </button>
+        </div>
+        <div class="flex gap-4 items-center">
+          <input
+            type="text"
+            #searchInput
+            placeholder="Search text..."
+            class="flex-1 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            (keyup.enter)="search(searchInput.value)">
+          <button
+            type="button"
+            class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+            (click)="search(searchInput.value)">
+            Search
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="clearSearch()">
+            Clear
+          </button>
+        </div>
+        <div class="mt-4 text-sm text-slate-600 dark:text-slate-400">
+          Current Page: <span class="font-semibold">{{ getCurrentPageInfo() }}</span>
+        </div>
+      </div>
+
+      <!-- PDF Viewer -->
+      <div class="mb-8">
+        <app-pdf-viewer
+          #pdfviewer
+          [documentPath]="documentPath"
+          [serviceUrl]="serviceUrl"
+          [enableToolbar]="true"
+          [enableNavigation]="true"
+          [enableThumbnail]="true"
+          [enableBookmark]="true"
+          [enableTextSelection]="true"
+          [enableTextSearch]="true"
+          [enablePrint]="true"
+          [enableDownload]="true"
+          [enableFormFields]="true"
+          [enableMagnification]="true"
+          [height]="'800px'"
+          [width]="'100%'">
+        </app-pdf-viewer>
+      </div>
+
+      <!-- Features -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Features
+        </h2>
+        <ul class="list-disc list-inside space-y-2 text-slate-600 dark:text-slate-400">
+          <li>PDF document viewing and navigation</li>
+          <li>Text search and selection</li>
+          <li>Zoom in/out and fit to page/width</li>
+          <li>Print and download</li>
+          <li>Annotations (sticky notes, text markup, shapes, stamps)</li>
+          <li>Form field filling</li>
+          <li>Digital signatures</li>
+          <li>Measurement tools</li>
+          <li>Thumbnail and bookmark navigation</li>
+          <li>Hyperlink support</li>
+          <li>Hand tool for panning</li>
+        </ul>
+      </div>
+    </div>
+  </app-glass-card>
+</div>
+
