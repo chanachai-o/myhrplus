@@ -1,0 +1,65 @@
+<div class="rich-text-editor-demo-container">
+  <app-glass-card padding="p-6" customClass="mb-6">
+    <h2 class="text-2xl font-bold mb-4 thai-text">Rich Text Editor Component Demo</h2>
+    <p class="text-slate-600 dark:text-slate-400 mb-6 thai-text">
+      Component สำหรับแก้ไขข้อความแบบ Rich Text จาก Syncfusion พร้อม Glass Morphism styling และ features ครบถ้วน
+    </p>
+
+    <!-- Full Featured Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างแบบเต็มรูปแบบ</h3>
+      <app-rich-text-editor
+        [value]="fullValue"
+        [toolbarSettings]="fullToolbar"
+        [height]="'500px'"
+        [width]="'100%'"
+        [enableResize]="true"
+        [showCharCount]="true"
+        [maxLength]="5000"
+        (change)="onValueChange($event)"
+        (created)="onCreated($event)"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)">
+      </app-rich-text-editor>
+    </div>
+
+    <!-- Basic Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างแบบพื้นฐาน</h3>
+      <app-rich-text-editor
+        [value]="basicValue"
+        [toolbarSettings]="minimalToolbar"
+        [height]="'300px'"
+        [width]="'100%'"
+        placeholder="พิมพ์ข้อความที่นี่...">
+      </app-rich-text-editor>
+    </div>
+
+    <!-- Usage Example -->
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างการใช้งาน</h3>
+      <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+editorValue: string = '&lt;p&gt;ข้อความเริ่มต้น&lt;/p&gt;';
+
+toolbarSettings = {{ '{' }}
+  items: [
+    'Bold', 'Italic', 'Underline',
+    'FontName', 'FontSize', 'FontColor',
+    'Formats', 'Alignments',
+    'CreateLink', 'Image'
+  ]
+{{ '}' }};
+
+// HTML
+&lt;app-rich-text-editor
+  [value]="editorValue"
+  [toolbarSettings]="toolbarSettings"
+  [height]="'400px'"
+  [width]="'100%'"
+  [showCharCount]="true"
+  (change)="onValueChange($event)"&gt;
+&lt;/app-rich-text-editor&gt;</code></pre>
+    </div>
+  </app-glass-card>
+</div>
+

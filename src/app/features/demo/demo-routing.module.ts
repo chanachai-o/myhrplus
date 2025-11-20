@@ -39,6 +39,7 @@ import { PivotTableDemoComponent } from './components/pivot-table-demo/pivot-tab
 import { DataGridDemoComponent } from './components/data-grid-demo/data-grid-demo.component';
 import { SchedulerDemoComponent } from './components/scheduler-demo/scheduler-demo.component';
 import { ChartDemoComponent } from './components/chart-demo/chart-demo.component';
+import { RichTextEditorDemoComponent } from './components/rich-text-editor-demo/rich-text-editor-demo.component';
 
 const routes: Routes = [
   {
@@ -196,6 +197,10 @@ const routes: Routes = [
       {
         path: 'chart',
         component: ChartDemoComponent
+      },
+      {
+        path: 'rich-text-editor',
+        component: RichTextEditorDemoComponent
       }
     ]
   }

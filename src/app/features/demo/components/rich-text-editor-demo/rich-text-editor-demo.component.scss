@@ -1,0 +1,26 @@
+/* ============================================
+   Rich Text Editor Demo Component Styles
+   ============================================ */
+
+@import '../../../../../styles/design-tokens';
+@import '../../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.rich-text-editor-demo-container {
+  width: 100%;
+  padding: $spacing-4;
+}
+
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.6;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+}
+

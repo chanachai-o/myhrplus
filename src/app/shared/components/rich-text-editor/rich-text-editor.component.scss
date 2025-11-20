@@ -1,0 +1,335 @@
+/* ============================================
+   Rich Text Editor Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.rich-text-editor-container {
+  width: 100%;
+  @include glass-morphism('weak', 'light');
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+  overflow: hidden;
+  
+  .dark & {
+    @include glass-morphism('weak', 'dark');
+  }
+
+  // Syncfusion Rich Text Editor Styles
+  ::ng-deep {
+    .e-rte {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $radius-md;
+      
+      .dark & {
+        border-color: rgba(51, 65, 85, 0.3);
+      }
+
+      // Toolbar
+      .e-rte-toolbar {
+        background: rgba(255, 255, 255, 0.1);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: $spacing-2;
+        border-radius: $radius-md $radius-md 0 0;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.3);
+          border-bottom-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-toolbar-items {
+          .e-toolbar-item {
+            .e-btn {
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: $gray-700;
+              transition: $transition-all;
+              min-width: 44px;
+              min-height: 44px;
+              border-radius: $radius-sm;
+              
+              .dark & {
+                background: rgba(15, 23, 42, 0.3);
+                border-color: rgba(51, 65, 85, 0.3);
+                color: $gray-300;
+              }
+
+              &:hover:not(:disabled) {
+                background: rgba(var(--primary-rgb), 0.1);
+                border-color: rgba(var(--primary-rgb), 0.3);
+                color: rgb(var(--primary-rgb));
+                
+                .dark & {
+                  background: rgba(var(--primary-rgb), 0.2);
+                }
+              }
+
+              &:focus {
+                box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+              }
+
+              &:active:not(:disabled) {
+                background: rgba(var(--primary-rgb), 0.2);
+                transform: scale(0.95);
+              }
+
+              &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+              }
+
+              @include respond-to(md) {
+                min-width: auto;
+                min-height: auto;
+              }
+            }
+
+            // Dropdown
+            .e-dropdown-btn {
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: $gray-700;
+              
+              .dark & {
+                background: rgba(15, 23, 42, 0.3);
+                border-color: rgba(51, 65, 85, 0.3);
+                color: $gray-300;
+              }
+
+              &:hover {
+                background: rgba(var(--primary-rgb), 0.1);
+                border-color: rgba(var(--primary-rgb), 0.3);
+                color: rgb(var(--primary-rgb));
+              }
+            }
+          }
+        }
+      }
+
+      // Content Area
+      .e-content {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0 0 $radius-md $radius-md;
+        min-height: 200px;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.1);
+        }
+
+        .e-content-placeholder {
+          color: $gray-400;
+          
+          .dark & {
+            color: $gray-500;
+          }
+        }
+
+        // Editor iframe
+        iframe {
+          background: transparent;
+          color: $gray-900;
+          
+          .dark & {
+            color: $gray-100;
+          }
+        }
+
+        // Source Code Editor
+        .e-source-content {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: $radius-sm;
+          color: $gray-900;
+          font-family: 'JetBrains Mono', monospace;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.2);
+            border-color: rgba(51, 65, 85, 0.3);
+            color: $gray-100;
+          }
+
+          &:focus {
+            border-color: rgb(var(--primary-rgb));
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+          }
+        }
+      }
+
+      // Quick Toolbar
+      .e-quick-toolbar {
+        @include glass-morphism('strong', 'light');
+        border-radius: $radius-md;
+        box-shadow: $shadow-lg;
+        
+        .dark & {
+          @include glass-morphism('strong', 'dark');
+        }
+
+        .e-toolbar-items {
+          .e-toolbar-item {
+            .e-btn {
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: $gray-700;
+              
+              .dark & {
+                background: rgba(15, 23, 42, 0.3);
+                border-color: rgba(51, 65, 85, 0.3);
+                color: $gray-300;
+              }
+
+              &:hover {
+                background: rgba(var(--primary-rgb), 0.1);
+                border-color: rgba(var(--primary-rgb), 0.3);
+                color: rgb(var(--primary-rgb));
+              }
+            }
+          }
+        }
+      }
+
+      // Dialog
+      .e-dialog {
+        @include glass-morphism('strong', 'light');
+        border-radius: $radius-lg;
+        
+        .dark & {
+          @include glass-morphism('strong', 'dark');
+        }
+
+        .e-dlg-header {
+          background: rgba(255, 255, 255, 0.1);
+          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding: $spacing-4;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.3);
+            border-bottom-color: rgba(51, 65, 85, 0.3);
+          }
+
+          .e-dlg-header-content {
+            color: $gray-900;
+            font-weight: $font-weight-semibold;
+            
+            .dark & {
+              color: $gray-100;
+            }
+          }
+        }
+
+        .e-dlg-content {
+          background: transparent;
+          padding: $spacing-4;
+        }
+
+        .e-dlg-footer {
+          background: rgba(255, 255, 255, 0.05);
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          padding: $spacing-3;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.2);
+            border-top-color: rgba(51, 65, 85, 0.3);
+          }
+
+          .e-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: $gray-700;
+            min-width: 44px;
+            min-height: 44px;
+            
+            .dark & {
+              background: rgba(15, 23, 42, 0.3);
+              border-color: rgba(51, 65, 85, 0.3);
+              color: $gray-300;
+            }
+
+            &:hover {
+              background: rgba(var(--primary-rgb), 0.1);
+              border-color: rgba(var(--primary-rgb), 0.3);
+              color: rgb(var(--primary-rgb));
+            }
+
+            &.e-primary {
+              background: rgb(var(--primary-rgb));
+              border-color: rgb(var(--primary-rgb));
+              color: white;
+
+              &:hover {
+                background: rgba(var(--primary-rgb), 0.9);
+              }
+            }
+          }
+        }
+      }
+
+      // Character Count
+      .e-rte-character-count {
+        color: $gray-600;
+        font-size: $text-sm;
+        
+        .dark & {
+          color: $gray-400;
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@include respond-to-down(sm) {
+  .rich-text-editor-container {
+    padding: $spacing-2;
+    
+    ::ng-deep {
+      .e-rte {
+        .e-rte-toolbar {
+          padding: $spacing-1;
+          
+          .e-toolbar-items {
+            .e-toolbar-item {
+              .e-btn {
+                padding: $spacing-1 $spacing-2;
+                font-size: $text-xs;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Gemini Theme
+body.theme-gemini {
+  .rich-text-editor-container {
+    @include glass-gemini('weak');
+    
+    ::ng-deep {
+      .e-rte {
+        .e-rte-toolbar {
+          @include glass-gemini('default');
+          @include gemini-border-glow();
+        }
+
+        .e-quick-toolbar {
+          @include glass-gemini('default');
+          @include gemini-border-glow();
+        }
+      }
+    }
+  }
+}
+
