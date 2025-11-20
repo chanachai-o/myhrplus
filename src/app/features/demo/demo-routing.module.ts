@@ -47,6 +47,7 @@ import { ImageEditorDemoComponent } from './components/image-editor-demo/image-e
 import { TreeGridDemoComponent } from './components/tree-grid-demo/tree-grid-demo.component';
 import { SpreadsheetDemoComponent } from './components/spreadsheet-demo/spreadsheet-demo.component';
 import { PdfViewerDemoComponent } from './components/pdf-viewer-demo/pdf-viewer-demo.component';
+import { DiagramsDemoComponent } from './components/diagrams-demo/diagrams-demo.component';
 
 const routes: Routes = [
   {
@@ -236,6 +237,10 @@ const routes: Routes = [
       {
         path: 'pdf-viewer',
         component: PdfViewerDemoComponent
+      },
+      {
+        path: 'diagrams',
+        component: DiagramsDemoComponent
       }
     ]
   }

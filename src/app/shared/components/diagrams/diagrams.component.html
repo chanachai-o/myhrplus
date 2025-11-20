@@ -1,0 +1,32 @@
+<div class="diagrams-container" [ngClass]="customClass">
+  <ejs-diagram
+    #diagram
+    [nodes]="nodes"
+    [connectors]="connectors"
+    [pageSettings]="pageSettings"
+    [snapSettings]="snapSettings"
+    [rulerSettings]="rulerSettings"
+    [layout]="layout"
+    [dataSourceSettings]="dataSourceSettings"
+    [selectedItems]="selectedItems"
+    [constraints]="constraints"
+    [tool]="tool"
+    [drawingObject]="drawingObject"
+    [height]="height"
+    [width]="width"
+    (created)="onCreated($event)"
+    (nodeClick)="onNodeClick($event)"
+    (connectorClick)="onConnectorClick($event)"
+    (selectionChange)="onSelectionChange($event)"
+    (scrollChange)="onScrollChange($event)"
+    (zoomChange)="onZoomChange($event)"
+    (historyChange)="onHistoryChange($event)"
+    (objectDoubleClick)="onObjectDoubleClick($event)"
+    (textEdit)="onTextEdit($event)"
+    (dragEnter)="onDragEnter($event)"
+    (dragLeave)="onDragLeave($event)"
+    (dragOver)="onDragOver($event)"
+    (drop)="onDrop($event)">
+  </ejs-diagram>
+</div>
+

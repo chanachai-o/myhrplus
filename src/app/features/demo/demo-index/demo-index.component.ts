@@ -71,6 +71,7 @@ export class DemoIndexComponent {
     { name: 'Tree Grid', route: 'tree-grid', description: 'Hierarchical tree grid component with expand/collapse (Syncfusion)', category: 'Data', icon: '🌳' },
     { name: 'Spreadsheet', route: 'spreadsheet', description: 'Excel-like spreadsheet component with formulas, charts, and formatting (Syncfusion)', category: 'Data Display', icon: '📊' },
     { name: 'PDF Viewer', route: 'pdf-viewer', description: 'PDF viewer component with annotation, form filling, and text search (Syncfusion)', category: 'Data Display', icon: '📄' },
+    { name: 'Diagrams', route: 'diagrams', description: 'Diagram component for flowcharts, organizational charts, and network diagrams (Syncfusion)', category: 'Data Display', icon: '📊' },
     { name: 'Search Filter', route: 'search-filter', description: 'Search and filter component', category: 'Form', icon: '🔍' },
     { name: 'File Upload', route: 'file-upload', description: 'File upload component', category: 'Form', icon: '📁' },
     { name: 'Image Upload', route: 'image-upload', description: 'Image upload component', category: 'Form', icon: '🖼️' },
