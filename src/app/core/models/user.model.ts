@@ -1,46 +1,37 @@
+import { BaseModel, TranslateService } from './base.model';
+import { Employee, MyEmployee } from './employee.model';
+import { MyRole, Role } from './role.model';
+
 /**
- * User Model
- * ข้อมูลผู้ใช้และ profile
+ * User model
  */
-
 export interface User {
-  id: string;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  roles: string[];
-  permissions: string[];
-  isActive?: boolean;
+  usernameId: string;
+  empId: string;
+  userRole: string;
+  lang: string;
+  role?: Role;
+  employee?: Employee;
 }
 
-export interface UserProfile extends User {
-  employeeId?: string;
-  department?: string;
-  position?: string;
-  phone?: string;
-  mobile?: string;
-  avatar?: string;
-  language?: string;
-  timezone?: string;
-}
+export class MyUser extends BaseModel implements User {
+  usernameId: string = '';
+  empId: string = '';
+  userRole: string = '';
+  lang: string = '';
+  role?: Role;
+  employee?: Employee;
 
-export interface LoginRequest {
-  username: string;
-  password: string;
-  rememberMe?: boolean;
+  constructor(data: Partial<User>, translateService: TranslateService) {
+    super(data, translateService);
+    this.usernameId = data.usernameId || '';
+    this.userRole = data.userRole || '';
+    this.lang = data.lang || '';
+    this.role = data.role
+      ? new MyRole(data.role, this.translateService!)
+      : data.role;
+    this.employee = data.employee
+      ? new MyEmployee(data.employee, this.translateService!)
+      : data.employee;
+  }
 }
-
-export interface LoginResponse {
-  token: string;
-  refreshToken?: string;
-  user: UserProfile;
-  expiresIn?: number;
-}
-
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
