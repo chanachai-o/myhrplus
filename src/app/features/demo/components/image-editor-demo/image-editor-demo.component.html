@@ -1,0 +1,148 @@
+<div class="image-editor-demo-container">
+  <app-glass-card padding="p-6" customClass="mb-6">
+    <h2 class="text-2xl font-bold mb-4 thai-text">Image Editor Component Demo</h2>
+    <p class="text-slate-600 dark:text-slate-400 mb-6 thai-text">
+      Component สำหรับแก้ไขรูปภาพจาก Syncfusion พร้อม Glass Morphism styling และ features ครบถ้วน
+    </p>
+
+    <!-- Toolbar -->
+    <div class="mb-4 flex flex-wrap gap-2">
+      <button
+        type="button"
+        class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+        (click)="loadSampleImage()">
+        Load Sample Image
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+        (click)="exportAsPng()">
+        Export PNG
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+        (click)="exportAsJpeg()">
+        Export JPEG
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+        (click)="exportAsSvg()">
+        Export SVG
+      </button>
+      <div class="flex gap-2 ml-auto">
+        <button
+          type="button"
+          class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+          (click)="undoAction()">
+          Undo
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+          (click)="redoAction()">
+          Redo
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+          (click)="resetImage()">
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Transform Controls -->
+    <div class="mb-4 flex flex-wrap gap-2">
+      <button
+        type="button"
+        class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+        (click)="rotateLeft()">
+        Rotate Left
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+        (click)="rotateRight()">
+        Rotate Right
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+        (click)="flipHorizontal()">
+        Flip Horizontal
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+        (click)="flipVertical()">
+        Flip Vertical
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+        (click)="zoomIn()">
+        Zoom In
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+        (click)="zoomOut()">
+        Zoom Out
+      </button>
+    </div>
+
+    <!-- Image Editor -->
+    <div class="mb-8">
+      <app-image-editor
+        #editor
+        [width]="'100%'"
+        [height]="'600px'"
+        [toolbar]="['Annotate', 'Crop', 'Transform', 'Finetune', 'Filter', 'ZoomIn', 'ZoomOut', 'Reset', 'Save']"
+        [allowUndoRedo]="true"
+        (created)="onCreated($event)"
+        (imageLoaded)="onImageLoaded($event)"
+        (toolbarItemClicked)="onToolbarItemClicked($event)"
+        (imageChanged)="onImageChanged($event)">
+      </app-image-editor>
+    </div>
+
+    <!-- Usage Example -->
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างการใช้งาน</h3>
+      <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+import {{ '{' }} ImageEditorComponent {{ '}' }} from '../../shared/components/image-editor/image-editor.component';
+
+&#64;ViewChild('editor') editor!: ImageEditorComponent;
+
+// Open image
+openImage(url: string): void {{ '{' }}
+  this.editor.open(url);
+{{ '}' }}
+
+// Export
+exportAsPng(): void {{ '{' }}
+  this.editor.export('PNG', 'image');
+{{ '}' }}
+
+// Transform
+rotateLeft(): void {{ '{' }}
+  this.editor.transform('RotateLeft');
+{{ '}' }}
+
+// HTML
+&lt;app-image-editor
+  #editor
+  [width]="'100%'"
+  [height]="'600px'"
+  [src]="imageUrl"
+  [toolbar]="toolbarItems"
+  [allowUndoRedo]="true"
+  (created)="onCreated($event)"
+  (imageLoaded)="onImageLoaded($event)"&gt;
+&lt;/app-image-editor&gt;</code></pre>
+    </div>
+  </app-glass-card>
+</div>
+

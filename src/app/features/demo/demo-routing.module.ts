@@ -43,6 +43,7 @@ import { RichTextEditorDemoComponent } from './components/rich-text-editor-demo/
 import { QueryBuilderDemoComponent } from './components/query-builder-demo/query-builder-demo.component';
 import { DocumentEditorDemoComponent } from './components/document-editor-demo/document-editor-demo.component';
 import { SpeechToTextDemoComponent } from './components/speech-to-text-demo/speech-to-text-demo.component';
+import { ImageEditorDemoComponent } from './components/image-editor-demo/image-editor-demo.component';
 
 const routes: Routes = [
   {
@@ -216,6 +217,10 @@ const routes: Routes = [
       {
         path: 'speech-to-text',
         component: SpeechToTextDemoComponent
+      },
+      {
+        path: 'image-editor',
+        component: ImageEditorDemoComponent
       }
     ]
   }

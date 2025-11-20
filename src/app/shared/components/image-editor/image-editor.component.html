@@ -1,0 +1,16 @@
+<div class="image-editor-container" [ngClass]="customClass">
+  <ejs-imageeditor
+    #imageEditor
+    [width]="width"
+    [height]="height"
+    [toolbar]="toolbar"
+    [allowUndoRedo]="allowUndoRedo"
+    (created)="onCreated($event)"
+    (fileOpened)="onImageLoaded($event)"
+    (toolbarItemClicked)="onToolbarItemClicked($event)"
+    (selectionChanging)="onSelectionChanged($event)"
+    (shapeChange)="onShapeChanged($event)"
+    (editComplete)="onImageChanged($event)">
+  </ejs-imageeditor>
+</div>
+

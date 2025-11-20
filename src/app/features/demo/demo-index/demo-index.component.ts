@@ -67,6 +67,7 @@ export class DemoIndexComponent {
     { name: 'Query Builder', route: 'query-builder', description: 'Query builder component for creating filter conditions (Syncfusion)', category: 'Form', icon: '🔍' },
     { name: 'Document Editor', route: 'document-editor', description: 'Word-like document editor component (Syncfusion)', category: 'Form', icon: '📄' },
     { name: 'Speech to Text', route: 'speech-to-text', description: 'Speech to text conversion component (Syncfusion)', category: 'Form', icon: '🎤' },
+    { name: 'Image Editor', route: 'image-editor', description: 'Image editing component with crop, filter, transform (Syncfusion)', category: 'Form', icon: '🖼️' },
     { name: 'Search Filter', route: 'search-filter', description: 'Search and filter component', category: 'Form', icon: '🔍' },
     { name: 'File Upload', route: 'file-upload', description: 'File upload component', category: 'Form', icon: '📁' },
     { name: 'Image Upload', route: 'image-upload', description: 'Image upload component', category: 'Form', icon: '🖼️' },

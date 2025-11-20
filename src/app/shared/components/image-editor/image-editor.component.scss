@@ -1,0 +1,216 @@
+/* ============================================
+   Image Editor Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.image-editor-container {
+  width: 100%;
+  @include glass-morphism('weak', 'light');
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+  overflow: hidden;
+  
+  .dark & {
+    @include glass-morphism('weak', 'dark');
+  }
+
+  // Syncfusion Image Editor Styles
+  ::ng-deep {
+    .e-image-editor {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $radius-md;
+      
+      .dark & {
+        background: rgba(15, 23, 42, 0.95);
+        border-color: rgba(51, 65, 85, 0.3);
+      }
+
+      // Toolbar
+      .e-ie-toolbar {
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: $spacing-2;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.3);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-ie-toolbar-item {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: $radius-sm;
+          color: $gray-700;
+          min-width: 44px;
+          min-height: 44px;
+          transition: $transition-all;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.3);
+            border-color: rgba(51, 65, 85, 0.3);
+            color: $gray-300;
+          }
+
+          &:hover {
+            background: rgba(var(--primary-rgb), 0.1);
+            border-color: rgba(var(--primary-rgb), 0.3);
+            color: rgb(var(--primary-rgb));
+            
+            .dark & {
+              background: rgba(var(--primary-rgb), 0.2);
+            }
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+          }
+
+          @include respond-to(md) {
+            min-width: auto;
+            min-height: auto;
+          }
+        }
+      }
+
+      // Canvas Container
+      .e-ie-canvas-container {
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.98);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        // Canvas
+        .e-ie-canvas {
+          background: white;
+          
+          .dark & {
+            background: $gray-900;
+          }
+        }
+      }
+
+      // Context Menu
+      .e-contextmenu {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-md;
+        box-shadow: $shadow-lg;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.95);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-menu-item {
+          color: $gray-700;
+          padding: $spacing-2 $spacing-4;
+          border-radius: $radius-sm;
+          transition: $transition-all;
+          
+          .dark & {
+            color: $gray-300;
+          }
+
+          &:hover {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: rgb(var(--primary-rgb));
+          }
+        }
+      }
+
+      // Dialogs
+      .e-dialog {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-lg;
+        box-shadow: $shadow-xl;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.95);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-dlg-header {
+          background: rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding: $spacing-4;
+          color: $gray-900;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.3);
+            border-color: rgba(51, 65, 85, 0.3);
+            color: $gray-100;
+          }
+        }
+
+        .e-dlg-content {
+          padding: $spacing-4;
+          color: $gray-700;
+          
+          .dark & {
+            color: $gray-300;
+          }
+        }
+
+        .e-dlg-footer {
+          background: rgba(255, 255, 255, 0.1);
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          padding: $spacing-4;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.3);
+            border-color: rgba(51, 65, 85, 0.3);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@include respond-to-down(sm) {
+  .image-editor-container {
+    padding: $spacing-2;
+    
+    ::ng-deep {
+      .e-image-editor {
+        .e-ie-toolbar {
+          padding: $spacing-1;
+          
+          .e-ie-toolbar-item {
+            font-size: $text-xs;
+            padding: $spacing-1;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Gemini Theme
+body.theme-gemini {
+  .image-editor-container {
+    @include glass-gemini('weak');
+    
+    ::ng-deep {
+      .e-image-editor {
+        .e-ie-toolbar {
+          @include glass-gemini('default');
+          @include gemini-border-glow();
+        }
+      }
+    }
+  }
+}
+
