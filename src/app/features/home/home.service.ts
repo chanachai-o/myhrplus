@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ApiService, ApiResponse } from '../../core/services/api.service';
 
 export interface ConfigModel {
   code: string;
@@ -40,16 +40,19 @@ export class HomeService {
   private menuCategoriesSubject = new BehaviorSubject<MenuCategory[]>([]);
   public menuCategories$ = this.menuCategoriesSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private readonly baseUrl = `${environment.jbossUrl}${environment.apiEndpoints.core}`;
+
+  constructor(private apiService: ApiService) {}
 
   loadMenuFromAPI(): Observable<MenuCategory[]> {
-    // Use jbossUrl (same as hrplus-std-rd vertical-sidebar.service.ts)
-    const url = `${environment.jbossUrl}${environment.apiEndpoints.core}/config/menu/emv_menu`;
+    const url = `${this.baseUrl}/config/menu/emv_menu`;
 
-    return this.http.get<ConfigModel[]>(url).pipe(
-      map((configMenuList: ConfigModel[]) => {
+    return this.apiService.get<ConfigModel[]>(url).pipe(
+      map((response: ApiResponse<ConfigModel[]>) => {
+        const configMenuList = response.data || (response as unknown as ConfigModel[]);
+        const items = Array.isArray(configMenuList) ? configMenuList : [];
         // Group menu items by category
-        const categories = this.groupMenuByCategory(configMenuList);
+        const categories = this.groupMenuByCategory(items);
         this.menuCategoriesSubject.next(categories);
         return categories;
       }),

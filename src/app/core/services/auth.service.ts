@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError, timer } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, timer, Subscription } from 'rxjs';
 import { map, catchError, tap, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { StorageService } from './storage.service';
+import { ApiService, ApiResponse } from './api.service';
 import jwt_decode from 'jwt-decode';
 
 export interface User {
@@ -109,10 +110,15 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private tokenRefreshTimer: any;
+  private tokenRefreshTimer: Subscription | null = null;
+
+  private readonly baseUrl = `${environment.jbossUrl}${environment.apiEndpoints.unsecure}`;
+  private readonly authBaseUrl = `${environment.jbossUrl}${environment.apiEndpoints.auth}`;
+  private readonly empViewBaseUrl = `${environment.jbossUrl}${environment.apiEndpoints.employeeView}`;
 
   constructor(
-    private http: HttpClient,
+    private http: HttpClient, // Keep for login/forgot-password that need direct access
+    private apiService: ApiService,
     private router: Router,
     private storage: StorageService
   ) {
@@ -215,8 +221,14 @@ export class AuthService {
   }
 
   getDatabase(): Observable<DatabaseModel[]> {
-    return this.http.get<DatabaseModel[]>(
-      `${environment.jbossUrl}${environment.apiEndpoints.unsecure}/system/get-db-list`
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    return this.apiService.get<DatabaseModel[]>(
+      `${environment.apiEndpoints.unsecure}/system/get-db-list`
+    ).pipe(
+      map((response: ApiResponse<DatabaseModel[]>) => {
+        const data = response.data || (response as unknown as DatabaseModel[]);
+        return Array.isArray(data) ? data : [];
+      })
     );
   }
 
@@ -233,7 +245,7 @@ export class AuthService {
         body
       ).subscribe({
         next: (response) => {
-          console.log('Forgot password response:', response);
+          console.warn('Forgot password response:', response);
           resolve(response);
         },
         error: (error) => {
@@ -246,7 +258,8 @@ export class AuthService {
 
   logout(): void {
     // Call logout API if needed
-    this.http.post(`${environment.jbossUrl}${environment.apiEndpoints.auth}/logout`, {})
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    this.apiService.post<unknown>(`${environment.apiEndpoints.auth}/logout`, {})
       .subscribe({
         next: () => {},
         error: () => {}
@@ -267,19 +280,21 @@ export class AuthService {
       return throwError(() => new Error('No refresh token'));
     }
 
-    return this.http.post<LoginResponse>(
-      `${environment.jbossUrl}${environment.apiEndpoints.auth}/refresh`,
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    return this.apiService.post<LoginResponse>(
+      `${environment.apiEndpoints.auth}/refresh`,
       { refreshToken }
     ).pipe(
-      map(response => {
-        if (response.success && response.data) {
+      map((response: ApiResponse<LoginResponse>) => {
+        const loginResponse = response.data || (response as unknown as LoginResponse);
+        if (loginResponse.success && loginResponse.data) {
           this.setUser(
-            response.data.user,
-            response.data.token,
-            response.data.refreshToken,
-            response.data.expiresIn
+            loginResponse.data.user,
+            loginResponse.data.token,
+            loginResponse.data.refreshToken,
+            loginResponse.data.expiresIn
           );
-          return response.data.token;
+          return loginResponse.data.token;
         }
         throw new Error('Token refresh failed');
       }),
@@ -422,7 +437,7 @@ export class AuthService {
         }
       }
 
-      console.log('AuthService: User set from token', user);
+      console.warn('AuthService: User set from token', user);
     } catch (error) {
       console.error('AuthService: Error setting user from token', error);
       throw error;
@@ -615,10 +630,14 @@ export class AuthService {
    * @param employeeId - Employee ID
    * @returns Observable with employee consent and PDPA data
    */
-  getPdpa(employeeId: string): Observable<{ employeeConsent: any; pdpa: any }> {
-    return this.http.get<{ employeeConsent: any; pdpa: any }>(
-      `${environment.jbossUrl}${environment.apiEndpoints.employeeView}/pdpa/employee-consent/${employeeId}`
+  getPdpa(employeeId: string): Observable<{ employeeConsent: unknown; pdpa: unknown }> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    return this.apiService.get<{ employeeConsent: unknown; pdpa: unknown }>(
+      `${environment.apiEndpoints.employeeView}/pdpa/employee-consent/${employeeId}`
     ).pipe(
+      map((response: ApiResponse<{ employeeConsent: unknown; pdpa: unknown }>) => {
+        return response.data || (response as unknown as { employeeConsent: unknown; pdpa: unknown });
+      }),
       catchError(error => {
         console.error('Error getting PDPA consent:', error);
         return throwError(() => error);
@@ -631,20 +650,11 @@ export class AuthService {
    * @param body - Request body with model containing version and employeeId
    * @returns Promise with response
    */
-  savePdpa(body: { model: { version: number; employeeId: string } }): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http.post<any>(
-        `${environment.jbossUrl}${environment.apiEndpoints.employeeView}/pdpa/employee-consent`,
-        body
-      ).subscribe({
-        next: (response) => {
-          resolve(response);
-        },
-        error: (error) => {
-          console.error('Error saving PDPA consent:', error);
-          reject(error);
-        }
-      });
-    });
+  savePdpa(body: { model: { version: number; employeeId: string } }): Observable<ApiResponse<unknown>> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    return this.apiService.post<unknown>(
+      `${environment.apiEndpoints.employeeView}/pdpa/employee-consent`,
+      body
+    );
   }
 }

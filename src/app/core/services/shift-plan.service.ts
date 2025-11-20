@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { ApiService, ApiResponse } from './api.service';
 
 // TODO: Migrate these models from hrplus-std-rd
 // import { ShiftplanModel, MyShiftplanModel, ListExchangeShiftPlanningModel, MyListExchangeShiftPlanningModel } from '../models/shiftplan.model';
 
 // Temporary interfaces until models are migrated
 export interface ShiftplanModel {
-  model?: any;
+  model?: ShiftplanModel;
   items?: ShiftplanModel[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ListExchangeShiftPlanningModel {
@@ -22,7 +22,7 @@ export interface ListExchangeShiftPlanningModel {
   shiftType?: string;
   remark?: string;
   exchangeType?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ShiftChangeRequest {
@@ -61,7 +61,10 @@ export interface ShiftExchangeRequest {
   providedIn: 'root'
 })
 export class ShiftPlanService {
-  constructor(private http: HttpClient) {}
+  // ApiService already handles baseUrl (environment.jbossUrl), so only store the endpoint path
+  private readonly baseUrl = `/spapi/sp`;
+
+  constructor(private apiService: ApiService) {}
 
   /**
    * Get approved employee shift for date range
@@ -70,10 +73,13 @@ export class ShiftPlanService {
    * @param endDate - End date (YYYY-MM-DD)
    */
   getEmployeeShiftApproved(empId: string, startDate: string, endDate: string): Observable<ShiftplanModel> {
-    return this.http.get<ShiftplanModel>(
-      `${environment.jbossUrl}/spapi/sp/get-employee-shift-approved/${empId}/${startDate}/${endDate}`
+    return this.apiService.get<ShiftplanModel>(
+      `${this.baseUrl}/get-employee-shift-approved/${empId}/${startDate}/${endDate}`
     ).pipe(
-      map((x: any) => x.model || x)
+      map((response: ApiResponse<ShiftplanModel>) => {
+        const data = response.data || (response as unknown as ShiftplanModel);
+        return (data as { model?: ShiftplanModel }).model || data;
+      })
     );
   }
 
@@ -84,10 +90,14 @@ export class ShiftPlanService {
    * @param endDate - End date (YYYY-MM-DD)
    */
   getSubordinateShiftApproved(empId: string, startDate: string, endDate: string): Observable<ShiftplanModel[]> {
-    return this.http.get<ShiftplanModel[]>(
-      `${environment.jbossUrl}/spapi/sp/get-subordinate-shift-approved/${empId}/${startDate}/${endDate}`
+    return this.apiService.get<ShiftplanModel[]>(
+      `${this.baseUrl}/get-subordinate-shift-approved/${empId}/${startDate}/${endDate}`
     ).pipe(
-      map((x: any) => x.items || [])
+      map((response: ApiResponse<ShiftplanModel[]>) => {
+        const data = response.data || (response as unknown as ShiftplanModel[]);
+        const items = Array.isArray(data) ? data : [];
+        return (items as { items?: ShiftplanModel[] })[0]?.items || items;
+      })
     );
   }
 
@@ -97,10 +107,14 @@ export class ShiftPlanService {
    * @param endDate - End date (YYYY-MM-DD)
    */
   getListExchangeTransition(startDate: string, endDate: string): Observable<ListExchangeShiftPlanningModel[]> {
-    return this.http.get<ListExchangeShiftPlanningModel[]>(
-      `${environment.jbossUrl}/spapi/sp/get-list-exchange-transition/${startDate}/${endDate}`
+    return this.apiService.get<ListExchangeShiftPlanningModel[]>(
+      `${this.baseUrl}/get-list-exchange-transition/${startDate}/${endDate}`
     ).pipe(
-      map((x: any) => x.items || [])
+      map((response: ApiResponse<ListExchangeShiftPlanningModel[]>) => {
+        const data = response.data || (response as unknown as ListExchangeShiftPlanningModel[]);
+        const items = Array.isArray(data) ? data : [];
+        return (items as { items?: ListExchangeShiftPlanningModel[] })[0]?.items || items;
+      })
     );
   }
 
@@ -111,10 +125,13 @@ export class ShiftPlanService {
    * @param endDate - End date (YYYY-MM-DD)
    */
   getEmployeeShift(empId: string, startDate: string, endDate: string): Observable<ShiftplanModel> {
-    return this.http.get<ShiftplanModel>(
-      `${environment.jbossUrl}/spapi/sp/get-employee-shift/${empId}/${startDate}/${endDate}`
+    return this.apiService.get<ShiftplanModel>(
+      `${this.baseUrl}/get-employee-shift/${empId}/${startDate}/${endDate}`
     ).pipe(
-      map((x: any) => x.model || x)
+      map((response: ApiResponse<ShiftplanModel>) => {
+        const data = response.data || (response as unknown as ShiftplanModel);
+        return (data as { model?: ShiftplanModel }).model || data;
+      })
     );
   }
 
@@ -122,9 +139,9 @@ export class ShiftPlanService {
    * Save shift change request
    * @param body - Shift change request data
    */
-  saveShiftChange(body: ShiftChangeRequest): Observable<any> {
-    return this.http.post<any>(
-      `${environment.jbossUrl}/spapi/sp/save-shift-change`,
+  saveShiftChange(body: ShiftChangeRequest): Observable<ApiResponse<unknown>> {
+    return this.apiService.post<unknown>(
+      `${this.baseUrl}/save-shift-change`,
       body
     );
   }
@@ -133,9 +150,9 @@ export class ShiftPlanService {
    * Save shift exchange request
    * @param body - Shift exchange request data
    */
-  saveShiftExchange(body: ShiftExchangeRequest): Observable<any> {
-    return this.http.post<any>(
-      `${environment.jbossUrl}/spapi/sp/save-shift-exchange`,
+  saveShiftExchange(body: ShiftExchangeRequest): Observable<ApiResponse<unknown>> {
+    return this.apiService.post<unknown>(
+      `${this.baseUrl}/save-shift-exchange`,
       body
     );
   }

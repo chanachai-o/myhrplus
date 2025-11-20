@@ -1,24 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { ThemeService } from './core/services/theme.service';
 import { I18nService } from './core/services/i18n.service';
 import { SyncfusionThemeService } from './shared/syncfusion/syncfusion-theme.service';
+import { NotificationService } from './core/services/notification.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'HR System';
+
+  @ViewChild('notificationContainer', { read: ViewContainerRef }) notificationContainer!: ViewContainerRef;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private themeService: ThemeService,
     private i18nService: I18nService,
-    private syncfusionThemeService: SyncfusionThemeService
+    private syncfusionThemeService: SyncfusionThemeService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -49,5 +53,12 @@ export class AppComponent implements OnInit {
 
     // Don't redirect if user is already on a route
     // Let the router handle navigation based on current route
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize notification container after view is initialized
+    if (this.notificationContainer) {
+      this.notificationService.setContainer(this.notificationContainer);
+    }
   }
 }

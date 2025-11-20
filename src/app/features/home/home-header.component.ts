@@ -205,16 +205,18 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     } else {
       // Get from user settings
       this.employeeService.getSetPass()
-        .then((result) => {
-          this.selectedLanguage = result.lang === 'ENG' ? 'en' : 'th';
-          const langData = this.languages.find(lang => lang.code === this.selectedLanguage);
-          if (langData) {
-            this.selectedLanguageIcon = langData.icon;
+        .subscribe({
+          next: (result: SetCharacter) => {
+            this.selectedLanguage = result.lang === 'ENG' ? 'en' : 'th';
+            const langData = this.languages.find(lang => lang.code === this.selectedLanguage);
+            if (langData) {
+              this.selectedLanguageIcon = langData.icon;
+            }
+          },
+          error: () => {
+            this.selectedLanguage = 'th';
+            this.selectedLanguageIcon = 'th';
           }
-        })
-        .catch(() => {
-          this.selectedLanguage = 'th';
-          this.selectedLanguageIcon = 'th';
         });
     }
   }
@@ -253,22 +255,25 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
   private loadPasswordSettings(): void {
     this.employeeService.getSetPass()
-      .then((result) => {
-        this.setCharacterPass = result;
-        if (this.setCharacterPass?.role) {
-          this.validMax = this.setCharacterPass.role.passwordMax || 0;
-          this.validMin = this.setCharacterPass.role.passwordMin || 0;
-          this.validAZ = this.setCharacterPass.role.passwordStr || 0;
-          this.validaz = this.setCharacterPass.role.passwordStrsm || 0;
-          this.validNum = this.setCharacterPass.role.passwordNumber || 0;
-          this.validSpecial = this.setCharacterPass.role.passwordSpecial || 0;
+      .subscribe({
+        next: (result: SetCharacter) => {
+          this.setCharacterPass = result;
+          if (this.setCharacterPass?.role) {
+            this.validMax = this.setCharacterPass.role.passwordMax || 0;
+            this.validMin = this.setCharacterPass.role.passwordMin || 0;
+            this.validAZ = this.setCharacterPass.role.passwordStr || 0;
+            this.validaz = this.setCharacterPass.role.passwordStrsm || 0;
+            this.validNum = this.setCharacterPass.role.passwordNumber || 0;
+            this.validSpecial = this.setCharacterPass.role.passwordSpecial || 0;
+          }
+          // Set default language
+          this.checkLang = result.lang === 'ENG' ? 'ENG' : 'THA';
+        },
+        error: (reason: unknown) => {
+          const error = reason as { message?: string };
+          this.msg = error.message || 'Error loading password settings';
+          this.showAlertModal = true;
         }
-        // Set default language
-        this.checkLang = result.lang === 'ENG' ? 'ENG' : 'THA';
-      })
-      .catch((reason) => {
-        this.msg = reason.message || 'Error loading password settings';
-        this.showAlertModal = true;
       });
   }
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -205,23 +204,18 @@ export interface WorkPlan {
 })
 export class EmployeeService {
   constructor(
-    private http: HttpClient,
     private apiService: ApiService
   ) {}
 
-  getSetPass(): Promise<SetCharacter> {
-    return new Promise((resolve, reject) => {
-      const url = `${environment.baseUrl}/user/manage`;
-      this.http.get<SetCharacter>(url)
-        .subscribe({
-          next: (data) => {
-            resolve(data);
-          },
-          error: (error) => {
-            reject(error);
-          }
-        });
-    });
+  getSetPass(): Observable<SetCharacter> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    // Note: Assuming this endpoint is on /hr, not /plus
+    const url = `/user/manage`;
+    return this.apiService.get<SetCharacter>(url).pipe(
+      map((response) => {
+        return response.data || (response as unknown as SetCharacter);
+      })
+    );
   }
 
   // Get Employee Profile
@@ -253,10 +247,17 @@ export class EmployeeService {
 
   // Get Employee Bank
   getBank(empId?: string): Observable<EmpBank[]> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
     const endpoint = empId
-      ? `${environment.apiEndpoints.employeeView}/employee/bank?employeeid=${empId}`
-      : `${environment.baseUrl}/employee/bank`;
-    return this.http.get<EmpBank[]>(endpoint);
+      ? `${environment.apiEndpoints.employeeView}/employee/bank`
+      : `/employee/bank`; // Note: This might need to be on /plus, but ApiService uses jbossUrl
+    const params = empId ? { employeeid: empId } : undefined;
+    return this.apiService.get<EmpBank[]>(endpoint, params).pipe(
+      map((response) => {
+        const data = response.data || (response as unknown as EmpBank[]);
+        return Array.isArray(data) ? data : [];
+      })
+    );
   }
 
   // Get Employee Card
@@ -287,17 +288,16 @@ export class EmployeeService {
   }
 
   // Get Employee Tax
-  getTax(empId?: string): Promise<Tax> {
-    return new Promise((resolve, reject) => {
-      const endpoint = empId
-        ? `${environment.baseUrl}/employee/tax?employeeid=${empId}`
-        : `${environment.baseUrl}/employee/tax`;
-      this.http.get<Tax>(endpoint)
-        .subscribe({
-          next: (data) => resolve(data),
-          error: (error) => reject(error)
-        });
-    });
+  getTax(empId?: string): Observable<Tax> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    // Note: This might need to be on /plus, but ApiService uses jbossUrl
+    const endpoint = `/employee/tax`;
+    const params = empId ? { employeeid: empId } : undefined;
+    return this.apiService.get<Tax>(endpoint, params).pipe(
+      map((response) => {
+        return response.data || (response as unknown as Tax);
+      })
+    );
   }
 
   // Get Work Information
@@ -328,27 +328,39 @@ export class EmployeeService {
   }
 
   // Get Hadj Position
-  getHadjposition(employeeId: string, date: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const endpoint = `${environment.apiEndpoints.employeeView}/hadjposition/employee/${date}?employeeid=${employeeId}`;
-      this.http.get<any>(endpoint)
-        .subscribe({
-          next: (data) => resolve(data),
-          error: (error) => reject(error)
-        });
-    });
+  getHadjposition(employeeId: string, date: string): Observable<unknown> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    const endpoint = `${environment.apiEndpoints.employeeView}/hadjposition/employee/${date}`;
+    const params = { employeeid: employeeId };
+    return this.apiService.get<unknown>(endpoint, params).pipe(
+      map((response) => {
+        return response.data || response;
+      })
+    );
   }
 
   // Get Forget Card (for Edit Time Statistic)
-  getForgetcard(startdate?: string, enddate?: string, page?: number, size?: number): Observable<any> {
-    const endpoint = `${environment.apiEndpoints.timeAttendance}/forgetcard/start/${startdate}/end/${enddate}?page=${page || 0}&size=${size || 10}`;
-    return this.http.get<any>(endpoint);
+  getForgetcard(startdate?: string, enddate?: string, page?: number, size?: number): Observable<unknown> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    const endpoint = `${environment.apiEndpoints.timeAttendance}/forgetcard/start/${startdate}/end/${enddate}`;
+    const params = { page: (page || 0).toString(), size: (size || 10).toString() };
+    return this.apiService.get<unknown>(endpoint, params).pipe(
+      map((response) => {
+        return response.data || response;
+      })
+    );
   }
 
   // Get OT Statistic
-  getTOtMdate(startdate: string, enddate: string, page: number, size: number): Observable<any> {
-    const endpoint = `${environment.apiEndpoints.timeAttendance}/ot-statistic?startDate=${startdate}&endDate=${enddate}&page=${page}&size=${size}`;
-    return this.http.get<any>(endpoint);
+  getTOtMdate(startdate: string, enddate: string, page: number, size: number): Observable<unknown> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    const endpoint = `${environment.apiEndpoints.timeAttendance}/ot-statistic`;
+    const params = { startDate: startdate, endDate: enddate, page: page.toString(), size: size.toString() };
+    return this.apiService.get<unknown>(endpoint, params).pipe(
+      map((response) => {
+        return response.data || response;
+      })
+    );
   }
 
   // Get Warning By Period (for Time Warning)

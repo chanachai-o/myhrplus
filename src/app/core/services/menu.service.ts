@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { AuthService } from './auth.service';
+import { AuthService, User } from './auth.service';
+import { ApiService, ApiResponse } from './api.service';
 
 export interface MenuItem {
   name: string;
@@ -20,7 +21,7 @@ export interface MenuItem {
 export interface MenuConfig {
   base_url: string;
   menu: MenuItem[];
-  api: any[];
+  api: unknown[];
 }
 
 @Injectable({
@@ -30,8 +31,11 @@ export class MenuService {
   private menuConfig: MenuConfig | null = null;
   private menuCache: MenuItem[] = [];
 
+  private readonly baseUrl = `${environment.jbossUrl}${environment.apiEndpoints.unsecure}`;
+
   constructor(
-    private http: HttpClient,
+    private http: HttpClient, // Keep for static JSON file loading
+    private apiService: ApiService, // Use for API calls
     private authService: AuthService
   ) {}
 
@@ -49,8 +53,10 @@ export class MenuService {
       }),
       catchError(() => {
         // Fallback to API
-        return this.http.get<MenuConfig>(`${environment.jbossUrl}${environment.apiEndpoints.unsecure}/menu`).pipe(
-          map(config => {
+        // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+        return this.apiService.get<MenuConfig>(`${environment.apiEndpoints.unsecure}/menu`).pipe(
+          map((response: ApiResponse<MenuConfig>) => {
+            const config = response.data || (response as unknown as MenuConfig);
             this.menuConfig = config;
             this.menuCache = this.transformMenuItems(config.menu || []);
             return this.menuCache;
@@ -118,13 +124,17 @@ export class MenuService {
     return moduleMatch ? moduleMatch[1] : null;
   }
 
-  private checkModuleAccess(moduleCode: string, user: any): boolean {
+  private checkModuleAccess(moduleCode: string, user: User | null): boolean {
     // Check if user has access to this module
     // This can be based on:
     // 1. user_role from JWT token
     // 2. roles array from JWT token
     // 3. permissions array from JWT token
     // 4. Module-specific access flags
+
+    if (!user) {
+      return false;
+    }
 
     // For now, allow access if user_role is "All" or if roles include module access
     if (user.user_role === 'All') {
@@ -332,7 +342,7 @@ export class MenuService {
     return menuItems;
   }
 
-  private hasModuleAccess(moduleCode: string, user: any): boolean {
+  private hasModuleAccess(moduleCode: string, user: User | null): boolean {
     if (!user) return false;
 
     // EMPVIEW is accessible to all authenticated users

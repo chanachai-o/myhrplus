@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { ApiService, ApiResponse } from './api.service';
 
 // TODO: Migrate these models from hrplus-std-rd
 // import { CompanyHistoryModel, MyCompanyHistory } from '../models/companyhistory.model';
@@ -43,7 +43,7 @@ export interface PublicHoliday {
 }
 
 export interface Holiday {
-  listOfDayoff?: any[];
+  listOfDayoff?: unknown[];
   listOfPublicHoliday?: PublicHoliday[];
 }
 
@@ -51,7 +51,7 @@ export interface Policy {
   policyId?: string;
   tdesc?: string;
   edesc?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -62,16 +62,25 @@ export interface Policy {
   providedIn: 'root'
 })
 export class CompanyService {
-  constructor(private http: HttpClient) {}
+  // ApiService already handles baseUrl (environment.jbossUrl), so only store the endpoint paths
+  private readonly baseUrl = environment.apiEndpoints.core;
+  private readonly empViewBaseUrl = environment.apiEndpoints.employeeView;
+  private readonly taBaseUrl = environment.apiEndpoints.timeAttendance;
+
+  constructor(private apiService: ApiService) {}
 
   /**
    * Get company history
    */
   getCompanyHistory(): Observable<CompanyHistoryModel[]> {
-    return this.http.get<CompanyHistoryModel[]>(
-      `${environment.jbossUrl}${environment.apiEndpoints.core}/company/historys`
+    return this.apiService.get<CompanyHistoryModel[]>(
+      `${this.baseUrl}/company/historys`
     ).pipe(
-      map((x: any) => x.map((test: any) => this.convertCompanyHistory(test)))
+      map((response: ApiResponse<CompanyHistoryModel[]>) => {
+        const data = response.data || (response as unknown as CompanyHistoryModel[]);
+        const items = Array.isArray(data) ? data : [];
+        return items.map((item: CompanyHistoryModel) => this.convertCompanyHistory(item));
+      })
     );
   }
 
@@ -79,10 +88,13 @@ export class CompanyService {
    * Get company vision
    */
   getVission(): Observable<VissionModel> {
-    return this.http.get<VissionModel>(
-      `${environment.jbossUrl}${environment.apiEndpoints.core}/company/vission`
+    return this.apiService.get<VissionModel>(
+      `${this.baseUrl}/company/vission`
     ).pipe(
-      map((test) => this.convertVission(test))
+      map((response: ApiResponse<VissionModel>) => {
+        const data = response.data || (response as unknown as VissionModel);
+        return this.convertVission(data);
+      })
     );
   }
 
@@ -90,10 +102,13 @@ export class CompanyService {
    * Get company mission
    */
   getMission(): Observable<MissionModel> {
-    return this.http.get<MissionModel>(
-      `${environment.jbossUrl}${environment.apiEndpoints.core}/company/mission`
+    return this.apiService.get<MissionModel>(
+      `${this.baseUrl}/company/mission`
     ).pipe(
-      map((test) => this.convertMission(test))
+      map((response: ApiResponse<MissionModel>) => {
+        const data = response.data || (response as unknown as MissionModel);
+        return this.convertMission(data);
+      })
     );
   }
 
@@ -101,10 +116,14 @@ export class CompanyService {
    * Get calendar public holidays
    */
   getCalendarPublicHoliday(): Observable<PublicHoliday[]> {
-    return this.http.get<PublicHoliday[]>(
-      `${environment.jbossUrl}${environment.apiEndpoints.employeeView}/employee/public-holiday`
+    return this.apiService.get<PublicHoliday[]>(
+      `${this.empViewBaseUrl}/employee/public-holiday`
     ).pipe(
-      map((x: any) => x.map((test: any) => this.convertPublicHoliday(test)))
+      map((response: ApiResponse<PublicHoliday[]>) => {
+        const data = response.data || (response as unknown as PublicHoliday[]);
+        const items = Array.isArray(data) ? data : [];
+        return items.map((item: PublicHoliday) => this.convertPublicHoliday(item));
+      })
     );
   }
 
@@ -112,10 +131,13 @@ export class CompanyService {
    * Get calendar holidays (dayoff + public holidays) for date range
    */
   getCalendarHoliday(start: string, end: string): Observable<Holiday> {
-    return this.http.get<Holiday>(
-      `${environment.jbossUrl}${environment.apiEndpoints.timeAttendance}/working-time/holiday/start/${start}/end/${end}`
+    return this.apiService.get<Holiday>(
+      `${this.taBaseUrl}/working-time/holiday/start/${start}/end/${end}`
     ).pipe(
-      map((test) => this.convertHoliday(test))
+      map((response: ApiResponse<Holiday>) => {
+        const data = response.data || (response as unknown as Holiday);
+        return this.convertHoliday(data);
+      })
     );
   }
 
@@ -123,10 +145,14 @@ export class CompanyService {
    * Get company policies
    */
   getPolicy(): Observable<Policy[]> {
-    return this.http.get<Policy[]>(
-      `${environment.jbossUrl}${environment.apiEndpoints.core}/company/policy`
+    return this.apiService.get<Policy[]>(
+      `${this.baseUrl}/company/policy`
     ).pipe(
-      map((x: any) => x.map((result: any) => this.convertPolicy(result)))
+      map((response: ApiResponse<Policy[]>) => {
+        const data = response.data || (response as unknown as Policy[]);
+        const items = Array.isArray(data) ? data : [];
+        return items.map((item: Policy) => this.convertPolicy(item));
+      })
     );
   }
 
@@ -134,8 +160,16 @@ export class CompanyService {
    * Get employee public holidays
    */
   getEmployeePublicHoliday(): Observable<PublicHoliday[]> {
-    return this.http.get<PublicHoliday[]>(
-      `${environment.baseUrl}/employee/public-holiday`
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    // Note: This uses baseUrl (/plus) instead of jbossUrl (/hr), so we need to handle it differently
+    // For now, use empViewBaseUrl which uses jbossUrl
+    return this.apiService.get<PublicHoliday[]>(
+      `${this.empViewBaseUrl}/employee/public-holiday`
+    ).pipe(
+      map((response: ApiResponse<PublicHoliday[]>) => {
+        const data = response.data || (response as unknown as PublicHoliday[]);
+        return Array.isArray(data) ? data : [];
+      })
     );
   }
 
@@ -143,13 +177,18 @@ export class CompanyService {
    * Get working time holidays for date range
    */
   getWorkingTimeHoliday(start: string, end: string): Observable<Holiday> {
-    return this.http.get<Holiday>(
-      `${environment.jbossUrl}${environment.apiEndpoints.timeAttendance}/working-time/holiday/start/${start}/end/${end}`
+    return this.apiService.get<Holiday>(
+      `${this.taBaseUrl}/working-time/holiday/start/${start}/end/${end}`
+    ).pipe(
+      map((response: ApiResponse<Holiday>) => {
+        const data = response.data || (response as unknown as Holiday);
+        return data;
+      })
     );
   }
 
   // Private conversion methods
-  private convertCompanyHistory(dataModel: any): CompanyHistoryModel {
+  private convertCompanyHistory(dataModel: CompanyHistoryModel | unknown): CompanyHistoryModel {
     return {
       mcomId: dataModel.mcomId,
       topic: dataModel.topic,
@@ -159,14 +198,14 @@ export class CompanyService {
     };
   }
 
-  private convertHoliday(dataModel: any): Holiday {
+  private convertHoliday(dataModel: Holiday | unknown): Holiday {
     return {
       listOfDayoff: dataModel.listOfDayoff,
       listOfPublicHoliday: dataModel.listOfPublicHoliday
     };
   }
 
-  private convertPublicHoliday(dataModel: any): PublicHoliday {
+  private convertPublicHoliday(dataModel: PublicHoliday | unknown): PublicHoliday {
     return {
       holidayId: dataModel.holidayId,
       tdesc: dataModel.tdesc,
@@ -175,7 +214,7 @@ export class CompanyService {
     };
   }
 
-  private convertVission(dataModel: any): VissionModel {
+  private convertVission(dataModel: VissionModel | unknown): VissionModel {
     return {
       vissionId: dataModel.vissionId,
       tdesc: dataModel.tdesc,
@@ -184,7 +223,7 @@ export class CompanyService {
     };
   }
 
-  private convertMission(dataModel: any): MissionModel {
+  private convertMission(dataModel: MissionModel | unknown): MissionModel {
     return {
       missionId: dataModel.missionId,
       tdesc: dataModel.tdesc,
@@ -193,7 +232,7 @@ export class CompanyService {
     };
   }
 
-  private convertPolicy(dataModel: any): Policy {
+  private convertPolicy(dataModel: Policy | unknown): Policy {
     return {
       ...dataModel,
       policyId: dataModel.policyId,

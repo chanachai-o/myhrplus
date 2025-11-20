@@ -70,7 +70,7 @@ export class ZeemeService {
       setTimeout(() => {
         // Check if still on same page (app didn't open)
         if (document.hasFocus()) {
-          console.log('Zeeme app not available, staying on web');
+          console.warn('Zeeme app not available, staying on web');
         }
       }, 2000);
     } catch (error) {

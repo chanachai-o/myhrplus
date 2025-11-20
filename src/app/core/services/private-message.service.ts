@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { MessageModel } from '../models/message.model';
 import { PageModel } from '../models/page.model';
+import { ApiService, ApiResponse } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrivateMessageService {
-  private apiUrl = environment.baseUrl || environment.jbossUrl;
+  private readonly apiUrl = environment.baseUrl || environment.jbossUrl;
+  private readonly empViewBaseUrl = `${environment.jbossUrl}${environment.apiEndpoints.employeeView}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
   /**
    * Get private messages inbox with pagination
    */
   privateMessageBySize(size: number = 10, page: number = 0): Observable<PageModel<MessageModel>> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    const params = {
+      page: page.toString(),
+      size: size.toString()
+    };
     
-    return this.http.get<PageModel<MessageModel>>(
+    return this.apiService.get<PageModel<MessageModel>>(
       `${this.apiUrl}/private-message/inbox`,
-      { params }
+      params
+    ).pipe(
+      map((response: ApiResponse<PageModel<MessageModel>>) => {
+        return response.data || (response as unknown as PageModel<MessageModel>);
+      })
     );
   }
 
@@ -31,8 +38,13 @@ export class PrivateMessageService {
    * Get all private messages inbox
    */
   privateMessageInbox(): Observable<MessageModel[]> {
-    return this.http.get<MessageModel[]>(
+    return this.apiService.get<MessageModel[]>(
       `${this.apiUrl}/private-message/inbox/lists`
+    ).pipe(
+      map((response: ApiResponse<MessageModel[]>) => {
+        const data = response.data || (response as unknown as MessageModel[]);
+        return Array.isArray(data) ? data : [];
+      })
     );
   }
 
@@ -40,27 +52,36 @@ export class PrivateMessageService {
    * Get private messages sendbox
    */
   privateMessageSendbox(): Observable<MessageModel[]> {
-    return this.http.get<MessageModel[]>(
+    return this.apiService.get<MessageModel[]>(
       `${this.apiUrl}/private-message/sendbox/lists`
+    ).pipe(
+      map((response: ApiResponse<MessageModel[]>) => {
+        const data = response.data || (response as unknown as MessageModel[]);
+        return Array.isArray(data) ? data : [];
+      })
     );
   }
 
   /**
    * Send private message
    */
-  privateMessageSend(body: any): Observable<MessageModel> {
-    return this.http.post<MessageModel>(
-      `${environment.jbossUrl}/emvapi/private-message/send`,
+  privateMessageSend(body: MessageModel | unknown): Observable<MessageModel> {
+    return this.apiService.post<MessageModel>(
+      `${this.empViewBaseUrl}/private-message/send`,
       body
+    ).pipe(
+      map((response: ApiResponse<MessageModel>) => {
+        return response.data || (response as unknown as MessageModel);
+      })
     );
   }
 
   /**
    * Update message flag (read/unread)
    */
-  flagUpdate(body: any): Observable<any> {
-    return this.http.post<any>(
-      `${environment.jbossUrl}/emvapi/private-message/flag-update`,
+  flagUpdate(body: unknown): Observable<ApiResponse<unknown>> {
+    return this.apiService.post<unknown>(
+      `${this.empViewBaseUrl}/private-message/flag-update`,
       body
     );
   }
@@ -68,17 +89,12 @@ export class PrivateMessageService {
   /**
    * Delete private message
    */
-  privateMessageDelete(body: any): Observable<any> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      body: body
-    };
-    
-    return this.http.delete<any>(
-      `${environment.jbossUrl}/emvapi/private-message`,
-      options
+  privateMessageDelete(body: unknown): Observable<ApiResponse<unknown>> {
+    // Note: ApiService.delete doesn't support body, so we use post for delete with body
+    // This is a workaround - ideally the API should accept DELETE with body or use query params
+    return this.apiService.post<unknown>(
+      `${this.empViewBaseUrl}/private-message/delete`,
+      body
     );
   }
 
@@ -86,8 +102,13 @@ export class PrivateMessageService {
    * Get count of new/unread private messages
    */
   countNewPrivateMessage(): Observable<number> {
-    return this.http.get<number>(
+    return this.apiService.get<number>(
       `${this.apiUrl}/private-message/inbox/counter-new`
+    ).pipe(
+      map((response: ApiResponse<number>) => {
+        const data = response.data ?? (response as unknown as number);
+        return typeof data === 'number' ? data : 0;
+      })
     );
   }
 

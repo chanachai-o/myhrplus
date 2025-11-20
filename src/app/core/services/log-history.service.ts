@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ApiService, ApiResponse } from './api.service';
 
 export interface ActionLogRequest {
   currentPage: string;
@@ -20,16 +20,19 @@ export interface ActionLogRequest {
   providedIn: 'root'
 })
 export class LogHistoryService {
-  constructor(private http: HttpClient) {}
+  private readonly baseUrl = `${environment.jbossUrl}${environment.apiEndpoints.unsecure}`;
+
+  constructor(private apiService: ApiService) {}
 
   /**
    * Post action log to server
    * @param body - Action log data
    * @returns Observable of the response
    */
-  postActionLog(body: ActionLogRequest): Observable<any> {
-    return this.http.post(
-      `${environment.jbossUrl}${environment.apiEndpoints.unsecure}/action-log`,
+  postActionLog(body: ActionLogRequest): Observable<ApiResponse<unknown>> {
+    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    return this.apiService.post<unknown>(
+      `${environment.apiEndpoints.unsecure}/action-log`,
       body
     );
   }

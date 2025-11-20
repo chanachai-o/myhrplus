@@ -91,13 +91,13 @@ export class CalendarService {
   }
 
   // Event Times Changed (for drag and drop)
-  eventTimesChanged(event: any): void {
-    console.log('Event times changed:', event);
+  eventTimesChanged(event: unknown): void {
+    console.warn('Event times changed:', event);
   }
 
   // Event Dropped
   eventDropped(event: CalendarEvent<CalendarEventMeta>): void {
-    console.log('Event dropped:', event);
+    console.warn('Event dropped:', event);
   }
 
   // Export Events
