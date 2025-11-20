@@ -1,0 +1,36 @@
+<div class="spreadsheet-container" [ngClass]="customClass">
+  <ejs-spreadsheet
+    #spreadsheet
+    [sheets]="sheets"
+    [allowOpen]="allowOpen"
+    [allowSave]="allowSave"
+    [allowEditing]="allowEditing"
+    [allowInsert]="allowInsert"
+    [allowDelete]="allowDelete"
+    [allowUndoRedo]="allowUndoRedo"
+    [allowFindAndReplace]="allowFindAndReplace"
+    [allowSorting]="allowSorting"
+    [allowFiltering]="allowFiltering"
+    [allowResizing]="allowResizing"
+    [allowHyperlink]="allowHyperlink"
+    [allowChart]="allowChart"
+    [allowImage]="allowImage"
+    [allowConditionalFormat]="allowConditionalFormat"
+    [allowDataValidation]="allowDataValidation"
+    [showSheetTabs]="showSheetTabs"
+    [showRibbon]="showRibbon"
+    [showFormulaBar]="showFormulaBar"
+    [height]="height"
+    [width]="width"
+    (created)="onCreated($event)"
+    (cellEdit)="onCellEdit($event)"
+    (cellSave)="onCellSave($event)"
+    (beforeOpen)="onBeforeOpen($event)"
+    (openComplete)="onOpenComplete($event)"
+    (beforeSave)="onBeforeSave($event)"
+    (saveComplete)="onSaveComplete($event)"
+    (actionBegin)="onActionBegin($event)"
+    (actionComplete)="onActionComplete($event)">
+  </ejs-spreadsheet>
+</div>
+

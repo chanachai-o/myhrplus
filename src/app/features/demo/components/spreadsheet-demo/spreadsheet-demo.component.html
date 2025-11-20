@@ -1,0 +1,191 @@
+<div class="spreadsheet-demo-container p-6 space-y-6">
+  <app-glass-card>
+    <div class="space-y-6">
+      <!-- Header -->
+      <div>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          Spreadsheet Component Demo
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400">
+          A comprehensive spreadsheet component with Excel-like functionality including formulas, formatting, charts, and more.
+        </p>
+      </div>
+
+      <!-- Basic Usage -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Basic Usage
+        </h2>
+        <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+import {{ '{' }} SpreadsheetComponent {{ '}' }} from '../../shared/components/spreadsheet/spreadsheet.component';
+
+&#64;ViewChild('spreadsheet') spreadsheet!: SpreadsheetComponent;
+
+sheets = [
+  {{ '{' }}
+    name: 'Sheet1',
+    ranges: [{{ '{' }} dataSource: dataArray {{ '}' }}]
+  {{ '}' }}
+];
+
+// HTML
+&lt;app-spreadsheet
+  #spreadsheet
+  [sheets]="sheets"
+  [height]="'600px'"
+  [width]="'100%'"&gt;
+&lt;/app-spreadsheet&gt;</code></pre>
+      </div>
+
+      <!-- Actions -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Actions
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button
+            type="button"
+            class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+            (click)="openFile($event)">
+            <input type="file" #fileInput (change)="openFile($event)" class="hidden" accept=".xlsx,.xls,.csv">
+            <span>Open File</span>
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            (click)="saveAsExcel()">
+            Save as Excel
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            (click)="saveAsCsv()">
+            Save as CSV
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+            (click)="saveAsPdf()">
+            Save as PDF
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="insertRow()">
+            Insert Row
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="insertColumn()">
+            Insert Column
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="deleteRow()">
+            Delete Row
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="deleteColumn()">
+            Delete Column
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="undo()">
+            Undo
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="redo()">
+            Redo
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="cut()">
+            Cut
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="copy()">
+            Copy
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="paste()">
+            Paste
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="goToCell()">
+            Go to A1
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            (click)="addSheet()">
+            Add Sheet
+          </button>
+        </div>
+      </div>
+
+      <!-- Spreadsheet -->
+      <div class="mb-8">
+        <app-spreadsheet
+          #spreadsheet
+          [sheets]="sheets"
+          [allowOpen]="true"
+          [allowSave]="true"
+          [allowEditing]="true"
+          [allowInsert]="true"
+          [allowDelete]="true"
+          [allowUndoRedo]="true"
+          [allowFindAndReplace]="true"
+          [allowSorting]="true"
+          [allowFiltering]="true"
+          [allowResizing]="true"
+          [allowHyperlink]="true"
+          [allowChart]="true"
+          [allowImage]="true"
+          [allowConditionalFormat]="true"
+          [allowDataValidation]="true"
+          [showSheetTabs]="true"
+          [showRibbon]="true"
+          [showFormulaBar]="true"
+          [height]="'600px'"
+          [width]="'100%'">
+        </app-spreadsheet>
+      </div>
+
+      <!-- Features -->
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          Features
+        </h2>
+        <ul class="list-disc list-inside space-y-2 text-slate-600 dark:text-slate-400">
+          <li>Excel-like editing and formatting</li>
+          <li>Formula support (SUM, AVERAGE, COUNT, etc.)</li>
+          <li>Charts and graphs</li>
+          <li>Conditional formatting</li>
+          <li>Data validation</li>
+          <li>Cell merging and freezing</li>
+          <li>Sorting and filtering</li>
+          <li>Import/Export (Excel, CSV, PDF)</li>
+          <li>Undo/Redo functionality</li>
+          <li>Multiple sheets support</li>
+          <li>Hyperlinks and images</li>
+          <li>Find and replace</li>
+        </ul>
+      </div>
+    </div>
+  </app-glass-card>
+</div>
+

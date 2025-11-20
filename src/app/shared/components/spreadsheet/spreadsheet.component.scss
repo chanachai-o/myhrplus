@@ -1,0 +1,58 @@
+.spreadsheet-container {
+  width: 100%;
+  height: 100%;
+
+  ::ng-deep {
+    .e-spreadsheet {
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .e-spreadsheet-ribbon {
+      background: rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .e-spreadsheet-tab {
+      background: rgba(255, 255, 255, 0.05);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .e-spreadsheet-formula-bar {
+      background: rgba(255, 255, 255, 0.05);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .e-spreadsheet-statusbar {
+      background: rgba(255, 255, 255, 0.05);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+    }
+  }
+}
+
+// Dark mode support
+:host-context(.dark) {
+  .spreadsheet-container {
+    ::ng-deep {
+      .e-spreadsheet {
+        border-color: rgba(148, 163, 184, 0.3);
+      }
+
+      .e-spreadsheet-ribbon,
+      .e-spreadsheet-tab,
+      .e-spreadsheet-formula-bar,
+      .e-spreadsheet-statusbar {
+        background: rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+

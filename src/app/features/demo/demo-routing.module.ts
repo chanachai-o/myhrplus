@@ -45,6 +45,7 @@ import { DocumentEditorDemoComponent } from './components/document-editor-demo/d
 import { SpeechToTextDemoComponent } from './components/speech-to-text-demo/speech-to-text-demo.component';
 import { ImageEditorDemoComponent } from './components/image-editor-demo/image-editor-demo.component';
 import { TreeGridDemoComponent } from './components/tree-grid-demo/tree-grid-demo.component';
+import { SpreadsheetDemoComponent } from './components/spreadsheet-demo/spreadsheet-demo.component';
 
 const routes: Routes = [
   {
@@ -226,6 +227,10 @@ const routes: Routes = [
       {
         path: 'tree-grid',
         component: TreeGridDemoComponent
+      },
+      {
+        path: 'spreadsheet',
+        component: SpreadsheetDemoComponent
       }
     ]
   }
