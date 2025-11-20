@@ -1,0 +1,41 @@
+<div class="tree-grid-container" [ngClass]="customClass">
+  <ejs-treegrid
+    #treegrid
+    [dataSource]="dataSource"
+    [columns]="columns"
+    [childMapping]="childMapping"
+    [hasChildMapping]="hasChildMapping"
+    [idMapping]="idMapping"
+    [parentIdMapping]="parentIdMapping"
+    [allowPaging]="allowPaging"
+    [allowSorting]="allowSorting"
+    [allowFiltering]="allowFiltering"
+    [allowSelection]="allowSelection"
+    [allowResizing]="allowResizing"
+    [allowReordering]="allowReordering"
+    [allowExcelExport]="allowExcelExport"
+    [allowPdfExport]="allowPdfExport"
+    [showColumnChooser]="showColumnChooser"
+    [enableVirtualization]="enableVirtualization"
+    [pageSettings]="pageSettings"
+    [selectionSettings]="selectionSettings"
+    [editSettings]="editSettings"
+    [toolbar]="toolbar"
+    [height]="height"
+    [width]="width"
+    (created)="onCreated($event)"
+    (dataBound)="onDataBound($event)"
+    (rowSelected)="onRowSelected($event)"
+    (rowDeselected)="onRowDeselected($event)"
+    (cellSelected)="onCellSelected($event)"
+    (cellDeselected)="onCellDeselected($event)"
+    (recordClick)="onRecordClick($event)"
+    (recordDoubleClick)="onRecordDoubleClick($event)"
+    (rowDragStart)="onRowDragStart($event)"
+    (rowDrop)="onRowDrop($event)"
+    (actionBegin)="onActionBegin($event)"
+    (actionComplete)="onActionComplete($event)"
+    (dataStateChange)="onDataStateChange($event)">
+  </ejs-treegrid>
+</div>
+

@@ -1,0 +1,290 @@
+/* ============================================
+   Tree Grid Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.tree-grid-container {
+  width: 100%;
+  @include glass-morphism('weak', 'light');
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+  overflow: hidden;
+  
+  .dark & {
+    @include glass-morphism('weak', 'dark');
+  }
+
+  // Syncfusion Tree Grid Styles
+  ::ng-deep {
+    .e-treegrid {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $radius-md;
+      
+      .dark & {
+        background: rgba(15, 23, 42, 0.95);
+        border-color: rgba(51, 65, 85, 0.3);
+      }
+
+      // Header
+      .e-gridheader {
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.3);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-headercelldiv {
+          color: $gray-700;
+          font-weight: 600;
+          
+          .dark & {
+            color: $gray-300;
+          }
+        }
+      }
+
+      // Content
+      .e-gridcontent {
+        background: rgba(255, 255, 255, 0.98);
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.98);
+        }
+
+        // Rows
+        .e-row {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          transition: $transition-all;
+          
+          .dark & {
+            border-color: rgba(51, 65, 85, 0.3);
+          }
+
+          &:hover {
+            background: rgba(var(--primary-rgb), 0.05);
+            
+            .dark & {
+              background: rgba(var(--primary-rgb), 0.1);
+            }
+          }
+
+          &.e-selected {
+            background: rgba(var(--primary-rgb), 0.1);
+            
+            .dark & {
+              background: rgba(var(--primary-rgb), 0.2);
+            }
+          }
+
+          // Tree cell
+          .e-treecell {
+            color: $gray-700;
+            
+            .dark & {
+              color: $gray-300;
+            }
+
+            // Expand/Collapse icon
+            .e-icons {
+              color: rgb(var(--primary-rgb));
+              transition: $transition-all;
+
+              &:hover {
+                color: rgb(var(--primary-rgb));
+                opacity: 0.8;
+              }
+            }
+          }
+
+          // Cells
+          .e-rowcell {
+            color: $gray-700;
+            
+            .dark & {
+              color: $gray-300;
+            }
+          }
+        }
+      }
+
+      // Toolbar
+      .e-toolbar {
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: $spacing-2;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.3);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-toolbar-item {
+          .e-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: $radius-sm;
+            color: $gray-700;
+            min-width: 44px;
+            min-height: 44px;
+            transition: $transition-all;
+            
+            .dark & {
+              background: rgba(15, 23, 42, 0.3);
+              border-color: rgba(51, 65, 85, 0.3);
+              color: $gray-300;
+            }
+
+            &:hover {
+              background: rgba(var(--primary-rgb), 0.1);
+              border-color: rgba(var(--primary-rgb), 0.3);
+              color: rgb(var(--primary-rgb));
+              
+              .dark & {
+                background: rgba(var(--primary-rgb), 0.2);
+              }
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+            }
+          }
+        }
+      }
+
+      // Pager
+      .e-pager {
+        background: rgba(255, 255, 255, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: $spacing-2;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.3);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-pagercontainer {
+          .e-pager {
+            color: $gray-700;
+            
+            .dark & {
+              color: $gray-300;
+            }
+          }
+
+          .e-numericitem {
+            color: $gray-700;
+            border-radius: $radius-sm;
+            transition: $transition-all;
+            
+            .dark & {
+              color: $gray-300;
+            }
+
+            &:hover {
+              background: rgba(var(--primary-rgb), 0.1);
+              color: rgb(var(--primary-rgb));
+            }
+
+            &.e-currentitem {
+              background: rgba(var(--primary-rgb), 0.2);
+              color: rgb(var(--primary-rgb));
+            }
+          }
+        }
+      }
+
+      // Filter dialog
+      .e-filter-popup {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-lg;
+        box-shadow: $shadow-xl;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.95);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+      }
+
+      // Context menu
+      .e-contextmenu {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-md;
+        box-shadow: $shadow-lg;
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.95);
+          border-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-menu-item {
+          color: $gray-700;
+          padding: $spacing-2 $spacing-4;
+          border-radius: $radius-sm;
+          transition: $transition-all;
+          
+          .dark & {
+            color: $gray-300;
+          }
+
+          &:hover {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: rgb(var(--primary-rgb));
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@include respond-to-down(sm) {
+  .tree-grid-container {
+    padding: $spacing-2;
+    
+    ::ng-deep {
+      .e-treegrid {
+        .e-toolbar {
+          padding: $spacing-1;
+          
+          .e-toolbar-item {
+            .e-btn {
+              font-size: $text-xs;
+              padding: $spacing-1;
+              min-width: auto;
+              min-height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Gemini Theme
+body.theme-gemini {
+  .tree-grid-container {
+    @include glass-gemini('weak');
+    
+    ::ng-deep {
+      .e-treegrid {
+        .e-toolbar {
+          @include glass-gemini('default');
+          @include gemini-border-glow();
+        }
+      }
+    }
+  }
+}
+

@@ -44,6 +44,7 @@ import { QueryBuilderDemoComponent } from './components/query-builder-demo/query
 import { DocumentEditorDemoComponent } from './components/document-editor-demo/document-editor-demo.component';
 import { SpeechToTextDemoComponent } from './components/speech-to-text-demo/speech-to-text-demo.component';
 import { ImageEditorDemoComponent } from './components/image-editor-demo/image-editor-demo.component';
+import { TreeGridDemoComponent } from './components/tree-grid-demo/tree-grid-demo.component';
 
 const routes: Routes = [
   {
@@ -221,6 +222,10 @@ const routes: Routes = [
       {
         path: 'image-editor',
         component: ImageEditorDemoComponent
+      },
+      {
+        path: 'tree-grid',
+        component: TreeGridDemoComponent
       }
     ]
   }
