@@ -1,0 +1,186 @@
+<div class="gantt-demo-container">
+  <app-glass-card>
+    <div class="demo-header">
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+        Syncfusion Gantt Chart Component
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        A powerful project management component for displaying and managing tasks in a timeline view with dependencies, resources, and progress tracking.
+      </p>
+    </div>
+
+    <div class="demo-content">
+      <!-- Basic Gantt Chart -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Project Timeline
+        </h2>
+        <div class="gantt-wrapper">
+          <app-gantt
+            #gantt
+            [dataSource]="ganttData"
+            [taskFields]="taskFields"
+            [columns]="columns"
+            [allowSelection]="allowSelection"
+            [allowSorting]="allowSorting"
+            [allowFiltering]="allowFiltering"
+            [allowResizing]="allowResizing"
+            [allowReordering]="allowReordering"
+            [allowEditing]="allowEditing"
+            [enableToolbar]="enableToolbar"
+            [allowExcelExport]="allowExcelExport"
+            [allowPdfExport]="allowPdfExport"
+            [enableCriticalPath]="enableCriticalPath"
+            [height]="'600px'"
+            [width]="'100%'"
+            (actionBegin)="onActionBegin($event)"
+            (actionComplete)="onActionComplete($event)"
+            (rowSelected)="onRowSelected($event)"
+            (dataBound)="onDataBound($event)">
+          </app-gantt>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Controls
+        </h2>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Export
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="exportToExcel()"
+                class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                Export Excel
+              </button>
+              <button
+                (click)="exportToPdf()"
+                class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
+                Export PDF
+              </button>
+              <button
+                (click)="exportToCsv()"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                Export CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Navigation
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="expandAll()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Expand All
+              </button>
+              <button
+                (click)="collapseAll()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Collapse All
+              </button>
+              <button
+                (click)="clearSelection()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Clear Selection
+              </button>
+              <button
+                (click)="getSelectedRows()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Get Selected
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Settings
+            </label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="allowSelection"
+                  (change)="allowSelection = !allowSelection"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Allow Selection</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="allowSorting"
+                  (change)="allowSorting = !allowSorting"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Allow Sorting</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="allowFiltering"
+                  (change)="allowFiltering = !allowFiltering"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Allow Filtering</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="allowEditing"
+                  (change)="allowEditing = !allowEditing"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Allow Editing</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="enableToolbar"
+                  (change)="enableToolbar = !enableToolbar"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Enable Toolbar</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="enableCriticalPath"
+                  (change)="enableCriticalPath = !enableCriticalPath"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Enable Critical Path</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Code Example -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Usage Example
+        </h2>
+        <div class="code-example">
+          <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-gantt
+  [dataSource]="ganttData"
+  [taskFields]="taskFields"
+  [columns]="columns"
+  [allowSelection]="true"
+  [allowSorting]="true"
+  [allowFiltering]="true"
+  [allowEditing]="true"
+  [enableToolbar]="true"
+  [allowExcelExport]="true"
+  [allowPdfExport]="true"
+  [height]="'600px'"
+  [width]="'100%'"
+  (actionBegin)="onActionBegin($event)"
+  (rowSelected)="onRowSelected($event)"&gt;
+&lt;/app-gantt&gt;</code></pre>
+        </div>
+      </section>
+    </div>
+  </app-glass-card>
+</div>
+

@@ -50,6 +50,7 @@ import { PdfViewerDemoComponent } from './components/pdf-viewer-demo/pdf-viewer-
 import { DiagramsDemoComponent } from './components/diagrams-demo/diagrams-demo.component';
 import { SignatureDemoComponent } from './components/signature-demo/signature-demo.component';
 import { CarouselDemoComponent } from './components/carousel-demo/carousel-demo.component';
+import { GanttDemoComponent } from './components/gantt-demo/gantt-demo.component';
 
 const routes: Routes = [
   {
@@ -251,6 +252,10 @@ const routes: Routes = [
       {
         path: 'carousel',
         component: CarouselDemoComponent
+      },
+      {
+        path: 'gantt',
+        component: GanttDemoComponent
       }
     ]
   }

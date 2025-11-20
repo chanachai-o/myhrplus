@@ -1,0 +1,38 @@
+<div class="gantt-container" [ngClass]="customClass" [style.height]="height" [style.width]="width">
+  <ejs-gantt
+    #gantt
+    [dataSource]="dataSource"
+    [taskFields]="taskFields"
+    [columns]="columns"
+    [allowSelection]="allowSelection"
+    [allowSorting]="allowSorting"
+    [allowFiltering]="allowFiltering"
+    [allowResizing]="allowResizing"
+    [allowReordering]="allowReordering"
+    [editSettings]="{ allowEditing: allowEditing, allowTaskbarDragDrop: allowTaskbarDragDrop, allowTaskbarResize: allowTaskbarResize }"
+    [toolbar]="enableToolbar ? toolbar : []"
+    [allowExcelExport]="allowExcelExport"
+    [allowPdfExport]="allowPdfExport"
+    [enableCriticalPath]="enableCriticalPath"
+    [timelineSettings]="timelineSettings"
+    [labelSettings]="labelSettings"
+    [splitterSettings]="splitterSettings"
+    [projectStartDate]="projectStartDate"
+    [projectEndDate]="projectEndDate"
+    [workWeek]="workWeek"
+    [holidays]="holidays"
+    [eventMarkers]="eventMarkers"
+    [enableRtl]="enableRtl"
+    [locale]="locale"
+    [height]="height"
+    (actionBegin)="onActionBegin($event)"
+    (actionComplete)="onActionComplete($event)"
+    (cellEdit)="onCellEdit($event)"
+    (taskbarEdited)="onTaskbarEdited($event)"
+    (rowSelected)="onRowSelected($event)"
+    (rowDeselected)="onRowDeselected($event)"
+    (dataBound)="onDataBound($event)"
+    (created)="onCreated($event)">
+  </ejs-gantt>
+</div>
+

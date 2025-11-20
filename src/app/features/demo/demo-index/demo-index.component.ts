@@ -74,6 +74,7 @@ export class DemoIndexComponent {
     { name: 'Diagrams', route: 'diagrams', description: 'Diagram component for flowcharts, organizational charts, and network diagrams (Syncfusion)', category: 'Data Display', icon: '📊' },
     { name: 'Signature', route: 'signature', description: 'Digital signature pad component for capturing signatures (Syncfusion)', category: 'Form', icon: '✍️' },
     { name: 'Carousel', route: 'carousel', description: 'Carousel component for displaying slides with navigation and autoplay (Syncfusion)', category: 'Data Display', icon: '🎠' },
+    { name: 'Gantt Chart', route: 'gantt', description: 'Project management Gantt chart component with timeline, dependencies, and progress tracking (Syncfusion)', category: 'Data Display', icon: '📊' },
     { name: 'Search Filter', route: 'search-filter', description: 'Search and filter component', category: 'Form', icon: '🔍' },
     { name: 'File Upload', route: 'file-upload', description: 'File upload component', category: 'Form', icon: '📁' },
     { name: 'Image Upload', route: 'image-upload', description: 'Image upload component', category: 'Form', icon: '🖼️' },
