@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../shared/shared.module';
 import { SyncfusionModule } from '../../shared/syncfusion/syncfusion.module';
 
@@ -19,6 +20,7 @@ import { AuthRoutingModule } from './auth-routing.module';
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
+    TranslateModule,
     SharedModule,
     SyncfusionModule,
     AuthRoutingModule

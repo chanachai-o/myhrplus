@@ -5,8 +5,11 @@ import { AuthService, LoginRequest, DatabaseModel } from '../../../core/services
 import { NotificationService } from '../../../core/services/notification.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { EmployeeService } from '../../../core/services/employee.service';
+import { SwaplangCodeService } from '../../../core/services/swaplang-code.service';
+import { TranslateService } from '@ngx-translate/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +38,9 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private notificationService: NotificationService,
     private menuService: MenuService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private swapLangService: SwaplangCodeService,
+    private translate: TranslateService
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -53,8 +58,27 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.returnUrl]);
     }
 
+    // Load saved credentials if Remember Me was checked
+    this.loadRememberedCredentials();
+
     // Load database list
     this.loadDatabases();
+  }
+
+  loadRememberedCredentials(): void {
+    const savedUsername = localStorage.getItem('savedUsername');
+    const savedPassword = localStorage.getItem('savedPassword');
+    const rememberMe = localStorage.getItem('rememberMe') === 'true';
+
+    if (rememberMe && savedUsername) {
+      this.username = savedUsername;
+      this.password = savedPassword || '';
+      this.rememberMe = true;
+      this.loginForm.patchValue({
+        username: savedUsername,
+        password: savedPassword || ''
+      });
+    }
   }
 
   loadDatabases(): void {
@@ -102,6 +126,12 @@ export class LoginComponent implements OnInit {
     this.loginForm.patchValue({ password: value });
   }
 
+  onPasswordKeyUp(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && this.username && this.password) {
+      this.onSubmit();
+    }
+  }
+
   onSubmit(): void {
     // Update form values from component properties
     this.loginForm.patchValue({
@@ -133,30 +163,52 @@ export class LoginComponent implements OnInit {
           console.log('Login successful. Result:', result);
 
           if (result && result.accessToken) {
+            // Save userName to sessionStorage
+            sessionStorage.setItem('userName', this.username);
+
+            // Save credentials if Remember Me is checked
+            if (this.rememberMe) {
+              localStorage.setItem('savedUsername', this.username);
+              localStorage.setItem('savedPassword', this.password);
+              localStorage.setItem('rememberMe', 'true');
+            } else {
+              localStorage.removeItem('savedUsername');
+              localStorage.removeItem('savedPassword');
+              localStorage.removeItem('rememberMe');
+            }
+
             // Check getSetPass for defaultpage and accountactive
             this.employeeService.getSetPass()
               .then((manageResult) => {
                 // If defaultpage is '1', redirect to JSP page (legacy behavior)
                 if (manageResult.defaultpage === '1') {
                   const userToken = result.accessToken;
-                  const lang = 'th'; // Default to Thai
+                  const lang = this.translate.currentLang === 'th' ? 'tha' : 'eng';
                   const urlHr = environment.jbossUrl;
                   window.location.href = `${urlHr}/TOKENVERFY.jsp?t=${userToken}&lang=${lang}`;
                   return;
                 }
 
-                // Decode token to check accountactive
+                // Decode token to check accountactive using jwt_decode
                 try {
-                  const tokenPayload = JSON.parse(atob(result.accessToken.split('.')[1]));
-                  const accountActive = tokenPayload.accountactive;
+                  const decodedToken = jwt_decode<any>(result.accessToken);
+                  const accountActive = decodedToken.accountactive;
 
                   if (accountActive) {
                     if (accountActive === 'true') {
-                      // Account is active, proceed to HOME MODULE
-                      this.notificationService.showSuccess('Login successful');
-                      this.menuService.clearCache();
-                      // Navigate to HOME MODULE
-                      this.router.navigate(['/home']);
+                      // Account is active - load swap language and navigate
+                      this.swapLangService.getList().subscribe(swapResult => {
+                        this.swapLangService.saveSwaplang(swapResult);
+                        this.notificationService.showSuccess('Login successful');
+                        this.menuService.clearCache();
+                        this.router.navigate(['/home']);
+                      }, (error) => {
+                        console.error('Error loading swap language:', error);
+                        // Proceed anyway
+                        this.notificationService.showSuccess('Login successful');
+                        this.menuService.clearCache();
+                        this.router.navigate(['/home']);
+                      });
                     } else if (accountActive === 'waiting') {
                       this.loading = false;
                       this.loginForm.patchValue({ password: '' });
@@ -169,25 +221,53 @@ export class LoginComponent implements OnInit {
                       this.notificationService.showError(this.errorMessage);
                     }
                   } else {
-                    // No accountactive field, proceed to HOME MODULE
-                    this.notificationService.showSuccess('Login successful');
-                    this.menuService.clearCache();
-                    this.router.navigate(['/home']);
+                    // No accountactive field - load swap language and navigate to company profile
+                    this.swapLangService.getList().subscribe(swapResult => {
+                      this.swapLangService.saveSwaplang(swapResult);
+                      this.notificationService.showSuccess('Login successful');
+                      this.menuService.clearCache();
+                      // Navigate to company profile as per old system behavior
+                      this.router.navigate(['/company/company-profile']);
+                    }, (error) => {
+                      console.error('Error loading swap language:', error);
+                      // Proceed anyway
+                      this.notificationService.showSuccess('Login successful');
+                      this.menuService.clearCache();
+                      this.router.navigate(['/company/company-profile']);
+                    });
                   }
                 } catch (error) {
                   console.error('Error decoding token:', error);
-                  // Proceed anyway
-                  this.notificationService.showSuccess('Login successful');
-                  this.menuService.clearCache();
-                  this.router.navigate(['/home']);
+                  // Proceed anyway - load swap language and navigate
+                  this.swapLangService.getList().subscribe(swapResult => {
+                    this.swapLangService.saveSwaplang(swapResult);
+                    this.notificationService.showSuccess('Login successful');
+                    this.menuService.clearCache();
+                    this.router.navigate(['/home']);
+                  }, (error) => {
+                    console.error('Error loading swap language:', error);
+                    // Proceed anyway
+                    this.notificationService.showSuccess('Login successful');
+                    this.menuService.clearCache();
+                    this.router.navigate(['/home']);
+                  });
                 }
               })
               .catch((error) => {
                 console.error('Error getting setPass:', error);
-                // Proceed anyway if getSetPass fails
-                this.notificationService.showSuccess('Login successful');
-                this.menuService.clearCache();
-                this.router.navigate(['/home']);
+                // Proceed anyway if getSetPass fails - load swap language and navigate
+                this.swapLangService.getList().subscribe(swapResult => {
+                  this.swapLangService.saveSwaplang(swapResult);
+                  this.notificationService.showSuccess('Login successful');
+                  this.menuService.clearCache();
+                  this.router.navigate(['/home']);
+                }, (error) => {
+                  console.error('Error loading swap language:', error);
+                  // Proceed anyway
+                  this.notificationService.showSuccess('Login successful');
+                  this.menuService.clearCache();
+                  this.router.navigate(['/home']);
+                });
               });
           } else {
             this.loading = false;

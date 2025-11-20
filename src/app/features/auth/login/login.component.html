@@ -2,11 +2,41 @@
   <div class="login-layout">
     <!-- Left Section - Promotional (40%) -->
     <div class="login-left-section">
+      <!-- Animated Background Vectors -->
+      <div class="login-vector-bg">
+        <svg class="vector-shape vector-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50,50 Q100,0 150,50 T250,50" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"/>
+          <circle cx="100" cy="100" r="30" fill="rgba(255,255,255,0.05)"/>
+          <path d="M30,170 Q100,120 170,170" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
+        </svg>
+        <svg class="vector-shape vector-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="100,20 180,80 140,180 60,180 20,80" fill="rgba(255,255,255,0.03)"/>
+          <circle cx="100" cy="100" r="40" fill="rgba(255,255,255,0.04)"/>
+        </svg>
+        <svg class="vector-shape vector-3" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,100 Q50,50 100,50 T180,100" stroke="rgba(255,255,255,0.06)" stroke-width="2" fill="none"/>
+          <circle cx="50" cy="150" r="25" fill="rgba(255,255,255,0.04)"/>
+          <circle cx="150" cy="50" r="20" fill="rgba(255,255,255,0.05)"/>
+        </svg>
+      </div>
+
+      <!-- Floating Particles -->
+      <div class="particles">
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+        <div class="particle particle-5"></div>
+      </div>
+
       <div class="login-left-content">
         <div class="login-left-pattern"></div>
-        <div class="login-left-text">
-          <h1 class="login-left-title">Unlock the power of AI</h1>
-          <p class="login-left-subtitle">Experience the power of AI with us.</p>
+        <div class="login-left-logo animated-logo">
+          <img src="assets/images/logo/logo-myhr-light.png" alt="myHR Logo" class="login-left-logo-img" />
+        </div>
+        <div class="login-left-text animated-text">
+          <h1 class="login-left-title">Welcome to myHR</h1>
+          <p class="login-left-subtitle">ระบบจัดการทรัพยากรบุคคลที่ครบวงจร เพื่อเพิ่มประสิทธิภาพการทำงานของคุณ</p>
         </div>
       </div>
     </div>
@@ -15,39 +45,34 @@
     <div class="login-right-section">
       <div class="login-right-content">
         <!-- Logo Section -->
-        <div class="login-logo-section">
+        <div class="login-logo-section animated-logo-right">
           <div class="login-logo">
-            <div class="login-logo-icon">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16 4L20 12L28 12L22 18L24 26L16 20L8 26L10 18L4 12L12 12L16 4Z" fill="#8B5CF6"/>
-              </svg>
-            </div>
-            <h1 class="login-logo-text thai-text">ระบบ HR</h1>
+            <img src="assets/images/logo/logo-myhr-dark.png" alt="myHR Logo" class="login-logo-img" />
           </div>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="login-tabs">
-          <button class="login-tab active thai-text">เข้าสู่ระบบ</button>
-          <button class="login-tab thai-text">สร้างบัญชี</button>
+        <!-- Login Title -->
+        <div class="login-title-section animated-title">
+          <h2 class="login-title thai-text">เข้าสู่ระบบ</h2>
+          <p class="login-subtitle thai-text">กรุณาเข้าสู่ระบบเพื่อใช้งานระบบ HR</p>
         </div>
 
         <!-- Login Form -->
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
           <!-- Username Field -->
           <div class="form-field">
-            <ejs-textbox 
-              class="e-bigger login-input" 
-              type="text" 
-              placeholder="ชื่อผู้ใช้หรืออีเมล" 
-              floatLabelType="Never" 
+            <ejs-textbox
+              class="e-bigger login-input"
+              type="text"
+              placeholder="ชื่อผู้ใช้หรืออีเมล"
+              floatLabelType="Never"
               [(value)]="username"
               (valueChange)="onUsernameChange($event)"
               (blur)="loginForm.get('username')?.markAsTouched()"
-              aria-label="enter your username" 
+              aria-label="enter your username"
               role="textbox">
             </ejs-textbox>
-            <div *ngIf="!username && loginForm.get('username')?.touched" 
+            <div *ngIf="!username && loginForm.get('username')?.touched"
                  class="form-error thai-text">
               กรุณากรอกชื่อผู้ใช้
             </div>
@@ -55,18 +80,19 @@
 
           <!-- Password Field -->
           <div class="form-field">
-            <ejs-textbox 
-              class="e-bigger login-input" 
-              type="password" 
-              placeholder="รหัสผ่าน" 
-              floatLabelType="Never" 
+            <ejs-textbox
+              class="e-bigger login-input"
+              type="password"
+              placeholder="รหัสผ่าน"
+              floatLabelType="Never"
               [(value)]="password"
               (valueChange)="onPasswordChange($event)"
+              (keyup)="onPasswordKeyUp($event)"
               (blur)="loginForm.get('password')?.markAsTouched()"
-              aria-label="enter your password" 
+              aria-label="enter your password"
               role="textbox">
             </ejs-textbox>
-            <div *ngIf="!password && loginForm.get('password')?.touched" 
+            <div *ngIf="!password && loginForm.get('password')?.touched"
                  class="form-error thai-text">
               กรุณากรอกรหัสผ่าน
             </div>
@@ -74,7 +100,7 @@
 
           <!-- Database Selection Field -->
           <div class="form-field" *ngIf="dbList.length > 0">
-            <ejs-dropdownlist 
+            <ejs-dropdownlist
               #dbDropdown
               [dataSource]="dbDataSource"
               [fields]="dbFields"
@@ -88,19 +114,19 @@
 
           <!-- Remember Me & Forgot Password -->
           <div class="form-options">
-            <ejs-checkbox 
-              cssClass="e-bigger login-checkbox" 
-              label="จดจำฉัน" 
+            <ejs-checkbox
+              cssClass="e-bigger login-checkbox"
+              label="จดจำฉัน"
               [(ngModel)]="rememberMe"
               [ngModelOptions]="{standalone: true}"
-              aria-label="remember me" 
+              aria-label="remember me"
               role="checkbox">
             </ejs-checkbox>
-            <a 
-              href="javascript:void(0);" 
+            <a
+              href="javascript:void(0);"
               (click)="onForgotPassword()"
-              class="forgot-password-link thai-text" 
-              aria-label="forgot password" 
+              class="forgot-password-link thai-text"
+              aria-label="forgot password"
               role="link">
               ลืมรหัสผ่าน?
             </a>
@@ -116,27 +142,18 @@
 
           <!-- Submit Button -->
           <div class="form-submit">
-            <button 
-              ejs-button 
-              class="login-button e-primary" 
+            <button
+              ejs-button
+              class="login-button e-primary"
               [content]="loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบด้วยระบบ HR'"
-              type="submit" 
+              type="submit"
               [disabled]="loading || !username || !password"
-              aria-label="sign in" 
+              aria-label="sign in"
               role="button">
             </button>
           </div>
         </form>
 
-        <!-- Terms and Conditions -->
-        <div class="login-terms">
-          <p class="login-terms-text thai-text">
-            โดยการสร้างบัญชี คุณยอมรับ
-            <a href="#" class="terms-link">ข้อกำหนดการให้บริการ</a>
-            และ
-            <a href="#" class="terms-link">นโยบายความเป็นส่วนตัวและคุกกี้</a>
-          </p>
-        </div>
       </div>
     </div>
   </div>

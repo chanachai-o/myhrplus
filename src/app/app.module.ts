@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +26,9 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'th'
+    }),
     AppRoutingModule,
     CoreModule,
     SharedModule,
@@ -31,6 +36,10 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     AuthModule
   ],
   providers: [
+    provideTranslateHttpLoader({
+      prefix: './assets/i18n/',
+      suffix: '.json'
+    }),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
