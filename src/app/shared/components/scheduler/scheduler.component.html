@@ -1,0 +1,38 @@
+<div class="scheduler-container" [ngClass]="customClass">
+  <ejs-schedule
+    #schedule
+    [eventSettings]="eventSettings"
+    [currentView]="currentView"
+    [views]="views"
+    [selectedDate]="selectedDate"
+    [startHour]="startHour"
+    [endHour]="endHour"
+    [workDays]="workDays"
+    [firstDayOfWeek]="firstDayOfWeek"
+    [showWeekend]="showWeekend"
+    [allowDragAndDrop]="allowDragAndDrop"
+    [allowResizing]="allowResizing"
+    [enableRtl]="enableRtl"
+    [enableAdaptiveUI]="enableAdaptiveUI"
+    [group]="group"
+    [resources]="resources"
+    [height]="height"
+    [width]="width"
+    [locale]="locale"
+    (eventClick)="onEventClick($event)"
+    (eventDoubleClick)="onEventDoubleClick($event)"
+    (cellClick)="onCellClick($event)"
+    (cellDoubleClick)="onCellDoubleClick($event)"
+    (navigating)="onNavigating($event)"
+    (actionBegin)="onActionBegin($event)"
+    (actionComplete)="onActionComplete($event)"
+    (eventRendered)="onEventRendered($event)"
+    (popupOpen)="onPopupOpen($event)"
+    (popupClose)="onPopupClose($event)"
+    (dragStart)="onDragStart($event)"
+    (dragStop)="onDragStop($event)"
+    (resizeStart)="onResizeStart($event)"
+    (resizeStop)="onResizeStop($event)">
+  </ejs-schedule>
+</div>
+

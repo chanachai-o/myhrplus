@@ -1,0 +1,81 @@
+<div class="scheduler-demo-container">
+  <app-glass-card padding="p-6" customClass="mb-6">
+    <h2 class="text-2xl font-bold mb-4 thai-text">Scheduler Component Demo</h2>
+    <p class="text-slate-600 dark:text-slate-400 mb-6 thai-text">
+      Component สำหรับแสดงปฏิทินและจัดการกิจกรรมจาก Syncfusion พร้อม Glass Morphism styling และ features ครบถ้วน
+    </p>
+
+    <!-- Full Featured Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างแบบเต็มรูปแบบ</h3>
+      <app-scheduler
+        [eventSettings]="eventSettings"
+        [currentView]="currentView"
+        [views]="views"
+        [selectedDate]="selectedDate"
+        [startHour]="'09:00'"
+        [endHour]="'18:00'"
+        [allowDragAndDrop]="true"
+        [allowResizing]="true"
+        [allowExcelExport]="true"
+        [allowICalendarExport]="true"
+        [allowICalendarImport]="true"
+        [allowPrint]="true"
+        [height]="'600px'"
+        [width]="'100%'"
+        (eventClick)="onEventClick($event)"
+        (eventDoubleClick)="onEventDoubleClick($event)"
+        (cellClick)="onCellClick($event)"
+        (actionComplete)="onActionComplete($event)">
+      </app-scheduler>
+    </div>
+
+    <!-- Basic Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างแบบพื้นฐาน</h3>
+      <app-scheduler
+        [eventSettings]="basicEventSettings"
+        [currentView]="'Month'"
+        [views]="['Day', 'Week', 'Month']"
+        [selectedDate]="selectedDate"
+        [height]="'500px'"
+        [width]="'100%'">
+      </app-scheduler>
+    </div>
+
+    <!-- Usage Example -->
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างการใช้งาน</h3>
+      <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+import {{ '{' }} SchedulerEvent {{ '}' }} from '../../shared/components/scheduler/scheduler.component';
+
+events: SchedulerEvent[] = [
+  {{ '{' }}
+    Id: 1,
+    Subject: 'ประชุมทีม',
+    StartTime: new Date(2024, 11, 20, 10, 0),
+    EndTime: new Date(2024, 11, 20, 11, 0),
+    Description: 'ประชุมทีมเพื่อวางแผนงาน',
+    Location: 'ห้องประชุม A'
+  {{ '}' }}
+];
+
+eventSettings = {{ '{' }}
+  dataSource: this.events
+{{ '}' }};
+
+// HTML
+&lt;app-scheduler
+  [eventSettings]="eventSettings"
+  [currentView]="'Month'"
+  [views]="['Day', 'Week', 'Month']"
+  [selectedDate]="selectedDate"
+  [allowDragAndDrop]="true"
+  [allowResizing]="true"
+  [height]="'600px'"
+  (eventClick)="onEventClick($event)"&gt;
+&lt;/app-scheduler&gt;</code></pre>
+    </div>
+  </app-glass-card>
+</div>
+

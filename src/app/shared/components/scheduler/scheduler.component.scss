@@ -1,0 +1,408 @@
+/* ============================================
+   Scheduler Component Styles
+   ============================================ */
+
+@import '../../../../styles/design-tokens';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.scheduler-container {
+  width: 100%;
+  @include glass-morphism('weak', 'light');
+  border-radius: $radius-lg;
+  padding: $spacing-4;
+  overflow: hidden;
+  
+  .dark & {
+    @include glass-morphism('weak', 'dark');
+  }
+
+  // Syncfusion Schedule Styles
+  ::ng-deep {
+    .e-schedule {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $radius-md;
+      
+      .dark & {
+        border-color: rgba(51, 65, 85, 0.3);
+      }
+
+      // Header
+      .e-header-container {
+        background: rgba(255, 255, 255, 0.1);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .dark & {
+          background: rgba(15, 23, 42, 0.3);
+          border-bottom-color: rgba(51, 65, 85, 0.3);
+        }
+
+        .e-header-cells {
+          background: transparent;
+          color: $gray-700;
+          border-right: 1px solid rgba(255, 255, 255, 0.1);
+          
+          .dark & {
+            color: $gray-300;
+            border-right-color: rgba(51, 65, 85, 0.3);
+          }
+        }
+
+        .e-header-calendar {
+          .e-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: $gray-700;
+            transition: $transition-all;
+            min-width: 44px;
+            min-height: 44px;
+            
+            .dark & {
+              background: rgba(15, 23, 42, 0.3);
+              border-color: rgba(51, 65, 85, 0.3);
+              color: $gray-300;
+            }
+
+            &:hover {
+              background: rgba(var(--primary-rgb), 0.1);
+              border-color: rgba(var(--primary-rgb), 0.3);
+              color: rgb(var(--primary-rgb));
+              
+              .dark & {
+                background: rgba(var(--primary-rgb), 0.2);
+              }
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+            }
+
+            @include respond-to(md) {
+              min-width: auto;
+              min-height: auto;
+            }
+          }
+        }
+      }
+
+      // Content
+      .e-content-wrap {
+        .e-content-table {
+          .e-content-row {
+            .e-content-cells {
+              background: transparent;
+              border-right: 1px solid rgba(255, 255, 255, 0.05);
+              border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+              
+              .dark & {
+                border-right-color: rgba(51, 65, 85, 0.1);
+                border-bottom-color: rgba(51, 65, 85, 0.1);
+              }
+
+              &:hover {
+                background: rgba(var(--primary-rgb), 0.05);
+                
+                .dark & {
+                  background: rgba(var(--primary-rgb), 0.1);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Events
+      .e-appointment {
+        background: rgba(var(--primary-rgb), 0.2);
+        border: 1px solid rgba(var(--primary-rgb), 0.4);
+        border-radius: $radius-sm;
+        color: rgb(var(--primary-rgb));
+        transition: $transition-all;
+        
+        .dark & {
+          background: rgba(var(--primary-rgb), 0.3);
+          border-color: rgba(var(--primary-rgb), 0.5);
+        }
+
+        &:hover {
+          background: rgba(var(--primary-rgb), 0.3);
+          border-color: rgba(var(--primary-rgb), 0.6);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          
+          .dark & {
+            background: rgba(var(--primary-rgb), 0.4);
+            border-color: rgba(var(--primary-rgb), 0.7);
+          }
+        }
+
+        .e-subject {
+          color: rgb(var(--primary-rgb));
+          font-weight: $font-weight-semibold;
+        }
+
+        .e-time {
+          color: rgba(var(--primary-rgb), 0.8);
+        }
+      }
+
+      // Work Cells
+      .e-work-cells {
+        background: transparent;
+        
+        &.e-selected-cell {
+          background: rgba(var(--primary-rgb), 0.1);
+          
+          .dark & {
+            background: rgba(var(--primary-rgb), 0.2);
+          }
+        }
+      }
+
+      // Time Slots
+      .e-time-slots {
+        .e-time-cells {
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          
+          .dark & {
+            border-top-color: rgba(51, 65, 85, 0.1);
+          }
+        }
+      }
+
+      // Month View
+      .e-month-view {
+        .e-month-cells {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          
+          .dark & {
+            border-color: rgba(51, 65, 85, 0.1);
+          }
+
+          &.e-selected-date {
+            background: rgba(var(--primary-rgb), 0.1);
+            
+            .dark & {
+              background: rgba(var(--primary-rgb), 0.2);
+            }
+          }
+
+          &.e-other-month {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      // Agenda View
+      .e-agenda-view {
+        .e-agenda-item {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: $radius-sm;
+          margin-bottom: $spacing-2;
+          padding: $spacing-3;
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.2);
+            border-color: rgba(51, 65, 85, 0.3);
+          }
+
+          &:hover {
+            background: rgba(var(--primary-rgb), 0.1);
+            border-color: rgba(var(--primary-rgb), 0.3);
+            
+            .dark & {
+              background: rgba(var(--primary-rgb), 0.2);
+            }
+          }
+        }
+      }
+
+      // Quick Popup
+      .e-quick-popup-wrapper {
+        @include glass-morphism('strong', 'light');
+        border-radius: $radius-lg;
+        
+        .dark & {
+          @include glass-morphism('strong', 'dark');
+        }
+
+        .e-popup-header {
+          background: rgba(255, 255, 255, 0.1);
+          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.3);
+            border-bottom-color: rgba(51, 65, 85, 0.3);
+          }
+        }
+
+        .e-popup-content {
+          background: transparent;
+        }
+
+        .e-event-details {
+          .e-subject {
+            color: $gray-900;
+            
+            .dark & {
+              color: $gray-100;
+            }
+          }
+
+          .e-date-time {
+            color: $gray-600;
+            
+            .dark & {
+              color: $gray-400;
+            }
+          }
+        }
+      }
+
+      // Event Editor
+      .e-event-popup {
+        @include glass-morphism('strong', 'light');
+        border-radius: $radius-lg;
+        
+        .dark & {
+          @include glass-morphism('strong', 'dark');
+        }
+
+        .e-popup-header {
+          background: rgba(255, 255, 255, 0.1);
+          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+          
+          .dark & {
+            background: rgba(15, 23, 42, 0.3);
+          }
+        }
+
+        .e-popup-content {
+          background: transparent;
+        }
+
+        .e-subject-container,
+        .e-location-container,
+        .e-start-container,
+        .e-end-container,
+        .e-description-container {
+          .e-input-group {
+            input,
+            textarea {
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: $gray-900;
+              border-radius: $radius-sm;
+              
+              .dark & {
+                background: rgba(15, 23, 42, 0.3);
+                border-color: rgba(51, 65, 85, 0.3);
+                color: $gray-100;
+              }
+
+              &:focus {
+                border-color: rgb(var(--primary-rgb));
+                box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+              }
+            }
+          }
+        }
+
+        .e-footer-container {
+          .e-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: $gray-700;
+            transition: $transition-all;
+            min-width: 44px;
+            min-height: 44px;
+            
+            .dark & {
+              background: rgba(15, 23, 42, 0.3);
+              border-color: rgba(51, 65, 85, 0.3);
+              color: $gray-300;
+            }
+
+            &:hover {
+              background: rgba(var(--primary-rgb), 0.1);
+              border-color: rgba(var(--primary-rgb), 0.3);
+              color: rgb(var(--primary-rgb));
+              
+              .dark & {
+                background: rgba(var(--primary-rgb), 0.2);
+              }
+            }
+
+            &.e-primary {
+              background: rgb(var(--primary-rgb));
+              border-color: rgb(var(--primary-rgb));
+              color: white;
+
+              &:hover {
+                background: rgba(var(--primary-rgb), 0.9);
+              }
+            }
+
+            @include respond-to(md) {
+              min-width: auto;
+              min-height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@include respond-to-down(sm) {
+  .scheduler-container {
+    padding: $spacing-2;
+    
+    ::ng-deep {
+      .e-schedule {
+        .e-header-container {
+          .e-header-calendar {
+            .e-btn {
+              padding: $spacing-1 $spacing-2;
+              font-size: $text-xs;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Gemini Theme
+body.theme-gemini {
+  .scheduler-container {
+    @include glass-gemini('weak');
+    
+    ::ng-deep {
+      .e-schedule {
+        .e-header-container {
+          @include glass-gemini('default');
+          @include gemini-border-glow();
+        }
+
+        .e-appointment {
+          @include gemini-glow('subtle');
+        }
+      }
+    }
+  }
+}
+
