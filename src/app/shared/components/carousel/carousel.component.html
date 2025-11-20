@@ -1,0 +1,41 @@
+<div class="carousel-container" [ngClass]="customClass" [style.height]="height" [style.width]="width">
+  <ejs-carousel
+    #carousel
+    [items]="items"
+    [interval]="interval"
+    [showIndicators]="showIndicators"
+    [showPlayButton]="showPlayButton"
+    [autoPlay]="autoPlay"
+    [loop]="loop"
+    [animationEffect]="animationEffect"
+    [partialVisible]="partialVisible"
+    [cssClass]="cssClass"
+    [enableTouchSwipe]="enableTouchSwipe"
+    [enableRtl]="enableRtl"
+    (slideChanged)="onSlideChanged($event)"
+    (play)="onPlay($event)"
+    (pause)="onPause($event)"
+    (created)="onCreated($event)">
+    <e-carousel-items>
+      <e-carousel-item *ngFor="let item of items; let i = index">
+        <ng-template #template>
+          <div class="carousel-item-content" [ngClass]="item['cssClass']">
+            <ng-container *ngIf="item.imageUrl">
+              <img [src]="item.imageUrl" [alt]="item.title || 'Slide ' + (i + 1)" class="carousel-image">
+            </ng-container>
+            <ng-container *ngIf="item.content && !item.imageUrl">
+              <div [innerHTML]="item.content" class="carousel-content"></div>
+            </ng-container>
+            <ng-container *ngIf="item.title || item.description">
+              <div class="carousel-text-content">
+                <h3 *ngIf="item.title" class="carousel-title">{{ item.title }}</h3>
+                <p *ngIf="item.description" class="carousel-description">{{ item.description }}</p>
+              </div>
+            </ng-container>
+          </div>
+        </ng-template>
+      </e-carousel-item>
+    </e-carousel-items>
+  </ejs-carousel>
+</div>
+

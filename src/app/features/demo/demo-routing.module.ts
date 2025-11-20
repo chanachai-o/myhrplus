@@ -49,6 +49,7 @@ import { SpreadsheetDemoComponent } from './components/spreadsheet-demo/spreadsh
 import { PdfViewerDemoComponent } from './components/pdf-viewer-demo/pdf-viewer-demo.component';
 import { DiagramsDemoComponent } from './components/diagrams-demo/diagrams-demo.component';
 import { SignatureDemoComponent } from './components/signature-demo/signature-demo.component';
+import { CarouselDemoComponent } from './components/carousel-demo/carousel-demo.component';
 
 const routes: Routes = [
   {
@@ -246,6 +247,10 @@ const routes: Routes = [
       {
         path: 'signature',
         component: SignatureDemoComponent
+      },
+      {
+        path: 'carousel',
+        component: CarouselDemoComponent
       }
     ]
   }

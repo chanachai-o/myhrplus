@@ -21,6 +21,7 @@ import { TabModule } from '@syncfusion/ej2-angular-navigations';
 import { BreadcrumbModule } from '@syncfusion/ej2-angular-navigations';
 import { MenuModule } from '@syncfusion/ej2-angular-navigations';
 import { SidebarModule } from '@syncfusion/ej2-angular-navigations';
+import { CarouselModule } from '@syncfusion/ej2-angular-navigations';
 
 // Syncfusion Layouts
 import { DashboardLayoutModule } from '@syncfusion/ej2-angular-layouts';
@@ -109,6 +110,7 @@ import { ListViewModule } from '@syncfusion/ej2-angular-lists';
     BreadcrumbModule,
     MenuModule,
     SidebarModule,
+    CarouselModule,
 
     // Layouts
     DashboardLayoutModule,
@@ -189,6 +191,7 @@ import { ListViewModule } from '@syncfusion/ej2-angular-lists';
     BreadcrumbModule,
     MenuModule,
     SidebarModule,
+    CarouselModule,
 
     // Layouts
     DashboardLayoutModule,

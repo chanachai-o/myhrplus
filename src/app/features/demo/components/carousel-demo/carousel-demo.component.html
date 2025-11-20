@@ -1,0 +1,187 @@
+<div class="carousel-demo-container">
+  <app-glass-card>
+    <div class="demo-header">
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+        Syncfusion Carousel Component
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        A responsive carousel component for displaying slides with navigation controls, indicators, and autoplay functionality.
+      </p>
+    </div>
+
+    <div class="demo-content">
+      <!-- Basic Carousel -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Basic Carousel
+        </h2>
+        <div class="carousel-wrapper">
+          <app-carousel
+            #carousel
+            [items]="carouselItems"
+            [interval]="interval"
+            [autoPlay]="autoPlay"
+            [loop]="loop"
+            [showIndicators]="showIndicators"
+            [showPlayButton]="showPlayButton"
+            [showPreviousButton]="showPreviousButton"
+            [showNextButton]="showNextButton"
+            [animationEffect]="animationEffect"
+            [slideTransition]="slideTransition"
+            [height]="'500px'"
+            [width]="'100%'"
+            (slideChanged)="onSlideChanged($event)"
+            (play)="onPlay($event)"
+            (pause)="onPause($event)">
+          </app-carousel>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Controls
+        </h2>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Navigation
+            </label>
+            <div class="flex gap-2">
+              <button
+                (click)="previous()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Previous
+              </button>
+              <button
+                (click)="next()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Next
+              </button>
+              <button
+                (click)="togglePlayPause()"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                {{ carousel?.isPlaying() ? 'Pause' : 'Play' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Go to Slide
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                *ngFor="let item of carouselItems; let i = index"
+                (click)="goTo(i)"
+                class="px-3 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded transition-colors">
+                {{ i + 1 }}
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Interval (ms)
+            </label>
+            <input
+              type="number"
+              [value]="interval"
+              (change)="onIntervalChange($event)"
+              min="1000"
+              max="10000"
+              step="500"
+              class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500">
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Settings
+            </label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="autoPlay"
+                  (change)="toggleAutoPlay()"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Auto Play</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="loop"
+                  (change)="toggleLoop()"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Loop</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="showIndicators"
+                  (change)="showIndicators = !showIndicators"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Show Indicators</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Animation Effect
+            </label>
+            <select
+              [value]="animationEffect"
+              (change)="onAnimationEffectChange($event)"
+              class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500">
+              <option value="Slide">Slide</option>
+              <option value="Fade">Fade</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Status -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Status
+        </h2>
+        <div class="status-info">
+          <p class="text-slate-600 dark:text-slate-400">
+            Current Slide: <strong>{{ getCurrentIndex() + 1 }}</strong> of <strong>{{ getTotalSlides() }}</strong>
+          </p>
+          <p class="text-slate-600 dark:text-slate-400">
+            Status: <strong>{{ carousel?.isPlaying() ? 'Playing' : 'Paused' }}</strong>
+          </p>
+        </div>
+      </section>
+
+      <!-- Code Example -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Usage Example
+        </h2>
+        <div class="code-example">
+          <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;app-carousel
+  [items]="carouselItems"
+  [interval]="3000"
+  [autoPlay]="true"
+  [loop]="true"
+  [showIndicators]="true"
+  [showPlayButton]="true"
+  [showPreviousButton]="true"
+  [showNextButton]="true"
+  [animationEffect]="'Slide'"
+  [height]="'500px'"
+  [width]="'100%'"
+  (slideChanged)="onSlideChanged($event)"
+  (play)="onPlay($event)"
+  (pause)="onPause($event)"&gt;
+&lt;/app-carousel&gt;</code></pre>
+        </div>
+      </section>
+    </div>
+  </app-glass-card>
+</div>
+
