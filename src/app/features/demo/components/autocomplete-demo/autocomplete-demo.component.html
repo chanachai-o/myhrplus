@@ -1,0 +1,244 @@
+<div class="autocomplete-demo-container">
+  <app-glass-card>
+    <div class="demo-header">
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+        Syncfusion Autocomplete Component
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        An autocomplete input component with filtering, highlighting, and customizable suggestions.
+      </p>
+    </div>
+
+    <div class="demo-content">
+      <!-- Basic Autocomplete -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Autocomplete
+        </h2>
+        <div class="autocomplete-wrapper">
+          <app-autocomplete
+            #autocomplete
+            [dataSource]="currentDataSource"
+            [fields]="currentFields"
+            [placeholder]="placeholder"
+            [allowFiltering]="allowFiltering"
+            [filterType]="filterType"
+            [minLength]="minLength"
+            [showClearButton]="showClearButton"
+            [highlight]="highlight"
+            [sortOrder]="sortOrder"
+            [enabled]="enabled"
+            [readonly]="readonly"
+            [width]="'100%'"
+            (change)="onChange($event)"
+            (select)="onSelect($event)"
+            (filtering)="onFiltering($event)"
+            (open)="onOpen($event)"
+            (close)="onClose($event)">
+          </app-autocomplete>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Controls
+        </h2>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Actions
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="getValue()"
+                class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                Get Value
+              </button>
+              <button
+                (click)="getText()"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                Get Text
+              </button>
+              <button
+                (click)="getDataItem()"
+                class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">
+                Get Data Item
+              </button>
+              <button
+                (click)="clear()"
+                class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
+                Clear
+              </button>
+              <button
+                (click)="showPopup()"
+                class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                Show Popup
+              </button>
+              <button
+                (click)="hidePopup()"
+                class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors">
+                Hide Popup
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Data Source
+            </label>
+            <div class="flex gap-2">
+              <button
+                (click)="switchDataSource('countries')"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Countries
+              </button>
+              <button
+                (click)="switchDataSource('products')"
+                class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors">
+                Products
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Filter Type
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="toggleFilterType('Contains')"
+                [class.bg-primary-500]="filterType === 'Contains'"
+                [class.bg-slate-500]="filterType !== 'Contains'"
+                class="px-4 py-2 text-white rounded-lg transition-colors">
+                Contains
+              </button>
+              <button
+                (click)="toggleFilterType('StartsWith')"
+                [class.bg-primary-500]="filterType === 'StartsWith'"
+                [class.bg-slate-500]="filterType !== 'StartsWith'"
+                class="px-4 py-2 text-white rounded-lg transition-colors">
+                Starts With
+              </button>
+              <button
+                (click)="toggleFilterType('EndsWith')"
+                [class.bg-primary-500]="filterType === 'EndsWith'"
+                [class.bg-slate-500]="filterType !== 'EndsWith'"
+                class="px-4 py-2 text-white rounded-lg transition-colors">
+                Ends With
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Sort Order
+            </label>
+            <div class="flex gap-2 flex-wrap">
+              <button
+                (click)="toggleSortOrder('None')"
+                [class.bg-primary-500]="sortOrder === 'None'"
+                [class.bg-slate-500]="sortOrder !== 'None'"
+                class="px-4 py-2 text-white rounded-lg transition-colors">
+                None
+              </button>
+              <button
+                (click)="toggleSortOrder('Ascending')"
+                [class.bg-primary-500]="sortOrder === 'Ascending'"
+                [class.bg-slate-500]="sortOrder !== 'Ascending'"
+                class="px-4 py-2 text-white rounded-lg transition-colors">
+                Ascending
+              </button>
+              <button
+                (click)="toggleSortOrder('Descending')"
+                [class.bg-primary-500]="sortOrder === 'Descending'"
+                [class.bg-slate-500]="sortOrder !== 'Descending'"
+                class="px-4 py-2 text-white rounded-lg transition-colors">
+                Descending
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Settings
+            </label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="allowFiltering"
+                  (change)="allowFiltering = !allowFiltering"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Allow Filtering</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="caseSensitive"
+                  (change)="caseSensitive = !caseSensitive"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Case Sensitive</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="showClearButton"
+                  (change)="showClearButton = !showClearButton"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Show Clear Button</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="highlight"
+                  (change)="highlight = !highlight"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Highlight</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="enabled"
+                  (change)="enabled = !enabled"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Enabled</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="readonly"
+                  (change)="readonly = !readonly"
+                  class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                <span class="text-sm text-slate-700 dark:text-slate-300">Readonly</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Min Length
+            </label>
+            <input
+              type="number"
+              [value]="minLength"
+              (change)="onMinLengthChange($event)"
+              min="0"
+              max="10"
+              step="1"
+              class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500">
+          </div>
+        </div>
+      </section>
+
+      <!-- Code Example -->
+      <section class="demo-section">
+        <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+          Usage Example
+        </h2>
+        <app-code-viewer [code]="basicExample" language="html"></app-code-viewer>
+      </section>
+    </div>
+  </app-glass-card>
+</div>
+

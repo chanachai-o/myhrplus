@@ -1,0 +1,72 @@
+.autocomplete-demo-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .demo-header {
+    margin-bottom: 2rem;
+  }
+
+  .demo-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .demo-section {
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      .dark & {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .autocomplete-wrapper {
+        margin-top: 1rem;
+        max-width: 500px;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+
+        .control-group {
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-radius: 0.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+
+          .dark & {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+          }
+        }
+      }
+
+      .code-example {
+        margin-top: 1rem;
+
+        pre {
+          font-family: 'Courier New', monospace;
+          font-size: 0.875rem;
+          line-height: 1.6;
+
+          code {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+          }
+        }
+      }
+    }
+  }
+}
+
