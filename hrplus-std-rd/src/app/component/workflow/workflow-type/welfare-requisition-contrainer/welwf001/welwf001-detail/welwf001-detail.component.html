@@ -1,0 +1,332 @@
+<!-- แบบฟอร์มการเบิกค่ารักษาพยาบาลและเงินช่วยเหลือสวัสดิการ -->
+<div class="row">
+
+  <!-- รายละเอียดข้อมูลพนักงาน -->
+  <div class="col-12" *ngIf="empWork">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"Employee Detail" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Employee ID"| translate}}</small>
+            <h6>{{empWork.employeeId}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Name-Surname"| translate}}</small>
+            <h6>{{empWork.getFullname()}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Position"| translate}}</small>
+            <h6>{{empWork.position?empWork.position.getPositionDesc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu1"| translate}}</small>
+            <h6>{{empWork.bu1?empWork.bu1.getBu1Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu2"| translate}}</small>
+            <h6>{{empWork.bu2?empWork.bu2.getBu2Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu3"| translate}}</small>
+            <h6>{{empWork.bu3?empWork.bu3.getBu3Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu4"| translate}}</small>
+            <h6>{{empWork.bu4?empWork.bu4.getBu4Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu5"| translate}}</small>
+            <h6>{{empWork.bu5?empWork.bu5.getBu5Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"tel"| translate}}</small>
+            <h6>{{empWork.telExt?empWork.telExt:'-'}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- รายการสวัสดิการ -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"systemcode.welfare.list" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <!-- หมวดสวัสดิการ -->
+        <!-- <div class="row">
+          <div class="col-4 col-sm-4 col-md-4 col-lg-3  b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.welId"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__welgid']}}</h6>
+            </div>
+          </div>
+          <div class="col-8 col-sm-8 col-md-7 col-lg-5 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"menu.empview-welfare"| translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__welgdesc']}}</h6>
+            </div>
+          </div>
+        </div> -->
+        <!-- สวัสดิการ -->
+        <div class="row">
+          <div class="col-4 col-sm-4 col-md-4 col-lg-3  b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.welId"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__welid$1']}}</h6>
+            </div>
+          </div>
+          <div class="col-8 col-sm-8 col-md-7 col-lg-5 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"menu.empview-welfare"| translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__weldesc$1']}}</h6>
+            </div>
+          </div>
+        </div>
+        <!-- ครอบครัว -->
+        <div class="row" *ngIf="data.workflowData.screen_value['__wf__mcomplain$line_no$01']">
+          <div class="col-4 col-sm-4 col-md-4 col-lg-3  b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.family.data.id"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__mcomplain$line_no$01']}}</h6>
+            </div>
+          </div>
+          <div class="col-8 col-sm-8 col-md-7 col-lg-5 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.family.data"| translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__familydesc01']}}</h6>
+            </div>
+          </div>
+        </div>
+        <!-- สถานที่ใช้สวัสดิการ -->
+        <div class="row">
+          <div class="col-4 col-sm-4 col-md-4 col-lg-3  b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.sitewel.id"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__sitewelid$1']}}</h6>
+            </div>
+          </div>
+          <div class="col-8 col-sm-8 col-md-7 col-lg-5 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.sitewel"| translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__siteweldesc$1']}}</h6>
+            </div>
+          </div>
+        </div>
+
+        <!-- ชื่อโรงพยาบาล -->
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6  b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.hospital"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__responsibilitie$1']}}</h6>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm-4 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.sentdate"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__datesent$1']}}</h6>
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.receiptdate"| translate }}</small>
+              <h6>{{data.workflowData.screen_value['__wf__datebill$1']}}</h6>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm-3 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.bill"| translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__numberbill$1']}}</h6>
+            </div>
+          </div>
+          <div class="col-sm-3 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.ref"| translate}}</small><br>
+              <button type="submit" class="btn btn-info waves-effect waves-light "
+                (click)="openModal(modalRef,'modalRef')">{{"systemcode.view" |
+                translate}}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.request.amount"| translate}} : {{"systemcode.bth"
+                |translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__reqcost$1']}}</h6>
+            </div>
+          </div>
+          <div class="col-sm-3 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"systemcode.reqCost"| translate}} : {{"systemcode.bth"
+                |translate}}</small>
+            <h6>{{data.workflowData.screen_value['__wf__cost$1']}}</h6>
+            </div>
+          </div>
+          <div class="col-sm-3 col-md-3 col-6 b-r">
+            <div class="form-group">
+              <small class="text-muted ellipsis-myhr">{{"Balance"| translate}} : {{"systemcode.bth"
+                |translate}}</small>
+              <h6>{{data.workflowData.screen_value['__wf__cost_total$1']}}</h6>
+            </div>
+          </div>
+        </div>
+
+
+        <small class="text-muted">{{"systemcode.priority"| translate}}</small>
+        <h6>{{"changemoney.format."+data.workflowData.screen_value['priority'] | translate}}</h6>
+
+        <div class="row">
+          <app-workflow-remark [wfid]="data.workflowData.wf_id"></app-workflow-remark>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ข้อมูลการเบิก -->
+  <div class="col-12">
+    <div class="card m-0 p-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"systemcode.requisition" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <div class="wrapper">
+            <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+              <thead class="bg-info ">
+                <tr class="text-white font-weight-normal">
+                  <th class="font-weight-normal text-center" scope="col">{{"systemcode.caseId" | translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"date" | translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"systemcode.location"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"systemcode.records"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"systemcode.receipt"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"systemcode.amount.money"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"Remain"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"Note"| translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="welfareView.length==0">
+                  <td colspan="8" class="font-weight-normal text-center">{{"No Data Found" | translate}}</td>
+                </tr>
+                <tr *ngFor="let item of welfareView; let i=index">
+                  <td class="align-middle text-center">{{i+1}}</td>
+                  <td class="align-middle text-center">
+                    {{item.occurDate.split("-")[2]}}
+                    {{welfareViewDate[i]|translate}}
+                    {{translate.currentLang=='th'?welfareViewYearTh[i]:item.occurDate.split("-")[0]}}
+                  </td>
+                  <td class="align-middle text-center">{{item.sitewel.getSitewelDesc()}}</td>
+                  <td class="align-middle text-center">{{item.welfare.getWelfareDesc()}}</td>
+                  <td class="align-middle text-center">{{item.refNo}}</td>
+                  <td class="align-middle text-center">{{item.cost|number:"2.2"}}</td>
+                  <td class="align-middle text-center"></td>
+                  <td class="align-middle text-center">{{item.remark}}</td>
+                </tr>
+                <tr *ngIf="welfareView.length!=0">
+                  <td colspan="4" class="align-middle text-center"></td>
+                  <td class="align-middle text-center">{{"system.total" | translate}}</td>
+                  <td class="align-middle text-center">{{welfareViewTotal|number:"2.2"}}</td>
+                  <td class="align-middle text-center">{{welfareViewCost|number:"2.2"}}</td>
+                  <td class="align-middle text-center"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+  <!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+  <app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+  </app-workflow-detail-footer>
+  <!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+  </div>
+</div>
+<!-- Row ปิดแบบฟอร์มการเบิกค่ารักษาพยาบาลและเงินช่วยเหลือสวัสดิการ -->
+<ng-template #modalRef let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body" [perfectScrollbar]="config">
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-header bg-myhr">
+          <h4>{{"systemcode.ref" | translate}}</h4>
+        </div>
+        <div class="card-body pt-0 pt-2">
+          <div class="table-responsive">
+            <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+              <thead class="bg-info ">
+                <tr class="text-white font-weight-normal">
+                  <th class="font-weight-normal text-center" scope="col">{{"choose"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"No."| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"th-detail"| translate}}</th>
+                  <th class="font-weight-normal text-center" scope="col">{{"systemcode.status"| translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="welfareListsDoc.documentGrp.referencesDocument.length==0">
+                  <td colspan="4" class="font-weight-normal text-center">{{"No Data Found" | translate}}</td>
+                </tr>
+                <tr *ngFor="let item of welfareListsDoc.documentGrp.referencesDocument let i=index">
+                  <td class="align-middle text-center"><input type="checkbox" name="check_emp"
+                      [(ngModel)]="welfareListsDocChack[i].select" disabled /></td>
+                  <td class="align-middle text-center">{{i+1}}</td>
+                  <td class="align-middle text-center">{{item.document.getDesc()}}</td>
+                  <td class="align-middle text-center">{{"systemcode.listsDoc"+item.status | translate}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">{{"Close"|
+        translate}}</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #DocReferenceModal let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"systemcode.documents.detail" | translate}}</h5>
+      <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" [perfectScrollbar]="config">
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-body">
+          <!-- ใส่เอกสารตรงนี้นะจ๊ะ -->
+          <ng-template #workflowView [ngComponentOutlet]="dynamicComponent" [ndcDynamicInputs]="inputs"
+            [ndcDynamicOutputs]="outputs"></ng-template>
+          <!-- <app-wel210-nstda-create></app-wel210-nstda-create> -->
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="modal.dismiss('Cross click')">{{"confirm"|
+        translate}}</button>
+    </div>
+  </div>
+</ng-template>

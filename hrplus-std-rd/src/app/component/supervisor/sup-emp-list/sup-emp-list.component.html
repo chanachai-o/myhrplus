@@ -1,0 +1,167 @@
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{"subordinate list" | translate}}</h4>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="form-group">
+        <label class="form-label">{{"subordinate.group.id"| translate}}</label>
+        <input id="typeahead-focus" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"
+          [inputFormatter]="inputFormatter" [resultFormatter]="formatter"
+          (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value)"
+          #instance="ngbTypeahead">
+      </div>
+      <div class="form-group">
+        <label class="form-label">{{"subordinate.description"| translate}}</label>
+        <input readonly type="text" class="form-control" [value]="model?.getDesc?.() || ''">
+      </div>
+      <div class="form-group">
+        <label class="form-label"></label>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-primary btn-icon" (click)="onSearch()">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+          <button type="button" class="btn btn-outline-secondary btn-icon" (click)="clearSearch()">
+            <i class="mdi mdi-close"></i>
+          </button>
+        </div>
+      </div>
+
+
+      <div class="flex-grow-1"></div>
+      <span class="badge rounded-pill badge-primary-light p-2">
+        {{'all'| translate}} <strong class="text-primary mx-1">{{total || 0}}</strong> {{'person' | translate}}
+      </span>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="d-flex justify-content-center p-5">
+      <div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>
+    </div>
+    <ejs-grid #grid
+    [dataSource]="data"
+    [allowPaging]="true"
+    [pageSettings]="pageSettings"
+    [loadingIndicator]="{ indicatorType: 'Shimmer' }"
+    [locale]="locale"
+    (actionBegin)="onActionBegin($event)">
+    <e-columns>
+      <e-column field="no" [headerText]="translatedHeaders.no" [textAlign]="'center'" width="40"></e-column>
+      <e-column [headerText]="translatedHeaders.employee" width="200">
+        <ng-template #template let-data>
+          <div class="d-flex align-items-center cursor-myhr">
+            <img src="{{getPictureUrl(data.picture) || 'assets/images/users/defaultperson.jpg'}}" alt="user"  [routerLink]="getPageEmployeeProfile(data.employeeId)"
+              class="image-employee">
+            <div class="ms-3">
+              <p class="font-weight-bold mb-0 text-color-primary">{{getDesc(data.fname,data.efname)}} {{getDesc(data.lname,data.elname)}}</p>
+              <small class="text-muted">{{ data.employeeId}}</small>
+            </div>
+          </div>
+      
+        </ng-template>
+      </e-column>
+      <e-column [headerText]="translatedHeaders.position" width="180">
+        <ng-template #template let-data>
+          <p class="font-weight-bold mb-0 text-color-primary">  {{ data.position.tdesc }}</p>
+        </ng-template>
+      </e-column>
+      <e-column [headerText]="translatedHeaders.bu1" width="180">
+        <ng-template #template let-data>
+          <p class="font-weight-bold mb-0 text-color-primary">{{getDesc(data.bu1.tdesc,data.bu1.edesc)}}</p>
+        </ng-template>
+      </e-column>
+      <e-column [headerText]="translatedHeaders.bu2" width="180">
+        <ng-template #template let-data>
+          <p class="font-weight-bold mb-0 text-color-primary">{{getDesc(data.bu2.tdesc,data.bu2.edesc)}}</p>
+        </ng-template>
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+
+    <!-- Desktop Table View -->
+    <div *ngIf="!loading" class="d-none d-lg-block table-responsive">
+
+      <!-- <table class="table table-hover v-middle">
+        <thead class="thead-light">
+          <tr>
+            <th class="text-center" style="width: 5%;">{{"No."| translate}}</th>
+            <th>{{"Employee"| translate}}</th>
+            <th>{{"Position"| translate}}</th>
+            <th>{{ "Bu1" | translate}}</th>
+            <th>{{ "Bu2" | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cursor-myhr"
+            *ngFor="let emp of empList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ;let i = index"
+            [routerLink]="getPageEmployeeProfile(emp.employeeId)">
+            <td class="text-center">{{ i+1+((page-1)*pageSize) }}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <img src="{{emp.getPictureUrl() || 'assets/images/users/defaultperson.jpg'}}" alt="user"
+                  class="employee-avatar rounded-circle">
+                <div class="ms-3">
+                  <p class="font-weight-bold mb-0">{{ emp.getFullname() || '-'}}</p>
+                  <small class="text-muted">{{ emp.employeeId}}</small>
+                </div>
+              </div>
+            </td>
+            <td>{{ emp.position?.getPositionDesc() || '-'}}</td>
+            <td>{{ emp.bu1?.getBu1Desc() || '-'}}</td>
+            <td>{{ emp.bu2?.getBu2Desc() || '-'}}</td>
+          </tr>
+        </tbody>
+      </table> -->
+    </div>
+
+    <!-- Mobile Card View -->
+    <div *ngIf="!loading" class="d-lg-none">
+      <div class="emp-card mb-3"
+        *ngFor="let emp of empList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ;let i = index"
+        [routerLink]="getPageEmployeeProfile(emp.employeeId)">
+        <div class="card-body d-flex align-items-center">
+          <img src="{{emp.getPictureUrl() || 'assets/images/users/defaultperson.jpg'}}" alt="user"
+            class="employee-avatar rounded-circle">
+          <div class="ms-3">
+            <h5 class="card-title mb-0">{{ emp.getFullname() || '-'}}</h5>
+            <p class="card-text text-muted mb-0">{{ emp.position?.getPositionDesc() || '-'}}</p>
+            <small class="text-muted">{{ emp.employeeId}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="!loading && empList.length > 0" class="pagination-controls d-flex justify-content-end p-2">
+      <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="page=1">
+        <option [ngValue]="10">10 / หน้า</option>
+        <option [ngValue]="50">50 / หน้า</option>
+        <option [ngValue]="100">100 / หน้า</option>
+      </select>
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3"
+        [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+        <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+        <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+      </ngb-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Alert Modal -->
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Alert Message</h5>
+    <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{msg}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="closeBtnClick()">OK</button>
+  </div>
+</ng-template>

@@ -1,0 +1,63 @@
+<div class="card">
+    <div class="card-header bg-myhr">
+        <h4>{{"Report Backpay For Leader & Manager" | translate}}</h4>
+    </div>
+    <div class="card-body">
+        <!-- Filter Form -->
+        <div class="filter-grid">
+            <div>
+                <label class="form-label">{{"Period.approve"| translate}}</label>
+                <select [disabled]="this.periodList.length == 0" class="form-select" [(ngModel)]="period">
+                    <option *ngFor="let item of periodList; let i=index" [ngValue]="item">
+                        {{item | date:"dd-MM-yyyy"}}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"TypeCandidate"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'all'| translate}}" [ngModel]="backpayType.typeId" (ngModelChange)="modelBackpayTypeChange($event)">
+                    <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openBackpayTypeModal()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Type Name" | translate}}</label>
+                <input type="text" placeholder="{{'all'| translate}}" class="form-control" [ngModel]="backpayType.getName()" disabled>
+            </div>
+            <div>
+                <label class="form-label">{{"Store Branch"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'all'| translate}}" [ngModel]="workarea.workareaId" (ngModelChange)="modelWorkareaChange($event)">
+                    <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openWorkareaModal()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Workarea Name" | translate}}</label>
+                <input type="text" placeholder="{{'all'| translate}}" class="form-control" [ngModel]="workarea.getDesc()" disabled>
+            </div>
+            <div [ngClass]="{'d-none': !workarea.getDesc()}">
+                <label class="form-label">{{"Employee"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'all'| translate}}" [ngModel]="employee.employeeId" (ngModelChange)="modelEmployeeChange($event)">
+                    <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openEmployeeModal()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div [ngClass]="{'d-none': !workarea.getDesc()}">
+                <label class="form-label">{{"Employee Name" | translate}}</label>
+                <input type="text" placeholder="{{'all'| translate}}" class="form-control" disabled [value]="employee.getName()">
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="export()">
+                <i class="mdi mdi-file-excel me-1"></i> {{"Export" | translate}}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,243 @@
+<div class="modern-card employee-list-card">
+    <div class="card-header">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <div class="card-title-section">
+                <h4 class="card-title">
+                    <i class="mdi mdi-account-group me-2"></i>
+                    {{"menu.employee-list" | translate}}
+                </h4>
+                <p class="card-subtitle text-muted mb-0">{{ 'employee.list.subtitle' | translate }}</p>
+            </div>
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm" (click)="exportData()">
+                    <i class="mdi mdi-download me-1"></i>
+                    {{ 'Export' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Enhanced Search and Filter Section -->
+        <div class="search-filter-section mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-8 col-md-7">
+                    <div class="search-container">
+                        <div class="search-input-group">
+                            <i class="mdi mdi-magnify search-icon"></i>
+                            <input type="text" class="form-control search-input"
+                                placeholder="{{'Search' | translate}} {{'Name-Surname' | translate}}, {{'Employee ID' | translate}}, {{'Nick Name' | translate}}, ..."
+                                [(ngModel)]="searchTerm" (ngModelChange)="filterName()">
+                            <button class="btn btn-outline-secondary clear-search-btn" type="button"
+                                (click)="searchTerm = ''; filterName()" *ngIf="searchTerm"
+                                [attr.aria-label]="'Clear search' | translate" [title]="'Clear search' | translate">
+                                <i class="mdi mdi-close-circle-outline" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5">
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
+                        <div class="stats-badge">
+                            <i class="mdi mdi-account-multiple me-1"></i>
+                            <span class="badge-text">{{'all'| translate}}</span>
+                            <strong class="badge-number">{{collectionSize}}</strong>
+                            <span class="badge-text">{{'person' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="table-container d-none d-lg-block">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle modern-table">
+                    <thead>
+                        <tr>
+                            <th class="text-center col-number" scope="col">#</th>
+                            <th class="col-employee" scope="col">{{"Employee"| translate}}</th>
+                            <th class="col-position" scope="col">{{"Position"| translate}}</th>
+                            <th class="col-bu" scope="col">{{'Bu1' | translate}}</th>
+                            <th class="col-bu" scope="col">{{'Bu2' | translate}}</th>
+                            <th class="col-bu" scope="col">{{'Bu3' | translate}}</th>
+                            <th class="text-center col-actions" scope="col">{{ 'Actions' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of pagedDataShow; track item.employeeId; let i = $index) {
+                        <tr class="employee-row" [routerLink]="getPageEmployeeProfile(item.employeeId)">
+                            <td class="text-center row-number">{{ ((page*pageSize)-pageSize) + (i+1) }}</td>
+                            <td>
+                                <div class="employee-info">
+                                    <div class="employee-avatar-container">
+                                        <img [src]="item.getPictureUrl() || 'assets/images/users/defaultperson.jpg'"
+                                            alt="user" class="employee-avatar">
+                                        <div class="status-indicator" [ngClass]="getEmployeeStatus(item)"></div>
+                                    </div>
+                                    <div class="employee-details">
+                                        <h6 class="employee-name">{{item.getFullname()}}</h6>
+                                        <p class="employee-id">{{item.employeeId}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="position-info">
+                                    <span class="position-text">{{item.position?.getPositionDesc() || "-"}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="bu-text">{{item.bu1?.getBu1Desc() || "-"}}</span>
+                            </td>
+                            <td>
+                                <span class="bu-text">{{item.bu2?.getBu2Desc() || "-"}}</span>
+                            </td>
+                            <td>
+                                <span class="bu-text">{{item.bu3?.getBu3Desc() || "-"}}</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-outline-primary action-btn"
+                                        (click)="viewEmployee(item.employeeId, $event)"
+                                        [attr.aria-label]="'View employee' | translate"
+                                        [title]="'View employee' | translate">
+                                        <i class="mdi mdi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="7" class="text-center empty-state">
+                                <div class="empty-state-content">
+                                    <i class="mdi mdi-account-search empty-icon"></i>
+                                    <h5 class="empty-title">{{'No employee data found.' | translate}}</h5>
+                                    <p class="empty-description">{{'Try adjusting your search criteria.' | translate}}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @if(loading) {
+        <div class="d-flex justify-content-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        }
+
+        <!-- Mobile Card View -->
+        <div class="mobile-cards d-lg-none">
+            @for (emp of pagedDataShow; track emp.employeeId) {
+            <div class="employee-card" [routerLink]="getPageEmployeeProfile(emp.employeeId)">
+                <div class="card-body">
+                    <div class="employee-header">
+                        <div class="employee-avatar-container">
+                            <img [src]="emp.getPictureUrl() || 'assets/images/users/defaultperson.jpg'" alt="user"
+                                class="employee-avatar">
+                            <div class="status-indicator" [ngClass]="getEmployeeStatus(emp)"></div>
+                        </div>
+                        <div class="employee-info">
+                            <h6 class="employee-name">{{ emp.getFullname() || '-'}}</h6>
+                            <p class="employee-id">{{ emp.employeeId}}</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-outline-primary"
+                                (click)="viewEmployee(emp.employeeId, $event)"
+                                [attr.aria-label]="'View employee' | translate" [title]="'View employee' | translate">
+                                <i class="mdi mdi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="employee-details">
+                        <div class="detail-row">
+                            <span class="detail-label">{{ 'Position' | translate }}:</span>
+                            <span class="detail-value">{{ emp.position?.getPositionDesc() || '-'}}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">{{ 'Bu1' | translate }}:</span>
+                            <span class="detail-value">{{ emp.bu1?.getBu1Desc() || '-'}}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">{{ 'Bu2' | translate }}:</span>
+                            <span class="detail-value">{{ emp.bu2?.getBu2Desc() || '-'}}</span>
+                        </div>
+                    </div>
+                    <div class="employee-actions" *ngIf="emp.mobile">
+                        <a href="tel:{{emp.mobile}}" class="btn btn-outline-success btn-sm"
+                            (click)="$event.stopPropagation()">
+                            <i class="mdi mdi-phone me-1"></i>
+                            {{ 'Call' | translate }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            @if (!loading) {
+            <div class="empty-state-mobile">
+                <i class="mdi mdi-account-search empty-icon"></i>
+                <h5 class="empty-title">{{'No employee data found.' | translate}}</h5>
+                <p class="empty-description">{{'Try adjusting your search criteria.' | translate}}</p>
+            </div>
+            }
+            }
+        </div>
+
+        <!-- Enhanced Pagination Section -->
+        <div class="pagination-section">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="pagination-info">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="page-size-selector">
+                                <label for="pageSizeSelect" class="form-label mb-0">{{'Show' | translate}}:</label>
+                                <select id="pageSizeSelect" class="form-select page-size-select" [ngModel]="pageSize"
+                                    (ngModelChange)="onPageSizeChange($event)">
+                                    <option [ngValue]="10">10 {{ 'items' | translate }}</option>
+                                    <option [ngValue]="50">50 {{ 'items' | translate }}</option>
+                                    <option [ngValue]="100">100 {{ 'items' | translate }}</option>
+                                </select>
+                            </div>
+                            <div class="pagination-stats">
+                                <span class="text-muted">
+                                    {{ 'Showing' | translate }}
+                                    <strong>{{ ((page-1) * pageSize) + 1 }}</strong>
+                                    {{ 'to' | translate }}
+                                    <strong>{{ getEndIndex() }}</strong>
+                                    {{ 'of' | translate }}
+                                    <strong>{{ collectionSize }}</strong>
+                                    {{ 'results' | translate }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="pagination-controls">
+                        <ngb-pagination [collectionSize]="collectionSize" [page]="page"
+                            (pageChange)="onPageChange($event)" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                            [ellipses]="true" [boundaryLinks]="true" class="custom-pagination">
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #alertModal let-modal>
+    <div class="modal-header bg-myhr">
+        <h5 class="modal-title" id="editLabel">Alert Message</h5>
+        <button type="button" class="btn-close" (click)="closeBtnClick()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        {{msg}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="closeBtnClick()">OK</button>
+    </div>
+</ng-template>

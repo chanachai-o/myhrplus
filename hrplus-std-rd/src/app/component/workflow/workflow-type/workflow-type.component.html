@@ -1,0 +1,104 @@
+<ng-container *ngIf='dynamicComponent else EmptyView' class="w-100" [ngComponentOutlet]="dynamicComponent"
+  [ndcDynamicInputs]="inputs" [ndcDynamicOutputs]="outputs">
+</ng-container>
+
+<ng-template #EmptyView>
+  <div *ngIf="detailLoading" class="row align-items-center m-0 p-0 h-100">
+    <div class="row col-12 m-0 p-0 justify-content-center">
+      <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <!-- woekflowIdไม่ถูกต้อง -->
+  <div *ngIf="!detailLoading" class="row align-items-center m-0 p-0 h-100">
+    <div class="row col-12 m-0 p-0 justify-content-center">
+      <div class="col-12 d-flex justify-content-center">
+        <i class="fas fa-exclamation-triangle display-5 rt_anim text-danger"></i>
+      </div>
+      <div class="col-12 d-flex justify-content-center">
+        <h4 class="text-danger rt_anim">{{"An error was encountered." | translate}}</h4>
+      </div>
+    </div>
+  </div>
+  <!-- ปิดwoekflowIdไม่ถูกต้อง -->
+</ng-template>
+
+<div class="col-12">
+  <!-- เฉพาะหน้าinbox อนุมัติเอกสาร -->
+  <div class="row" *ngIf="fromPage=='inbox'&&inputs.data.workflowData?.wf_status==1&&!cc">
+    <div class="col-12">
+      <div class="card mb-0">
+        <div class="card-header bg-warning">
+          <h6 class="card-title text-white">{{"Command.mail" | translate}}</h6>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="form-check form-check-inline mt-1">
+                <input type="radio" class="form-check-input" id="approvestatus" name="radio-stacked" required
+                  [value]="0" (click)="status = 0">
+                <label class="form-check-label" for="approvestatus">
+                  {{"systemcpde.welfare.history.approvestatus.0" | translate }}
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="approvestatus2" name="radio-stacked" required
+                  [value]="1" (click)="status = 1">
+                <label class="form-check-label" for="approvestatus2">
+                  {{"systemcpde.welfare.history.approvestatus.1" | translate}}
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="approvestatus3" name="radio-stacked" required
+                  [value]="2" (click)=" status =  2">
+                <label class="form-check-label" for="approvestatus3">
+                  {{"systemcpde.welfare.history.approvestatus.2" | translate}}
+                </label>
+              </div>
+            </div>
+          </div>
+          <small class="text-muted ellipsis-myhr">{{"systemcode.comments" | translate}}</small>
+          <textarea id="w3mission" rows="2" class="form-control no-resize" [(ngModel)]="comments"> </textarea>
+          <div class="d-flex align-items-center justify-content-between py-2 me-auto ">
+            <button [disabled]="status<0||detailLoading" type="button" class="btn btn-success" (click)="sendData()"><i
+                class=" fas fa-share me-1"></i>{{"Send" |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ปิดเฉพาะหน้าinbox อนุมัติเอกสาร -->
+
+  <!-- เฉพาะหน้าoutbox ปุ่มยกเลิก/แก้ไข -->
+  <div class="card-body "
+    *ngIf="(inputs.data.workflowData?.screen_value.__initiator==empId)&&(!detailLoading&&((fromPage=='outbox'&&inputs.data.workflowData?.wf_status == 1)||inputs.data.workflowData?.wf_status == 7))">
+    <div class="d-flex no-block align-items-center justify-content-center">
+      <div class="action-form">
+        <div class="mb-0 text-center">
+          <button type="button" class="btn btn-success me-1" (click)="closeBtnClick()"
+            routerLink="../workflow-type/{{inputs.data.workflowData?.wf_id}}/{{inputs.data.workflowData?.runno}}">
+            <i class=" fas fa-edit"></i>
+            {{"Edit" |translate}}
+          </button>
+          <button type="button" class="btn btn-danger ms-1" (click)="cancelWF();"><i class=" fas fa-times"></i>
+            {{"cancel"|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--ปิดเฉพาะหน้าoutbox ปุ่มยกเลิก/แก้ไข -->
+
+  <!-- หยิบเอกสาร -->
+  <div class="card-body " *ngIf="!detailLoading&&fromPage=='centerbox'">
+    <div class="d-flex no-block align-items-center justify-content-center">
+      <div class="action-form">
+        <div class="mb-0 text-center">
+          <button type="button" class="btn btn-info" (click)="takeWF()"><i class="fas fa-plus-circle  "></i>
+            {{"take.work" |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ปิดหยิบเอกสาร -->
+</div>

@@ -1,0 +1,366 @@
+<div class="row">
+    <div class="row col-10 m-0" style="padding: 1px;">
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form">
+                รหัสพนักงาน
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px 10px 1px 10px;">
+            <h6 class="border-bottom-form">
+                {{masformFinalDetail?.employee.employeeId}}
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form">
+                ชื่อ - นามสกุล
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px 10px 1px 10px;">
+            <h6 class="border-bottom-form">
+                {{getText(masformFinalDetail?.employee.thFullName,masformFinalDetail?.employee.engFullName)}}
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form">
+                บริษัท
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px 10px 1px 10px;">
+            <h6 class="border-bottom-form">
+                {{token.companyName}}
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form">
+                ตำแหน่ง
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px 10px 1px 10px;">
+            <h6 class="border-bottom-form">
+                {{getText(masformFinalDetail?.employee.position.tdesc,masformFinalDetail?.employee.position.edesc)}}
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form">
+                แผนก/ส่วน
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px 10px 1px 10px;">
+            <h6 class="border-bottom-form">
+                {{getText(masformFinalDetail?.employee.bu2.tdesc,masformFinalDetail?.employee.bu2.edesc)}}
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form">
+                สาย/ฝ่าย
+            </h6>
+        </div>
+        <div class="col-2" style="padding: 1px 10px 1px 10px;">
+            <h6 class="border-bottom-form">
+                {{getText(masformFinalDetail?.employee.bu1.tdesc,masformFinalDetail?.employee.bu1.edesc)}}
+            </h6>
+        </div>
+        <div class="col-12" style="padding: 1px;">
+            <h6 class="border-form">
+                Individual Competency Evaluation (แบบประเมินผลสมรรถนะรายบุคคล)
+            </h6>
+        </div>
+    </div>
+    <div class="row col-2 m-0 p-0">
+        <div class="col-12" style="padding: 1px;">
+            <h6 class="border-form">
+                แบบประเมินผลด้านสมรรถนะ Individual Competency Assessment
+            </h6>
+        </div>
+    </div>
+    <div class="row col-12 m-0 p-0">
+        <div class="col-1" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                No.
+            </h6>
+        </div>
+        <div class="col-3" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                Competency
+            </h6>
+        </div>
+        <div class="col-1" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                Expected Score
+            </h6>
+        </div>
+        <div class="col-1" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                Weight
+            </h6>
+        </div>
+        <div class="col-1" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                Expect Score Weight
+            </h6>
+        </div>
+        <div class="row m-0 col-3 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <h6 class="border-form text-center">
+                    Score Level 1-10
+                </h6>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <h6 class="border-form text-center">
+                    Evaluate by Supervise
+                </h6>
+            </div>
+            <div class="row m-0 col-6 p-0">
+                <div class="col-12" style="padding: 1px;">
+                    <h6 class="border-form text-center">
+                        ก่อนรักษาการ
+                    </h6>
+                </div>
+                <div class="col-6" style="padding: 1px;">
+                    <h6 class="border-form text-center">
+                        ประเมินตนเอง
+                    </h6>
+                </div>
+                <div class="col-6" style="padding: 1px;">
+                    <h6 class="border-form text-center">
+                        ผู้บังคับบัญชา
+                    </h6>
+                </div>
+            </div>
+            <div class="row m-0 col-6 p-0">
+                <div class="col-12" style="padding: 1px;">
+                    <h6 class="border-form text-center">
+                        ครบกำหนด
+                    </h6>
+                </div>
+                <div class="col-6" style="padding: 1px;">
+                    <h6 class="border-form text-center">
+                        ประเมินตนเอง
+                    </h6>
+                </div>
+                <div class="col-6" style="padding: 1px;">
+                    <h6 class="border-form text-center">
+                        ผู้บังคับบัญชา
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form ">
+                Type of Development & Details (วิธีการและแนวทางในการพัฒนา)
+            </h6>
+        </div>
+    </div>
+    <ng-container *ngFor="let items of masformFinalDetail?.asform1DetailsFinal.topic; let i=index">
+        <div class="col-12" style="padding: 1px;">
+            <div class="border-form" style="justify-content: start !important">
+                {{i+1}} {{getText(items.mode.tdesc,items.mode.edesc)}}
+            </div>
+        </div>
+        <ng-container
+            *ngFor="let item of items.mode.code=='3'?(items.asform1Details.length>0?items.asform1Details[0].assessDetails:[]):items.asform1Details; let l=index">
+            <div class="row m-0 col-1 p-0">
+                <div class="col-12" style="padding: 1px;">
+                    <div class="border-form">
+                        {{i+1}}.{{l+1}}
+                    </div>
+                </div>
+            </div>
+            <div class="row m-0 col-3 p-0">
+                <div class="col-12" style="padding: 1px;">
+                    <div class="border-form" style="justify-content: start !important">
+                        {{getText(item.tdesc,item.edesc)}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-1" style="padding: 1px;">
+                <div class="border-form">
+                    10
+                </div>
+            </div>
+            <div class="col-1" style="padding: 1px;">
+                <div class="border-form">
+                    {{fmtNum(items.mode.code=='3'?item.asweight:item.asgweight)}}%
+                </div>
+            </div>
+            <div class="col-1" style="padding: 1px;">
+                <div class="border-form">
+                    {{fmtNum((items.mode.code=='3'?item.asweight:item.asgweight)/10)}}
+                </div>
+            </div>
+            <div class="row m-0 col-3 p-0">
+                <div class="col-3" style="padding: 1px;">
+                    <div class="border-form">
+                        {{(items.mode.code=='3'?
+                        (item.self2monthScore? (fmtStr(item.self2monthScore/10) | minusOneCheck:'N':10) :
+                        (item.self2monthScore | minusOneCheck:'N')) :
+                        (item.self2monthTotalScore? (fmtStr(item.self2monthTotalScore/10) | minusOneCheck:'N':10) :
+                        (item.self2monthTotalScore | minusOneCheck:'N')) )}}
+                    </div>
+                </div>
+                <div class="col-3" style="padding: 1px;">
+                    <div class="border-form">
+                        {{(items.mode.code=='3'?
+                        (item.boss2monthScore? (fmtStr(item.boss2monthScore/10) | minusOneCheck:'N':10) :
+                        (item.boss2monthScore | minusOneCheck:'N')) :
+                        (item.boss2monthTotalScore? (fmtStr(item.boss2monthTotalScore/10) | minusOneCheck:'N':10) :
+                        (item.boss2monthTotalScore | minusOneCheck:'N')) )}}
+                    </div>
+                </div>
+                <div class="col-3" style="padding: 1px;">
+                    <div class="border-form">
+                        {{(items.mode.code=='3'?
+                        (item.selfScoreFull? (fmtStr(item.selfScoreFull/10) | minusOneCheck:'N':10) :
+                        (item.selfScoreFull | minusOneCheck:'N')) :
+                        (item.selfTotalScore? (fmtStr(item.selfTotalScore/10) | minusOneCheck:'N':10) :
+                        (item.selfTotalScore | minusOneCheck:'N')) )}}
+                    </div>
+                </div>
+                <div class="col-3" style="padding: 1px;">
+                    <div class="border-form">
+                        {{(items.mode.code=='3'?
+                        (item.bossScoreFull? (fmtStr(item.bossScoreFull/10) | minusOneCheck:'N':10) :
+                        (item.bossScoreFull | minusOneCheck:'N')) :
+                        (item.bossTotalScore? (fmtStr(item.bossTotalScore/10) | minusOneCheck:'N':10) :
+                        (item.bossTotalScore | minusOneCheck:'N')) )}}
+                    </div>
+                </div>
+            </div>
+            <div class="row m-0 col-2 p-0">
+                <div class="col-12" style="padding: 1px;">
+                    <div class="border-form">
+                        <textarea class="w-100" [(ngModel)]="item.bossRemarkTopic"
+                            [disabled]="statusCompetencyCheck('employee') || statusCompetencyCheck('supervisor_finish')||step=='0'||!step"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="row m-0 col-4 p-0">
+        <div class="col-12" style="padding: 1px;">
+            <div class="border-form">
+                Total Score
+            </div>
+        </div>
+        <div class="col-12" style="padding: 1px;">
+            <div class="border-form">
+                Summary Score
+            </div>
+        </div>
+    </div>
+    <div class="col-1" style="padding: 1px;">
+        <div class="border-form">
+            {{expectedScoreTotal}}
+        </div>
+    </div>
+    <div class="col-1" style="padding: 1px;">
+        <div class="border-form">
+            {{weightTotal}}%
+        </div>
+    </div>
+    <div class="col-1" style="padding: 1px;">
+        <div class="border-form">
+            {{exportScoreWeightTotal}}
+        </div>
+    </div>
+    <div class="row m-0 col-3 p-0">
+        <div class="row m-0 col-3 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{self2monthTotalScore}}
+                </div>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{self2monthTotalScorePercentage}}%
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 col-3 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{boss2monthTotalScore}}
+                </div>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{boss2monthTotalScorePercentage}}%
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 col-3 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{selfTotalScore}}
+                </div>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{selfTotalScorePercentage}}%
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 col-3 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{bossTotalScore}}
+                </div>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    {{bossTotalScorePercentage}}%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-0 col-2 p-0">
+        <div class="col-12" style="padding: 1px;">
+            <div class="border-form">
+                &nbsp;
+            </div>
+        </div>
+        <div class="row m-0 col-12 p-0">
+            <div class="col-6" style="padding: 1px;">
+                <div class="border-form">
+                    {{selfAllPercentage}}%
+                </div>
+            </div>
+            <div class="col-6" style="padding: 1px;">
+                <div class="border-form">
+                    {{bossAllPercentage}}%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-end">
+    <div class="row m-0 col-6 p-0">
+        <div class="row m-0 col-6 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    จุดเด่น (Strengthen)
+                </div>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    <textarea class="w-100" [(ngModel)]="masformFinalDetail.asform1DetailsFinal.strengthen"
+                        [disabled]="statusCompetencyCheck('employee') || statusCompetencyCheck('supervisor_finish')||step=='0'||!step"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 col-6 p-0">
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    ข้อที่ต้องปรับปรุง
+                </div>
+            </div>
+            <div class="col-12" style="padding: 1px;">
+                <div class="border-form">
+                    <textarea class="w-100" [(ngModel)]="masformFinalDetail.asform1DetailsFinal.develop"
+                        [disabled]="statusCompetencyCheck('employee') || statusCompetencyCheck('supervisor_finish')||step=='0'||!step"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

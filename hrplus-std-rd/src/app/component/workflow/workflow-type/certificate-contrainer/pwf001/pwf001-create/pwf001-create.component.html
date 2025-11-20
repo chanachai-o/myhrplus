@@ -1,0 +1,348 @@
+<div class="row">
+  <!-- ส่งถึง -->
+  <div class="col-12">
+    <app-workflow-sendto (employeeCCId)="employeeCCId=$event" [wfid]="wfid" [cardName]="'pwf001.request.for.certification'" [menuPage]="'PWF001'"></app-workflow-sendto>
+  </div>
+  <!-- รายละเอียดข้อมูลพนักงาน -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"Employee Detail" | translate}}</h6>
+      </div>
+      <div class="card-body" *ngIf="employeeProfile">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Employee ID" | translate}}</small>
+            <h6>{{employeeProfile.employeeId}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Name-Surname" | translate}}</small>
+            <h6>{{employeeProfile.getFullname()}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Position" | translate}}</small>
+            <h6>{{employeeProfile.position.getPositionDesc()?employeeProfile.position.getPositionDesc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU1"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU1"):"Bu1"| translate}}</small>
+            <h6>{{employeeProfile.bu1?employeeProfile.bu1.getBu1Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU2"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU2"):"Bu2"| translate}}</small>
+            <h6>{{employeeProfile.bu2?employeeProfile.bu2.getBu2Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU3"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU3"):"Bu3"| translate}}</small>
+            <h6>{{employeeProfile.bu3?employeeProfile.bu3.getBu3Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU4"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU4"):"Bu4"| translate}}</small>
+            <h6>{{employeeProfile.bu4?employeeProfile.bu4.getBu4Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU5"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU5"):"Bu5"| translate}}</small>
+            <h6>{{employeeProfile.bu5?employeeProfile.bu5.getBu5Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU6"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU6"):"Bu6"| translate}}</small>
+            <h6>{{employeeProfile.bu6?employeeProfile.bu6.getBu6Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU7"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU7"):"Bu7"| translate}}</small>
+            <h6>{{employeeProfile.bu7?employeeProfile.bu7.getBu7Desc():'-'}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"tel" | translate}}</small>
+            <h6>{{employeeProfile.telExt?employeeProfile.telExt:'-'}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- รายละเอียด -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"pwf001.certificate.type" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="custom-control custom-radio mb-1" *ngFor="let item of certificatesList; let i=index">
+          <input type="radio" id="radio{{item.code}}" name="customRadio" class="custom-control-input"
+            (click)="changeCertificatesSelect(item.code)" [checked]="item.completed">
+          <label class="custom-control-label" for="radio{{item.code}}">{{item.desc | translate}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ฉบับ -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"pwf001.copy" | translate}}</h6>
+      </div>
+      <div class="card-body">
+    
+        <div class="row" *ngIf="certificatesSelect?.code!='1'">
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-check form-check-inline" *ngIf="certificatesSelect?.code!='1'">
+              <input class="form-check-input" type="checkbox" id="customCheckbox1" [(ngModel)]="thaiCheckbox" (change)="thaiCheckbox?thaiNum=1:thaiNum=0">
+              <label class="form-check-label" for="customCheckbox1">{{"systemcode.thai" | translate}}</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.amount"| translate}}</small>
+              <input [disabled]='!thaiCheckbox' type="number" class="form-control col-lg-3 col-md-3 col-sm-3 " min="0"
+                [(ngModel)]="thaiNum" onkeydown="if(event.key==='.'){event.preventDefault();}"
+                oninput="value = value.replace(/[^0-9]*/g,'')==''?'':Number(value.replace(/[^0-9]*/g,''))<=0?1:Number(value.replace(/[^0-9]*/g,''));">
+            </div>
+          </div>
+        </div>
+        
+        <div class="row" *ngIf="certificatesSelect?.code=='1'||certificatesSelect?.code=='C'">
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-check form-check-inline" *ngIf="certificatesSelect?.code=='1'||certificatesSelect?.code=='C'">
+              <input class="form-check-input" type="checkbox" id="customCheckbox2"[(ngModel)]="engCheckbox" (change)="engCheckbox?engNum=1:engNum=0">
+              <label class="form-check-label" for="customCheckbox2">{{"systemcode.eng" | translate}}</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.amount"| translate}}</small>
+              <input [disabled]="!engCheckbox" type="number" class="form-control col-lg-3 col-md-3 col-sm-3 " min="0"
+                [(ngModel)]="engNum" onkeydown="if(event.key==='.'){event.preventDefault();}"
+                oninput="value = value.replace(/[^0-9]*/g,'')==''?'':Number(value.replace(/[^0-9]*/g,''))<=0?1:Number(value.replace(/[^0-9]*/g,''));">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 b-r">
+            <small class="text-muted">{{"Note"| translate}}</small>
+            <h6>{{"systemcode.pwf.001.note" | translate}}</h6>
+          </div>
+        </div>
+        <div class="row">
+          <app-workflow-remark [wfid]="wfid"></app-workflow-remark>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- รายละเอียดการขอ Visa -->
+  <div class="col-12" *ngIf="certificatesSelect?.code=='1'">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"pwf001.visa" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.goto.country.id"| translate }}</small>
+              <div class="input-group mb-3">
+                <input readonly type="text" class="form-control  col-lg-6 col-md-6 col-sm-8"
+                  [(ngModel)]="countrySelect.countryId">
+                <div class="input-group-append">
+                  <button class="btn me-0 btn-info" type="button" (click)="openReasonModal(reasonModal)"><i
+                      class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.goto.country"| translate}}</small>
+              <input readonly type="text" class="form-control col-lg-6 col-md-6 col-sm-8 "
+                value="{{countrySelect.getCountryDesc()}}">
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.going.date"| translate}}</small>
+              <div class="input-group">
+                <input class="form-control col-md-6 col-sm-6 col-lg-6" oninput="value = value.replace(/[^0-9/]/g, '');"
+                  placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" ngbDatepicker #d1="ngbDatepicker"
+                  [(ngModel)]="startDate"
+                  [ngClass]="{'border-red':!checkDateFormat(startDate)}"
+                  [maxDate]="endDate" #c1="ngModel"
+                  (dateSelect)="checkBetweenDate()"
+                  (change)="startDate = datepickerService.validateFormatDate(c1);checkBetweenDate();"
+                  (blur)="checkBetweenDate()">
+<!--                  [(ngModel)]="startDate" [ngClass]="{'border-red':!checkDateFormat(startDate)}" [maxDate]="endDate">-->
+                <div class="input-group-append">
+                  <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"end.date"| translate}}</small>
+              <div class="input-group">
+                <input class="form-control col-md-6 col-sm-6 col-lg-6" oninput="value = value.replace(/[^0-9/]/g, '');"
+                  placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" ngbDatepicker #d2="ngbDatepicker"
+                  [(ngModel)]="endDate"
+                  [ngClass]="{'border-red':!checkDateFormat(endDate)}"
+                  [minDate]="startDate" #c2="ngModel"
+                  (dateSelect)="checkBetweenDate()"
+                  (change)="endDate = datepickerService.validateFormatDate(c2);checkBetweenDate();"
+                  (blur)="checkBetweenDate()">
+<!--                  [(ngModel)]="endDate" [ngClass]="{'border-red':!checkDateFormat(endDate)}" [minDate]="startDate">-->
+                <div class="input-group-append">
+                  <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- เหตุผล -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"systemcode.note" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.note"| translate}}</small>
+              <textarea class="form-control" rows="2" style="resize: none;" [(ngModel)]="remark"
+                placeholder='{{"systemcode.note"| translate}}'></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- เอกสารอ้างอิง -->
+  <div class="col-12" *ngIf="runno&&workflowData">
+    <app-workflow-create-doc-reference [inputs]="inputs" [dynamicComponent]="dynamicComponent"
+      [workflowData]="workflowData" (runno)="runno=$event">
+    </app-workflow-create-doc-reference>
+  </div>
+  <!-- แนบไฟล์ -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"attach_file" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r d-flex align-items-center">
+            <div class="form-group w-100">
+              <div class="input-group border">
+                <div class="input-group-prepend" (click)="fileInput.click()">
+                  <button class="input-group-text " >{{"upload_file"|translate}}</button>
+                </div>
+                <div class="custom-file d-flex align-items-center ">
+                  <input #fileInput type="file" class="custom-file-input d-none" id="inputGroupFile01" title=""
+                    (change)="onFileSelected($event)"
+                    accept="{{uploadConfig?uploadConfig.filter.replaceAll('*',''):''}}">
+                  <label class="custom-file-label mx-2" for="inputGroupFile01"> {{nameFile | translate}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12   d-flex align-items-center">
+            <div class="form-group" >
+              <button type="button" class="btn btn-danger" (click)="resetIMG()">{{"cancel"|
+                translate}}</button>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 b-r" *ngIf="uploadConfig">
+            <p class="text-danger m-b-0">{{"Maximum upload size" | translate}}
+              {{uploadConfig.maxSize/1024/1024}} MB</p>
+            <p class="text-danger">{{"Extensions are support" | translate}} {{uploadConfig.filter}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="d-flex no-block align-items-center justify-content-center">
+        <div class="action-form">
+          <div class="form-group m-b-0 text-center">
+            <button [disabled]="disabledChack()" type="submit" class="btn btn-success waves-effect waves-light"
+              (click)="onSubmit()"><i class=" fas fa-check"></i>
+              {{"Submit" | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal รหัสประเทศ -->
+<ng-template #reasonModal let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body p-0" [perfectScrollbar]="config">
+      <div class="card" style="margin-bottom: 0px !important">
+        <div class="card-header bg-myhr">
+          <h5 class="card-title">{{"systemcode.select.country" | translate}}</h5>
+        </div>
+        <div class="card-body pb-0">
+          <div class="table-responsive">
+            <div class="wrapper">
+              <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle">
+                <thead class="bg-info ">
+                  <tr class="text-white font-weight-normal">
+                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.country.code" | translate}}
+                    </th>
+                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.country.tdesc" | translate}}
+                    </th>
+                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.country.edesc"| translate}}
+                    </th>
+                    <th class="font-weight-normal text-center" scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let item of countryList| slice: (pageCountry-1) * pageSizeCountry : (pageCountry-1) * pageSizeCountry + pageSizeCountry; let i=index">
+                    <td class="font-weight-normal text-center">{{item.countryId}}</td>
+                    <td class="font-weight-normal text-center">{{item.tdesc}}</td>
+                    <td class="font-weight-normal text-center">{{item.edesc}}</td>
+                    <td class="font-weight-normal text-center">
+                      <button type="button" class="btn btn-info btn-sm text-nowarp"
+                        (click)="modal.close(item)">
+                        {{"choose"| translate}}
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center p-2 gap-2">
+            <!-- Items per page selector -->
+            <div class="d-flex ">
+              <select class="form-select" [(ngModel)]="pageSizeCountry"
+                (ngModelChange)="pageCountry=1">
+                <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+              </select>
+            </div>
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center align-items-center">
+              <ngb-pagination  [collectionSize]="countryList.length" [(page)]="pageCountry" [pageSize]="pageSizeCountry"
+                [maxSize]="3" [rotate]="true" >
+                <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+                <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger " (click)="modal.dismiss()"><i class="fa fa-times"></i>
+        {{"Close" | translate}}</button>
+    </div>
+  </div>
+</ng-template>

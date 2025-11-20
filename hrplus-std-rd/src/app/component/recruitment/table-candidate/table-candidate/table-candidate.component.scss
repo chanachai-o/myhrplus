@@ -1,0 +1,15 @@
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+	width: 100%;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+::ng-deep .fc .fc-button-primary {
+    background-color: #2962ff !important;
+    border-color: #ffffff  !important;
+}

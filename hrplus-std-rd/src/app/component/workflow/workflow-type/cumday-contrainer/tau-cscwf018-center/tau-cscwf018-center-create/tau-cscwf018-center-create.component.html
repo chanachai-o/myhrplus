@@ -1,0 +1,459 @@
+<!-- ใบสะสมวันหยุดโดย center -->
+<div class="row">
+  <!-- ส่งถึง -->
+  <div class="col-12">
+        <app-workflow-sendto (employeeCCId)="employeeCCId=$event" [wfid]="wfid" cardName="systemcode.workflow.cscwf018.center"></app-workflow-sendto>
+    </div>
+
+  <!-- รายละเอียดข้อมูลพนักงาน -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"Employee Detail" | translate}}</h6>
+      </div>
+      <div class="card-body" *ngIf="empListSelect">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Employee ID" | translate}}</small>
+            <h6><button type="button" class="btn btn-info  btn-sm btn-circle me-3"
+                (click)="openModal(contentEmp,'contentEmp')"><i class="fa fa-search"></i> </button>
+              {{empListSelect.employeeId}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Name-Surname" | translate}}</small>
+            <h6>{{empListSelect.getFullname()}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"Position" | translate}}</small>
+            <h6>{{empListSelect.position?empListSelect.position.getPositionDesc():""}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu1" | translate}}</small>
+            <h6>{{empListSelect.bu1?empListSelect.bu1.getBu1Desc():""}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu2" | translate}}</small>
+            <h6>{{empListSelect.bu2?empListSelect.bu2.getBu2Desc():""}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu3" | translate}}</small>
+            <h6>{{empListSelect.bu3?empListSelect.bu3.getBu3Desc():""}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu4" | translate}}</small>
+            <h6>{{empListSelect.bu4?empListSelect.bu4.getBu4Desc():""}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"dashboard.bu5" | translate}}</small>
+            <h6>{{empListSelect.bu5?empListSelect.bu5.getBu5Desc():""}}</h6>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <small class="text-muted">{{"tel" | translate}}</small>
+            <h6>{{empListSelect.telExt}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- รายละเอียดการเปลี่ยนวันหยุด -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"systemcode.detail.posting.type" | translate }}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r col-10">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.dayoff"| translate }}</small>
+              <div class="input-group">
+                <input class="form-control col-md-6 col-lg-6" placeholder='{{"dd.mm.yyyy" | translate}}' name="dp1"
+                  ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="__wf__dateid" (ngModelChange)="__wf__dateidChange()">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">{{"systemcode.posting.type"| translate}}</small>
+        <div class="form-group row">
+          <div class="col-12">
+            <div class="custom-control custom-radio custom-control-inline m-t-5">
+              <input type="radio" class="custom-control-input" id="priority1" name="radio-stacked" value="0"
+                [(ngModel)]="__wf__format_type" [checked]="__wf__format_type=='0'">
+              <label class="custom-control-label" for="priority1">{{"systemcode.day.Request.1" | translate }}</label>
+            </div>
+
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="priority2" name="radio-stacked" value="2"
+                [(ngModel)]="__wf__format_type" [checked]="__wf__format_type=='2'">
+              <label class="custom-control-label" for="priority2">{{"systemcode.day.Request.2" | translate}}</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="priority3" name="radio-stacked" value="3"
+                [(ngModel)]="__wf__format_type" [checked]="__wf__format_type=='3'">
+              <label class="custom-control-label" for="priority3">{{"systemcode.day.Request.3" | translate}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"reason"| translate}}</small>
+              <textarea class="form-control" rows="2" style="resize: none;" placeholder='{{"reason"| translate}}'
+                [(ngModel)]="__wf__remarks"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <app-workflow-remark [wfid]="wfid"></app-workflow-remark>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- เหตุผล -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"systemcode.note" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"systemcode.note"| translate}}</small>
+              <textarea class="form-control" rows="2" style="resize: none;" [(ngModel)]="remark"
+                placeholder='{{"systemcode.note"| translate}}'></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- เอกสารอ้างอิง -->
+  <div class="col-12" *ngIf="runno&&workflowData">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"Doc Reference" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 b-r">
+            <div class="form-group">
+              <h6 (click)="openDocReference()">
+                {{translateService.currentLang=="th"?workflowData.thaiSubject:workflowData.engSubject}}
+                [{{workflowData.doc_no}}]
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- แนบไฟล์ -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"attach_file" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"selected_file"| translate}}</small>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">{{"upload_file"|translate}}</span>
+                </div>
+                <div class="custom-file">
+                  <input #fileInput type="file" class="custom-file-input" id="inputGroupFile01" title=""
+                    (change)="onFileSelected($event)"
+                    accept="{{uploadConfig?uploadConfig.filter.replaceAll('*',''):''}}">
+                  <label class="custom-file-label col-lg-12 col-md-12 col-sm-12" for="inputGroupFile01">{{nameFile |
+                    translate}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 b-r">
+            <div class="form-group " style="margin-top: 20px;">
+              <button type="button" class="btn btn-danger" (click)="resetIMG()">{{"cancel"| translate}}</button>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 b-r" *ngIf="uploadConfig">
+            <p class="text-danger m-b-0">{{"Maximum upload size" | translate}} {{uploadConfig.maxSize/1024/1024}} MB</p>
+            <p class="text-danger">{{"Extensions are support" | translate}} {{uploadConfig.filter}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body ">
+    <div class="d-flex no-block align-items-center justify-content-center">
+      <div class="action-form">
+        <div class="form-group m-b-0 text-center">
+          <button [disabled]="!empListSelect" type="submit" class="btn btn-success waves-effect waves-light"
+            (click)="openOnSubmit()"><i class=" fas fa-check"></i>
+            {{"Submit" | translate}}</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row ใบสะสมวันหยุดโดย center -->
+
+
+
+<!-- Modal สำเนาถึง -->
+<ng-template #modalCC let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body" [perfectScrollbar]="config">
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-header bg-myhr">
+          <h5 class="card-title">{{"menu.employee-list" | translate}}</h5>
+        </div>
+        <div class="card-body pb-0 pt-1">
+          <div class="d-flex mb-1">
+            <input type="text" placeholder="{{'Name-Surname' | translate}}" class="form-control w-50">
+          </div>
+          <div class="table-responsive">
+            <div class="wrapper">
+              <table class="table  table-hover  table-sm  mb-0 no-wrap v-middle">
+                <thead class="bg-info ">
+                  <tr class="text-white font-weight-normal">
+                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.emp.id" | translate}}</th>
+                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.emp.name" | translate}}</th>
+                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.position"| translate}}</th>
+                    <th class="font-weight-normal text-center" scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="bg-myhr" colspan="4">Executive Office 3 :</td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-normal text-center">540954</td>
+                    <td class="font-weight-normal text-center">นายชัยยันต์ เค้าแคน</td>
+                    <td class="font-weight-normal text-center">Executive Office</td>
+                    <td class="font-weight-normal text-center"><button type="button" class="btn btn-info btn-sm"
+                        style="width: 60px;"> {{"choose"| translate}}</button></td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-normal text-center">570906</td>
+                    <td class="font-weight-normal text-center">นายสามารถ เนื่องศรี</td>
+                    <td class="font-weight-normal text-center">Executive Office</td>
+                    <td class="font-weight-normal text-center"><button type="button" class="btn btn-info btn-sm"
+                        style="width: 60px;"> {{"choose"| translate}}</button></td>
+                  </tr>
+                  <tr>
+                    <td class="bg-myhr" colspan="4">Operations :</td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-normal text-center">580109</td>
+                    <td class="font-weight-normal text-center">นางสาวนิตยา เนมขุนทด</td>
+                    <td class="font-weight-normal text-center">Marketing Officer</td>
+                    <td class="font-weight-normal text-center"><button type="button" class="btn btn-info btn-sm"
+                        style="width: 60px;"> {{"choose"| translate}}</button></td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-normal text-center">580109</td>
+                    <td class="font-weight-normal text-center">นางสาวนิตยา เนมขุนทด</td>
+                    <td class="font-weight-normal text-center">Marketing Officer</td>
+                    <td class="font-weight-normal text-center"><button type="button" class="btn btn-info btn-sm"
+                        style="width: 60px;"> {{"choose"| translate}}</button></td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-normal text-center">580109</td>
+                    <td class="font-weight-normal text-center">นางสาวนิตยา เนมขุนทด</td>
+                    <td class="font-weight-normal text-center">Marketing Officer</td>
+                    <td class="font-weight-normal text-center"><button type="button" class="btn btn-info btn-sm"
+                        style="width: 60px;"> {{"choose"| translate}}</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end p-2">
+
+            <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="page=1">
+              <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+              <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+              <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3"
+              [rotate]="true">
+              <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+              <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+            </ngb-pagination>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close" |
+        translate}}</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- เพิ่มพนักงาน -->
+<ng-template #contentEmp let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body" [perfectScrollbar]="config">
+
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-header bg-myhr">
+          <h4>{{"menu.employee-list" | translate}}</h4>
+        </div>
+        <div class="card-body pt-0 pt-2">
+          <div class="d-flex mb-1">
+            <input type="text" placeholder="{{'Name-Surname' | translate}}" class="form-control w-25"
+              [(ngModel)]="empListSearch" (ngModelChange)="searchEmpCenter()">
+          </div>
+          <div class="table-responsive">
+            <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+              <thead class="bg-info ">
+                <tr class="text-white font-weight-normal">
+                  <th class="font-weight-normal" scope="col">{{"No."| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Employee ID"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Name-Surname"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Position"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Bu1"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Bu2"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Bu3"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Bu4"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Bu5"| translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="empListShow.length==0">
+                  <td colspan="9" class="font-weight-normal text-center">{{"No Data Found" | translate}}</td>
+                </tr>
+                <tr class="cursor-myhr"
+                  *ngFor="let item of empListShow |slice: (pageModal-1) * pageSizeModal : (pageModal-1) * pageSizeModal + pageSizeModal ; let i=index"
+                  (click)="selectEmpCenter(item);modal.dismiss('Cross click')">
+                  <th class="align-middle text-center" scope="row">{{(i+1)+((pageModal-1)*pageSizeModal)}}</th>
+                  <td class="align-middle">{{ item.employeeId}}</td>
+                  <td class="align-middle">{{ item.getFullname()?item.getFullname():'-'}}</td>
+                  <td class="align-middle">{{ item.position.getPositionDesc()?item.position.getPositionDesc():'-'}}
+                  </td>
+                  <td class="align-middle">{{ item.bu1.getBu1Desc()?item.bu1.getBu1Desc():'-'}}</td>
+                  <td class="align-middle">{{ item.bu2.getBu2Desc()?item.bu2.getBu2Desc():'-'}}</td>
+                  <td class="align-middle">{{ item.bu3.getBu3Desc()?item.bu3.getBu3Desc():'-'}}</td>
+                  <td class="align-middle">{{ item.bu4.getBu4Desc()?item.bu4.getBu4Desc():'-'}}</td>
+                  <td class="align-middle">{{ item.bu5.getBu5Desc()?item.bu5.getBu5Desc():'-'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-end p-2">
+
+            <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSizeModal"
+              (ngModelChange)="pageModal=1">
+              <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+              <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+              <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="collectionSizeModal" [(page)]="pageModal" [pageSize]="pageSizeModal"
+              [maxSize]="3" [rotate]="true">
+              <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+              <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">{{"Close"|
+        translate}}</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- แจ้งเตือน -->
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Alert Message</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{msg}}
+  </div>
+</ng-template>
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+    <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{msg | translate}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="onSubmit();modal.close('Close click')">{{"confirm"|
+      translate}}</button> <button type="button" class="btn btn-danger" (click)="closeBtnClick()">{{"cancel"|
+      translate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #DocReferenceModal let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"systemcode.documents.detail" | translate}}</h5>
+      <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" [perfectScrollbar]="config">
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-body">
+          <!-- ใส่เอกสารตรงนี้นะจ๊ะ -->
+          <ng-template #workflowView [ngComponentOutlet]="dynamicComponent" [ndcDynamicInputs]="inputs"
+            [ndcDynamicOutputs]="outputs"></ng-template>
+          <!-- <app-wel210-nstda-create></app-wel210-nstda-create> -->
+        </div>
+      </div>
+      <div class="d-flex no-block align-items-center justify-content-center mt-4">
+        <div class="action-form">
+          <div class="form-group m-b-0 text-center">
+            <button type="button" class="btn btn-danger" (click)="onCancel()"><i class=" fas fa-times"></i>
+              {{"cancel" |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="closeBtnClick()">{{"confirm"| translate}}</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #cancelModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{msg | translate}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="cancelWF()">{{"confirm"| translate}}</button> <button
+      type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">{{"cancel"| translate}}</button>
+  </div>
+</ng-template>

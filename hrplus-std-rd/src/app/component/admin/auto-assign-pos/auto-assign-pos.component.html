@@ -1,0 +1,360 @@
+<div class="card">
+  <div class="card-header bg-myhr">
+    <h4>{{"auto.assign.position" | translate}}</h4>
+  </div>
+  <div class="card-body">
+    <div class="row justify-content-start align-items-center m-t-5 mb-3">
+      <div class="col-3 text-center my-auto">
+        <label class="font-weight-bold m-0">
+          {{"Employee ID"| translate}}
+        </label>
+      </div>
+      <div class="col-3 input-group">
+        <input type="text" class="form-control border-gray" placeholder="{{'Employee ID'| translate}}"
+          [(ngModel)]="employeeSelect.employeeId" (ngModelChange)="findEmployeeByEmployeeSelect()">
+        <div class="input-group-append">
+          <button class="btn btn-info" (click)="openEmployeeModalByEmployeeSelect(employeeModal)">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control" readonly placeholder="{{'Employee Name'| translate}}"
+          [value]="employeeSelect.getFullName()">
+      </div>
+    </div>
+    <div class="row justify-content-start align-items-center mb-3">
+      <div class="col-3 text-center my-auto">
+        <label class="font-weight-bold m-0">
+          {{"Job Title auto-assign-pos"| translate}}
+        </label>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control" readonly placeholder="{{'Job Title auto-assign-pos'| translate}}"
+          [value]="employeeSelect.position.getDesc()">
+      </div>
+    </div>
+    <div class="row justify-content-center align-items-center mb-3">
+      <div class="col-12 text-center my-auto">
+        <button type="submit" class="btn btn-info waves-effect waves-light" (click)="getAutoAssignPosition()">
+          {{"systemcode.search" | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm table-striped-myhr table-hover mb-0">
+        <thead class="bg-info text-white text-center">
+          <tr>
+            <td>
+              <input type="checkbox" (click)="checkboxSelectAll($event.target.checked)">
+            </td>
+            <td scope=" col" class="text-nowrap">
+              {{"No." | translate}}
+            </td>
+            <td scope="col" class="text-nowrap">
+              {{"Auto Assign Position ID" | translate}} <span class="text-danger">*</span>
+            </td>
+            <td scope="col" class="text-nowrap">
+              {{"assing.user.code" | translate}} <span class="text-danger">*</span>
+            </td>
+            <td scope="col" class="text-nowrap">
+              {{"dashboard.fullname" | translate}}
+            </td>
+            <td scope="col" class="text-nowrap">
+              {{"Start Date" | translate}}
+            </td>
+            <td scope="col" class="text-nowrap">
+              {{"End Date" | translate}}
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="workflowPositionLoading&&!workflowPositionList.length">
+            <td colSpan="100%" class="text-center">
+              <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info m-t-5 m-r-5 m-b-5 m-l-5" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!workflowPositionLoading&&!workflowPositionList.length">
+            <td colSpan="100%" class="text-center">
+              {{"No Data Found" | translate}}
+            </td>
+          </tr>
+          <tr class="cursor-myhr"
+            *ngFor="let item of workflowPositionList | slice: (pageWfp-1) * pageSizeWfp : (pageWfp-1) * pageSizeWfp + pageSizeWfp;let i = index" >
+            <td class="text-center">
+              <input type="checkbox" [(ngModel)]="item.check">
+            </td>
+            <td scope="row" class="text-nowrap text-center" (click)="editAssignPosition(item , assignPositionModal)">
+              <span>
+                {{(i+1)+((pageWfp-1) * pageSizeWfp)}}
+              </span>
+            </td>
+            <td scope="row" class="text-nowrap text-center" (click)="editAssignPosition(item , assignPositionModal)">
+              <span>
+                {{item.data.autoAssignPosId}}
+              </span>
+            </td>
+            <td scope="row" class="text-nowrap text-center" (click)="editAssignPosition(item , assignPositionModal)">
+              <span>
+                {{item.data.assignUserCode}}
+              </span>
+            </td>
+            <td scope="row" class="text-nowrap text-center" (click)="editAssignPosition(item , assignPositionModal)">
+              <span>
+                {{item.data.getDesc()}}
+              </span>
+            </td>
+            <td scope="row" class="text-nowrap text-center" (click)="editAssignPosition(item , assignPositionModal)">
+              <span>
+                {{item.data.beginDate | date:"dd-MM-yyyy"}}
+              </span>
+            </td>
+            <td scope="row" class="text-nowrap text-center" (click)="editAssignPosition(item , assignPositionModal)">
+              <span>
+                {{item.data.endDate | date:"dd-MM-yyyy"}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-end align-items-start m-0 py-2">
+      <select class="form-select m-r-5 w-auto border-gray" [(ngModel)]="pageSizeWfp" (ngModelChange)="pageWfp=1">
+        <option *ngFor="let item of [10,50,100]" [ngValue]="item">
+          {{"Items per page"| translate}}: {{item}}
+        </option>
+      </select>
+      <ngb-pagination [collectionSize]="workflowPositionList.length" [(page)]="pageWfp" [pageSize]="pageSizeWfp"
+        [maxSize]="3" [rotate]="true">
+        <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+        <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+      </ngb-pagination>
+    </div>
+    <div class="row justify-content-center align-items-center m-0">
+      <div class="col-1 p-0 mx-1 text-center ">
+        <button type="submit" class="btn btn-info" style="min-width: 100%;"
+          (click)="openAssignPositionModal(assignPositionModal)">
+          {{"systemcode.add" | translate}}
+        </button>
+      </div>
+      <div class="col-1 p-0 mx-1 text-center">
+        <button type="submit" class="btn btn-danger" style="min-width: 100%;" (click)="deleteAssignPosition()">
+          {{"systemcode.delete" | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #employeeModal let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body"  >
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-header bg-myhr">
+          <h4>{{"menu.employee-list" | translate}}</h4>
+        </div>
+        <div class="card-body pt-0 pt-2">
+          <div class="d-flex mb-1">
+            <input type="text" placeholder="{{'Search' | translate}} {{'Name-Surname' | translate}}, {{'Employee ID' | translate}}, {{'Position' | translate}} {{'and_all_bu' | translate}}" class="form-control w-25"
+              [(ngModel)]="employeeSearch" (ngModelChange)="searchDataEmp()">
+          </div>
+          <div class="table-responsive">
+            <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+              <thead class="bg-info ">
+                <tr class="text-white font-weight-normal">
+                  <th class="font-weight-normal" scope="col">{{"No."| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Employee ID"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Name-Surname"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{"Position"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU1"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU1"):"Bu1"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU2"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU2"):"Bu2"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU3"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU3"):"Bu3"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU4"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU4"):"Bu4"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU5"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU5"):"Bu5"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU6"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU6"):"Bu6"| translate}}</th>
+                  <th class="font-weight-normal" scope="col">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU7"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU7"):"Bu7"| translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="employeeLoading&&!employeeFilter.length">
+                  <td colSpan="100%" class="text-center">
+                    <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info m-t-5 m-r-5 m-b-5 m-l-5"
+                      role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!employeeLoading&&!employeeFilter.length">
+                  <td colSpan="100%" class="font-weight-normal text-center">
+                    {{"No Data Found" | translate}}
+                  </td>
+                </tr>
+                <tr class="cursor-myhr"
+                  *ngFor="let item of employeeFilter |slice: (pageEmp-1) * pageSizeEmp : (pageEmp-1) * pageSizeEmp + pageSizeEmp ; let i=index"
+                  (click)="modal.close(item)">
+                  <th class="align-middle text-center" scope="row">
+                    {{(i+1)+((pageEmp-1) * pageSizeEmp)}}
+                  </th>
+                  <td class="align-middle">
+                    {{ item.employeeId}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.getFullName()?item.getFullName():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.position.getDesc()?item.position.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu1?item.bu1.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu2?item.bu2.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu3?item.bu3.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu4?item.bu4.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu5?item.bu5.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu6?item.bu6.getDesc():'-'}}
+                  </td>
+                  <td class="align-middle">
+                    {{ item.bu7?item.bu7.getDesc():'-'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-end p-2">
+            <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSizeEmp"
+              (ngModelChange)="pageEmp=1">
+              <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+              <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+              <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="employeeFilter.length" [(page)]="pageEmp" [pageSize]="pageSizeEmp"
+              [maxSize]="3" [rotate]="true">
+              <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+              <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+        {{"Close"| translate}}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #assignPositionModal let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body pb-0">
+      <div class="card-header bg-myhr">
+        <h4>{{"auto.assign.position" | translate}}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-start align-items-center m-t-5 mb-3">
+          <div class="col-2 col-lg-3 text-center my-auto">
+            <label class="font-weight-bold m-0">
+              {{"Auto Assign Position ID"| translate}} <span class="text-danger">*</span>
+            </label>
+          </div>
+          <div class="col-5 col-lg-3">
+            <input type="text" class="form-control border-gray" placeholder="{{'Auto Assign Position ID'| translate}}"
+              [(ngModel)]="autoAssignPosition.id">
+          </div>
+        </div>
+        <div class="row justify-content-start align-items-center mb-3">
+          <div class="col-2 col-lg-3 text-nowrap text-center my-auto">
+            <label class="font-weight-bold m-0">
+              {{"assing.user.code"| translate}} <span class="text-danger">*</span>
+            </label>
+          </div>
+          <div class="col-5 col-lg-3 input-group">
+            <input type="text" class="form-control border-gray" placeholder="{{'Employee ID'| translate}}"
+              [(ngModel)]="autoAssignPosition.emp.employeeId" (ngModelChange)="findEmployeeByAssignPosition()">
+            <div class="input-group-append">
+              <button class="btn btn-info" (click)="openEmployeeModalByAssignPosition(employeeModal)">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-5 col-lg-3">
+            <input type="text" class="form-control" readonly placeholder="{{'Employee Name'| translate}}"
+              [value]="autoAssignPosition.emp.getFullName()">
+          </div>
+        </div>
+        <div class="row justify-content-start align-items-center mb-3">
+          <div class="col-2 col-lg-3 text-nowrap text-center my-auto">
+            <label class="font-weight-bold m-0">
+              {{"Start Date"| translate}}
+            </label>
+          </div>
+          <div class="col-5 col-lg-3 input-group">
+            <div class="input-group">
+              <input class="form-control border-gray" oninput="value = value.replace(/[^0-9/]/g, '');"
+                placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" ngbDatepicker #d1="ngbDatepicker"
+                [(ngModel)]="autoAssignPosition.startDate"
+                [ngClass]="{'border-red':!checkDateFormat(autoAssignPosition.startDate)}"
+                [maxDate]="autoAssignPosition.endDate" #c1="ngModel"
+                (dateSelect)="checkBetweenDate()"
+                (change)="autoAssignPosition.startDate = datepickerService.validateFormatDate(c1);checkBetweenDate();"
+                (blur)="checkBetweenDate()">
+                <!--#c1="ngModel" (ngModelChange)="autoAssignPosition.startDate = datepickerService.checkMaxDate(autoAssignPosition.startDate , autoAssignPosition.endDate);autoAssignPosition.endDate = datepickerService.checkMaxDate(autoAssignPosition.startDate , autoAssignPosition.endDate)"-->
+                <!--(change)="autoAssignPosition.startDate = datepickerService.validateFormatDate(c1);autoAssignPosition.endDate = datepickerService.checkMaxDate(autoAssignPosition.startDate , autoAssignPosition.endDate)" >-->
+              <div class="input-group-append">
+                <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-start align-items-center mb-3">
+          <div class="col-2 col-lg-3 text-nowrap text-center my-auto">
+            <label class="font-weight-bold m-0">
+              {{"End Date"| translate}}
+            </label>
+          </div>
+          <div class="col-5 col-lg-3 input-group">
+            <div class="input-group">
+              <input class="form-control border-gray" oninput="value = value.replace(/[^0-9/]/g, '');"
+                placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" ngbDatepicker #d2="ngbDatepicker"
+                [(ngModel)]="autoAssignPosition.endDate"
+                [ngClass]="{'border-red':!checkDateFormat(autoAssignPosition.endDate)}"
+                [minDate]="autoAssignPosition.startDate" #c2="ngModel"
+                (dateSelect)="checkBetweenDate()"
+                (change)="autoAssignPosition.endDate = datepickerService.validateFormatDate(c2);checkBetweenDate();"
+                (blur)="checkBetweenDate()">
+                <!--#c2="ngModel" [minDate]="autoAssignPosition.startDate"-->
+                <!--(change)="autoAssignPosition.endDate = datepickerService.validateFormatDate(c2);autoAssignPosition.endDate = datepickerService.checkMaxDate(autoAssignPosition.startDate , autoAssignPosition.endDate)">-->
+              <div class="input-group-append">
+                <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-info" (click)="addAssignPosition()">
+        {{"systemcode.add"| translate}}
+      </button>
+      <button type="submit" class="btn btn-danger" (click)="modal.dismiss();getAutoAssignPosition()">
+        {{"Close"| translate}}
+      </button>
+    </div>
+  </div>
+</ng-template>

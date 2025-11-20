@@ -1,0 +1,133 @@
+<div class="card">
+    <div class="card-header bg-myhr">
+        <h4>{{"Manager Approved all Workarea" | translate}}</h4>
+    </div>
+    <div class="card-body">
+        <!-- Filter Form -->
+        <div class="filter-grid">
+            <div>
+                <label class="form-label">{{"month"| translate}}</label>
+                <select class="form-select" [(ngModel)]="selectMonth">
+                    <option *ngFor="let item of monthList; let i=index" [ngValue]="item.val">{{item.name| translate}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"year"| translate}}</label>
+                <select class="form-select" [(ngModel)]="selectYear">
+                    <option *ngFor="let item of yearList; let i=index" [ngValue]="item">{{item}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"date"| translate}}</label>
+                <div class="radio-group">
+                    <div class="form-check">
+                        <input type="radio" name="radio-date" class="form-check-input" id="date1-15" value="1" [(ngModel)]="dateType">
+                        <label class="form-check-label" for="date1-15">16 - 15</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="radio-date" class="form-check-input" id="date16-end" value="2" [(ngModel)]="dateType">
+                        <label class="form-check-label" for="date16-end">25 - 24</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary" (click)="searchData()">
+                <i class="mdi mdi-magnify me-1"></i> {{"systemcode.search" | translate}}
+            </button>
+        </div>
+
+        <div class="d-flex justify-content-end mb-2">
+            <span class="badge bg-light text-dark p-2">{{'all'| translate}} <span class="badge bg-danger">{{groupTimeList.length?groupTimeList.length:'0'}}</span></span>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="table-responsive d-none d-lg-block">
+            <table class="table table-bordered table-sm no-wrap v-middle" id="table">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th class="align-middle text-center" rowspan="2">{{'No.' | translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{"Working Area ID" | translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{'Employee' | translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{"Work hour"| translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{"Work hour+OT"| translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{"late"| translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{"Early"| translate}}</th>
+                        <th class="align-middle text-center" rowspan="2">{{"ชั่วโมงจ่าย"| translate}}</th>
+                        <th class="text-center" colspan="4">{{"OT (ชม)"| translate}}</th>
+                        <th class="text-center" colspan="7">{{"รายได้เพิ่มเติม (บาท)"| translate}}</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">1</th>
+                        <th class="text-center">1.5</th>
+                        <th class="text-center">2</th>
+                        <th class="text-center">3</th>
+                        <th class="text-center">Shift</th>
+                        <th class="text-center">WOW</th>
+                        <th class="text-center">Rider</th>
+                        <th class="text-center">Leaflet</th>
+                        <th class="text-center">เบี้ยเลี้ยง</th>
+                        <th class="text-center">High Cost</th>
+                        <th class="text-center">{{'status' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading || groupTimeList.length === 0">
+                        <td colspan="100" class="text-center py-3">{{"No Data Found" | translate}}</td>
+                    </tr>
+                    <tr *ngFor="let item of groupTimeList; let i = index">
+                        <td class="text-center">{{i+1}}</td>
+                        <td class="text-center"><a class="link-myhr link-hover" routerLink="{{getWorkareaId(item.workarea.workareaId)}}">{{item.workarea.workareaId}}</a></td>
+                        <td class="text-center">{{item.amountEmployee}}</td>
+                        <td class="text-center">{{valSumList.sumHour[(i-1)+1]?valSumList.sumHour[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.sumHourAndOt[(i-1)+1]?valSumList.sumHourAndOt[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.sumLt[(i-1)+1]?valSumList.sumLt[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.sumMlv[(i-1)+1]?valSumList.sumMlv[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.hourPay[(i-1)+1]?valSumList.hourPay[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.ot1[(i-1)+1]?valSumList.ot1[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.ot15[(i-1)+1]?valSumList.ot15[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.ot2[(i-1)+1]?valSumList.ot2[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.ot3[(i-1)+1]?valSumList.ot3[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.shift[(i-1)+1]?valSumList.shift[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.wow[(i-1)+1]?valSumList.wow[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.rider[(i-1)+1]?valSumList.rider[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.leaflet[(i-1)+1]?valSumList.leaflet[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.allowance[(i-1)+1]?valSumList.allowance[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{valSumList.highCost[(i-1)+1]?valSumList.highCost[(i-1)+1].toFixed(2):'0'}}</td>
+                        <td class="text-center">{{(item.status?'systemcpde.welfare.history.approvestatus.1':'systemcode.status.1') | translate}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center table-info" colspan="2">{{'system.total' | translate}}</td>
+                        <td class="text-center table-info" *ngFor="let item of counter(16); let i = index" id="sumVal{{i+1}}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="d-lg-none">
+            <div *ngIf="loading || groupTimeList.length === 0" class="text-center py-3 text-muted">{{"No Data Found" | translate}}</div>
+            <div *ngFor="let item of groupTimeList; let i = index" class="approved-card-mobile">
+                <div class="card-header">
+                    <a class="link-myhr link-hover" routerLink="{{getWorkareaId(item.workarea.workareaId)}}">{{item.workarea.workareaId}}</a>
+                    <span class="badge" [ngClass]="item.status ? 'bg-success' : 'bg-warning'">{{(item.status?'systemcpde.welfare.history.approvestatus.1':'systemcode.status.1') | translate}}</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item"><span>{{'Employee' | translate}}</span><strong>{{item.amountEmployee}}</strong></div>
+                        <div class="info-item"><span>{{"Work hour"| translate}}</span><strong>{{valSumList.sumHour[(i-1)+1]?valSumList.sumHour[(i-1)+1].toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"Work hour+OT"| translate}}</span><strong>{{valSumList.sumHourAndOt[(i-1)+1]?valSumList.sumHourAndOt[(i-1)+1].toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"ชั่วโมงจ่าย"| translate}}</span><strong>{{valSumList.hourPay[(i-1)+1]?valSumList.hourPay[(i-1)+1].toFixed(2):'0'}}</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-success" (click)="exportexcel()" [disabled]="groupTimeList.length == 0">
+                <i class="mdi mdi-file-excel me-1"></i> {{"Export Excel" | translate}}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1922 @@
+<!-- แบบฟอร์มปรับปรุงข้อมูลพนักงาน Center -->
+<div class="row" *ngIf="!load">
+  <!-- รายละเอียดเนื้อหา -->
+  <div class="col-12">
+    <div class="card mb-0">
+      <div class="card-header bg-myhr">
+        <h6 class="card-title">{{"systemcode.update.emp" | translate}}</h6>
+      </div>
+      <div class="card-body">
+        <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs">
+          <li [ngbNavItem]="1" [destroyOnHide]="false">
+            <a ngbNavLink>{{"systemcode.emp.data" | translate}}</a>
+            <ng-template ngbNavContent>
+
+              <div class="card mb-0 mt-0 me-0 ms-0 pb-0 pt-0 ps-0 pe-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"systemcode.emp.detail" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-12  b-r">
+                      <div class="form-group ">
+                        <small class="text-muted">{{"Employee ID"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value['__wf__employeeid']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__emp_prefix')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.prefix"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__emp_prefix')" class="text-danger">*</small>
+                        <h6>{{prefixEmp.tdesc}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__fname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.fname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__fname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__fname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__lname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.lname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__lname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__lname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__nickname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.nickname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__nickname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__nickname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__emp_prefix')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.eprefix"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__emp_prefix')" class="text-danger">*</small>
+                        <h6>{{prefixEmp.edesc}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__efname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.efname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__efname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__efname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__elname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.elname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__elname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__elname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2  b-r">
+                      <div class="form-group ">
+                        <small
+                          [ngClass]="checkEdit('__wf__enickname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.enickname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__enickname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__enickname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__effofname')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.start.using" | translate}}</small>
+                        <small *ngIf="checkEdit('__wf__effofname')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__effofname']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-9  b-r">
+                      <div class="form-group ">
+                        <small
+                          [ngClass]="checkEdit('__wf__mobile_view')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.emp.mobile"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mobile_view')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mobile_view']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- รายละเอียดตำแหน่งงาน -->
+              <div class="col-12">
+                <div class="card mb-0">
+                  <div class="card-header bg-myhr">
+                    <h6 class="card-title">{{"systemcode.job.detail" | translate }}</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+
+                      <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                          <small class="text-muted">{{"systemcode.emp.bu1"| translate }}</small>
+                          <h6>{{data.workflowData.screen_value['__wf__bu1']}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                          <small class="text-muted">{{"systemcode.emp.bu2"| translate }}</small>
+                          <h6>{{data.workflowData.screen_value['__wf__bu2']}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                          <small class="text-muted">{{"systemcode.emp.bu3"| translate }}</small>
+                          <h6>{{data.workflowData.screen_value['__wf__bu3']}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                          <small class="text-muted">{{"systemcode.emp.bu4"| translate }}</small>
+                          <h6>{{data.workflowData.screen_value['__wf__bu4']}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                          <small class="text-muted">{{"systemcode.emp.bu5"| translate }}</small>
+                          <h6>{{data.workflowData.screen_value['__wf__bu5']}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ประวัติการศึกษา -->
+              <div class="col-12">
+                <div class="card mb-0">
+                  <div class="card-header bg-myhr">
+                    <h6 class="card-title">{{"systemcode.educate.detail" | translate }}</h6>
+                  </div>
+                  <div class="card-body border-bottom" *ngFor="let item of educateArray; let i=index">
+                    <div class="d-flex mb-2">
+                      <h5 class="m-t-5 "><span class="text-info"> &#9733;</span> {{"systemcode.educate.detail" |
+                        translate}} {{i+1}}</h5>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4 col-md-4 col-lg-3  b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$degreeid$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.edu.lv.id"| translate }}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$degreeid$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{degreeid[i]}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-8 col-md-7 col-lg-5 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$degreeid$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.edu.lv"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$degreeid$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{degreedesc[i]}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4 col-md-4 col-lg-3  b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$institue$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.institute.id"| translate }}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$institue$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{institue[i]}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-8 col-md-7 col-lg-5 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$institue$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.institute"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$institue$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{instituedesc[i]}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4 col-md-4 col-lg-3  b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$faculty$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.faculty.id"| translate }}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$faculty$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{faculty[i]}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-8 col-md-7 col-lg-5 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$faculty$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.faculty"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$faculty$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{facultydesc[i]}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4 col-md-4 col-lg-3  b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$majorid$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.major.id"| translate }}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$majorid$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{majorid[i]}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-8 col-md-7 col-lg-5 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$majorid$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.major"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$majorid$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{majordesc[i]}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3 col-4 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$year_start$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.year.start"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$year_start$'+(i+1))"
+                            class="text-danger">*</small>
+                          <h6>{{year_start[i]}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-4 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$year_end$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"systemcode.year.end"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$year_end$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{year_end[i]}}</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-4 b-r">
+                        <div class="form-group">
+                          <small
+                            [ngClass]="checkEdit('__wf__mempl_educate$gpa$'+(i+1))?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                            {{"GPA"| translate}}</small>
+                          <small *ngIf="checkEdit('__wf__mempl_educate$gpa$'+(i+1))" class="text-danger">*</small>
+                          <h6>{{gpa[i]}}</h6>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- End Loop Data -->
+
+                </div>
+              </div>
+              <div class="row">
+                <app-workflow-remark [wfid]="data.workflowData.wf_id"></app-workflow-remark>
+              </div>
+
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2" [destroyOnHide]="false">
+            <a ngbNavLink>{{"systemcode.address.data" | translate}} </a>
+            <ng-template ngbNavContent>
+              <!-- ที่อยู่ปัจจุบัน -->
+              <div class="card mb-0 mt-0 me-0 ms-0 pb-0 pt-0 ps-0 pe-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"address.1" | translate }}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 col-xs-12 col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tvillage$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tvillage"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tvillage$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tvillage$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$troom_no$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.troom"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$troom_no$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$troom_no$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tfloor$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tfloor"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tfloor$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tfloor$1']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$taddr$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.taddr"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$taddr$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$taddr$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tmoo$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tmoo"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tmoo$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tmoo$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tsoi$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tsoi"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tsoi$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tsoi$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$troad$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.troad"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$troad$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$troad$1']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tdistrict$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tsubdist"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tdistrict$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tdistrict$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$zipcode$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.dist.tdesc"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$zipcode$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$amphur$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$zipcode$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.prov"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$zipcode$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tprovince$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$zipcode$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.zipid"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$zipcode$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$zipcode$1']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ที่อยู่ปัจจุบันภาษาอังกฤษ -->
+                  <div class="row">
+                    <div class="col-md-6 col-xs-12 col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$evillage$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.evillage"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$evillage$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$evillage$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eroom_no$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.eroom"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eroom_no$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eroom_no$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$efloor$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.efloor"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$efloor$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$efloor$1']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eaddr$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.eaddr"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eaddr$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eaddr$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$emoo$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.emoo"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$emoo$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$emoo$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$esoi$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.esoi"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$esoi$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$esoi$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eroad$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.eroad"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eroad$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eroad$1']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$edistrict$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.esubdist"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$edistrict$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$edistrict$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eamphur$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.dist.edesc"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eamphur$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eamphur$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eprovince$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.eprov"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eprovince$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eprovince$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eprovince$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.eprov"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eprovince$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eprovince$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$fax$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"fax"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$fax$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$fax$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"map"| translate }}</small>
+                        <!-- <a *ngIf="data.workflowData.screen_value['__wf__mempl_addr$picture$1']" class="text-dark"
+                          style="cursor: hand;cursor: pointer;" (click)="dowloadMap()">
+                          <h6>{{data.workflowData.screen_value['__wf__mempl_addr$picture$1']}}</h6>
+                        </a> -->
+                        <h6><a target="_blank"
+                            href="{{url}}/FileDownload.jsp?uploadfield=mempl_addr.picture&filename={{data.workflowData.screen_value['__wf__mempl_addr$picture$1']}}"
+                            class="text-info" style="padding:0px">
+                            {{data.workflowData.screen_value['__wf__mempl_addr$picture$1']}} </a></h6>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <!-- ที่อยู่ตามทะเบียนบ้าน -->
+              <div class="card mb-0 mt-0 me-0 ms-0 pb-0 pt-0 ps-0 pe-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"systemcode.home.address" | translate }}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 col-xs-12 col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tvillage$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tvillage"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tvillage$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tvillage$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$troom_no$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.troom"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$troom_no$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$troom_no$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tfloor$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tfloor"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tfloor$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tfloor$0']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$taddr$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.taddr"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$taddr$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$taddr$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tmoo$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tmoo"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tmoo$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tmoo$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tsoi$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tsoi"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tsoi$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tsoi$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$troad$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.troad"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$troad$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$troad$0']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$tdistrict$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.tsubdist"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$tdistrict$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tdistrict$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$zipcode$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.dist.tdesc"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$zipcode$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$amphur$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$zipcode$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.prov"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$zipcode$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$tprovince$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$zipcode$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.zipid"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$zipcode$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$zipcode$0']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ที่อยู่ตามทะเบียนบ้านภาษาอังกฤษ -->
+                  <div class="row">
+                    <div class="col-md-6 col-xs-12 col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$evillage$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.evillage"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$evillage$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$evillage$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eroom_no$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.eroom"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eroom_no$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eroom_no$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$efloor$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.efloor"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$efloor$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$efloor$0']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eaddr$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.eaddr"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eaddr$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eaddr$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$emoo$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.emoo"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$emoo$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$emoo$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$esoi$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.esoi"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$esoi$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$esoi$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eroad$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.eroad"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eroad$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eroad$0']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$edistrict$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.esubdist"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$edistrict$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$edistrict$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eamphur$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.dist.edesc"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eamphur$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eamphur$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eprovince$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.eprov"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eprovince$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eprovince$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$eprovince$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.addr.zip.eprov"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$eprovince$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$eprovince$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_addr$fax$0')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"fax"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_addr$fax$0')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_addr$fax$0']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"map"| translate }}</small>
+                        <h6><a target="_blank"
+                            href="{{url}}/FileDownload.jsp?uploadfield=mempl_addr.picture&filename={{data.workflowData.screen_value['__wf__mempl_addr$picture$0']}}"
+                            class="text-info" style="padding:0px">
+                            {{data.workflowData.screen_value['__wf__mempl_addr$picture$0']}} </a></h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3" [destroyOnHide]="false">
+            <a ngbNavLink>{{"systemcode.family.data" | translate}}</a>
+            <ng-template ngbNavContent let-active>
+
+              <div class="card m-0 p-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"systemcode.spouse.infor" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$prefix$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.prefix"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$prefix$1')" class="text-danger">*</small>
+                        <h6>{{translate.currentLang=='th'?prefixSpouse.tdesc:prefixSpouse.edesc}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$fnameid$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.fname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$fnameid$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$fnameid$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$lname$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.lname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$lname$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$lname$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$birthday$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.bdate" | translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$birthday$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$birthday$1']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-5 col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$idcard$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.idcard.copy"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$idcard$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$idcard$1']}}
+                          <!-- <a *ngIf="data.workflowData.screen_value['__wf__mempl_card$atfile$1']" class="text-dark"
+                            style="cursor: hand;cursor: pointer;"
+                            (click)="dowloadFile2()">{{data.workflowData.screen_value['__wf__mempl_card$atfile$1']}}</a> -->
+
+                          <h6 *ngIf="data.workflowData.screen_value['__wf__mempl_card$atfile$1']"><a target="_blank"
+                              href="{{url}}/FileDownload.jsp?uploadfield=mempl_card.atfile&filename={{data.workflowData.screen_value['__wf__mempl_card$atfile$1']}}"
+                              class="text-info" style="padding:0px">
+                              {{data.workflowData.screen_value['__wf__mempl_card$atfile$1']}} </a></h6>
+                        </h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3 col-5  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$occupation$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.job.id"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$occupation$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$occupation$1']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-8 col-md-4 col-7 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$occupation$1')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.job"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$occupation$1')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__occupationdesc$1']}}</h6>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="card m-0 p-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"systemcode.parents.infor" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6 col-md-6  col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$idcard$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.father.idcard"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$idcard$2')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$idcard$2']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$idcard$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.mother.idcard"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$idcard$3')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$idcard$3']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 col-md-6  col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__fathmryidcard')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.father.idcard"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__fathmryidcard')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__fathmryidcard']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mothmryidcard')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.mother.idcard"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mothmryidcard')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mothmryidcard']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-2  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$prefix$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.father" | translate}} - {{"systemcode.prefix"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$prefix$2')" class="text-danger">*</small>
+                        <h6>{{translate.currentLang=='th'?prefixFather.tdesc:prefixFather.edesc}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$fnameid$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.fname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$fnameid$2')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$fnameid$2']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-12  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$lname$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.lname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$lname$2')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$lname$2']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$birthday$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.bdate" | translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$birthday$2')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$birthday$2']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$status$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.status"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$status$2')" class="text-danger">*</small>
+                        <h6>{{translate.currentLang=='th'?statusFather.tdesc:statusFather.edesc}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4 col-md-3 col-5  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$occupation$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.job.id"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$occupation$2')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$occupation$2']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-8 col-md-4 col-7 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$occupation$2')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.job"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$occupation$2')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__occupationdesc$2']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <div class="row">
+                    <div class="col-sm-12 col-md-2  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$prefix$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.mother" | translate}} - {{"systemcode.prefix"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$prefix$3')" class="text-danger">*</small>
+                        <h6>{{translate.currentLang=='th'?prefixMother.tdesc:prefixMother.edesc}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3  col-12 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$fnameid$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.fname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$fnameid$3')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$fnameid$3']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-12  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$lname$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.lname"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$lname$3')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$lname$3']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$birthday$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.bdate" | translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$birthday$3')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$birthday$3']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-6 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$status$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.child.status"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$status$3')" class="text-danger">*</small>
+                        <h6>{{translate.currentLang=='th'?statusMother.tdesc:statusMother.edesc}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4 col-md-3 col-5  b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$occupation$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.job.id"| translate }}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$occupation$3')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__mempl_family$occupation$3']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-sm-8 col-md-4 col-7 b-r">
+                      <div class="form-group">
+                        <small
+                          [ngClass]="checkEdit('__wf__mempl_family$occupation$3')?'text-danger ellipsis-myhr': 'text-muted ellipsis-myhr'">
+                          {{"systemcode.spouse.job"| translate}}</small>
+                        <small *ngIf="checkEdit('__wf__mempl_family$occupation$3')" class="text-danger">*</small>
+                        <h6>{{data.workflowData.screen_value['__wf__occupationdesc$3']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card m-0 p-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"systemcode.child.inf" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <div class="wrapper">
+                      <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                          <tr class="text-white font-weight-normal">
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.prefix" |
+                              translate }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.fname" |
+                              translate }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.lname" |
+                              translate }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.bdate" |
+                              translate }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.educate.status" |
+                              translate }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.status" |
+                              translate }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"systemcode.child.pid" | translate
+                              }}</th>
+                            <th class="font-weight-normal text-center" scope="col">{{"Deductible allowance" | translate
+                              }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="let item of empFamilyChild | slice: (pageChild-1)*pageSizeChild: (pageChild-1)*pageSizeChild+pageSizeChild; let i=index">
+                            <td class="align-middle text-center">
+                              {{prefixDesc(item.prefixId)}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$prefix$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">{{item.fName}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$fnameid$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">{{item.lName}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$lname$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">{{item.birthday}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$birthday$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">
+                              {{educationDesc(item.statusStudy)}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$stat_study$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">
+                              {{statusDesc(item.status)}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$status$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">{{item.idCard}}
+                              <small
+                                *ngIf="checkEdit('__wf__mempl_family$idcard$'+(((pageChild-1)*pageSizeChild)+(i+4)))"
+                                class="text-danger">*</small>
+                            </td>
+                            <td class="align-middle text-center">
+                              {{item.birthday?chackDeduction(item.birthday.split("-").reverse().join("-"),i):"-"}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-end p-2">
+
+                    <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSizeChild"
+                      (ngModelChange)="pageChild=1">
+                      <option [ngValue]="10">{{"Items per page"| translate }}: 10</option>
+                      <option [ngValue]="50">{{"Items per page"| translate }}: 50</option>
+                      <option [ngValue]="100">{{"Items per page"| translate }}: 100</option>
+                    </select>
+                    <ngb-pagination [collectionSize]="collectionSizeChild" [(page)]="pageChild"
+                      [pageSize]="pageSizeChild" [maxSize]="3" [rotate]="true">
+                      <ng-template ngbPaginationPrevious>{{"Prev"| translate }}</ng-template>
+                      <ng-template ngbPaginationNext>{{"Next"| translate }}</ng-template>
+                    </ngb-pagination>
+
+                  </div>
+
+
+                </div>
+              </div>
+
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4" [destroyOnHide]="false" *ngIf="!emp">
+            <a ngbNavLink>{{"systemcode.tax.data" | translate}}</a>
+            <ng-template ngbNavContent let-active>
+              <div class="card m-0 p-0">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title">{{"systemcode.tax.data" | translate}}</h6>
+                </div>
+                <div class="card-body" *ngIf="empWork&&working&&empWorkProfile">
+                  <div class="row">
+                    <div class="col-md-6 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.emp.bu3"| translate }}</small>
+                        <h6>{{data.workflowData.screen_value['__wf__bu3']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-xs-6 col-6 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.emp.branch"| translate }}</small>
+                        <h6>{{data.workflowData.screen_value['__wf__bu2']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-xs-6 col-4 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"dashboard.employeeid"| translate }}</small>
+                        <h6>{{empWork.employeeId}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-8 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.emp.fullname"| translate }}</small>
+                        <h6>{{empWork.getFullname()}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-xs-6 col-12 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.tax.payer.id"| translate }}</small>
+                        <h6>{{data.workflowData.screen_value['__wf__idtax']}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-xs-6 col-12 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.emp.idcard"| translate }}</small>
+                        <h6>{{data.workflowData.screen_value['__wf__id_people']}}</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4 col-4 col-xs-4 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.start.work.date"| translate }}</small>
+                        <h6>{{working.firstHiredate| date:'dd-MM-yyyy'}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-4 col-xs-4 b-r">
+                      <div class="form-group">
+                        <small class="text-muted ellipsis-myhr">{{"systemcode.emp.bdate"| translate }}</small>
+                        <h6>{{empWorkProfile.birthDate| date:'dd-MM-yyyy'}}</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-4 col-xs-4 b-r">
+                      <div class="form-group">
+                        <small class="text-muted">{{"systemcode.emp.age"| translate }}</small>
+                        <h6>{{empWorkProfile.getAge()}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ข้อ 1 -->
+                  <div class="form-group row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h6>1. {{"systemcode.marry.status"| translate }} :
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='S'">{{"systemcode.marry.status.0"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='M'&&!data.workflowData.screen_value['__wf__datemarry']">{{"systemcode.marry.status.1"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='M'&&data.workflowData.screen_value['__wf__datemarry']">{{"systemcode.marry.status.2.2"
+                          | translate}}{{data.workflowData.screen_value['__wf__datemarry']}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='M1'&&data.workflowData.screen_value['__wf__inc_spouse']=='0'">{{"systemcode.marry.status.3"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='M1'&&data.workflowData.screen_value['__wf__inc_spouse']=='1'">{{"systemcode.marry.status.4"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='W1'">{{"systemcode.marry.status.5"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='W2'">{{"systemcode.marry.status.6"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='D'">{{"systemcode.marry.status.7"
+                          | translate}}</span>
+                        <span class="ps-2"
+                          *ngIf="data.workflowData.screen_value['__wf__status_marry']=='D2'">{{"systemcode.marry.status.8"
+                          | translate}}</span>
+                        <small *ngIf="checkEdit('__wf__status_marry')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 2 -->
+                  <div class="form-group row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h6>2. {{"Total Children"| translate }} : <span class="ps-2">
+                          {{data.workflowData.screen_value['_wf__total_childs']}} {{"Persons" | translate}}</span><small
+                          *ngIf="checkEdit('_wf__total_childs')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h6>{{"Total Children2"| translate }} : <span class="ps-2">
+                          {{data.workflowData.screen_value['__wf__deduct_childs']}} {{"Persons" | translate}}
+                          {{"Total Children3"| translate }}
+                        </span><small *ngIf="checkEdit('__wf__deduct_childs')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-11 offset-1 col-sm-11 offset-sm-1 col-md-11 offset-md-1 col-lg-11  offset-lg-1">
+                      <h6>{{"systemcode.child.30000"| translate }} {{"systemcode.child.300002"| translate }} : <span
+                          class="ps-2">
+                          {{data.workflowData.screen_value['__wf__child_domestic']}} {{"Persons" | translate}}<small
+                            *ngIf="checkEdit('__wf__child_domestic')" class="text-danger">*</small>
+                          {{data.workflowData.screen_value['__wf__total2']}} {{"systemcode.bth" | translate}}</span>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-11 offset-1 col-sm-11 offset-sm-1 col-md-11 offset-md-1 col-lg-11  offset-lg-1">
+                      <h6>{{"systemcode.child.60000"| translate }} {{"systemcode.child.600002"| translate }} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__child_abroad']}} {{"Persons" |
+                          translate}}<small *ngIf="checkEdit('__wf__child_abroad')" class="text-danger">*</small>
+                          {{data.workflowData.screen_value['__wf__total3']}} {{"systemcode.bth" | translate}}</span>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 3 -->
+                  <div class="form-group row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h6>3. {{"systemcode.no.3"| translate }}</h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__fthyn']==1">
+                      <h6>{{"systemcode.father.income" | translate }} {{"systemcode.child.pid" |translate}} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__fthidcard']}}</span><small
+                          *ngIf="checkEdit('__wf__fthidcard')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__mthyn']==1">
+                      <h6>{{"systemcode.mother.income" | translate }} {{"systemcode.child.pid" |translate}} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__mthidcard']}}</span><small
+                          *ngIf="checkEdit('__wf__mthidcard')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__fthmryyn']==1">
+                      <h6>{{"systemcode.father.spouse.income" | translate }} {{"systemcode.child.pid" |translate}} :
+                        <span class="ps-2">{{data.workflowData.screen_value['__wf__fthmryidcard']}}</span><small
+                          *ngIf="checkEdit('__wf__fthmryidcard')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__mthmryyn']==1">
+                      <h6>{{"systemcode.mother.spouse.income" | translate }} {{"systemcode.child.pid" |translate}} :
+                        <span class="ps-2">{{data.workflowData.screen_value['__wf__mthmryidcard']}}</span><small
+                          *ngIf="checkEdit('__wf__mthmryidcard')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 ">
+                      <h6>
+                        {{"systemcode.Total" | translate}} {{data.workflowData.screen_value['__wf__total9']}}
+                        {{"systemcode.bth" | translate}}
+                      </h6>
+                    </div>
+                  </div>
+
+                  <!-- ข้อ 4 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h6>4. {{"systemcode.health.insurance.premium"| translate }}</h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__fat_ins_chk']==1">
+                      <h6>{{"systemcode.father.income" | translate }} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__fthidcard']}}</span> :
+                        {{data.workflowData.screen_value['__wf__ins_fat']}}
+                        {{"systemcode.bth" | translate}}<small *ngIf="checkEdit('__wf__ins_fat')"
+                          class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__mot_ins_chk']==1">
+                      <h6>{{"systemcode.mother.income" | translate }} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__mthidcard']}}</span> :
+                        {{data.workflowData.screen_value['__wf__ins_mot']}}
+                        {{"systemcode.bth" | translate}}<small *ngIf="checkEdit('__wf__ins_mot')"
+                          class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__fat_spouse_ins_chk']==1">
+                      <h6>{{"systemcode.father.spouse.income" | translate }} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__fthmryidcard']}}</span> :
+                        {{data.workflowData.screen_value['__wf__ins_fat_spouse']}}
+                        {{"systemcode.bth" | translate}}<small *ngIf="checkEdit('__wf__ins_fat_spouse')"
+                          class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-12 col-md-11 col-sm-11 offset-sm-1 offset-md-1 offset-lg-1 col-lg-11 "
+                      *ngIf="data.workflowData.screen_value['__wf__mot_spouse_ins_chk']==1">
+                      <h6>{{"systemcode.mother.spouse.income" | translate }} : <span
+                          class="ps-2">{{data.workflowData.screen_value['__wf__mthmryidcard']}}</span> :
+                        {{data.workflowData.screen_value['__wf__ins_mot_spouse']}}
+                        {{"systemcode.bth" | translate}}<small *ngIf="checkEdit('__wf__ins_mot_spouse')"
+                          class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 5 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>5. {{"systemcode.life.insurance1"| translate
+                        }}{{configShow.PY3011 | number:"1.2-2"}}{{"systemcode.life.insurance2"| translate
+                        }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__premium']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__premium')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 6 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>6. {{"systemcode.spouse.life.insurance1"|
+                        translate }}{{configShow.PY3011 | number:"1.2-2"}}{{"systemcode.spouse.life.insurance2"|
+                        translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__spose_premium']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__spose_premium')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 7 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>7. {{"systemcode.life.insurance.premium1"|
+                        translate }}{{translate.currentLang=="th"?(configShow.PY9906 |
+                        number:"1.2-2"):""}}{{"systemcode.life.insurance.premium2"|
+                        translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value["__wf__ins_pensions"]}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__ins_pensions')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 8 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>8. {{"systemcode.providence.fund"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <!-- <h6> 10,000 {{"systemcode.bth" | translate}}</h6> -->
+                    </div>
+                  </div>
+                  <!-- ข้อ 9 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>9. {{"systemcode.rmf1"| translate }}
+                        {{configShow.PY7001 | number:"1.2-2"}}
+                        {{"systemcode.rmf2"| translate }}
+                        {{configShow.PY3019S | number:"1.2-2"}}
+                        {{"systemcode.rmf3"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__rmf']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__rmf')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 10 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>10. {{"systemcode.ssf1"| translate }}
+                        {{configShow.PY3033 | number:"1.2-2"}}
+                        {{"systemcode.ssf2"| translate }}
+                        {{configShow.PY3034 | number:"1.2-2"}}
+                        {{"systemcode.ssf3"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__ssf']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__ssf')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 11 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>11.{{"systemcode.ltf1"| translate}}
+                        {{configShow.PY3028 | number:"1.2-2"}}
+                        {{"systemcode.ltf2"| translate}}
+                        {{configShow.PY3013 | number:"1.2-2"}}
+                        {{"systemcode.ltf3"| translate}}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__ltf']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__ltf')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 12 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>12. {{"systemcode.housing.loan"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__vigorish']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__vigorish')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 13 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>13. {{"systemcode.social.security.fund"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <!-- <h6> 12,000 {{"systemcode.bth" | translate}}</h6> -->
+                    </div>
+                  </div>
+                  <!-- ข้อ 14 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>14. {{"systemcode.take.care.crippled"| translate }}
+                        {{data.workflowData.screen_value['__wf__total_cripple']}} {{"Persons" | translate}}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__crippleallowance']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__crippleallowance')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 15 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>15. {{"systemcode.contribute.educate1"|translate
+                        }}{{configShow.PY3030}}{{"systemcode.contribute.educate2"|translate
+                        }}{{configShow.PY3029}}{{"systemcode.contribute.educate3"|translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__edudonation']}} {{"systemcode.bth" | translate}}
+                        <small *ngIf="checkEdit('__wf__edudonation')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 16 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>16. {{"systemcode.support.sport1"|translate
+                        }}{{configShow.PY3030S}}{{"systemcode.support.sport2"|translate
+                        }}{{configShow.PY3029S}}{{"systemcode.support.sport3"|translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__sportdonation']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__sportdonation')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 17 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>17. {{"systemcode.public.hospital.donate1"|translate
+                        }}{{configShow.PY3060}}{{"systemcode.public.hospital.donate2"|translate
+                        }}{{configShow.PY3060S}}{{"systemcode.public.hospital.donate3"|translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__hospitaldonation']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__hospitaldonation')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 18 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>18. {{"systemcode.flood.donate1"|translate
+                        }}{{configShow.PY3045}}{{"systemcode.flood.donate2"|translate
+                        }}{{configShow.PY3046}}{{"systemcode.flood.donate3"|translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__donation_special']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__donation_special')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 19 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>19. {{"systemcode.donation1"|translate
+                        }}{{configShow.PY3018}}{{"systemcode.donation2"|translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__donation']}} {{"systemcode.bth" | translate}}
+                        <small *ngIf="checkEdit('__wf__donation')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 20 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>20. {{"systemcode.political.party1"|
+                        translate }}{{configShow.PY3063|number:"1.2-2"}}{{"systemcode.political.party2"|
+                        translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__donate_political_party']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__donate_political_party')"
+                          class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 21 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>21. {{"systemcode.allowance.65"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6 *ngIf="data.workflowData.screen_value['__wf__iscripple']=='1'"> {{"systemcode.yes" |
+                        translate}}<small *ngIf="checkEdit('__wf__iscripple')" class="text-danger">*</small></h6>
+                      <h6 *ngIf="data.workflowData.screen_value['__wf__iscripple']=='0'"> {{"systemcode.nope" |
+                        translate}}<small *ngIf="checkEdit('__wf__iscripple')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6 class="ps-3">{{"systemcode.cripple.deduction"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6 *ngIf="data.workflowData.screen_value['__wf__is_cripple']=='1'"> {{"systemcode.yes" |
+                        translate}}<small *ngIf="checkEdit('__wf__is_cripple')" class="text-danger">*</small></h6>
+                      <h6 *ngIf="data.workflowData.screen_value['__wf__is_cripple']=='0'"> {{"systemcode.nope" |
+                        translate}}<small *ngIf="checkEdit('__wf__is_cripple')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 22 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>22. {{"systemcode.first.house.not.more.5M1"| translate }}
+                        {{configShow.PY3042|number:"1.2-2"}}
+                        {{"systemcode.first.house.not.more.5M2"| translate }}
+                        {{configShow.PY3042|number:"1.2-2"}}
+                        {{"systemcode.first.house.not.more.5M3"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__first_home2']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__first_home2')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 23 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>23. {{"systemcode.first.house.not.more.3M1"| translate }}
+                        {{configShow.PY3038|number:"1.2-2"}}
+                        {{"systemcode.first.house.not.more.3M2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__first_home']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__first_home')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 24 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>24. {{"systemcode.material.repair1"|
+                        translate}}
+                        {{configShow.PY9907|number:"1.2-2"}}
+                        {{"systemcode.material.repair2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__home_repair']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__home_repair')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 25 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>25. {{"systemcode.car.repair1"| translate}}
+                        {{configShow.PY9908|number:"1.2-2"}}
+                        {{"systemcode.car.repair2"| translate}}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__car_repair']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__car_repair')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 26 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>26. {{"systemcode.demestix.travel.main1"|
+                        translate }}
+                        {{configShow.PY3037|number:"1.2-2"}}
+                        {{"systemcode.demestix.travel.main2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__travel_in_country_main']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__travel_in_country_main')"
+                          class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 27 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>27. {{"systemcode.demestic.travel.secondary1"| translate }}
+                        {{configShow.PY9905|number:"1.2-2"}}
+                        {{"systemcode.demestic.travel.secondary2"| translate }}
+                        {{configShow.PY9905|number:"1.2-2"}}
+                        {{"systemcode.demestic.travel.secondary3"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__travel_in_country']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__travel_in_country')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 28 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>28. {{"systemcode.childbirth.deduct1"|
+                        translate }}
+                        {{configShow.PY3051|number:"1.2-2"}}
+                        {{"systemcode.childbirth.deduct2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__childbirth']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__childbirth')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 29 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>29. {{"systemcode.otop1"| translate }}
+                        {{configShow.PY3063|number:"1.2-2"}}
+                        {{"systemcode.otop2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__otop']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__otop')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 30 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>30. {{"systemcode.education.product1"|
+                        translate }}
+                        {{configShow.PY9903|number:"1.2-2"}}
+                        {{"systemcode.education.product2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__buy_edu_sport']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__buy_edu_sport')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 31 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>31. {{"systemcode.purchase.books1"|
+                        translate }}
+                        {{configShow.PY3064|number:"1.2-2"}}
+                        {{"systemcode.purchase.books2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__book_ebook']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__book_ebook')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 32 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>32. {{"systemcode.national.saving"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__savings']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__savings')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 33 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>33. {{"systemcode.health.insurance.taxpayer"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__health_insurance']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__health_insurance')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 34 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>34. {{"systemcode.cctv"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__buy_cctv']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__buy_cctv')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 35 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>35. {{"systemcode.debit"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__debit_card_fee']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__debit_card_fee')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 36 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>36. {{"systemcode.investing.shares"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__stock']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__stock')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 37 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>37. {{"systemcode.expenses.songkran"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__expenses_songkran']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__expenses_songkran')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 38 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>38. {{"systemcode.tires"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__buy_car_tire']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__buy_car_tire')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 39 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>39. {{"systemcode.books"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__buy_book_ebook']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__buy_book_ebook')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 40 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>40. {{"systemcode.otop.product"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__buy_otop']}} {{"systemcode.bth" | translate}}<small
+                          *ngIf="checkEdit('__wf__buy_otop')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 41 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>41. {{"systemcode.repair.material.100k"|
+                        translate }}{{configShow.PY3053|number:"1.2-2"}}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__home_repair2']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__home_repair2')" class="text-danger">*</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 42 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>42. {{"systemcode.repair.car.30k"|
+                        translate }}{{configShow.PY3054|number:"1.2-2"}}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__car_repair2']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__car_repair2')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+                  <!-- ข้อ 43 -->
+                  <div class="form-group row mt-3">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                      <h6>43. {{"systemcode.super.saving.fund1"|
+                        translate }}
+                        {{configShow.PY3065|number:"1.2-2"}}
+                        {{"systemcode.super.saving.fund2"| translate }}</h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 ">
+                      <h6> {{data.workflowData.screen_value['__wf__ssf_special']}} {{"systemcode.bth" |
+                        translate}}<small *ngIf="checkEdit('__wf__ssf_special')" class="text-danger">*</small></h6>
+                    </div>
+                  </div>
+
+                  <div class="d-flex mt-2">
+                    <h5 class="ms-auto me-auto ">** {{"systemcode.tax.note" | translate}} **</h5>
+                  </div>
+                </div>
+              </div>
+
+
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+  <app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+  </app-workflow-detail-footer>
+  <!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+</div>
+
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">
+      {{translate.currentLang == 'th'?'มีการแก้ไขข้อมูลที่แถบต่อไปนี้:':'The value have change in tab:'}}
+    </h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" [innerHTML]="msg">
+  </div>
+</ng-template>

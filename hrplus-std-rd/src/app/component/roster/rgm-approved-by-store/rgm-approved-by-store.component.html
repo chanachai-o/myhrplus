@@ -1,0 +1,373 @@
+<div class="card">
+    <div class="card-header bg-myhr" >
+      <h4>{{"Leader Approved Workarea" | translate}}</h4>
+    </div>
+    <div class="card-body " >
+            <div class="row g-2 align-middle">
+              <div class="form-group col-md-2 text-center " >
+                <label  class="font-weight-bold text-end control-label col-form-label font-14">{{"Workarea"| translate}}</label>
+              </div>
+                <div class="col-md-3 col-5 col-sm-5 " >
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1"  [(ngModel)]="selectWorkArea.workareaId" (ngModelChange)="searchWorkAreaId($event)">
+                      <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openBranchModal(branchModal)"><i
+                            class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+              <div class="col-md-3 col-5 col-sm-5  " >
+                <div class="form-group">
+                    <input type="text" [value]="getName(selectWorkArea.tdesc,selectWorkArea.edesc)"  placeholder="" class="form-control"disabled>
+                  </div>
+              </div>
+            </div>
+          <!-- ค้นหาเดือน/ปี -->
+            <div class="row g-2 align-middle">
+            <div class="form-group col-md-2 text-center ">
+                <label  class="font-weight-bold text-end control-label col-form-label font-14" >{{"month"| translate}} - {{"year"| translate}}</label>
+                </div>
+              <div class="form-group col-md-3 col-5 col-sm-5 ">
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="selectMonth" (ngModelChange)="changeDate()">
+                    <option *ngFor="let item of monthList; let i=index" [ngValue]="item.val" (ngModelChange)="changeDate()">
+                        {{item.name| translate}}
+                    </option>
+                </select>
+              </div>
+              <div  class="form-group col-md-3 col-5 col-sm-5  ">
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="selectYear">
+                    <option *ngFor="let item of  yearList; let i=index" [ngValue]="item">
+                        {{item}}
+                    </option>
+                  </select>
+              </div>
+            </div>
+                <div class="row g-2 align-middle">
+                    <div class="form-group col-md-2 text-center ">
+                        <label  class="font-weight-bold text-end control-label col-form-label font-14" >{{"date"| translate}}</label>
+                        </div>
+                      <div class="form-group col-md-3 col-5 col-sm-5 ">
+                        <div class="custom-control custom-radio m-t-5 ">
+                            <input type="radio" class="custom-control-input" id="customCheck1" [value]="1" 
+                            [(ngModel)]="dateType" >
+                            <label class="custom-control-label" for="customCheck1">16 - 15</label>
+                          </div>
+                      </div>
+                      <div class="form-group col-md-3 col-5 col-sm-5 ">
+                        <div class="custom-control custom-radio m-t-5 ">
+                            <input type="radio" class="custom-control-input" id="customCheck2"  [value]="2" 
+                            [(ngModel)]="dateType">
+                            <label class="custom-control-label" for="customCheck2">25 - 24</label>
+                          </div>
+                      </div>
+                    </div>
+          <!-- พนักงาน -->
+            <div class="row g-2 align-middle">
+              <div class="form-group col-md-2 text-center " >
+                <label  class="font-weight-bold text-end control-label col-form-label font-14">{{"Employee"| translate}}</label>
+              </div>
+                <div class="col-md-3 col-5 col-sm-5 " >
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control"  placeholder="{{'Employee ID'| translate}}" aria-describedby="basic-addon1"  [(ngModel)]="employeeSelect.employeeId" (ngModelChange)="findEmployee()">
+                      <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openEmployeeModal()"><i
+                            class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+              <div class="col-md-3 col-5 col-sm-5  " >
+                <div class="form-group">
+                    <input type="text"   placeholder="{{'Name-Surname'| translate}}" [value]="employeeSelect.getName()" class="form-control"disabled>
+                  </div>
+              </div>
+            </div>
+          <!-- พนักงาน -->
+          <div class="row g-2 align-middle">
+            <div class="col-md-2 text-center ">
+                <!-- <label  class="font-weight-bold text-end control-label col-form-label font-14" >{{"Order By"| translate}}</label> -->
+                </div>
+              <div class="col-md-3 col-5 col-sm-5 ">
+                <!-- <select class="form-select" id="inputGroupSelect01" >
+                  <option>รหัสพนักงาน</option>
+                </select> -->
+              </div>
+              <div  class="col-md-5 col-7 col-sm-7  ">
+              </div>
+              <div class="col-md-2 text-center ">
+                <span  class="badge badge-light rounded-pill " style="width: 130px;padding: 4px;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> {{'all'| translate}} <span  class="badge badge-danger rounded-pill px-3 font-weight-bold font-14">{{timecurrentList.length?timecurrentList.length:'0'}}</span>
+                    </p>
+                </span>
+              </div>
+            </div>
+            <div class="row g-2 align-middle mt-3">
+                <div class="form-group col-md-12 col-12 col-sm-12" style="text-align: center">
+                    <button type="submit" class="btn btn-info waves-effect waves-light"  (click)="searchData()" [disabled]="!selectWorkArea.workareaId">
+                        {{"systemcode.search" | translate}}
+                    </button>
+                    &nbsp;
+                    <button type="submit" class="btn btn-info waves-effect waves-light" >
+                        {{"Clear" | translate}}
+                    </button>
+    
+                </div>
+            </div>
+<div class="table-responsive mt-3">
+    <div class="wrapper">
+        <!-- <perfect-scrollbar [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}"> -->
+        <table class="table table-bordered table-sm   no-wrap v-middle "  id="table">
+            <thead class="bg-info " >
+                <tr class="text-white font-weight-normal">
+                    <th class="font-weight-normal width-table sticky-col-th first-col align-middle text-center" scope="col"  rowspan="2">{{"Name-Surname" | translate}}</th>
+                    <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">Job Title</th>
+                    <th class="font-weight-normal width-table text-center" scope="col" [colSpan]="sumDate" >
+                        ช่วงวันที่ {{dateType == 1?'16':'25'}} {{getDay(selectMonth,'start') | translate}} {{getDay(selectYear,'yearStart')}} ถึง {{dateType == 1?'15':'24'}} {{getDay(selectMonth,'end') | translate}} {{selectYear}}
+                    </th>
+                    <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"Work hour"| translate}}</th>
+                    <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"Work hour+OT"| translate}}</th>
+                    <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"late"| translate}}</th>
+                    <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"Early"| translate}}</th>
+                    <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"ชั่วโมงจ่าย"| translate}}</th>
+                    <th class="font-weight-normal width-table text-center" scope="col" colspan="4">{{"OT (ชม)"| translate}}</th>
+                    <th class="font-weight-normal width-table text-center" scope="col" colspan="6">{{"รายได้เพิ่มเติม (บาท)"| translate}}</th>
+                  </tr>
+                <tr class="text-white font-weight-normal">
+                    <th class="font-weight-normal width-table text-center" scope="col" *ngFor="let item of counter(getEndOfMonthf()) let i =index">{{dateType == 1?16+i:25+i}}</th>
+                    <th class="font-weight-normal width-table text-center" scope="col" *ngFor="let item of counter(dateType==1?15:24) let i =index">{{1+i}}</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">1</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">1.5</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">2</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">3</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">Shift</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">WOW</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">Rider</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">Leaflet</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">เบี้ยเลี้ยง</th>
+                    <th class="font-weight-normal width-table text-center" scope="col">High Cost</th>
+                  </tr>
+            </thead>
+            <tbody *ngIf="loading">
+                <tr>
+                    <td colspan="100" class="font-weight-normal text-center">
+                        {{"No Data Found" | translate}}
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!loading">
+                <tr *ngFor="let item of timecurrentList; let i = index">
+                    <td class="align-middle sticky-col first-col bg-white " [ngStyle]="{'background-color': statusColor(item.ttimeCurrentSum.empEvery)}"  >{{item.employee?item.employee.employeeId:'-'}} : {{item.employee?getName(item.employee.thFullName,item.employee.engFullName):'-'}}</td>
+                    <td class="align-middle ">{{getName(item.ttimeCurrentSum.empPosition.tdesc,item.ttimeCurrentSum.empPosition.edesc)}}</td>
+                    <td class="align-middle text-center cursor-myhr {{statusFontColor(time.holiday,time.timeTemp)}}" [ngStyle]="{'background-color':statusColor(time.acApprove,time.rgmApprove)}" [ngClass]="{'bg-info text-white ': time.isSelect}" *ngFor="let time of item.ttimeCurrentSum.ttimeCurrentList; let l = index" (click)="onSelectDate(time,i,l)">{{dataCheck(time.hourD,time.leave,time.transfer)}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.sumHour?item.ttimeCurrentSum.sumHour.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.sumHourAndOt?item.ttimeCurrentSum.sumHourAndOt.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.sumLt?item.ttimeCurrentSum.sumLt.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.sumMlv?item.ttimeCurrentSum.sumMlv.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.hourPay?item.ttimeCurrentSum.hourPay.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.ot1?item.ttimeCurrentSum.ot1.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.ot15?item.ttimeCurrentSum.ot15.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.ot2?item.ttimeCurrentSum.ot2.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.ot3?item.ttimeCurrentSum.ot3.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.shift?item.ttimeCurrentSum.shift.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.wow?item.ttimeCurrentSum.wow.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.rider?item.ttimeCurrentSum.rider.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.leaflet?item.ttimeCurrentSum.leaflet.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.allowance?item.ttimeCurrentSum.allowance.toFixed(2):'0'}}</td>
+                    <td class="align-middle text-center">{{item.ttimeCurrentSum.highCost?item.ttimeCurrentSum.highCost.toFixed(2):'0'}}</td>
+                </tr>
+                <tr>
+                <td class="align-middle sticky-col first-col table-info text-center text-dark" >{{'system.total' | translate}}</td>
+                <td class="align-middle text-center text-dark table-info">{{timecurrentList.length?timecurrentList.length:'0'}}</td>
+                <td class="align-middle text-center text-dark table-info" *ngFor="let item of counter(sumDate); let i = index" id="sumVal{{i+1}}"></td>
+                <td class="align-middle text-center text-dark table-info" *ngFor="let item of counter(15); let i = index" id="sumVal{{sumDate+i+1}}"></td>
+                </tr>
+            
+            </tbody>
+          </table>
+        <!-- </perfect-scrollbar> -->
+        </div>
+        </div>
+        <div class="row justify-content-center p-2"  *ngIf="loadApproved">
+          <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div class="row g-2 align-middle mt-3">
+            <div class="form-group col-md-12 col-12 col-sm-12" style="text-align: center">
+                <button type="button" class="btn btn-info"  [disabled]="timecurrentListApproveAll.length == 0"  (click)="onApproved('approveAll')">
+                    {{"Leader Approver All"| translate}}
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-info"  [disabled]="ListApproved.length == 0" (click)="onApproved('approve')">
+                    {{"Leader Approver"| translate}}
+                </button>
+                &nbsp;
+                <button type="submit" class="btn btn-info waves-effect waves-light" (click)="exportexcel()" [disabled]="timecurrentList.length == 0">
+                    {{"Export Excel" | translate}}
+                </button>
+
+            </div>
+        </div>
+        <div class="d-flex justify-content-start p-2">
+            <div class="p-2 bd-highlight">
+                <span  class="badge badge-light rounded-pill " style="padding:2.5px 10px 2.5px 10px ;background-color:#e4b928;">
+                   <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Part time
+                   </p>
+               </span>
+           </div>
+            <div class="p-2 bd-highlight">
+                <span  class="badge badge-light rounded-pill " style="padding:2.5px 10px 2.5px 10px ;background-color:#30e428;">
+                   <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Full time
+                   </p>
+               </span>
+           </div>
+            <div class="p-2 bd-highlight">
+                <span  class="badge badge-light rounded-pill " style="padding:2.5px 10px 2.5px 10px ;background-color:#eafc8f;">
+                   <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Manager Approve
+                   </p>
+               </span>
+           </div>
+            <div class="p-2 bd-highlight">
+                <span  class="badge badge-light rounded-pill " style="padding:2.5px 10px 2.5px 10px ;background-color:#b8e2ec;">
+                   <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Leader Approver
+                   </p>
+               </span>
+           </div>
+            <div class="p-2 bd-highlight">
+                <span  class="badge badge-light rounded-pill " style="padding:2.5px 10px 2.5px 10px ;background-color:#c7b191;">
+                   <p class="mb-0 me-1 text-dark font-weight-bold font-14"> No Approve
+                   </p>
+               </span>
+           </div>
+            <div class="p-2 bd-highlight">
+                <span  class="badge badge-light rounded-pill border" style="padding:2.5px 10px 2.5px 10px ;background-color:#f4f4f4;">
+                   <p class="mb-0 me-1 text-dark font-weight-bold font-14"> No Plan
+                   </p>
+               </span>
+           </div>
+
+        </div>
+        <div class="d-flex justify-content-start p-2 ">
+            <div class="p-2 bd-highlight">
+               <span class="text-warning">ตัวเลขสีส้ม</span> = มีการแก้ไขเวลาเข้า ออก ของพนักงาน, <span class="text-danger">ตัวเลขสีแดง</span> = วันหยุด, * = มีการยืมตัวพนักงาน, L = มีการลา
+            </div>
+        </div>
+          <div class="d-flex justify-content-end p-2">
+
+            <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSize" >
+              <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+              <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+              <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+            </select>
+
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" >
+              <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+              <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+            </ngb-pagination>
+
+
+          </div>
+
+
+
+    </div>
+</div>
+
+<ng-template #branchModal let-modal>
+    <div class="modal-body" [perfectScrollbar]>
+        <div class="card" style="margin-bottom:-15px">
+            <div class="card-header bg-myhr">
+                <h4>{{"Working Area Table" | translate}}</h4>
+            </div>
+            <div class="card-body pt-0 pt-2">
+                <div class="d-flex col-5 mb-1 p-0">
+                    <input type="text"
+                        placeholder="{{'systemcode.search' | translate}} {{'Working Area ID' | translate}}{{' / '}}{{'Working Area Name' | translate}}"[ngModel]="searchModal" (ngModelChange)="searchFilter('workarea',$event)"
+                        class="form-control">
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                            <tr class="text-white font-weight-normal">
+                                <th class="font-weight-normal text-center" scope="col">{{"Working Area ID"| translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">{{"Working Area Name (Thai)"|
+                                    translate}}</th>
+                                <th class="font-weight-normal text-center" scope="col">{{"Working Area Name (Eng.)"|
+                                    translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="workareaListShow.length == 0">
+                                <td colspan="100%" class="font-weight-normal text-center">
+                                    {{"No Data Found" | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr class="cursor-myhr"
+                            *ngFor="let item of workareaListShow | slice: (pageModal-1) * pageSizeModal : ((pageModal-1) * pageSizeModal) + pageSizeModal; let i=index"
+                            (click)="slectWorkArea(item);modal.close('Close click')">
+                            <td class="font-weight-normal text-center">
+                                {{item.workareaId}}
+                            </td>
+                            <td class="font-weight-normal">
+                                {{item.tdesc}}
+                            </td>
+                            <td class="font-weight-normal">
+                                {{item.edesc}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-end p-2">
+                    <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSizeModal"
+                        (ngModelChange)="page=1">
+                        <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                        <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                        <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+                    </select>
+                    <ngb-pagination [collectionSize]="workareaListShow.length" [(page)]="pageModal" [pageSize]="pageSizeModal"
+                        [maxSize]="3" [rotate]="true">
+                        <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+                        <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+            {{"Close"| translate}}
+        </button>
+    </div>
+</ng-template>
+<ng-template #confirmModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Close')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{msg | translate}}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="modal.close()">{{"confirm"|  translate}}</button> 
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss('Close')">{{"cancel"|
+        translate}}</button>
+    </div>
+  </ng-template>
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Close')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    {{msg | translate}}
+  </div>
+</ng-template>

@@ -1,7 +1,8 @@
-import { BaseModel, TranslateService } from './base.model';
+import { BaseModel, TranslateService, baseGetName, checkData } from './base.model';
 
 /**
  * Adjustment reason model
+ * Note: Has additional properties (adjType, status), so extends BaseModel directly
  */
 export interface AdjReasonModel {
   adjreasonId: string;
@@ -11,7 +12,7 @@ export interface AdjReasonModel {
   status: string;
 }
 
-export class MyAdjReasonModel extends BaseModel implements AdjReasonModel {
+export class AdjReasonModel extends BaseModel implements AdjReasonModel {
   adjreasonId: string;
   tdesc: string;
   edesc: string;
@@ -20,11 +21,18 @@ export class MyAdjReasonModel extends BaseModel implements AdjReasonModel {
 
   constructor(data?: Partial<AdjReasonModel>, translateService?: TranslateService) {
     super(data, translateService);
-    this.adjreasonId = data?.adjreasonId || '';
-    this.tdesc = data?.tdesc || '';
-    this.edesc = data?.edesc || '';
-    this.adjType = data?.adjType || '';
-    this.status = data?.status || '';
+    this.adjreasonId = checkData(data?.adjreasonId) ?? '';
+    this.tdesc = checkData(data?.tdesc) ?? '';
+    this.edesc = checkData(data?.edesc) ?? '';
+    this.adjType = checkData(data?.adjType) ?? '';
+    this.status = checkData(data?.status) ?? '';
+  }
+
+  /**
+   * Get name/description based on current language
+   */
+  getName(): string | null {
+    return baseGetName(this.tdesc, this.edesc, this.translateService?.currentLang);
   }
 }
 

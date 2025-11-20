@@ -1,0 +1,106 @@
+<!--
+  Modernized Private Message Inbox
+  - Aligns with the Gemini Design System's inbox pattern
+  - Replaces the old '.mailbox' layout with '.inbox-container'
+  - Features a clean toolbar and a responsive two-pane view
+-->
+<div class="inbox-container private-message-inbox">
+  <!-- Toolbar: Actions and Search -->
+  <div class="inbox-toolbar">
+    <div class="toolbar-actions">
+      <button type="button" class="btn btn-success" (click)="goToCompose()">
+        <i class="mdi mdi-plus me-1"></i>
+        {{ "COMPOSE" | translate }}
+      </button>
+      <button type="button" class="btn btn-danger" (click)="delete()" [disabled]="!hasSelectedItems()">
+        <i class="mdi mdi-delete-outline me-1"></i>
+        {{ "systemcode.delete" | translate }}
+      </button>
+    </div>
+
+    <div class="search-input-container input-group">
+      <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
+      <input type="text" class="form-control" placeholder="{{ 'systemcode.search' | translate }}..." [(ngModel)]="search" (ngModelChange)="searchData()">
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+    </div>
+  }
+
+  <!-- Main Content: List and Detail Panes -->
+  <div class="inbox-main-content">
+    <!-- Left Pane: Message List -->
+    <div class="inbox-list-pane" [class.detail-visible]="select && !windowWidth(768)">
+      <div class="list-pane-header">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="selectAllCheckbox" (change)="selectAll($event.target.checked)" [disabled]="list.length === 0">
+          <label class="form-check-label list-title" for="selectAllCheckbox">{{ 'systemcode.select.all' | translate }}</label>
+        </div>
+        <span class="list-count">{{ 'all' | translate }} {{ list.length }} {{ 'Note(s)' | translate }}</span>
+      </div>
+
+      <div class="list-pane-body">
+        @if (list.length > 0) {
+          @for (item of list | slice:(page-1) * pageSize : (page-1) * pageSize + pageSize; track item.messageId) {
+            <div class="workflow-item" [class.active]="select?.messageId === item.messageId" [class.unread]="item.flag !== 1" (click)="read(item)">
+              <div class="item-select">
+                <input type="checkbox" class="form-check-input" [(ngModel)]="item.selected" (click)="$event.stopPropagation()">
+              </div>
+              <div class="item-avatar-text">{{ item.senderId.getFullname()?.charAt(0) || '' }}</div>
+              <div class="item-content">
+                <div class="content-header">
+                  <span class="sender-name">{{ item.senderId.getFullname() }}</span>
+                  <span class="timestamp">{{ item.getDate() | date:'short' }}</span>
+                </div>
+                <div class="content-subject">{{ item.topic }}</div>
+              </div>
+            </div>
+          }
+        } @else if (!loading) {
+          <div class="empty-list-message">
+            <i class="mdi mdi-email-open-outline"></i>
+            <h5>{{ 'Your inbox is empty' | translate }}</h5>
+          </div>
+        }
+      </div>
+
+      @if (list.length > pageSize) {
+        <div class="list-pane-footer">
+          <ngb-pagination [collectionSize]="list.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"></ngb-pagination>
+        </div>
+      }
+    </div>
+
+    <!-- Right Pane: Message Detail -->
+    <div class="inbox-detail-pane" [class.visible]="select && !windowWidth(768)">
+      @if (select) {
+        <div class="detail-content-wrapper">
+          <div class="detail-header">
+            <button class="btn btn-icon btn-light-secondary back-button" (click)="select = undefined"><i class="mdi mdi-arrow-left"></i></button>
+            <h4 class="detail-subject">{{ select.topic }}</h4>
+          </div>
+          <div class="detail-meta">
+            <div class="sender-info">
+              <div class="item-avatar-text">{{ select.senderId.getFullname()?.charAt(0) || '' }}</div>
+              <div class="sender-details">
+                <span class="sender-name">{{ select.senderId.getFullname() }}</span>
+                <span class="sender-email">{{ 'To' | translate }}: {{ select.receiverId.getFullname() }}</span>
+              </div>
+            </div>
+            <span class="timestamp">{{ select.getDate() | date:'longDate' }}</span>
+          </div>
+          <div class="detail-body" [innerHTML]="select.privateMessage | safeHtml"></div>
+        </div>
+      } @else {
+        <div class="placeholder">
+          <i class="mdi mdi-email-outline"></i>
+          <h5>{{ 'Select a message to read' | translate }}</h5>
+        </div>
+      }
+    </div>
+  </div>
+</div>

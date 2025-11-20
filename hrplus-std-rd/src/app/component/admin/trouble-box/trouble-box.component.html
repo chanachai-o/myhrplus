@@ -1,0 +1,223 @@
+<!-- Modern Trouble Box Layout -->
+<div class="inbox-container">
+
+  <!-- Toolbar: Search and Actions -->
+  <div class="inbox-toolbar">
+    <div class="search-input-container input-group">
+      <span class="input-group-text bg-transparent border-0"><i class="mdi mdi-magnify"></i></span>
+      <input
+        type="text"
+        class="form-control border-0 bg-transparent"
+        placeholder="{{ 'systemcode.search' | translate }} {{ 'Doc No.' | translate }}"
+        [(ngModel)]="dataSelected.workflow.search"
+        (ngModelChange)="searchWorkflow(); scrollToTop('pageChange')"
+      />
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons ms-auto">
+      <button type="button" class="btn btn-danger" (click)="submit('abort work')" [disabled]="!hasSelectedItems() || submitLoading">
+        <i class="mdi mdi-delete-outline me-1"></i>
+        {{ "Abort Work" | translate }}
+      </button>
+      <button type="button" class="btn btn-success" (click)="submit('assigning work')" [disabled]="!hasSelectedItems() || submitLoading">
+        <i class="mdi mdi-account-arrow-right-outline me-1"></i>
+        {{ "systemcode.assigning" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  @if ((dataList.workflow.load.loading && dataList.workflow.data.length === 0) || submitLoading) {
+    <div class="loading-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+
+  <!-- Main Content: List and Detail Panes -->
+  <div class="inbox-main-content">
+    <!-- Left Pane: Workflow List -->
+    <div class="inbox-list-pane" [class.detail-visible]="dataSelected.workflow.data && !windowWidth(768)">
+      <div class="list-pane-header">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="selectAllCheckbox" (change)="selectAllWorkflow($event.target.checked)" [disabled]="dataList.workflow.list.length === 0">
+          <label class="form-check-label list-title" for="selectAllCheckbox">
+            {{ 'systemcode.select.all' | translate }}
+          </label>
+        </div>
+        <span class="list-count">{{ 'all' | translate }} {{ dataList.workflow.list.length }} {{ 'Note(s)' | translate }}</span>
+      </div>
+
+      <div #pfs1 class="list-pane-body">
+        @if (dataList.workflow.list.length > 0) {
+          @for (item of dataList.workflow.list | slice:(tableWorkflow.page-1) * tableWorkflow.pageSize : (tableWorkflow.page-1) * tableWorkflow.pageSize + tableWorkflow.pageSize; track item.show.wf_id) {
+            <div
+              class="workflow-item"
+              [class.active]="dataSelected.workflow.data?.wf_id === item.show.wf_id"
+              (click)="dataSelected.workflow.data = item.show; scrollToTop('workflowChange')">
+              <div class="item-select">
+                <input type="checkbox" class="form-check-input" [(ngModel)]="item.select" (click)="$event.stopPropagation()" />
+              </div>
+              <div class="item-avatar">
+                <img appShowLoading src="{{ jbossUrl + '/FileViewer.jsp?uploadfield=memployee.picture&filename=' + item.show.initiator_pic }}" alt="user" />
+              </div>
+              <div class="item-content">
+                <div class="content-header">
+                  <span class="sender-name" title="{{ item.show.getInitiatorDesc() }}">{{ item.show.getInitiatorDesc() }}</span>
+                  <span class="timestamp" [ngbTooltip]="(convertDate(item.show.date) | thaidate:'fullNotYear') + ' ' + convertTime(item.show.date)" container="body">
+                    {{ (convertDate(item.show.date) | date:'EE') | translate }} {{ convertTime(item.show.date) }}
+                  </span>
+                </div>
+                <div class="content-subject" title="{{ item.show.getSubjectDesc() }}">
+                  {{ item.show.getSubjectDesc() }}
+                </div>
+                <div class="content-footer">
+                  <span class="doc-no">{{ item.show.docNo }}</span>
+                  <div class="status-icon" [ngbTooltip]="getWorkflowStatusInfo(item.show).tooltip | translate" container="body">
+                    <i class="mdi" [ngClass]="getWorkflowStatusInfo(item.show).icon" [style.color]="getWorkflowStatusInfo(item.show).color"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        } @else if (!dataList.workflow.load.loading) {
+          <div class="empty-list-message">
+            <i class="mdi mdi-check-circle-outline"></i>
+            <h5>{{ 'No Trouble Work' | translate }}</h5>
+            <p>{{ 'All workflows are running smoothly.' | translate }}</p>
+          </div>
+        }
+      </div>
+
+      @if (tableWorkflow.collectionSize > tableWorkflow.pageSize) {
+        <div class="list-pane-footer">
+          <ngb-pagination [collectionSize]="tableWorkflow.collectionSize" [(page)]="tableWorkflow.page" [pageSize]="tableWorkflow.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" (pageChange)="scrollToTop('pageChange')"></ngb-pagination>
+        </div>
+      }
+    </div>
+
+    <!-- Right Pane: Workflow Detail -->
+    <div class="inbox-detail-pane" [class.visible]="dataSelected.workflow.data && !windowWidth(768)">
+      @if (dataSelected.workflow.data; as workflow) {
+        <div class="detail-content-wrapper">
+          <div class="detail-header">
+            <button class="btn btn-icon btn-light-secondary back-button" (click)="dataSelected.workflow.data = undefined">
+              <i class="mdi mdi-arrow-left"></i>
+            </button>
+            <h4 class="detail-subject" title="{{ workflow.getSubjectDesc() }}">{{ workflow.getSubjectDesc() }}</h4>
+            <div class="status-icon" [ngbTooltip]="getWorkflowStatusInfo(workflow).tooltip | translate" container="body">
+              <i class="mdi" [ngClass]="getWorkflowStatusInfo(workflow).icon" [style.color]="getWorkflowStatusInfo(workflow).color"></i>
+            </div>
+          </div>
+          <div #pfs2 class="detail-body">
+            <app-workflow-type [workflow]="workflow" [showDetailOnly]="true" [fromPage]="'admin-view'"></app-workflow-type>
+          </div>
+        </div>
+      } @else {
+        <div class="placeholder">
+          <i class="mdi mdi-file-question-outline"></i>
+          <h5>{{ 'systemcode.select.workflow' | translate }}</h5>
+          <p>{{ 'Select an item from the list to see the details.' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Assigning Work -->
+<ng-template #modalAssignTroubleWork let-modal>
+  <div class="modal-header bg-myhr">
+    <h5 class="modal-title text-white">{{ "Assign Trouble Work" | translate }}</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body modal-assign-work">
+    <div class="form-group">
+      <label class="form-label">{{ "Employee ID" | translate }}</label>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="{{ 'Employee ID' | translate }}" [(ngModel)]="dataSelected.employee.id" (ngModelChange)="selectData('employee', 'employee')">
+        <button class="btn btn-outline-secondary btn-icon" (click)="openModal(modalDataSelect, 'employee', 'employee')">
+          <i class="mdi mdi-magnify"></i>
+        </button>
+      </div>
+      <div class="employee-name-display">
+        <span>{{ dataSelected.employee.data.getFullName() || ('Employee Name' | translate) }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">{{ "cancel" | translate }}</button>
+    <button type="button" class="btn btn-primary" (click)="submit('assigning trouble work')" [disabled]="!dataSelected.employee.id">{{ "confirm" | translate }}</button>
+  </div>
+</ng-template>
+
+<!-- Reusable Modal for Data Selection (Employee) -->
+<ng-template #modalDataSelect let-modal>
+    <div class="modal-header bg-myhr">
+        <h5 class="modal-title text-white">{{ modalDetail.text.head | translate }}</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="search-input-container input-group mb-3">
+            <span class="input-group-text bg-transparent border-0"><i class="mdi mdi-magnify"></i></span>
+            <input type="text" class="form-control border-0 bg-transparent" placeholder="{{ 'systemcode.search' | translate }} {{ getTextSearch(modalDetail.text.search) }}" [(ngModel)]='modalDetail.wordSearch' (ngModelChange)='searchData(modalDetail.name)'>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        @for (head of modalDetail.tableDetail.head; track head) {
+                            <th scope="col" class="text-nowrap">{{ head | translate }}</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (checkLoading(modalDetail.name) && modalDetail.tableDetail.collectionSize === 0) {
+                        <tr>
+                            <td [attr.colspan]="modalDetail.tableDetail.head.length" class="text-center p-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @if (!checkLoading(modalDetail.name) && modalDetail.tableDetail.collectionSize === 0) {
+                        <tr>
+                            <td [attr.colspan]="modalDetail.tableDetail.head.length" class="text-center p-5">
+                                {{ "No Data Found" | translate }}
+                            </td>
+                        </tr>
+                    }
+                    @for (row of modalDetail.tableDetail.body | slice: (modalDetail.tableDetail.page-1) * modalDetail.tableDetail.pageSize : (modalDetail.tableDetail.page-1) * modalDetail.tableDetail.pageSize + modalDetail.tableDetail.pageSize; track row.data.employeeId) {
+                        <tr (click)="selectData(modalDetail.name, modalDetail.inputName, row.data); modal.dismiss()">
+                            @for (cell of row.show; track $index) {
+                                <td>{{ cell }}</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <ngb-pagination [collectionSize]="modalDetail.tableDetail.collectionSize" [(page)]="modalDetail.tableDetail.page" [pageSize]="modalDetail.tableDetail.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"></ngb-pagination>
+    </div>
+</ng-template>
+
+<!-- Reusable Alert Modal -->
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{ "Alert Message" | translate }}</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>{{ alert.message }}</p>
+    </div>
+    <div class="modal-footer">
+        @if (alert.name !== 'alertModal') {
+            <button type="button" class="btn btn-danger" (click)="modal.dismiss()">{{ "cancel" | translate }}</button>
+        }
+        <button type="button" class="btn btn-primary" (click)="alert.name !== 'alertModal' ? submit(alert.name) : modal.dismiss()">{{ "confirm" | translate }}</button>
+    </div>
+</ng-template>

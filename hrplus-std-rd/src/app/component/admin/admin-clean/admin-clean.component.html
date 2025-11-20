@@ -1,0 +1,430 @@
+<div class="card">
+  <div class="card-header bg-myhr">
+    <h4>{{"Archive Document" | translate}}</h4>
+  </div>
+  <div class="card-body pb-0">
+    <div class="row justify-content-start align-items-center m-0 p-2">
+      <div class="col-1 text-end">
+        <input type="checkbox" class="mt-2" id="employeeID" [(ngModel)]="dataSelected.employee.select">
+      </div>
+      <div class="col-2 text-start">
+        <label class="font-weight-bold m-0" for="employeeID">
+          {{"Employee ID"| translate}}
+        </label>
+      </div>
+      <div class="col-3 input-group">
+        <input type="text" class="form-control border-gray" placeholder="{{'Employee ID'| translate}}"
+          [(ngModel)]="dataSelected.employee.id" (ngModelChange)="selectData('employee','employee')">
+        <div class="input-group-append">
+          <button class="btn btn-info" (click)="openModal(modalDataSelect,'employee','employee')">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control" readonly placeholder="{{'Employee Name'| translate}}"
+          [value]="dataSelected.employee.data.getFullName()">
+      </div>
+    </div>
+    <div class="row justify-content-start align-items-center m-0 p-2">
+      <div class="col-1 text-end">
+        <input type="checkbox" class="mt-2" id="documentsType" [(ngModel)]="dataSelected.workflowDefinition.select">
+      </div>
+      <div class="col-2 text-start">
+        <label class="font-weight-bold m-0" for="documentsType">
+          {{"documents.type"| translate}}
+        </label>
+      </div>
+      <div class="col-3 input-group">
+        <input type="text" class="form-control border-gray" placeholder="{{'Workflow ID.WF_REMARK'| translate}}"
+          [(ngModel)]="dataSelected.workflowDefinition.id"
+          (ngModelChange)="selectData('workflowDefinition','workflowDefinition')">
+        <div class="input-group-append">
+          <button class="btn btn-info" (click)="openModal(modalDataSelect,'workflowDefinition','workflowDefinition')">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control" readonly placeholder="{{'Workflow Name'| translate}}"
+          [value]="dataSelected.workflowDefinition.data.getName()">
+      </div>
+    </div>
+    <div class="row justify-content-start align-items-center m-0 p-2">
+      <div class="col-1 text-end">
+        <input type="checkbox" class="mt-2" id="dateFull" [(ngModel)]="dataSelected.dateFull.select"
+          (ngModelChange)="checkDatePeriod('dateFull')">
+      </div>
+      <div class="col-2 text-start">
+        <label class="font-weight-bold m-0" for="dateFull">
+          {{"Date Full"| translate}}
+        </label>
+      </div>
+      <div class="col-3 input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon13">
+            {{"Start" | translate}}
+          </span>
+        </div>
+        <input class="form-control border-gray" oninput="value = value.replace(/[^0-9/]/g, '');"
+          placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" ngbDatepicker #d1="ngbDatepicker"
+          [(ngModel)]="dataSelected.dateFull.startDate"
+          [ngClass]="{'border-red':!checkDateFormat(dataSelected.dateFull.startDate,true)}"
+          [maxDate]="dataSelected.dateFull.endDate" #c1="ngModel"
+          (dateSelect)="checkBetweenDate()"
+          (change)="dataSelected.dateFull.startDate = datepickerService.validateFormatDate(c1);checkBetweenDate();" 
+          (blur)="checkBetweenDate()">
+<!--          (change)="checkDatePeriod('dateFull', 'start');dataSelected.dateFull.startDate = datepickerService.validateFormatDate(c1)"-->
+        <div class="input-group-append">
+          <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()" type="button">
+            <i class="far fa-calendar-alt"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-3 input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon13">
+            {{"to2" | translate}}
+          </span>
+        </div>
+        <input class="form-control border-gray" oninput="value = value.replace(/[^0-9/]/g, '');"
+          placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" ngbDatepicker #d2="ngbDatepicker"
+          [(ngModel)]="dataSelected.dateFull.endDate"
+          [ngClass]="{'border-red':!checkDateFormat(dataSelected.dateFull.endDate,true)}"
+          [minDate]="dataSelected.dateFull.startDate" #c2="ngModel"
+          (dateSelect)="checkBetweenDate()"
+          (change)="dataSelected.dateFull.endDate = datepickerService.validateFormatDate(c2);checkBetweenDate();"
+          (blur)="checkBetweenDate()">
+<!--          (change)="checkDatePeriod('dateFull', 'end');dataSelected.dateFull.endDate = datepickerService.validateFormatDate(c2)">-->
+        <div class="input-group-append">
+          <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()" type="button">
+            <i class="far fa-calendar-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-start align-items-center m-0 p-2">
+      <div class="col-1 text-end">
+        <input type="checkbox" class="mt-2" id="documentsLate" [(ngModel)]="dataSelected.late.select">
+      </div>
+      <div class="col-2 text-start">
+        <label class="font-weight-bold m-0" for="documentsLate">
+          {{"documents.late"| translate}}
+        </label>
+      </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+      <button class="btn btn-info" (click)="submit('search')">
+        {{"systemcode.search" | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="row justify-content-between m-0 p-2">
+    <div class="col-6 col-md-3 ps-0 input-group">
+      <input type="text" class="form-control border-gray"
+        placeholder="{{'systemcode.search' | translate}} {{'Doc No.' | translate}}"
+        [(ngModel)]="dataSelected.workflow.search" (ngModelChange)="searchWorkflow();scrollToTop('search')">
+      <div class="input-group-append">
+        <button class="btn me-0 btn-info" type="button">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="row col-auto justify-content-end m-0 p-0">
+      <div class="col-auto p-0 pe-2">
+        <button type="button" class="btn btn-danger text-white" (click)="submit('archive note')">
+          {{"Archive Note" | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center m-0 pb-2"
+    *ngIf="dataList.workflow.load.loading&&dataList.workflow.data.length==0||submitLoading">
+    <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div class="row box-workflow-98 m-0"
+    *ngIf="(!dataList.workflow.load.loading||dataList.workflow.data.length!=0)&&!submitLoading">
+    <div class="col-12 col-md-3 h-100 m-0 p-0 border-right"
+      [ngClass]="{'d-none':dataSelected.workflow.data&&!windowWidth(768)}">
+      <div class="col-12 d-flex justify-content-center box-workflow-pagination">
+        <ngb-pagination [collectionSize]="tableWorkflow.collectionSize" [(page)]="tableWorkflow.page"
+          [pageSize]="tableWorkflow.pageSize" [maxSize]="tableWorkflow.page>99?3:4" [rotate]="true" [ellipses]="false"
+          (pageChange)="scrollToTop('pageChange')">
+        </ngb-pagination>
+      </div>
+      <div class="row col-12 align-items-end m-0 py-2 border-bottom">
+        <div class="col-1 ps-0">
+          <input type="checkbox" class="mt-2" id="selectAll" (click)="selectAllWorkflow($event.target.checked)">
+        </div>
+        <div class="col-auto p-0 ps-2">
+          <label class="font-14 font-weight-normal text-dark m-0" for="selectAll">
+            {{'systemcode.select.all'|translate}}
+          </label>
+        </div>
+        <div class="col text-end p-0">
+          {{"all" | translate}} {{dataList.workflow.list.length}} {{"Note(s)"|translate}}
+        </div>
+        <!-- <div class="position-absolute" style="bottom:0px;right: 0px;"
+          *ngIf="dataList.workflow.load.loading&&dataList.workflow.data.length!=0">
+          <div class="load-data-ring" tooltipClass="myhrcolor-1"
+            ngbTooltip="{{getDesc('กำลังโหลดข้อมูล','Loading data')}}" container="body">
+          </div>
+        </div> -->
+      </div>
+      <div #pfs1 class="col-12 box-workflow-list p-0"  >
+        <div class="row col-12 align-items-center m-0 py-2 " *ngIf="dataList.workflow.list.length==0">
+          {{"No Data Found" | translate}}
+        </div>
+        <div class="row col-12 align-items-center m-0 py-2 "
+          *ngFor="let item of dataList.workflow.list | slice:(tableWorkflow.page-1) * tableWorkflow.pageSize : (tableWorkflow.page-1) * tableWorkflow.pageSize + tableWorkflow.pageSize"
+          [ngClass]="{'border-bottom':dataSelected.workflow.data!=item.show,'select-workflow':dataSelected.workflow.data==item.show}">
+          <div class="col-1 ps-0">
+            <input type="checkbox" class="mt-2" [(ngModel)]="item.select">
+          </div>
+          <div class="row col-11 m-0 p-0 ps-2" style="cursor: pointer"
+            (click)="dataSelected.workflow.data = item.show;scrollToTop('workflowChange')">
+            <div class="row col-12 m-0 p-0">
+              <div class="col-10 p-0">
+                <h6 class=" text-truncate text-dark m-0" style="line-height:inherit">
+                  {{item.show.getInitiatorDesc()}}
+                </h6>
+              </div>
+              <div class="row col-2 justify-content-end align-items-center m-0 p-0">
+                <!-- รออนุมัติ -->
+                <span class="fa-stack fa-xs rt_anim" *ngIf="item.show.status == 0"
+                  ngbTooltip="{{'systemcode.status.1' | translate}}" container="body" tooltipClass="myhrcolor-2">
+                  <i class="fa fa-circle fa-stack-2x text-success"></i>
+                  <i class=" fas fa-hourglass-half fa-stack-1x fa-inverse"></i>
+                </span>
+                <!-- งานถูกอนุมัติ  -->
+                <span class="fa-stack fa-xs rt_anim" *ngIf="item.show.status == 1"
+                  ngbTooltip="{{'systemcode.status.2' | translate}}" container="body" tooltipClass="myhrcolor-2">
+                  <i class="fa fa-circle fa-stack-2x text-success"></i>
+                  <i class=" fas fa-check  fa-stack-1x fa-inverse"></i>
+                </span>
+                <!-- ไม่อนุมัติงาน -->
+                <span class="fa-stack fa-xs rt_anim" *ngIf="item.show.status == 2"
+                  ngbTooltip="{{'systemcode.status.3' | translate}}" container="body" tooltipClass="myhrcolor-3">
+                  <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                  <i class="fas fa-times fa-stack-1x fa-inverse" style="font-size: 1.25em;"></i>
+                </span>
+                <!-- ไม่มีผู้รับงาน -->
+                <span class="fa-stack fa-xs rt_anim" *ngIf="item.show.status == 3"
+                  ngbTooltip="{{'systemcode.status.4' | translate}}" container="body" tooltipClass="myhrcolor-3">
+                  <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                  <i class="fas fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+                </span>
+                <!-- ยกเลิกงาน -->
+                <span class="fa-stack fa-xs rt_anim" *ngIf="item.show.status == 4||item.show.status == 5"
+                  ngbTooltip="{{'systemcode.status.5' | translate}}" container="body" tooltipClass="myhrcolor-3">
+                  <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                  <i class="fas fa-ban fa-stack-2x text-danger "></i>
+                </span>
+                <!-- ส่งงานกลับ -->
+                <span class="fa-stack fa-xs rt_anim" *ngIf="item.show.status == 6"
+                  ngbTooltip="{{'systemcode.status.6' | translate}}" container="body" tooltipClass="myhrcolor-4">
+                  <i class="fa fa-circle fa-stack-2x text-warning "></i>
+                  <i class="fas fa-exclamation fa-stack-1x fa-inverse"></i>
+                </span>
+              </div>
+            </div>
+            <div class="row col-12 m-0 p-0">
+              <div class="d-flex col-7 align-items-center p-0 ">
+                <label class="font-14 text-muted text-truncate m-0" style="font-weight: 600;line-height:inherit">
+                  {{item.show.docNo | slice: 0:20 }}
+                </label>
+              </div>
+              <div class="d-flex col-5 justify-content-end align-items-center p-0">
+                <label class="font-14 font-weight-normal text-muted text-truncate m-0" style="line-height:inherit"
+                  ngbTooltip="{{translateService.currentLang == 'th'?(convertDate(item.show.date) | thaidate :'fullNotYear':'a'):(convertDate(item.show.date) | date:'EEEE d MMMM y')}}"
+                  container="body" tooltipClass="myhrcolor-date">
+                  {{(convertDate(item.show.date) | date:'EE') | translate}}
+                  {{convertTime(item.show.date)}}
+                </label>
+              </div>
+            </div>
+            <div class="d-flex col-12 align-items-center p-0">
+              <label class="font-14 font-weight-normal text-info text-truncate m-0" style="line-height:inherit">
+                {{item.show.getSubjectDesc() }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-9 p-0 border-top" [ngClass]="{'d-none':!dataSelected.workflow.data&&!windowWidth(768)}">
+      <div #pfs2 class="col-12 box-workflow-detail p-0"
+        [ngClass]="{'row align-items-center m-0':!dataSelected.workflow.data}"  >
+        <div class="row col-12 justify-content-center m-0 p-0" *ngIf="!dataSelected.workflow.data">
+          <div class="col-12 d-flex justify-content-center">
+            <i class="far fa-envelope display-5 rt_anim text-info"></i>
+          </div>
+          <div class="col-12 d-flex justify-content-center">
+            <h4 class="text-info rt_anim">{{"systemcode.select.workflow" | translate}}</h4>
+          </div>
+        </div>
+        <div class="col-12 p-0 h-100" *ngIf="dataSelected.workflow.data">
+          <div class="row col-12 justify-content-center align-items-center m-0 p-3 card-header bg-info">
+            <div class="position-absolute" style="left: 1rem;z-index: 1;" [ngClass]="{'d-none':windowWidth(768)}">
+              <button type="submit" class="btn btn-info" (click)="dataSelected.workflow.data=undefined">
+                <i class="fas fa-arrow-left"></i>
+              </button>
+            </div>
+            <div class="col">
+              <h5 class="mb-0 mt-1 text-center text-white">
+                {{dataSelected.workflow.data.getSubjectDesc()}}
+              </h5>
+            </div>
+            <div class="position-absolute w-100 pe-3 text-end">
+              <!-- รออนุมัติ -->
+              <span class="fa-stack fa-md " *ngIf="dataSelected.workflow.data.status == 0"
+                ngbTooltip="{{'systemcode.status.1' | translate}}" container="body" tooltipClass="myhrcolor-2">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class=" fas fa-hourglass-half fa-stack-1x  text-success rt_anim"></i>
+              </span>
+              <!-- งานถูกอนุมัติ  -->
+              <span class="fa-stack fa-md" *ngIf="dataSelected.workflow.data.status == 1"
+                ngbTooltip="{{'systemcode.status.2' | translate}}" container="body" tooltipClass="myhrcolor-2">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class=" fas fa-check  fa-stack-1x text-success rt_anim"></i>
+              </span>
+              <!-- ไม่อนุมัติงาน -->
+              <span class="fa-stack fa-md" *ngIf="dataSelected.workflow.data.status == 2"
+                ngbTooltip="{{'systemcode.status.3' | translate}}" container="body" tooltipClass="myhrcolor-3">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fas fa-times fa-stack-1x text-danger rt_anim" style="font-size: 1.5em;"></i>
+              </span>
+              <!-- ไม่มีผู้รับงาน -->
+              <span class="fa-stack fa-md" *ngIf="dataSelected.workflow.data.status == 3"
+                ngbTooltip="{{'systemcode.status.4' | translate}}" container="body" tooltipClass="myhrcolor-3">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fas fa-exclamation-triangle fa-stack-1x text-danger rt_anim"></i>
+              </span>
+              <!-- ยกเลิกงาน -->
+              <span class="fa-stack fa-md"
+                *ngIf="dataSelected.workflow.data.status == 4 || dataSelected.workflow.data.status == 5"
+                ngbTooltip="{{'systemcode.status.5' | translate}}" container="body" tooltipClass="myhrcolor-3">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fas fa-ban fa-stack-1x text-danger  rt_anim" style="font-size: 1.6em;"></i>
+              </span>
+              <!-- ส่งงานกลับ -->
+              <span class="fa-stack fa-md" *ngIf="dataSelected.workflow.data.status == 6"
+                ngbTooltip="{{'systemcode.status.6' | translate}}" container="body" tooltipClass="myhrcolor-4">
+                <i class="fa fa-circle fa-stack-2x fa-inverse "></i>
+                <i class="fas fa-exclamation fa-stack-1x text-warning rt_anim"></i>
+              </span>
+            </div>
+          </div>
+          <div class="col-12 p-2 h-100">
+            <app-workflow-type [wf_id]="dataSelected.workflow.data.param.wf_id" [workflow]="dataSelected.workflow.data"
+              [runno]="dataSelected.workflow.data.param.__runno" [showDetailOnly]="true"
+              [fromPage]="'admin-view'"></app-workflow-type>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #modalDataSelect let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body pb-0"  >
+      <div class="card-header bg-myhr w-100">
+        <h4>{{modalDetail.text.head | translate}}</h4>
+      </div>
+      <div class="card-body pt-0">
+        <div class="row justify-content-start align-items-center py-1">
+          <div class="col-6">
+            <input type="text" class="form-control border-gray"
+              placeholder="{{'systemcode.search' | translate}} {{getTextSearch(modalDetail.text.search)}}"
+              [(ngModel)]='modalDetail.wordSearch' (ngModelChange)='searchData(modalDetail.name)'>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped-myhr table-hover mb-0">
+            <thead class="bg-info text-white">
+              <tr>
+                <td scope="col" *ngFor="let item of modalDetail.tableDetail.head;let first = first" class="text-nowrap"
+                  [ngClass]="{'text-center':(modalDetail.name!='employee'||first)}">
+                  {{item | translate}}
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="checkLoading(modalDetail.name)&&modalDetail.tableDetail.collectionSize == 0">
+                <td colSpan="100%" class="text-center">
+                  <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info m-t-5 m-r-5 m-b-5 m-l-5"
+                    role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="!checkLoading(modalDetail.name)&&modalDetail.tableDetail.collectionSize == 0">
+                <td colSpan="100%" class="text-center">
+                  {{"No Data Found" | translate}}
+                </td>
+              </tr>
+              <tr
+                *ngFor="let items of modalDetail.tableDetail.body | slice: (modalDetail.tableDetail.page-1) * modalDetail.tableDetail.pageSize : (modalDetail.tableDetail.page-1) * modalDetail.tableDetail.pageSize + modalDetail.tableDetail.pageSize"
+                class="tr-hover"
+                (click)="selectData(modalDetail.name,modalDetail.inputName,items.data);modal.dismiss()">
+                <th scope="row" *ngFor="let item of items.show ;let first = first" class="text-nowrap"
+                  [ngClass]="{'text-center text-color-normal':(modalDetail.name!='employee'||(modalDetail.name=='employee'&&first)),'font-weight-normal':(modalDetail.name!='employee'||!first)}">
+                  <span>
+                    {{item}}
+                  </span>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row justify-content-end p-2">
+          <select class="form-select m-r-5 w-auto border-gray" [(ngModel)]="modalDetail.tableDetail.pageSize"
+            (ngModelChange)="modalDetail.tableDetail.page=1">
+            <option *ngFor="let item of [10,50,100]" [ngValue]="item">
+              {{"Items per page"| translate}}: {{item}}
+            </option>
+          </select>
+          <ngb-pagination [collectionSize]="modalDetail.tableDetail.collectionSize"
+            [(page)]="modalDetail.tableDetail.page" [pageSize]="modalDetail.tableDetail.pageSize" [maxSize]="3"
+            [rotate]="true">
+            <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+            <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="modal.dismiss()">
+        {{"Close"| translate}}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Alert Message</h5>
+    <button class="close" (click)="modal.close()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{alert.message}}
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-info" (click)="alert.name!='alertModal'?submit(alert.name):modal.dismiss()">
+      {{"confirm"| translate}}
+    </button>
+    <span *ngIf="alert.name!='alertModal'">
+      <button class="btn btn-danger" (click)="modal.dismiss()">
+        {{"cancel"| translate}}
+      </button>
+    </span>
+  </div>
+</ng-template>

@@ -1,0 +1,111 @@
+<!-- ใบแก้ไขบันทึกการทำงาน -->
+<div class="row">
+    <!-- รายละเอียดข้อมูลพนักงาน -->
+    <div class="col-12">
+        <app-workflow-emp-information [employeeId]="employeeId"></app-workflow-emp-information>
+    </div>
+    <!-- รายละเอียดการเปลี่ยนกะ -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"swap-shift-detail" | translate }}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                            <small class="text-muted">{{"start.date"| translate }}</small>
+                            <h6>{{__wf__start_date}}</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                            <small class="text-muted">{{"end.date"| translate }}</small>
+                            <h6>{{__wf__end_date}}</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"main-shift"| translate }}</small>
+                        <div class="row">
+                            <div class="col-md-2  col-lg-2 col-sm-2">
+                                <div class="form-group">
+                                    <h6>{{__wf__old_shift}}</h6>
+                                </div>
+                            </div>
+                            <div class="col-md-4  col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <h6>{{MTIME0_TDESC$old}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"new-shift"| translate }}</small>
+                        <div class="row">
+                            <div class="col-md-2 col-lg-2 col-sm-2">
+                                <div class="form-group">
+                                    <h6>{{__wf__new_shift}}</h6>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <h6>{{MTIME0_TDESC}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-workflow-remark [wfid]="data.workflowData.wf_id"></app-workflow-remark>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- เหตุผลที่เปลี่ยนกะ -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"swap-reason" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"Note"| translate}}</small>
+                        <h6>{{__wf__reason}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+    <div class="col-12">
+        <app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+        </app-workflow-detail-footer>
+    </div>
+    <!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+</div>
+<!-- Row ปิดใบแก้ไขบันทึกการทำงาน -->
+
+<ng-template #DocReferenceModal let-modal>
+    <div class="modal-content dialog-height">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editLabel">{{"systemcode.documents.detail" | translate}}</h5>
+            <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" [perfectScrollbar]="config">
+            <div class="card" style="margin-bottom:-15px">
+                <div class="card-body">
+                    <!-- ใส่เอกสารตรงนี้นะจ๊ะ -->
+                    <ng-template #workflowView [ngComponentOutlet]="dynamicComponent" [ndcDynamicInputs]="inputs"
+                        [ndcDynamicOutputs]="outputs"></ng-template>
+                    <!-- <app-wel210-nstda-create></app-wel210-nstda-create> -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" (click)="modal.dismiss('Cross click')">{{"confirm"|
+                translate}}</button>
+        </div>
+    </div>
+</ng-template>

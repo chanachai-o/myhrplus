@@ -1,0 +1,90 @@
+/* Updated SCSS for daily-time-attendance-new */
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: .375rem;
+}
+
+.filter-grid .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.radio-group-container {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: .375rem;
+    margin-bottom: 1.5rem;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Mobile Card View */
+.attendance-card-mobile {
+    border: 1px solid #dee2e6;
+    border-radius: .375rem;
+    margin-bottom: 1rem;
+
+    .card-header {
+        background-color: #f8f9fa;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .info-item {
+        span {
+            display: block;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        strong {
+            display: block;
+            font-size: 1rem;
+            word-break: break-word;
+        }
+    }
+
+    .time-details {
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem;
+    }
+}

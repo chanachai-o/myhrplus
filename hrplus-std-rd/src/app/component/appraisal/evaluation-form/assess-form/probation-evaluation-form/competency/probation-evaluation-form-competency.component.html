@@ -1,0 +1,277 @@
+<ng-container *ngIf="masformDetail">
+    <div class="row justify-content-end">
+        <div class="row col-3 m-0" style="padding: 1px;">
+            <div class="col-12" style="padding: 1px;" *ngFor="let item of masformDetail?.kpiCategory; let i=index">
+                <div class="border-form-start">
+                    {{item.tdesc}} = {{item.kcatId == -1 ? "N" : item.kcatId }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" style="padding: 1px;">
+            <h3 class="border-form text-center">
+                คุณสมบัติของผู้บริหารที่องค์กรคาดหวัง ระดับ {{jobName}}
+            </h3>
+        </div>
+        <div class="col-1" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                ลำดับ
+            </h6>
+        </div>
+        <div class="col-3" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                คุณสมบัติที่ต้องการ
+            </h6>
+        </div>
+        <div class="row m-0 col-6 p-0">
+            <div class="col-6" style="padding: 1px;">
+                <h6 class="border-form text-center">
+                    {{masformDetail.employee.prefix.tdesc}}{{masformDetail.employee.thFullName}} (2 เดือน)
+                </h6>
+            </div>
+            <div class="col-6" style="padding: 1px;">
+                <h6 class="border-form text-center">
+                    {{masformDetail.employee.prefix.tdesc}}{{masformDetail.employee.thFullName}} (ครบทดลองงาน)
+                </h6>
+            </div>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <h6 class="border-form text-center">
+                วิธีการและแนวทางในการพัฒนา
+                ({{masformDetail.employee.prefix.tdesc}}{{masformDetail.employee.thFullName}})
+            </h6>
+        </div>
+        <div class="col-4" style="padding: 1px;">
+            <div class="border-form text-center">
+                Total Average Score
+            </div>
+        </div>
+        <div class="row m-0 col-6 p-0">
+            <div class="row m-0 col-6 p-0">
+                <div class="col-6" style="padding: 1px;">
+                    <div class="border-form text-center">
+                        {{masformDetail.self2monthTotalScore | minusOneCheck}}
+                    </div>
+                </div>
+                <div class="col-6" style="padding: 1px;">
+                    <div class="border-form text-center">
+                        {{masformDetail.boss2monthTotalScore  | minusOneCheck}}
+                    </div>
+                </div>
+            </div>
+            <div class="row m-0 col-6 p-0">
+                <div class="col-6" style="padding: 1px;">
+                    <div class="border-form text-center">
+                        {{masformDetail.selfTotalScore  | minusOneCheck}}
+                    </div>
+                </div>
+                <div class="col-6" style="padding: 1px;">
+                    <div class="border-form text-center">
+                        {{masformDetail.bossTotalScore  | minusOneCheck}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2" style="padding: 1px;">
+            <div class="border-form text-center">
+            </div>
+        </div>
+        <ng-container *ngFor="let group of groupBySection;let i =index">
+            <div class="col-4" style="padding: 1px;">
+                <div class="border-form text-center">
+                    {{group.key}}
+                </div>
+            </div>
+            <div class="row m-0 col-6 p-0">
+                <div class="row m-0 col-6 p-0">
+                    <div class="col-6" style="padding: 1px;">
+                        <div class="border-form text-center">
+                            ประเมินตนเอง
+                        </div>
+                    </div>
+                    <div class="col-6" style="padding: 1px;">
+                        <div class="border-form text-center">
+                            ผู้บังคับบัญชา
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0 col-6 p-0">
+                    <div class="col-6" style="padding: 1px;">
+                        <div class="border-form text-center">
+                            ประเมินตนเอง
+                        </div>
+                    </div>
+                    <div class="col-6" style="padding: 1px;">
+                        <div class="border-form text-center">
+                            ผู้บังคับบัญชา
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2" style="padding: 1px;">
+                <div class="border-form text-center">
+                </div>
+            </div>
+            <ng-container *ngFor="let asform1Details of group.value;let l = index">
+                <div class="col-4" style="padding: 1px;">
+                    <div class="border-form" style="justify-content: start !important">
+                        {{asform1Details.remarks}}
+                    </div>
+                </div>
+                <div class="row m-0 col-6 p-0">
+                    <div class="row m-0 col-6 p-0">
+                        <div class="col-6" style="padding: 1px;">
+                            <div class="border-form text-center">
+                                {{groupBySection[i].value[l].self2monthTotalScore  | minusOneCheck}}
+                            </div>
+                        </div>
+                        <div class="col-6" style="padding: 1px;">
+                            <div class="border-form text-center">
+                                {{groupBySection[i].value[l].boss2monthTotalScore  | minusOneCheck}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-0 col-6 p-0">
+                        <div class="col-6" style="padding: 1px;">
+                            <div class="border-form text-center">
+                                {{groupBySection[i].value[l].selfTotalScore  | minusOneCheck}}
+                            </div>
+                        </div>
+                        <div class="col-6" style="padding: 1px;">
+                            <div class="border-form text-center">
+                                {{groupBySection[i].value[l].bossTotalScore  | minusOneCheck}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2" style="padding: 1px;">
+                    <div class="border-form">
+                    </div>
+                </div>
+                <ng-container *ngFor="let assessDetails of asform1Details.assessDetails;let m= index;">
+                    <div class="col-1" style="padding: 1px;">
+                        <div class="border-form text-center">
+                            {{m+1}}
+                        </div>
+                    </div>
+                    <div class="col-3" style="padding: 1px;">
+                        <div class="border-form" style="justify-content: start !important">
+                            {{translateText(assessDetails.tdesc,assessDetails.edesc)}}
+                        </div>
+                    </div>
+                    <div class="row m-0 col-6 p-0">
+                        <div class="row m-0 col-6 p-0">
+                            <div class="col-6" style="padding: 1px;">
+                                <div class="border-form text-center">
+                                    <!-- <input type="text" class="form-control"
+                                        oninput="value = value.replace(/[^0-9]/g, '');"
+                                        [disabled]="!statusCompetencyCheck('employee')||!step"
+                                        [(ngModel)]="assessDetails.self2monthScore"
+                                        (ngModelChange)="calSelf2monthTotalScore(i,l);calAveSelf2monthTotalScore()"> -->
+                                    <select class="form-select m-r-5 w-100"
+                                        [(ngModel)]="assessDetails.self2monthScore"
+                                        (ngModelChange)="calSelf2monthTotalScore(i,l);calAveSelf2monthTotalScore()"
+                                        [disabled]="statusCompetencyCheck('supervisor') || (step!='0'&& !(step=='1'&&job=='P008'))">
+                                        <option *ngFor="let kpi of masformDetail?.kpiCategory; let i=index"
+                                            [value]="kpi.kcatId">
+                                            {{kpi.tdesc}} = {{kpi.kcatId == -1 ? "N" : kpi.kcatId }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6" style="padding: 1px;">
+                                <div class="border-form text-center">
+                                    <!-- <input type="text" class="form-control"
+                                        oninput="value = value.replace(/[^0-9]/g, '');"
+                                        [disabled]="(!statusCompetencyCheck('supervisor')&&!statusCompetencyCheck('supervisor_override'))||!step"
+                                        [(ngModel)]="assessDetails.boss2monthScore"
+                                        (ngModelChange)="calBoss2monthTotalScore(i,l);calAveBoss2monthTotalScore()"> -->
+                                    <select class="form-select m-r-5 w-100"
+                                        [(ngModel)]="assessDetails.boss2monthScore"
+                                        (ngModelChange)="calBoss2monthTotalScore(i,l);calAveBoss2monthTotalScore()"
+                                        [disabled]="statusCompetencyCheck('employee') || statusCompetencyCheck('supervisor_finish')||step=='0'||!step">
+                                        <option *ngFor="let kpi of masformDetail?.kpiCategory; let i=index"
+                                            [value]="kpi.kcatId">
+                                            {{kpi.tdesc}} = {{kpi.kcatId == -1 ? "N" : kpi.kcatId }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0 col-6 p-0">
+                            <div class="col-6" style="padding: 1px;">
+                                <div class="border-form text-center">
+                                    <!-- <input type="text" class="form-control"
+                                        oninput="value = value.replace(/[^0-9]/g, '');"
+                                        [disabled]="!statusCompetencyCheck('employee')||!step"
+                                        [(ngModel)]="assessDetails.selfScoreFull"
+                                        (ngModelChange)="calSelfTotalScore(i,l);calAveSelfTotalScore()"> -->
+                                    <select class="form-select m-r-5 w-100" [(ngModel)]="assessDetails.selfScoreFull"
+                                        (ngModelChange)="calSelfTotalScore(i,l);calAveSelfTotalScore()"
+                                        [disabled]="statusCompetencyCheck('supervisor') || (step!='0'&& !(step=='1'&&job=='P008'))">
+                                        <option *ngFor="let kpi of masformDetail?.kpiCategory; let i=index"
+                                            [value]="kpi.kcatId">
+                                            {{kpi.tdesc}} = {{kpi.kcatId == -1 ? "N" : kpi.kcatId }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6" style="padding: 1px;">
+                                <div class="border-form text-center">
+                                    <!-- <input type="text" class="form-control"
+                                        oninput="value = value.replace(/[^0-9]/g, '');"
+                                        [disabled]="(!statusCompetencyCheck('supervisor')&&!statusCompetencyCheck('supervisor_override'))||!step"
+                                        [(ngModel)]="assessDetails.bossScoreFull"
+                                        (ngModelChange)="calBossTotalScore(i,l);calAveBossTotalScore()"> -->
+                                    <select class="form-select m-r-5 w-100" [(ngModel)]="assessDetails.bossScoreFull"
+                                        (ngModelChange)="calBossTotalScore(i,l);calAveBossTotalScore()"
+                                        [disabled]="statusCompetencyCheck('employee') || statusCompetencyCheck('supervisor_finish')||step=='0'||!step">
+                                        <option *ngFor="let kpi of masformDetail?.kpiCategory; let i=index"
+                                            [value]="kpi.kcatId">
+                                            {{kpi.tdesc}} = {{kpi.kcatId == -1 ? "N" : kpi.kcatId }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2" style="padding: 1px;">
+                        <div class="border-form">
+                            <textarea class="w-100" [(ngModel)]="assessDetails.selfRemark"
+                                [disabled]="statusCompetencyCheck('supervisor') || (step!='0'&& !(step=='1'&&job=='P008'))"></textarea>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="row col-6 m-0 p-0">
+            <div class="col-6" style="padding: 1px;">
+                <div class="border-form text-center">
+                    จุดเด่น (Strengthen)
+                </div>
+            </div>
+            <div class="col-6" style="padding: 1px;">
+                <div class="border-form text-center">
+                    ข้อที่ต้องปรับปรุง
+                </div>
+            </div>
+            <div class="col-6" style="padding: 1px;">
+                <div class="border-form">
+                    <textarea class="w-100" [(ngModel)]="masformDetail.selfStrengthen"
+                        [disabled]="statusCompetencyCheck('supervisor') || (step!='0'&& !(step=='1'&&job=='P008'))"></textarea>
+                </div>
+            </div>
+            <div class="col-6" style="padding: 1px;">
+                <div class="border-form">
+                    <textarea class="w-100" [(ngModel)]="masformDetail.selfDevelop"
+                        [disabled]="statusCompetencyCheck('supervisor') || (step!='0'&& !(step=='1'&&job=='P008'))"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

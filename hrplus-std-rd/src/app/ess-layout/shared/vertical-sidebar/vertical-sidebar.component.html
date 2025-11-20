@@ -1,0 +1,159 @@
+<!-- ============================================================= -->
+<!-- sidebar navigation -->
+<!-- ============================================================= -->
+<nav class="sidebar-nav" *ngIf="empProfile">
+  <ul id="sidebarnav">
+    <!-- User Profile-->
+    <li class="user-profile-li">
+      <a
+        routerLink="/employee/employee-profile"
+        class="user-profile d-flex align-items-center"
+      >
+        <div class="user-pic me-2">
+          <img
+            appShowLoading
+            *ngIf="empProfile?.picture; else blankImage"
+            src="{{ empProfile.getPictureUrl() }}"
+            alt="users"
+            class="rounded-circle"
+            width="45"
+            height="45"
+          />
+          <ng-template #blankImage>
+            <img
+              src="assets/images/users/defaultperson.jpg"
+              alt="user"
+              class="rounded-circle"
+              width="45"
+              height="45"
+            />
+          </ng-template>
+        </div>
+        <div class="user-content hide-menu ml-3">
+          <h6 class="m-0 user-name">
+            {{ empProfile.getFullname() }}
+          </h6>
+          <span class="user-email text-muted">{{ empProfile.email }}</span>
+        </div>
+      </a>
+    </li>
+
+    <!-- First level menu -->
+    <li
+      class="sidebar-item"
+      [class.active]="showMenu === sidebarnavItem.title"
+      *ngFor="let sidebarnavItem of sidebarnavItems"
+      (click)="sidebarnavItem.submenu.length != 0 ? '' : handleNotify()"
+      [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'"
+    >
+      <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">
+        <i [ngClass]="[sidebarnavItem.icon]"></i>
+        <span class="hide-menu">{{ sidebarnavItem.title | translate }}</span>
+      </div>
+      <a
+        class="sidebar-link waves-effect waves-dark"
+        [routerLink]="
+          sidebarnavItem.class === '' ? [sidebarnavItem.path] : null
+        "
+        [ngClass]="[sidebarnavItem.class]"
+        *ngIf="!sidebarnavItem.extralink && sidebarnavItem.show"
+        (click)="addExpandClass(sidebarnavItem.title)"
+        [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'"
+      >
+        <i class="material-symbols-outlined">{{sidebarnavItem.icon}}</i>
+        <!-- <i class="material-symbols-outlined">{{sidebarnavItem.icon}}<</i> -->
+        <span class="hide-menu">{{ sidebarnavItem.title | translate }}</span>
+      </a>
+      <!-- Second level menu -->
+      <ul
+        aria-expanded="false"
+        class="collapse first-level"
+        *ngIf="sidebarnavItem.submenu.length > 0"
+        [ngClass]="{ show: showMenu === sidebarnavItem.title }"
+      >
+        <li
+          class="sidebar-item"
+          *ngFor="let sidebarnavSubItem of sidebarnavItem.submenu"
+          (click)="sidebarnavSubItem.submenu.length != 0 ? '' : handleNotify()"
+          [class.active]="showSubMenu === sidebarnavSubItem.title"
+          [routerLinkActive]="
+            sidebarnavSubItem.submenu.length > 0 ? '' : 'active'
+          "
+        >
+          <a
+            class="sidebar-link"
+            [routerLink]="
+              sidebarnavSubItem.submenu.length > 0
+                ? null
+                : [sidebarnavSubItem.path]
+            "
+            [routerLinkActive]="
+              sidebarnavSubItem.submenu.length > 0 ? '' : 'router-link-active'
+            "
+            [ngClass]="[sidebarnavSubItem.class]"
+            *ngIf="
+              !sidebarnavSubItem.extralink &&
+              sidebarnavSubItem.show &&
+              sidebarnavSubItem.code != 'EM01A15'
+            "
+            (click)="addActiveClass(sidebarnavSubItem.title)"
+          >
+            <i-feather [name]="sidebarnavSubItem.icon"></i-feather>
+            <span class="hide-menu">{{
+              sidebarnavSubItem.title | translate
+            }}</span>
+          </a>
+          <a
+            class="sidebar-link"
+            href="{{ sidebarnavSubItem.path }}"
+            [routerLinkActive]="
+              sidebarnavSubItem.submenu.length > 0 ? '' : 'router-link-active'
+            "
+            [ngClass]="[sidebarnavSubItem.class]"
+            *ngIf="
+              !sidebarnavSubItem.extralink &&
+              sidebarnavSubItem.show &&
+              sidebarnavSubItem.code == 'EM01A15'
+            "
+            (click)="addActiveClass(sidebarnavSubItem.title)"
+          >
+            <i-feather [name]="sidebarnavSubItem.icon"></i-feather>
+            <span class="hide-menu">{{
+              sidebarnavSubItem.title | translate
+            }}</span>
+          </a>
+          <!-- Third level menu -->
+          <ul
+            aria-expanded="false"
+            class="collapse Second-level"
+            *ngIf="sidebarnavSubItem.submenu.length > 0"
+            [ngClass]="{ show: showSubMenu === sidebarnavSubItem.title }"
+          >
+            <li
+              class="sidebar-item"
+              *ngFor="let sidebarnavSubsubItem of sidebarnavSubItem.submenu"
+              routerLinkActive="active"
+              [ngClass]="[sidebarnavSubsubItem.class]"
+            >
+              <a
+                class="sidebar-link"
+                [routerLink]="[sidebarnavSubsubItem.path]"
+                *ngIf="!sidebarnavSubsubItem.extralink"
+                [routerLinkActive]="
+                  sidebarnavSubsubItem.submenu.length > 0
+                    ? ''
+                    : 'router-link-active'
+                "
+              >
+                <i-feather [name]="sidebarnavSubsubItem.icon"></i-feather>
+                <span class="hide-menu">{{
+                  sidebarnavSubsubItem.title | translate
+                }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>

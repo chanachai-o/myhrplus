@@ -1,0 +1,230 @@
+/*
+=================================================================
+Modern Full Layout Styles
+=================================================================
+*/
+
+// Main wrapper configuration
+#main-wrapper {
+  transition: margin-left 0.2s ease-in-out;
+
+  &[data-layout='vertical'] {
+    .topbar .navbar-collapse {
+      // margin-left: 250px;
+      transition: margin-left 0.2s ease-in-out;
+    }
+
+    .left-sidebar {
+      width: 250px;
+      position: fixed;
+      top: 0;
+      height: 100%;
+      z-index: 10;
+      transition: width 0.2s ease-in-out, left 0.2s ease-in-out;
+    }
+
+    .page-wrapper {
+      margin-left: 250px;
+      transition: margin-left 0.2s ease-in-out;
+    }
+
+    // Mini-sidebar state
+    &[data-sidebartype='mini-sidebar'] {
+      .topbar .navbar-collapse {
+        margin-left: 65px;
+      }
+
+      .navbar-header {
+        width: 65px;
+        .logo-text {
+          display: none;
+        }
+        .logo-icon {
+          transform: scale(0.9);
+        }
+      }
+
+      .left-sidebar {
+        width: 65px;
+        .sidebar-nav .hide-menu,
+        .sidebar-nav .sidebar-item .sidebar-link .mdi-chevron-down {
+          display: none;
+        }
+        .sidebar-nav .sidebar-item .sidebar-link {
+          justify-content: center;
+        }
+      }
+
+      .page-wrapper {
+        margin-left: 65px;
+      }
+    }
+  }
+}
+
+// Topbar styles
+.topbar {
+  background: var(--card-background, #ffffff);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  height: 70px;
+  border-bottom: 1px solid var(--border-color, #e9ecef);
+
+  .top-navbar {
+    height: 70px;
+    padding: 0 15px 0 0;
+  }
+}
+
+// Navbar Header (Logo container)
+.navbar-header {
+  background: transparent;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.2s ease-in-out;
+  height: 70px;
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+    .logo-icon img {
+      max-height: 100px;
+      width: auto;
+    }
+    .logo-text img {
+      max-height: 25px;
+      width: auto;
+    }
+  }
+}
+
+// Left Sidebar styles
+.left-sidebar {
+  background: linear-gradient(180deg, var(--primary-color, #07399C), var(--primary-hover, #3960F0));
+  box-shadow: 1px 0 20px rgba(0, 0, 0, 0.08);
+  position: relative; // Needed for pseudo-elements
+  overflow: hidden;  // Needed to contain the bubbles
+
+  // The bubbles
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07); // Subtle white bubbles
+    transition: all 0.3s ease-in-out;
+    z-index: 0; // Behind sidebar content
+  }
+
+  // First bubble
+  &::before {
+    width: 220px;
+    height: 220px;
+    top: -60px;
+    left: -90px;
+  }
+
+  // Second bubble
+  &::after {
+    width: 350px;
+    height: 350px;
+    bottom: -120px;
+    right: -150px;
+  }
+}
+
+// Ensure sidebar content (menu items) are on top of the bubbles
+.scroll-sidebar {
+  position: relative;
+  z-index: 1;
+}
+
+// Page Wrapper styles
+.page-wrapper {
+  background: var(--background-light, #F3F7FB);
+  // padding-top: 70px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.container-fluid {
+  padding: 0px;
+}
+
+// Footer styles
+.footer {
+  background: transparent;
+  color: #6c757d;
+  padding: 20px 25px;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+// Hide the old settings panel toggle
+.service-panel-toggle {
+  display: none !important;
+}
+
+// Topbar Navigation Elements Color Correction
+.topbar .top-navbar {
+  // Default color for text elements in the topbar
+  color: var(--text-primary, #07399C);
+
+  // Targeting elements inside the navigation component
+  ::ng-deep {
+    .navbar-nav .nav-link,
+    .navbar-nav .nav-link i,
+    .user-profile > a,
+    .user-profile > a span {
+      color: var(--text-primary, #07399C) !important;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:hover i,
+    .user-profile > a:hover,
+    .user-profile > a:hover span {
+      color: var(--primary-hover, #3960F0) !important;
+    }
+
+    // Ensure notification badges have contrast if they exist
+    .notify .point {
+      background-color: #ff4f41; // A bright color for notifications
+      border: 1px solid var(--card-background, #ffffff);
+    }
+  }
+}
+
+
+// Responsive adjustments for mobile
+@media (max-width: 1169px) {
+  #main-wrapper[data-layout='vertical'] {
+    .topbar .navbar-collapse {
+      margin-left: 0;
+    }
+
+    &[data-sidebartype='full'],
+    &[data-sidebartype='mini-sidebar'] {
+      .left-sidebar {
+        left: -250px;
+      }
+      .page-wrapper {
+        margin-left: 0;
+      }
+      &.show-sidebar {
+        .left-sidebar {
+          left: 0;
+          width: 70%;
+        }
+      }
+    }
+  }
+}
+
+.list-style-none {
+     list-style: none;
+     padding: 0;
+}

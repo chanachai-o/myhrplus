@@ -1,0 +1,174 @@
+<!-- Modern Repare Routing Layout -->
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "Repare Step Routing" | translate }}</h4>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-container">
+      <div class="form-group">
+        <label for="workflowIdInput" class="form-label">{{ "documents.type" | translate }}</label>
+        <div class="input-group">
+          <input
+            id="workflowIdInput"
+            type="number"
+            class="form-control"
+            placeholder="{{ 'Workflow ID.WF_REMARK' | translate }}"
+            [(ngModel)]="wfid"
+            (ngModelChange)="searchWf()"
+          />
+          <button class="btn btn-outline-secondary btn-icon" (click)="this.ngbModal.open(wfModal, { centered: true, size: 'lg' })">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">&nbsp;</label> <!-- Spacer for alignment -->
+        <input type="text" class="form-control" disabled placeholder="{{ 'Workflow Name' | translate }}" [value]="wfidSelected?.getName()" />
+      </div>
+      <button class="btn btn-primary search-button" (click)="workflowStepErrorList()" [disabled]="!wfidSelected">
+        <i class="mdi mdi-magnify me-1"></i>
+        {{ "systemcode.search" | translate }}
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    @if (isLoading) {
+      <div class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }
+
+    <!-- Results Section -->
+    @if (workflowList) {
+      <div class="results-container">
+        <div class="results-header">
+          <div class="input-group search-box">
+            <span class="input-group-text bg-transparent border-end-0"><i class="mdi mdi-magnify"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="{{ 'document no' | translate }}" [(ngModel)]="searchTermWf">
+          </div>
+          <span class="count-badge">
+            {{ 'all' | translate }}: {{ f_workflowList?.length || 0 }}
+          </span>
+        </div>
+
+        <div class="table-container">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th>{{ "Workflow ID.WF_REMARK" | translate }}</th>
+                  <th>{{ "document no" | translate }}</th>
+                  <th>{{ "Workflow Name" | translate }}</th>
+                  <th>{{ "systemcode.initiator" | translate }}</th>
+                  <th>{{ "Result" | translate }}</th>
+                  <th class="text-center">{{ "Action" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (f_workflowList && f_workflowList.length > 0) {
+                  @for (item of f_workflowList | slice: (pageWf-1) * pageSizeWf : (pageWf-1) * pageSizeWf + pageSizeWf; track item.docNo) {
+                    <tr>
+                      <td>{{ item.wfId }}</td>
+                      <td>{{ item.docNo }}</td>
+                      <td>{{ translateService.currentLang === 'th' ? item.tdesc : item.edesc }}</td>
+                      <td>{{ item.initiator }}</td>
+                      <td>{{ getResult(item.result) }}</td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-primary repare-btn" (click)="repareWf(item)">
+                          <i class="mdi mdi-wrench-outline me-1"></i>
+                          {{ "Repare" | translate }}
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                } @else {
+                  <tr>
+                    <td [attr.colspan]="6" class="text-center p-4">{{ "No Data Found" | translate }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        @if (f_workflowList && f_workflowList.length > pageSizeWf) {
+          <div class="pagination-container">
+            <select class="form-select w-auto" [(ngModel)]="pageSizeWf" (ngModelChange)="pageWf=1">
+              @for (size of [10, 50, 100]; track size) {
+                <option [ngValue]="size">{{ "Items per page" | translate }}: {{size}}</option>
+              }
+            </select>
+            <ngb-pagination [collectionSize]="f_workflowList.length" [(page)]="pageWf" [pageSize]="pageSizeWf" [maxSize]="5" [rotate]="true" [ellipses]="false"></ngb-pagination>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modal for selecting Workflow -->
+<ng-template #wfModal let-modal>
+  <div class="modal-header bg-myhr">
+    <h5 class="modal-title text-white">{{ "documents.type" | translate }}</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="results-header">
+        <div class="input-group search-box">
+            <span class="input-group-text bg-transparent border-end-0"><i class="mdi mdi-magnify"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="{{ 'documents.type' | translate }}" [(ngModel)]="searchTerm">
+        </div>
+        <span class="count-badge">
+            {{ 'all' | translate }}: {{ filterwfIdList?.length || 0 }}
+        </span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>{{ "Workflow ID.WF_REMARK" | translate }}</th>
+                    <th>{{ "Workflow Name" | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of filterwfIdList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; track item.wfId) {
+                    <tr (click)="wfidSelected = item; wfid = item.wfId.toString(); modal.dismiss()" style="cursor: pointer;">
+                        <td>{{ item.wfId }}</td>
+                        <td>{{ item.getName() }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="pagination-container">
+        <select class="form-select w-auto" [(ngModel)]="pageSize" (ngModelChange)="page=1">
+            @for (size of [10, 50, 100]; track size) {
+                <option [ngValue]="size">{{ "Items per page" | translate }}: {{size}}</option>
+            }
+        </select>
+        <ngb-pagination [collectionSize]="filterwfIdList?.length || 0" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"></ngb-pagination>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Alert Modal (can be refactored into a shared component) -->
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{ "Alert Message" | translate }}</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>{{ alert.message }}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss()">{{ "OK" | translate }}</button>
+    </div>
+</ng-template>

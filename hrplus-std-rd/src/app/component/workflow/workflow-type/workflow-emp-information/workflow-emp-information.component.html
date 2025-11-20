@@ -1,0 +1,116 @@
+<!-- ข้อมูลพนักงาน -->
+<div class="card mb-0">
+  <div class="card-header bg-myhr">
+    <h6 class="card-title">{{ "Employee Detail" | translate }}</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6 col-12 b-r">
+        <small class="text-muted">{{ "Employee ID" | translate }}</small>
+        <h6>
+          <button
+            *ngIf="createBy"
+            type="button"
+            class="btn btn-info btn-sm btn-circle me-3"
+            (click)="openEmployeeModal()"
+          >
+            <i class="fa fa-search"></i>
+          </button>
+          {{ empInformation.employeeId }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-12 b-r">
+        <small class="text-muted">{{ "Name-Surname" | translate }}</small>
+        <h6>
+          {{
+            empInformation.getFullname() ? empInformation.getFullname() : "-"
+          }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-12 b-r">
+        <small class="text-muted">{{ "Position" | translate }}</small>
+        <h6>
+          {{
+            empInformation.position
+              ? empInformation.position.getPositionDesc()
+              : "-"
+          }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU1")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU1")
+            : ("Bu1" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu1 ? empInformation.bu1.getBu1Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU2")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU2")
+            : ("Bu2" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu2 ? empInformation.bu2.getBu2Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU3")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU3")
+            : ("Bu3" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu3 ? empInformation.bu3.getBu3Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU4")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU4")
+            : ("Bu4" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu4 ? empInformation.bu4.getBu4Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU5")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU5")
+            : ("Bu5" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu5 ? empInformation.bu5.getBu5Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU6")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU6")
+            : ("Bu6" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu6 ? empInformation.bu6.getBu6Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-xs-12 b-r">
+        <small class="text-muted">{{
+          SwaplangCodeService.getSwapLangCodeFromModelList("BU7")
+            ? SwaplangCodeService.getSwapLangCodeFromModelList("BU7")
+            : ("Bu7" | translate)
+        }}</small>
+        <h6>
+          {{ empInformation.bu7 ? empInformation.bu7.getBu7Desc() : "-" }}
+        </h6>
+      </div>
+      <div class="col-md-6 col-12 b-r">
+        <small class="text-muted">{{ "tel" | translate }}</small>
+        <h6>{{ empInformation.telExt ? empInformation.telExt : "-" }}</h6>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="card main-content-card">
+    <div class="card-header bg-myhr">
+      <h4>{{"Memployee Holiday" | translate}}</h4>
+    </div>
+    <div class="card-body ">
+      <div class="holiday-form-grid mb-4">
+        <div class="">
+          <label class="form-label">{{"Employee"| translate}}</label>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="{{'Employee ID'| translate}}"
+              aria-describedby="basic-addon1" [ngModel]="employee.employeeId"
+              (ngModelChange)="modelEmployeeChange($event)">
+            <div class="input-group-append">
+              <button class="btn me-0 btn-info" type="button" (click)="openEmployeeModal();"><i
+                  class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <label class="form-label">&nbsp;</label>
+          <input type="text" placeholder="{{'Name-Surname'| translate}}" class="form-control" disabled
+            [value]="employee.getName()">
+        </div>
+      </div>
+
+      <div *ngIf="employee.engFullName||employee.thFullName">
+        <div class="holiday-form-grid mb-3">
+          <div class="">
+            <label class="form-label">{{"Holiday"| translate}}</label>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="{{'Holiday Name'| translate}}"
+                aria-describedby="basic-addon1" [ngModel]="publicHoliday.getName()"
+                (ngModelChange)="modelPublicHolidayChange($event)">
+              <div class="input-group-append">
+                <button class="btn me-0 btn-info" type="button" (click)="openPublicHolidayModal()">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="" *ngIf="publicHolidayStatus">
+            <label class="form-label">{{"Holiday remaining"| translate}}</label>
+            <p class="form-control-plaintext"><strong>{{publicHoliday.countHoliday-publicHoliday.used}}&nbsp;{{"day"|translate}}</strong></p>
+          </div>
+        </div>
+
+        <div class="form-group-buttons d-flex justify-content-center mb-3">
+            <button type="button" class="btn btn-success waves-effect waves-light" style="width: 85px;"
+              [disabled]="!employee.engFullName&&!employee.thFullName" (click)="saveHoliday1()">
+              {{"Save"| translate}}
+            </button>
+        </div>
+        
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+      </div>
+
+      <div class="instruction-panel mt-4" *ngIf="!employee.engFullName&&!employee.thFullName">
+          <div class="d-flex align-items-center">
+              <i class="mdi mdi-information-outline mdi-24px me-3 text-primary"></i>
+              <p class="mb-0">{{ getMessageTranslate("กรุณาเลือกพนักงานเพื่อเริ่มต้นใช้งาน", "Please select an employee to get started.") }}</p>
+          </div>
+      </div>
+
+      <div class="instruction-panel mt-4" *ngIf="employee.engFullName||employee.thFullName">
+        <div class="instruction-section">
+          <h6 class="instruction-title"><i class="mdi mdi-plus-circle-outline me-2"></i>{{"detail.heading.1" | translate}}</h6>
+          <ol>
+            <li>{{getMessageTranslate("เลือกพนักงาน","Select employee")}}</li>
+            <li>{{getMessageTranslate("เลือกวันหยุด","Select holiday")}}</li>
+            <li>{{"memployee-holiday.detail.mark" | translate}}</li>
+            <li>{{"memployee-holiday.detail.clicksave" | translate}}</li>
+          </ol>
+        </div>
+        <hr>
+        <div class="instruction-section">
+          <h6 class="instruction-title"><i class="mdi mdi-minus-circle-outline me-2"></i>{{"detail.heading.2" | translate}}</h6>
+          <ol>
+            <li>{{getMessageTranslate("เลือกพนักงาน","Select employee")}}</li>
+            <li>{{getMessageTranslate("เลือกวันหยุดที่ตรงกับวันหยุดที่ต้องการลบในปฏิทิน", "Select the holiday that corresponds to the holiday you want to delete in the calendar.")}}</li>
+            <li>{{"memployee-holiday.detail.unmark" | translate}}</li>
+            <li>{{"memployee-holiday.detail.clicksave" | translate}}</li>
+          </ol>
+        </div>
+        <hr>
+        <div class="ps-section">
+          <strong>{{getMessageTranslate("ป.ล.","P.S.")}}</strong>
+          <ul>
+            <li>{{getMessageTranslate("ไม่สามารถเลือกวันที่ที่น้อยกว่าปัจจุบันได้", "A date less than the current cannot be selected.")}}</li>
+            <li>{{getMessageTranslate("ไม่สามารถเลือกวันที่ได้หากวันหยุดคงเหลือเป็น 0", "The date cannot be selected if the remaining holiday is 0.")}}</li>
+            <li>{{getMessageTranslate("หากเลือกวันหยุดซ้ำในปฏิทิน วันหยุดเก่าจะถูกลบออก", "If a repeating holiday is selected in the calendar Old holidays will be deleted.")}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

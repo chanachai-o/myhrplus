@@ -1,0 +1,576 @@
+<div class="card">
+    <div class="card-header bg-myhr">
+        <h4>ข้อมูลผู้สมัครที่ผ่านการคัดเลือก</h4>
+    </div>
+    <div class="col-md-12">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="crad-body">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="white-box text-center">
+                                        <img class="rounded-circle" src="https://myhrplus-dev.myhr.co.th/hr/FileViewer.jsp?uploadfield=memployee.picture&filename=30MMD5CQN8.jpg"
+                                            alt="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-sm-12">
+                                    <h4>นายทดสอบ เทสสสสสสสสสส</h4>
+                                    <small>รหัสพนักงาน</small>
+                                    <h6>11002010</h6>
+                                    <small>ตำแหน่ง</small>
+                                    <h6>Consultant Manager</h6>
+                                    <small>อีเมล</small>
+                                    <h6>praphaphon.j&#64;myhr.co.th</h6>
+                                    <small>เบอร์โทร</small>
+                                    <h6>0955959959</h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs"
+                style="background-color: white;padding: 10px 10px 10px 10px;">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>{{translateService.currentLang=='th'?"ข้อมูลส่วนตัว":"Personal"}}</a>
+                    <ng-template ngbNavContent>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="m-t-20">
+                                <div class="card w-100">
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ข้อมูลส่วนตัว":"Personal"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 b-r">
+                                                <small class="text-muted">ชื่อ-นามสกุล</small>
+                                                <h6>ดร.สายสมร ทดสอบ</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 b-r">
+                                                <small class="text-muted"> ชื่อ-นามสกุล (Eng)</small>
+                                                <h6>PhD.saisamorn todsob</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 b-r">
+                                                <small class="text-muted">ชื่อเล่น (ไทย)</small>
+                                                <h6>สมร</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เพศ</small>
+                                                <h6>หญิง</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เชื้อชาติ</small>
+                                                <h6>ไทย</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">สัญชาติ
+                                                </small>
+                                                <h6>ไทย</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ศาสนา</small>
+                                                <h6>พุทธ</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">วันเกิด</small>
+                                                <h6>18/06/1995</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ส่วนสูง</small>
+                                                <h6>165</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">น้ำหนัก</small>
+                                                <h6>75
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">กรุ๊ปเลือด</small>
+                                                <h6>B
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">สถานภาพสมรส</small>
+                                                <h6>โสด
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">สถานภาพสมรส</small>
+                                                <h6>ไม่
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"สถานภาพทางทหาร":"Military Status"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">สถานภาพสมรส</small>
+                                                <h6>ผ่านการเกณฑ์ทหารแล้ว
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"บัตรประจำตัว":"Identification"}} </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">หมายเลขบัตรประชาชน</small>
+                                                <h6>1100201052528
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ออกที่ (อำเภอ)</small>
+                                                <h6>testt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ออกที่ (จังหวัด)</small>
+                                                <h6>testt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">วันออกบัตร</small>
+                                                <h6>01/01/2022
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">วันบัตรหมดอายุ</small>
+                                                <h6>01/01/2022
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink>{{translateService.currentLang=='th'?"ข้อมูลกาติดต่อ":"Contact"}}</a>
+                    <ng-template ngbNavContent>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="m-t-20">
+                                <div class="card w-100">
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"การติดต่อสื่อสาร":"Communicate"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 b-r">
+                                                <small class="text-muted">อีเมล์</small>
+                                                <h6>testtttt&#64;testtttt.cc</h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 b-r">
+                                                <small class="text-muted"> โทรศัพท์มือถือ</small>
+                                                <h6>0554444444</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ที่อยู่ตามทะเบียนบ้าน":"Home Address"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เลขที่</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">หมู่บ้าน</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ห้องเลขที่</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ชั้น.</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ซอย</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">หมู่</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ถนน</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ตำบล/แขวง</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อำเภอ</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">จังหวัด</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">จังหวัด</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">โทรศัพท์</small>
+                                                <h6>0888888888
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ที่อยู่ปัจจุบัน":"Current Address"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เลขที่</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">หมู่บ้าน</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ห้องเลขที่</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ชั้น.</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ซอย</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">หมู่</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ถนน</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ตำบล/แขวง</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อำเภอ</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">จังหวัด</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">จังหวัด</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">โทรศัพท์</small>
+                                                <h6>0888888888
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="3">
+                    <a ngbNavLink>{{translateService.currentLang=='th'?"ข้อมูลการศึกษา":"Education"}} </a>
+                    <ng-template ngbNavContent>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="m-t-20">
+                                <div class="card w-100">
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ลำดับที่ 1":"No.1"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ชื่อสถาบัน</small>
+                                                <h6>ศูนย์บริการการศึกษานอกโรงเรียนอำเภอบางกรวย
+                                                </h6>
+                                                <!-- สถาบันเทคโนโลยีฯวิทยาเขตบพิตรพิมุขจักรวรรดิ์ -->
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ระดับการศึกษา</small>
+                                                <h6>ประถมศึกษา
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">คณะ</small>
+                                                <h6>วิทยาศาสตร์
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">สาขา</small>
+                                                <h6>วิทยากาคอม
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ระยะเวลา</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เกรดเฉลี่ย</small>
+                                                <h6>2
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ลำดับที่ 2":"No.2"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ชื่อสถาบัน</small>
+                                                <h6>สถาบันเทคโนโลยีฯวิทยาเขตบพิตรพิมุขจักรวรรดิ์
+                                                </h6>
+                                                <!-- สถาบันเทคโนโลยีฯวิทยาเขตบพิตรพิมุขจักรวรรดิ์ -->
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ระดับการศึกษา</small>
+                                                <h6>ประถมศึกษา
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">คณะ</small>
+                                                <h6>วิทยาศาสตร์
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">สาขา</small>
+                                                <h6>วิทยากาคอม
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ระยะเวลา</small>
+                                                <h6>1102
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เกรดเฉลี่ย</small>
+                                                <h6>2
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="4">
+                    <a ngbNavLink>{{translateService.currentLang=='th'?"ประวัติการทำงาน":"Job Experience"}}</a>
+                    <ng-template ngbNavContent>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="m-t-20">
+                                <div class="card w-100">
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ประวัติการทำงานภายใน":"Internal Job Experience"}} </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ชื่อสถาบัน</small>
+                                                <h6>ศูนย์บริการการศึกษานอกโรงเรียนอำเภอบางกรวย
+                                                </h6>
+                                                <!-- สถาบันเทคโนโลยีฯวิทยาเขตบพิตรพิมุขจักรวรรดิ์ -->
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ระดับการศึกษา</small>
+                                                <h6>ประถมศึกษา
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">คณะ</small>
+                                                <h6>วิทยาศาสตร์
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttt
+                                                </h6>
+                                            </div>
+                                  
+                                        </div>
+                                    </div>
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"ประวัติการทำงาน":"Job Experience"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ชื่อสถาบัน</small>
+                                                <h6>สถาบันเทคโนโลยีฯวิทยาเขตบพิตรพิมุขจักรวรรดิ์
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttttttt
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ระดับการศึกษา</small>
+                                                <h6>ประถมศึกษา
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">คณะ</small>
+                                                <h6>วิทยาศาสตร์
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">อื่นๆ</small>
+                                                <h6>testtttttttt
+                                                </h6>
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="5">
+                    <a ngbNavLink>{{translateService.currentLang=='th'?"อื่นๆ":"Others"}} </a>
+                    <ng-template ngbNavContent>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="m-t-20">
+                                <div class="card w-100">
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">{{translateService.currentLang=='th'?"อื่นๆ":"Others"}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">หน้าที่ความรับผิดชอบปัจจุบัน (อธิบายพอสังเขป)</small>
+                                                <textarea class="form-control">testtttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+                                                </textarea>
+                                            </div>
+                                            <div class="col-lg-12 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">เหตุผลการสมัครในตำแหน่งนี้</small>
+                                                <textarea class="form-control">testtttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="6">
+                    <a ngbNavLink>{{translateService.currentLang=='th'?"ไฟล์แนบ":"Attach file"}}</a>
+                    <ng-template ngbNavContent>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="m-t-20">
+                                <div class="card w-100">
+                                    <div class="card-header bg-myhr">
+                                        <h6 class="card-title">ไฟล์แนบ</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">ประเภทเอกสาร</small>
+                                                <h6 class="form-control">pdf
+                                                </h6>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-xs-12 col-6 b-r">
+                                                <small class="text-muted">	ชื่อไฟล์</small>
+                                                <h6 class="form-control">เอกสาร1
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+
+
+            </ul>
+            <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+        </div>
+    </div>
+</div>

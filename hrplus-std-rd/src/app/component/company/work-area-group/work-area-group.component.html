@@ -1,0 +1,438 @@
+<div class="modern-card work-area-group-card">
+    <div class="card-header">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <div class="card-title-section">
+                <h4 class="card-title">
+                    <span class="material-symbols-outlined me-2">business</span>
+                    {{ "Work Area Group" | translate }}
+                </h4>
+                <p class="card-subtitle text-muted mb-0">{{ "Manage work area group configurations" | translate }}</p>
+            </div>
+            <div class="card-actions">
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="refreshData()"
+                    [attr.aria-label]="'Refresh' | translate"
+                    [title]="'Refresh' | translate">
+                    <span class="material-symbols-outlined">refresh</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <!-- Work Area Group Form (Top Section) -->
+        <div class="work-area-group-form-grid mb-4">
+            <div class="mb-3">
+                <label class="form-label">{{ "group.id" | translate }}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{ 'group.id' | translate }}"
+                        [(ngModel)]="gworkarea0.groupId" (ngModelChange)="findGworkarea0($event)"
+                        [attr.aria-label]="'Group ID' | translate"
+                        [title]="'Group ID' | translate" />
+                    <button class="btn btn-outline-secondary btn-icon" type="button"
+                        (click)="openBranchModal(branchModal)"
+                        [attr.aria-label]="'Search' | translate"
+                        [title]="'Search' | translate">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">{{ "Name" | translate }} (TH)</label>
+                <input type="text" placeholder="{{ 'detailTH' | translate }}" class="form-control"
+                    [(ngModel)]="gworkarea0.tdesc"
+                    [attr.aria-label]="'Detail TH' | translate"
+                    [title]="'Detail TH' | translate" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">{{ "Name" | translate }} (EN)</label>
+                <input type="text" placeholder="{{ 'detailENG' | translate }}" class="form-control"
+                    [(ngModel)]="gworkarea0.edesc"
+                    [attr.aria-label]="'Detail ENG' | translate"
+                    [title]="'Detail ENG' | translate" />
+            </div>
+            <div class="mb-3">
+                <div class="form-group-buttons">
+                    <button type="button" class="btn btn-danger" [disabled]="gworkarea0.groupId == '' || isSaving"
+                        (click)="deleteGworkarea0()"
+                        [attr.aria-label]="'Delete' | translate"
+                        [title]="'Delete' | translate">
+                        <span *ngIf="!isSaving">
+                            <span class="material-symbols-outlined me-1">delete</span>
+                            {{ "Delete" | translate }}
+                        </span>
+                        <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Work Area List Table -->
+        <div class="row mb-3">
+            <div class="col-12 d-flex justify-content-end align-items-center mb-2">
+                <div class="stats-badge">
+                    <span class="badge-text">{{ "all" | translate }}</span>
+                    <span class="badge-count">{{ gworkarea1List.length }}</span>
+                    <span class="badge-text">{{ "workareas" | translate }}</span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="table-responsive d-none d-lg-block">
+                    <table class="table modern-table">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox">
+                                    <input type="checkbox" [ngModel]="checkboxAll"
+                                        (ngModelChange)="selectAll($event)"
+                                        [attr.aria-label]="'Select All' | translate"
+                                        [title]="'Select All' | translate"
+                                        [attr.id]="'selectAllCheckbox'"
+                                        [attr.name]="'selectAllCheckbox'">
+                                </th>
+                                <th class="col-number">{{ "No." | translate }}</th>
+                                <th class="col-workarea-id">{{ "Working Area ID" | translate }}</th>
+                                <th class="col-workarea-name">{{ "Workarea" | translate }}</th>
+                                <th class="col-province">{{ "Province" | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="gworkarea1List.length == 0">
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    {{ "No Data Found" | translate }}
+                                </td>
+                            </tr>
+                            <tr *ngFor="
+                                    let item of gworkarea1List
+                                        | slice
+                                            : (page - 1) * pageSize
+                                            : (page - 1) * pageSize + pageSize;
+                                    let i = index
+                                ">
+                                <td class="text-center">
+                                    <input type="checkbox" [(ngModel)]="item.checkbox"
+                                        [attr.aria-label]="'Select item' | translate"
+                                        [title]="'Select item' | translate"
+                                        [attr.id]="'selectItem_' + i"
+                                        [attr.name]="'selectItem_' + i">
+                                </td>
+                                <td class="text-center">
+                                    {{ (page - 1) * pageSize + (i + 1) }}
+                                </td>
+                                <td>{{ item.data.mworkarea.workareaId }}</td>
+                                <td>
+                                    {{
+                                    getName(
+                                    item.data.mworkarea.tdesc,
+                                    item.data.mworkarea.edesc
+                                    )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                    getName(
+                                    item.data.mworkarea.province
+                                    .longTname,
+                                    item.data.mworkarea.province
+                                    .longEname
+                                    )
+                                    }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Card View -->
+                <div class="d-lg-none mt-3">
+                    <div *ngIf="gworkarea1List.length == 0" class="empty-state">
+                        <div class="empty-icon">🏢</div>
+                        <p>{{ "No Data Found" | translate }}</p>
+                    </div>
+                    <div *ngFor="
+                            let item of gworkarea1List
+                                | slice
+                                    : (page - 1) * pageSize
+                                    : (page - 1) * pageSize + pageSize;
+                            let i = index
+                        " class="work-area-group-card-mobile">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" [(ngModel)]="item.checkbox"
+                                        [attr.aria-label]="'Select item' | translate"
+                                        [title]="'Select item' | translate"
+                                        [attr.id]="'mobile_selectItem_' + i"
+                                        [attr.name]="'mobile_selectItem_' + i">
+                                    <label class="form-check-label">{{ "No." | translate }}
+                                        {{
+                                        (page - 1) * pageSize + (i + 1)
+                                        }}</label>
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-item">
+                                    <span>{{
+                                        "Working Area ID" | translate
+                                        }}</span><strong>{{
+                                        item.data.mworkarea.workareaId
+                                        }}</strong>
+                                </div>
+                                <div class="info-item">
+                                    <span>{{ "Workarea" | translate }}</span><strong>{{
+                                        getName(
+                                        item.data.mworkarea.tdesc,
+                                        item.data.mworkarea.edesc
+                                        )
+                                        }}</strong>
+                                </div>
+                                <div class="info-item">
+                                    <span>{{ "Province" | translate }}</span><strong>{{
+                                        getName(
+                                        item.data.mworkarea.province
+                                        .longTname,
+                                        item.data.mworkarea.province
+                                        .longEname
+                                        )
+                                        }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-controls d-flex justify-content-end p-2">
+                    <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="page = 1"
+                        [attr.aria-label]="'Items per page' | translate"
+                        [title]="'Items per page' | translate">
+                        <option [ngValue]="10">
+                            {{ "Items per page" | translate }}: 10
+                        </option>
+                        <option [ngValue]="50">
+                            {{ "Items per page" | translate }}: 50
+                        </option>
+                        <option [ngValue]="100">
+                            {{ "Items per page" | translate }}: 100
+                        </option>
+                    </select>
+                    <ngb-pagination [collectionSize]="gworkarea1List.length" [(page)]="page" [pageSize]="pageSize"
+                        [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                        <ng-template ngbPaginationPrevious><span class="material-symbols-outlined">chevron_left</span></ng-template>
+                        <ng-template ngbPaginationNext><span class="material-symbols-outlined">chevron_right</span></ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+
+            <!-- Main Action Buttons -->
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-center mt-3">
+                    <button type="button" class="btn btn-outline-primary me-2"
+                        (click)="openWorkingAreaModal(workingAreaModal)"
+                        [attr.aria-label]="'Add' | translate"
+                        [title]="'Add' | translate">
+                        <span class="material-symbols-outlined me-1">add</span>
+                        {{ "Add" | translate }}
+                    </button>
+                    <button type="button" class="btn btn-success me-2" [disabled]="gworkarea0.groupId == '' || isSaving"
+                        (click)="saveGworkarea0()"
+                        [attr.aria-label]="'Save' | translate"
+                        [title]="'Save' | translate">
+                        <span *ngIf="!isSaving">
+                            <span class="material-symbols-outlined me-1">save</span>
+                            {{ "Save" | translate }}
+                        </span>
+                        <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="deleteGworkarea1List()"
+                        [attr.aria-label]="'Delete' | translate"
+                        [title]="'Delete' | translate">
+                        <span class="material-symbols-outlined me-1">delete</span>
+                        {{ "Delete" | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <ng-template #branchModal let-modal>
+            <div class="modal-header justify-content-between">
+                <h5 class="modal-title">
+                    <span class="material-symbols-outlined me-2">business</span>
+                    {{ "Work Area Group" | translate }}
+                </h5>
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-input-container mb-3">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" class="form-control" placeholder="{{
+                            getName(
+                                'ค้นหา รหัสกลุ่ม / ชื่อกลุ่ม',
+                                'Search Group ID / Group Name'
+                            )
+                        }}" [ngModel]="searchModal" (ngModelChange)="
+                            modalSearchChange('gworkarea0Search', $event)
+                        "
+                        [attr.aria-label]="'Search Group ID / Group Name' | translate"
+                        [title]="'Search Group ID / Group Name' | translate" />
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover v-middle">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>{{ "group.id" | translate }}</th>
+                                <th>{{ "detailTH" | translate }}</th>
+                                <th>{{ "detailENG" | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="gworkarea0ListLoading">
+                                <td colspan="3" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="
+                                    !gworkarea0ListLoading &&
+                                    gworkarea0List.length == 0
+                                ">
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    {{ "No Data Found" | translate }}
+                                </td>
+                            </tr>
+                            <tr class="cursor-myhr" *ngFor="
+                                    let item of gworkarea0List
+                                        | slice
+                                            : (pageModal - 1) * pageSizeModal
+                                            : (pageModal - 1) * pageSizeModal +
+                                                  pageSizeModal;
+                                    let i = index
+                                " (click)="modal.close(item)">
+                                <td>{{ item.groupId }}</td>
+                                <td>{{ item.tdesc }}</td>
+                                <td>{{ item.edesc }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-controls d-flex justify-content-end p-2">
+                    <select class="form-select" [(ngModel)]="pageSizeModal" (ngModelChange)="pageModal = 1">
+                        <option [ngValue]="10">
+                            {{ "Items per page" | translate }}: 10
+                        </option>
+                        <option [ngValue]="50">
+                            {{ "Items per page" | translate }}: 50
+                        </option>
+                        <option [ngValue]="100">
+                            {{ "Items per page" | translate }}: 100
+                        </option>
+                    </select>
+                    <ngb-pagination [collectionSize]="gworkarea0List.length" [(page)]="pageModal"
+                        [pageSize]="pageSizeModal" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                        <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+                        <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+                    {{ "Close" | translate }}
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #workingAreaModal let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span class="material-symbols-outlined me-2">factory</span>
+                    {{ "Working Area Table" | translate }}
+                </h5>
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-input-container mb-3">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" class="form-control" placeholder="{{
+                            getName(
+                                'ค้นหา รหัสพื้นที่ทำงาน / ชื่อร้าน',
+                                'Search Working Area Code / Store Name'
+                            )
+                        }}" [ngModel]="searchModal" (ngModelChange)="
+                            modalSearchChange('workAreaSearch', $event)
+                        "
+                        [attr.aria-label]="'Search Working Area Code / Store Name' | translate"
+                        [title]="'Search Working Area Code / Store Name' | translate" />
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover v-middle">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>{{ "Working Area Code" | translate }}</th>
+                                <th>{{ "Store Name (Thai)" | translate }}</th>
+                                <th>{{ "Store Name (Eng.)" | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="workAreaListLoading">
+                                <td colspan="3" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="
+                                    !workAreaListLoading &&
+                                    workAreaList.length == 0
+                                ">
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    {{ "No Data Found" | translate }}
+                                </td>
+                            </tr>
+                            <tr class="cursor-myhr" *ngFor="
+                                    let item of workAreaList
+                                        | slice
+                                            : (pageModal - 1) * pageSizeModal
+                                            : (pageModal - 1) * pageSizeModal +
+                                                  pageSizeModal;
+                                    let i = index
+                                " (click)="modal.close(item)">
+                                <td>{{ item.data.workareaId }}</td>
+                                <td>{{ item.data.tdesc }}</td>
+                                <td>{{ item.data.edesc }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-controls d-flex justify-content-end p-2">
+                    <select class="form-select page-size-select" [(ngModel)]="pageSizeModal" (ngModelChange)="pageModal = 1"
+                        [attr.aria-label]="'Items per page' | translate"
+                        [title]="'Items per page' | translate">
+                        <option [ngValue]="10">
+                            {{ "Items per page" | translate }}: 10
+                        </option>
+                        <option [ngValue]="50">
+                            {{ "Items per page" | translate }}: 50
+                        </option>
+                        <option [ngValue]="100">
+                            {{ "Items per page" | translate }}: 100
+                        </option>
+                    </select>
+                    <ngb-pagination [collectionSize]="workAreaList.length" [(page)]="pageModal"
+                        [pageSize]="pageSizeModal" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                        <ng-template ngbPaginationPrevious><span class="material-symbols-outlined">chevron_left</span></ng-template>
+                        <ng-template ngbPaginationNext><span class="material-symbols-outlined">chevron_right</span></ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="modal.dismiss()"
+                    [attr.aria-label]="'Close' | translate"
+                    [title]="'Close' | translate">
+                    <span class="material-symbols-outlined me-1">close</span>
+                    {{ "Close" | translate }}
+                </button>
+            </div>
+        </ng-template>
+    </div>
+</div>

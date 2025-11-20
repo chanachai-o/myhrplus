@@ -1,0 +1,283 @@
+/*
+    MODERN ORGCHART COMPONENT STYLES
+    Enhanced design with modern card layout and improved chart styling
+*/
+
+// Modern Card Container
+.orgchart-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+// Card Header
+.card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    border-radius: 0;
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+        font-family: 'Prompt', sans-serif;
+    }
+
+    .card-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .card-actions {
+        margin-top: 0.5rem;
+
+        @media (min-width: 768px) {
+            margin-top: 0;
+        }
+    }
+}
+
+.card-body {
+    padding: 2rem;
+
+    @media (max-width: 767.98px) {
+        padding: 1.5rem;
+    }
+}
+
+// Chart Wrapper
+.chart-wrapper {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Loading spinner container
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-secondary);
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        border-width: .25em;
+        color: var(--primary-color);
+    }
+
+    .loading-text {
+        font-family: 'Prompt', sans-serif;
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+}
+
+// Chart container with fade-in animation
+.chart-container {
+    width: 100%;
+    height: 70vh; // Use viewport height for better scaling
+    min-height: 500px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    @media (max-width: 768px) {
+        height: 60vh;
+        min-height: 400px;
+    }
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Deep styles for Balkan OrgChartJS
+::ng-deep {
+
+    .rect {
+        fill: var(--text-primary) !important;
+    }
+
+    .boc-edit-form .boc-edit-form-header,
+    .boc-edit-form .boc-img-button {
+        background-color: var(--text-primary) !important;
+    }
+
+    .boc-edit-form .boc-img-button:hover {
+        background-color: var(--text-primary) !important;
+    }
+
+
+    .boc-input {
+        padding-top: 2px;
+        font-size: 15px;
+    }
+
+    .boc-input input[type="text"] {
+        font-size: 15px
+    }
+
+
+
+
+    // Main chart SVG background
+    .boc-chart svg {
+        background-color: var(--background-light);
+    }
+
+    // Node styling
+    .boc-node rect {
+        fill: var(--card-background);
+        stroke: var(--border-color);
+        stroke-width: 1px;
+    }
+
+    // Circular images
+    .boc-node image {
+        border-radius: 50%;
+    }
+
+    // Text styling within nodes
+    .boc-node text {
+        font-family: 'Prompt', sans-serif;
+
+        &.field-name {
+            font-weight: 600;
+            fill: var(--text-primary);
+        }
+
+        &.field-position {
+            fill: var(--text-secondary);
+        }
+    }
+
+    // Expand/Collapse buttons
+    .boc-minus,
+    .boc-plus {
+        rect {
+            fill: var(--primary-color);
+            stroke: var(--primary-color);
+            transition: fill 0.2s ease;
+        }
+
+        path,
+        text {
+            fill: white;
+        }
+
+        &:hover rect {
+            fill: var(--primary-hover);
+        }
+    }
+
+    // Toolbar controls
+    .boc-toolbar-btn {
+        background-color: var(--card-background);
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+
+        svg {
+            fill: var(--text-primary);
+        }
+
+        &:hover {
+            background-color: #e9ecef; // A slightly darker light color
+            border-color: #ced4da;
+        }
+    }
+
+    // Search and filter inputs
+    .boc-search-field input,
+    .boc-filter-field select {
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        padding: 8px 12px;
+        font-size: 14px;
+        font-family: 'Prompt', sans-serif;
+        color: var(--text-primary);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(7, 57, 156, 0.15);
+            outline: none;
+        }
+    }
+
+    // Connector lines
+    .boc-lines path {
+        stroke: var(--border-color);
+        stroke-width: 1.5px;
+    }
+
+    // Minimap
+    .boc-minimap rect {
+        fill: rgba(7, 57, 156, 0.05);
+        stroke: rgba(7, 57, 156, 0.2);
+    }
+
+    .boc-minimap .boc-minimap-rect {
+        stroke: var(--primary-color);
+        stroke-width: 1px;
+    }
+
+    // Node context menu
+    .boc-menu {
+        background-color: var(--card-background);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+        padding: 4px 0;
+
+        li a {
+            color: var(--text-primary);
+            font-family: 'Prompt', sans-serif;
+            padding: 8px 16px;
+            transition: background-color 0.2s ease;
+            font-size: 14px;
+
+            &:hover {
+                background-color: var(--background-light);
+            }
+        }
+    }
+}

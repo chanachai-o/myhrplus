@@ -1,0 +1,47 @@
+/* =================================================================
+   Component-specific styles for Summary Data
+   ================================================================= */
+
+// Consistent spacing for form groups
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+// Style for the detail display in the check ID modal, referencing _core-design.scss
+.detail-item {
+    margin-bottom: 1rem;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    .detail-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    .detail-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        word-wrap: break-word;
+    }
+}
+
+// Adjustments for modals to align with the new design
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    background-color: var(--background-light);
+}
+
+.modal-body .table thead th {
+    background-color: var(--background-light);
+}
+
+// Ensure icon alignment in buttons
+.btn i {
+    margin-right: 0.5rem;
+}

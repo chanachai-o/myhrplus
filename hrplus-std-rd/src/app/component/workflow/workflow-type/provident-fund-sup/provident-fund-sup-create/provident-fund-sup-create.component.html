@@ -1,0 +1,135 @@
+<div class="row">
+  <!-- ส่งถึง -->
+  <div class="col-12">
+      <app-workflow-sendto (employeeCCId)="employeeCCId=$event" [wfid]="wfid" [cardName]="'ใบลาออกจากกองทุนสำรองเลี้ยงชีพ'" [menuPage]="'PWF024'"></app-workflow-sendto>
+  </div>
+  <!-- ปิดส่งถึง -->
+  <!-- ข้อมูลพนักงาน -->
+  <div class="col-12">
+      <app-workflow-emp-information (changeEmpInformation)="empInformation=$event" [createBy]="'boss'"></app-workflow-emp-information>
+  </div>
+  <!-- ปิดข้อมูลพนักงาน -->
+  <!-- รายละเอียดการขอหนังสือรับรอง -->
+  <div class="col-12">
+      <div class="card mb-0">
+          <div class="card-header bg-myhr">
+              <h6 class="card-title">{{"Detail" | translate }}</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+
+              <div class="col-md-6 col-xs-12 b-r">
+                <div class="form-group">
+                  <small class="text-muted">{{"Fund"| translate }}</small>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control col-md-6 col-sm-6 col-lg-6" [value]="pvFund.fundtable!.getFundDesc()" disabled
+                     aria-describedby="basic-addon1">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12 b-r">
+                <div class="form-group">
+                  <small class="text-muted">{{"วันที่เริ่มเป็นสมาชิกกองทุน"| translate }}</small>
+                  <div class="input-group">
+                    <input class="form-control col-md-6 col-sm-6 col-lg-6" placeholder="{{'dd.mm.yyyy' | translate}}"
+                    value="{{formatDate(pvFund.registerDate)}}" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12 b-r">
+                <div class="form-group">
+                  <small class="text-muted">{{"วันที่ลาออกจากกองทุน"| translate }}</small>
+                  <div class="input-group">
+                    <input class="form-control col-md-6 col-sm-6 col-lg-6" placeholder="{{'dd.mm.yyyy' | translate}}"
+                      name="dp2" [(ngModel)]="resignDate" ngbDatepicker #d2="ngbDatepicker" #c1="ngModel" (change)="resignDate = datepickerService.validateFormatDate(c1)">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()" type="button">
+                        <i class="far fa-calendar-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12 b-r">
+                <div class="form-group">
+                  <small class="text-muted">{{"อายุงาน"| translate }}</small>
+                  <div class="input-group">
+                    <input class="form-control col-md-6 col-sm-6 col-lg-6" placeholder="{{'dd.mm.yyyy' | translate}}" disabled
+                      name="dp1"  [value]="calAgeWorking(empInformation.firstHiredate!)">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12 b-r">
+                <div class="form-group">
+                  <small class="text-muted">{{"อายุกองทุน"| translate }}</small>
+                  <div class="input-group">
+                    <input class="form-control col-md-6 col-sm-6 col-lg-6" placeholder="{{'dd.mm.yyyy' | translate}}" disabled
+                      name="dp1" [value]="ageFund">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              <div class="row mt-2">
+                  <div class="col-md-12 col-xs-12 b-r">
+                      <small class="text-muted">{{"Note"| translate}}</small>
+                      <h6>**{{"ต้องดำเนินการให้แล้วเสร็จในวันที่ 25 เพื่อให้มีผลในวันที่ 1 เดือนถัดไป" | translate}}</h6>
+                  </div>
+                  <app-workflow-remark [wfid]="wfid"></app-workflow-remark>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- ปิดรายละเอียดการขอหนังสือรับรอง -->
+  <!-- หมายเหตุ -->
+  <div class="col-12">
+      <div class="card mb-0">
+          <div class="card-header bg-myhr">
+              <h6 class="card-title">
+                  {{"systemcode.note" | translate}}
+              </h6>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-md-12 col-xs-12 b-r">
+                      <div class="form-group">
+                          <small class="text-muted">
+                              {{"systemcode.note"| translate}}
+                          </small>
+                          <textarea class="form-control" rows="2" style="resize: none;" [(ngModel)]="remark"
+                              placeholder='{{"systemcode.note"| translate}}'></textarea>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- ปิดหมายเหตุ -->
+  <!-- เอกสารอ้างอิง -->
+  <div class="col-12" *ngIf="runno&&workflowData">
+      <app-workflow-create-doc-reference [inputs]="inputs" [dynamicComponent]="dynamicComponent"
+          [workflowData]="workflowData" (runno)="runno=$event">
+      </app-workflow-create-doc-reference>
+  </div>
+  <!-- ปิดเอกสารอ้างอิง -->
+  <!-- แนบไฟล์ -->
+  <div class="col-12">
+      <app-workflow-attach-file [nameFile]="nameFile" [timestampFile]="timestampFile"
+          (changeTimestampFile)="timestampFile=$event"></app-workflow-attach-file>
+  </div>
+  <!-- ปิดแนบไฟล์ -->
+  <!-- ยืนยัน -->
+  <div class="card-body ">
+      <div class="d-flex no-block align-items-center justify-content-center">
+          <div class="action-form">
+              <div class="form-group m-b-0 text-center">
+                  <button type="submit"
+                      class="btn btn-success waves-effect waves-light" (click)="onSubmit()"><i
+                          class=" fas fa-check"></i>
+                      {{"Submit" | translate}}</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- ปิดยืนยัน -->
+</div>

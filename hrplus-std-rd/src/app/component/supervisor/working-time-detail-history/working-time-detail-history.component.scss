@@ -1,0 +1,36 @@
+.th-custom{
+    cursor: pointer;
+  }
+  .width-table{
+    min-width: 40px;
+  }
+  .wrapper {
+    position: relative;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+  .sticky-col-th {
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: #2962ff !important;
+  }
+  .sticky-col {
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: white;
+  }
+  
+  .first-col {
+    left: 0px;
+  }
+  
+  .second-col {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    left: 100px;
+  }
+  .bg-color-ya{
+background-color: #9ad9fc;
+}

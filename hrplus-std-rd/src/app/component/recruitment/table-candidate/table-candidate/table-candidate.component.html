@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="card-header bg-myhr">
+    <h4>{{"Appointment" | translate}}</h4>
+  </div>
+  <div class="card-body">
+    <full-calendar #fullCalendar [options]="calendarOptions"></full-calendar>
+  </div>
+</div>
+
+<ng-template #modalAppointmentDetail let-modal>
+  <div class="modal-content dialog-height">
+    <div class="modal-body" [perfectScrollbar]="config">
+      <div class="card" style="margin-bottom:-15px">
+        <div class="card-header bg-myhr">
+          <h5 class="card-title">{{"Candidate Detail" | translate}}</h5>
+        </div>
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-lg-5 col-md-6 col-sm-12">
+              <div class="white-box text-center">
+                <img appShowLoading src="{{dataSelected.profile.recruitAppointment.personal.getImg()}}"
+                  class="rounded-circle" width="250px" height="300px">
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-6 col-sm-12">
+              <h4 class="box-title">
+                {{dataSelected.profile.prefix.getDesc()}}{{dataSelected.profile.recruitAppointment.personal.getFullName()}}
+              </h4>
+              <small class="text-muted">{{"position"| translate}}</small>
+              <h6>{{dataSelected.profile.jobcode.getDesc()?dataSelected.profile.jobcode.getDesc():'-'}}</h6>
+              <small class="text-muted">{{"TypeCandidate"| translate}}</small>
+              <h6>
+                {{getDesc(dataSelected.profile.appointmentType.tdesc,dataSelected.profile.appointmentType.edesc)?getDesc(dataSelected.profile.appointmentType.tdesc,dataSelected.profile.appointmentType.edesc):'-'}}
+              </h6>
+              <small class="text-muted">{{"Time"| translate}}</small>
+              <h6>
+                {{dataSelected.profile.recruitAppointment.detail.time.start?dataSelected.profile.recruitAppointment.detail.time.start:'-'}}{{dataSelected.profile.recruitAppointment.detail.time.end?'
+                - '+dataSelected.profile.recruitAppointment.detail.time.end:''}}
+              </h6>
+              <small class="text-muted">{{"Location"| translate}}</small>
+              <h6>
+                {{dataSelected.profile.recruitAppointment.detail.address?dataSelected.profile.recruitAppointment.detail.address:'-'}}
+              </h6>
+              <small class="text-muted">{{"Phone"| translate}}</small>
+              <h6>
+                -
+              </h6>
+              <small class="text-muted">{{"Remark"| translate}}</small>
+              <h6>
+                {{dataSelected.profile.recruitAppointment.detail.remark?dataSelected.profile.recruitAppointment.detail.remark:'-'}}
+              </h6>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close()">
+        {{"Close"| translate}}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Alert Message</h5>
+    <button type="button" class="close" (click)="modal.close()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" [innerHTML]="messageAlert">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="modal.dismiss()">
+      {{"OK"| translate}}
+    </button>
+  </div>
+</ng-template>

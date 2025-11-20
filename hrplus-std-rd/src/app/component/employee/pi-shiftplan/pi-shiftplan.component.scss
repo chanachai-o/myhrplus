@@ -1,0 +1,101 @@
+.fc-toolbar-title {
+	color: #2962ff;
+}
+.fc .fc-button-primary {
+	background-color: #2962ff !important;
+	border-color: #ffffff !important;
+}
+
+.full-border-color-gray {
+	border-color: #e9ecef #e9ecef #e9ecef #e9ecef !important;
+}
+.full-border-color-gray:focus {
+	color: #4f5467 !important;
+	background-color: #fff !important;
+	border-color: rgba(0, 0, 0, 0.25) !important;
+	outline: 0 !important;
+	box-shadow: transparent;
+}
+.border-color-gray {
+	border-color: #e9ecef transparent #e9ecef #e9ecef !important;
+}
+.border-color-gray:focus {
+	color: #4f5467 !important;
+	background-color: #fff !important;
+	border-color: rgba(0, 0, 0, 0.25) !important;
+	outline: 0 !important;
+	box-shadow: transparent;
+}
+.border-color-red {
+	border-color: red transparent red red !important;
+}
+.border-color-red:focus {
+	color: #4f5467 !important;
+	background-color: #fff !important;
+	border-color: red !important;
+	outline: 0 !important;
+	box-shadow: transparent;
+}
+
+.my_title_calendar {
+	.fc-list-event-time {
+		display: none;
+	}
+	.fc-list-event-graphic {
+		display: none;
+	}
+	.fc-list-event-title {
+		display: none;
+	}
+}
+
+.my-fc-list-event-time {
+	white-space: nowrap;
+	width: 1px;
+}
+.my-fc-list-event-graphic {
+	padding-right: 0;
+	white-space: nowrap;
+	width: 1px;
+	.my-fc-list-event-dot {
+		display: inline-block;
+		box-sizing: content-box;
+		width: 0;
+		height: 0;
+		border: 5px solid #3788d8;
+		border: calc(var(--fc-list-event-dot-width, 10px) / 2) solid var(--fc-event-border-color, #3788d8);
+		border-radius: 5px;
+		border-radius: calc(var(--fc-list-event-dot-width, 10px) / 2);
+	}
+}
+
+.modal-header {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    .close {
+        color: white;
+        opacity: 0.9;
+        &:hover { opacity: 1; }
+    }
+}
+.modal-footer {
+    background-color: var(--background-light);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsive adjust */
+@media (max-width: 768px) {
+  .my_title_calendar {
+    font-size: 12px;
+  }
+  .modal-body h6,
+  .modal-body label {
+    font-size: 14px;
+  }
+  textarea.form-control {
+    min-height: 80px;
+  }
+  .fc-toolbar-title {
+    font-size: 16px !important;
+  }
+}

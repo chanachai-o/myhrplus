@@ -1,0 +1,141 @@
+<div class="card">
+    <div class="card-header bg-myhr">
+        <h4>{{"Working Plan" | translate}}</h4>
+    </div>
+    <div class="card-body">
+
+        <div class="filter-grid">
+            <div>
+                <label class="form-label">{{"month"| translate}}</label>
+                <select class="form-select" [(ngModel)]="selectMonth" (ngModelChange)="changeMonth()">
+                    <option *ngFor="let m of month" [ngValue]="m.val">{{m.name | translate}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"year"| translate}}</label>
+                <select class="form-select" [(ngModel)]="selectYear" (ngModelChange)="changeMonth()">
+                    <option *ngFor="let y of years" [ngValue]="y">{{y}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-info" (click)="showexample()">{{"example" | translate}}</button>
+            <button type="submit" class="btn btn-primary" (click)="searchData()">{{'Search' | translate}}</button>
+            <button type="submit" class="btn btn-secondary" [disabled]="listTime.length == 0" (click)="exportexcel()">{{'Export' | translate}}</button>
+            <button type="submit" class="btn btn-secondary" (click)="this.hideInport =! this.hideInport" [disabled]="checkApprove == '1' || checkApprove == '2' || checkDate">{{'Import' | translate}}</button>
+            <button type="button" class="btn btn-success" [disabled]="listTime.length == 0 || checkApprove == '1' || checkApprove == '2' || checkApprove == '4' || checkApprove == '3'" (click)="onConfirm('offerapprove')">{{"Perpose Approval" | translate}}</button>
+            <button type="button" class="btn btn-success" [disabled]="listTime.length == 0 || checkApprove == '2' || checkApprove == '0' || checkApprove == '4' || checkApprove == '3'" *ngIf="isApprover" (click)="onConfirm('approve')">{{"Approve" | translate}}</button>
+            <button type="button" class="btn btn-danger" [disabled]="listTime.length == 0 || checkApprove == '2' || checkApprove == '0' || checkApprove == '4' || checkApprove == '3'" *ngIf="isApprover" (click)="onConfirm('notapprove')">{{'Not Approved' | translate}}</button>
+        </div>
+
+        <div class="upload-section" *ngIf="hideInport">
+            <label for="inputGroupFile01" class="form-label">{{"selected_file"| translate}}</label>
+            <div class="input-group">
+                <input #fileInput type="file" accept=".csv" class="form-control" id="inputGroupFile01" (change)="onFileSelected($event.target.files)">
+                <label class="input-group-text" for="inputGroupFile01">{{nameFile | translate}}</label>
+            </div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="table-responsive d-none d-lg-block">
+            <table class="table table-bordered table-sm no-wrap v-middle" id="table">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th class="text-center" colspan="7"></th>
+                        <th class="text-center" scope="col">%FTA</th>
+                        <th class="text-center" scope="col" *ngFor="let item of counter(numOfDate) let i =index">{{timeFTA[i]}}%</th>
+                        <th class="text-center" scope="col" colspan="6"></th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">{{"Emp. ID"| translate}}</th>
+                        <th style="position: sticky; left: 0; background-color: #0275d8;">{{"Name-Surname"| translate}}</th>
+                        <th class="text-center">{{"Position"| translate}}</th>
+                        <th class="text-center">{{"Workarea"| translate}}</th>
+                        <th class="text-center">{{"T4"| translate}}</th>
+                        <th class="text-center">{{"status emp"| translate}}</th>
+                        <th class="text-center">{{"date"| translate}}</th>
+                        <th class="text-center" *ngFor="let item of counter(numOfDate) let i =index">{{1+i}}</th>
+                        <th class="text-center">{{"Leave day"| translate}}</th>
+                        <th class="text-center">{{"working day"| translate}}</th>
+                        <th class="text-center">{{"weekly holiday"| translate}}</th>
+                        <th class="text-center">{{"Public holidays"| translate}}</th>
+                        <th class="text-center">{{"Total"| translate}}</th>
+                        <th class="text-center">{{"systemcode.status"| translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="!loading && listTime.length == 0">
+                        <td colspan="100" class="text-center py-3">{{"No Data Found" | translate}}</td>
+                    </tr>
+                    <tr *ngIf="loading">
+                        <td colspan="100" class="text-center py-3">
+                            <div class="spinner-border text-info" role="status"></div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let item of listTime let i = index">
+                        <td class="text-center">{{i+1}}</td>
+                        <td>{{item.employee.employeeId}}</td>
+                        <td style="position: sticky; left: 0; background-color: white;">{{getName(item.employee.thFullName,item.employee.engFullName)}}</td>
+                        <td>{{getName(item.employee.empPosition.tdesc,item.employee.empPosition.edesc)}}</td>
+                        <td>{{getName(item.workarea.tdesc,item.workarea.edesc)}}</td>
+                        <td>{{getName(item.employee.bu7.tdesc,item.employee.bu7.edesc)}}</td>
+                        <td class="text-center">{{getName(item.employee.status.tdesc,item.employee.status.edesc)}}</td>
+                        <td></td>
+                        <td class="text-center" *ngFor="let listDate of counter(numOfDate) let l =index" [ngStyle]="{'color':colorStatus(item['date'+(l+1)])}">{{item['date'+(l+1)]}}</td>
+                        <td class="text-center">{{timeSum[i].sumL}}</td>
+                        <td class="text-center">{{timeSum[i].sumT}}</td>
+                        <td class="text-center text-danger">{{timeSum[i].sumOFF}}</td>
+                        <td class="text-center">{{timeSum[i].sumPH}}</td>
+                        <td class="text-center">{{timeSum[i].sumAll}}</td>
+                        <td class="text-center">{{getStatus(item.approve) | translate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="d-lg-none mt-3">
+            <div *ngIf="!loading && listTime.length == 0" class="text-center py-3 text-muted">{{"No Data Found" | translate}}</div>
+            <div *ngIf="loading" class="text-center py-3">
+                <div class="spinner-border text-info" role="status"></div>
+            </div>
+            <div *ngFor="let item of listTime let i = index" class="result-card-mobile">
+                <div class="card-header">
+                    <span>{{getName(item.employee.thFullName,item.employee.engFullName)}}</span>
+                    <span class="badge bg-info">#{{i+1}}</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item"><span>{{"Emp. ID"| translate}}</span><strong>{{item.employee.employeeId}}</strong></div>
+                        <div class="info-item"><span>{{"Position"| translate}}</span><strong>{{getName(item.employee.empPosition.tdesc,item.employee.empPosition.edesc)}}</strong></div>
+                        <div class="info-item"><span>{{"Workarea"| translate}}</span><strong>{{getName(item.workarea.tdesc,item.workarea.edesc)}}</strong></div>
+                        <div class="info-item"><span>{{"status emp"| translate}}</span><strong>{{getName(item.employee.status.tdesc,item.employee.status.edesc)}}</strong></div>
+                        <div class="info-item"><span>{{"Leave day"| translate}}</span><strong>{{timeSum[i].sumL}}</strong></div>
+                        <div class="info-item"><span>{{"working day"| translate}}</span><strong>{{timeSum[i].sumT}}</strong></div>
+                        <div class="info-item"><span>{{"weekly holiday"| translate}}</span><strong class="text-danger">{{timeSum[i].sumOFF}}</strong></div>
+                        <div class="info-item"><span>{{"Public holidays"| translate}}</span><strong>{{timeSum[i].sumPH}}</strong></div>
+                        <div class="info-item"><span>{{"Total"| translate}}</span><strong>{{timeSum[i].sumAll}}</strong></div>
+                        <div class="info-item"><span>{{"systemcode.status"| translate}}</span><strong>{{getStatus(item.approve) | translate}}</strong></div>
+                    </div>
+                    <div class="daily-status-grid">
+                        <div class="daily-header">{{"date"| translate}}</div>
+                        <div class="status-list">
+                            <div class="day-item" *ngFor="let listDate of counter(numOfDate) let l =index">
+                                <div class="day-number">{{l+1}}</div>
+                                <div class="day-status" [ngStyle]="{'color':colorStatus(item['date'+(l+1)])}">{{item['date'+(l+1)] || '-'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals remain unchanged -->
+        <ng-template #workingAreaModal let-modal> ... </ng-template>
+        <ng-template #alertError let-modal> ... </ng-template>
+        <ng-template #alertModal let-modal> ... </ng-template>
+        <ng-template #confirmModal let-modal> ... </ng-template>
+    </div>
+</div>

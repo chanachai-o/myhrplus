@@ -1,0 +1,112 @@
+/**
+ * Styles for Workflow Import/Export Component
+ * Aligns with the Gemini Design System for a modern and consistent look.
+ */
+
+// Import core design variables and mixins
+@use 'src/assets/scss/core-design' as *;
+
+.main-content-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-title-container {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  .card-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+// Container for the two action cards (Import/Export)
+.actions-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Styling for individual action cards
+.action-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  .action-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .action-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    min-height: 40px; // Reserve space for description
+  }
+
+  .action-button-container {
+      width: 100%;
+      margin-top: auto; // Push button to the bottom
+  }
+}
+
+// Custom file input styling
+.file-input-container {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  .form-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: var(--primary-color);
+      background-color: var(--background-light);
+    }
+  }
+
+  .file-name {
+    margin-top: 0.75rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    word-break: break-all;
+  }
+
+  .upload-info {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+  }
+}

@@ -1,0 +1,31 @@
+<div class="modal-content dialog-height">
+    <div class="modal-header">
+        <h5 class="modal-title" id="editLabel">
+            {{"systemcode.documents.detail" | translate}} {{subjectName}}{{docNo?' ['+docNo+']':''}}
+        </h5>
+        <button type="button" class="close" (click)="activeModal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body"  >
+        <div class="card" style="margin-bottom:-15px">
+            <div class="card-body">
+                <ng-template #workflowView [ngComponentOutlet]="dynamicComponent"
+                    [ndcDynamicInputs]="inputs"></ng-template>
+            </div>
+        </div>
+        <!-- <div class="d-flex no-block align-items-center justify-content-center mt-4" *ngIf="onCancel">
+            <div class="action-form">
+                <div class="form-group m-b-0 text-center">
+                    <button type="button" class="btn btn-danger" (click)="activeModal.close()"><i
+                            class=" fas fa-times"></i>
+                        {{"cancel" |translate}}</button>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <div class="modal-footer" *ngIf="onCancel">
+        <!-- <button type="button" class="btn btn-info" (click)="activeModal.dismiss()">{{"confirm"| translate}}</button> -->
+        <button type="button" class="btn btn-danger" (click)="confirm()">{{"ยกเลิกเอกสาร"| translate}}</button>
+    </div>
+</div>

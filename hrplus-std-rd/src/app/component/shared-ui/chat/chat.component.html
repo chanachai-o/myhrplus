@@ -1,0 +1,92 @@
+<!-- chat.component.html • full layout (Card-glass wrapper) -->
+<div class="chat-container">
+
+    <div class="chat-wrapper d-flex flex-column">
+
+        <!-- ── HEADER ────────────────────────────────────────────-->
+        <header class="chat-header d-flex align-items-center px-4 py-3">
+
+            <!-- Agent avatar -->
+            <!-- <img [src]="selectedAgent.img" alt="agent" class="agent-avatar me-2"> -->
+
+            <!-- Optional font-awesome icon -->
+            <i class="fas me-2" [ngClass]="selectedAgent.icon + ' text-white'"></i>
+
+            <!-- Agent selector -->
+            <select class="agent-select ms-auto" [(ngModel)]="selectedAgent" (ngModelChange)="onAgentChange()">
+                <option *ngFor="let ag of agents" [ngValue]="ag">
+                    {{ ag.label }}
+                </option>
+            </select>
+        </header>
+
+        <!-- ── CHAT AREA ─────────────────────────────────────────-->
+        <section class="chat-box flex-grow-1" #scrollMe [scrollTop]="scrollMe.scrollHeight"
+            style="height:calc(100vh - 350px); overflow-y: auto;">
+
+            <ul class="chat-list">
+
+                <!-- message loop -->
+                <li class="chat-item" *ngFor="let chat of chatMessages; trackBy: trackByIdx" [ngClass]="chat.chatClass">
+
+                    <!-- avatar -->
+                    <figure class="chat-img" style="margin-bottom: 0px;">
+                        <img [src]="chat.chatClass === 'even'
+                     ? selectedAgent.img
+                     : (empProfile?.getPictureUrl() || 'assets/images/users/placeholder.jpg')" alt="avatar">
+                    </figure>
+
+                    <!-- bubble -->
+                    <div class="chat-content" style="margin-bottom: 0px;">
+                        <div [ngClass]="chat.chatClass === 'even' ? 'bubble-even' : 'bubble-odd'">
+
+                            <ng-container *ngIf="chat.chatClass === 'even'; else userTxt">
+                                <p [innerHTML]="chat.message"></p>
+                            </ng-container>
+
+                            <ng-template #userTxt>
+                                <p>{{ chat.message }}</p>
+                            </ng-template>
+
+                        </div>
+                    </div>
+
+                    <!-- time -->
+                    <time class="chat-time" style="margin-bottom: 0px;">{{ chat.timestamp | date:'shortTime' }}</time>
+                </li>
+
+                <!-- typing indicator (AI) -->
+                <li *ngIf="loadingMsg" class="chat-item even">
+                    <figure class="chat-img" style="margin-bottom: 0;">
+                        <img [src]="selectedAgent.img" alt="avatar">
+                    </figure>
+                    <div class="chat-content" style="margin-bottom: 0;">
+                        <div class="bubble-even typing">
+                            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                        </div>
+                    </div>
+                    <time class="chat-time">&nbsp;</time>
+                </li>
+
+            </ul>
+        </section>
+
+        <!-- ── COMPOSER ──────────────────────────────────────────-->
+        <footer class="composer">
+            <!-- Text area for typing messages -->
+            <ejs-textarea class="composer-input" #outputTextarea id="output-textarea" rows="1" resizeMode="None"
+                placeholder="Type your message…" (input)="toggleCopyButtonState()" [(ngModel)]="draft"></ejs-textarea>
+
+            <!-- Speech-to-text button -->
+            <button class="composer-speech" style="width: 50px;height: 50px;" ejs-speechtotext #speechToText
+                (transcriptChanged)="onTranscriptChange($event)" (onStart)="onListeningStart()"
+                (onStop)="onListeningStop($event)" (onError)="onErrorHandler($event)">
+            </button>
+
+            <!-- Send button -->
+            <button type="submit" class="composer-send" [disabled]="!draft" (click)="sentMsg(draft)">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </footer>
+    </div>
+</div>

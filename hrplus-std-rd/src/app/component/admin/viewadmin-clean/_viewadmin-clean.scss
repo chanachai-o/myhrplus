@@ -1,0 +1,8 @@
+/**
+ * Styles for Admin View (Clean/History) Component
+ * Aligns with the Gemini Design System for a modern and consistent look.
+ */
+
+// This component shares the exact same layout and styling as the main AdminView component.
+// Reusing the styles promotes consistency and reduces code duplication.
+@use '../admin-view/_admin-view.scss' as *;

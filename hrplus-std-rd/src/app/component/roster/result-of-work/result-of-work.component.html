@@ -1,0 +1,296 @@
+<div class="card">
+    <div class="card-header bg-myhr" >
+        <h4>{{"Working Plan" | translate}}</h4>
+      </div>
+    <div class="card-body " >
+        <!-- <div class="row g-2 align-middle">
+            <div class="form-group col-3  text-end " >
+              <label  class="font-weight-bold text-end control-label col-form-label font-14">{{"Workarea"| translate}}</label>
+            </div>
+              <div class="col-3  " >
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1" [(ngModel)]="selectWorkArea.workareaId" (ngModelChange)="searchWorkAreaId($event)" >
+                    <div class="input-group-append">
+                      <button class="btn me-0 btn-info" type="button" (click)="openModal(workingAreaModal,'workarea')"><i  class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+            <div class="col-3   " >
+              <div class="form-group">
+                  <input type="text" [value]="getName(selectWorkArea.tdesc,selectWorkArea.edesc)"  placeholder="" class="form-control"disabled>
+                </div>
+            </div>
+          </div> -->
+
+            <div class="row g-2 align-middle">
+              <div class="form-group col-3 text-end " >
+                <label  class="font-weight-bold text-end control-label col-form-label font-14" >{{"month"| translate}}</label>
+              </div>
+              <div class="form-group col-3 text-center" >
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="selectMonth" (ngModelChange)="changeMonth()">
+                  <option *ngFor="let m of month" [ngValue]="m.val">{{m.name | translate}}</option>
+                </select>
+              </div>
+              <div class="form-group col-3  text-center" >
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="selectYear" (ngModelChange)="changeMonth()">
+                  <option  *ngFor="let y of years" [ngValue]="y" >{{y}}</option>
+                  </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success m-r-10" (click)="showexample()" >{{"example" | translate}}</button>
+                <button type="submit" class="btn btn-default m-r-10" (click)="searchData()">{{'Search' | translate}}</button>
+                <button type="submit" class="btn btn-default m-r-10" [disabled]="listTime.length == 0" (click)="exportexcel()">{{'Export' | translate}}</button>
+                <button type="submit" class="btn btn-default m-r-10" (click)=" this.hideInport =! this.hideInport" [disabled]="checkApprove == '1' || checkApprove == '2' || checkDate">{{'Import' | translate}}</button>
+                <button type="button" class="btn btn-success m-r-10" [disabled]="listTime.length == 0 || checkApprove == '1' || checkApprove == '2' || checkApprove == '4' || checkApprove == '3'" (click)="onConfirm('offerapprove')">{{"Perpose Approval" | translate}}</button>
+                <button type="button" class="btn btn-success m-r-10" [disabled]="listTime.length == 0 || checkApprove == '2' || checkApprove == '0' || checkApprove == '4' || checkApprove == '3'" *ngIf="isApprover" (click)="onConfirm('approve')">{{"Approve" | translate}}</button>
+                <button type="button" class="btn btn-danger m-r-10" [disabled]="listTime.length == 0 || checkApprove == '2' || checkApprove == '0' || checkApprove == '4' || checkApprove == '3'" *ngIf="isApprover"  (click)="onConfirm('notapprove')">{{'Not Approved' | translate}}</button>
+                <!-- <button type="button" class="btn btn-danger m-r-10" [disabled]="listTime.length == 0  || checkApprove == '1' || checkApprove == '0' || checkApprove == '4' || checkApprove == '3'" *ngIf="roleUser.manager"  (click)="onConfirm('cancelapprove')">ยกเลิกอนุมัติ</button> -->
+              </div>
+            </div>
+
+            <div class="row justify-content-center" *ngIf="hideInport">
+                <div class="col-lg-5 col-md-6 col-8">
+                    <div class="form-group">
+                        <small class="text-muted">{{"selected_file"| translate}}</small>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{"upload_file"|translate}}</span>
+                            </div>
+                            <div class="custom-file">
+                                <input #fileInput type="file" acceot=".csv" class="custom-file-input " id="inputGroupFile01" title=""
+                                (change)="onFileSelected($event.target.files)" >
+                            <label class="custom-file-label"
+                                for="inputGroupFile01">{{nameFile | translate}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="wrapper">
+                    <!-- <cdk-virtual-scroll-viewport itemSize="150" class="scrollable-container"> -->
+                        <table class="table table-bordered table-sm  no-wrap v-middle " id="table">
+                            <thead class="bg-info ">
+                                <tr class="text-white font-weight-normal">
+                                    <th class="font-weight-normal width-table text-center fade-background" colspan="7"> </th>
+                                    <th class="font-weight-normal width-table text-center fade-background" scope="col">%FTA</th>
+                                    <th class="font-weight-normal width-table text-center fade-background" scope="col" *ngFor="let item of counter(numOfDate) let i =index">{{timeFTA[i]}}%</th>
+                                    <th class="font-weight-normal width-table text-center fade-background" scope="col" colspan="6"> </th>
+                                  </tr>
+                                  <tr class="text-white font-weight-normal">
+                                      <th class="font-weight-normal width-table text-center" scope="col">#</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"Emp. ID"| translate}}</th>
+                                      <th class="font-weight-normal width-table sticky-col-th first-col" scope="col">{{"Name-Surname"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"Position"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"Workarea"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"T4"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"status emp"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"date"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col" *ngFor="let item of counter(numOfDate) let i =index">{{1+i}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"Leave day"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"working day"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"weekly holiday"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"Public holidays"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"Total"| translate}}</th>
+                                      <th class="font-weight-normal width-table text-center" scope="col">{{"systemcode.status"| translate}}</th>
+                                  </tr>
+                            </thead>
+                            <tbody >
+                                <tr *ngIf="!loading&&listTime.length == 0">
+                                    <td colspan="100%" class="font-weight-normal text-center">
+                                        {{"No Data Found" | translate}}
+                                    </td>
+                                </tr>
+                                <tr *ngIf="submitLoading">
+                                    <td colSpan="100%" class="text-center" >
+                                    <div class="justify-content-center text-center" role="status">
+                                        <div class="spinner-grow text-info" role="status" style="margin: 5px">
+                                        <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-info" role="status" style="margin: 5px">
+                                        <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-info" role="status" style="margin: 5px">
+                                        <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        <tbody *ngIf="loading">
+                          <tr >
+                            <td colspan="100%" class="font-weight-normal text-center">
+                              <div class="justify-content-center text-center" role="status" >
+                                <div *ngFor="let item of [1,2,3]"
+                                    class="spinner-grow text-info m-t-5 m-r-5 m-b-5 m-l-5" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody >
+                          <tr *ngFor="let item of listTime let i = index" >
+                            <td class="align-middle text-center">{{i+1}}</td>
+                            <td class="align-middle">{{item.employee.employeeId}}</td>
+                            <td class="align-middle">{{getName(item.employee.thFullName,item.employee.engFullName)}}</td>
+                            <td class="align-middle">{{getName(item.employee.empPosition.tdesc,item.employee.empPosition.edesc)}}</td>
+                            <td class="align-middle">{{getName(item.workarea.tdesc,item.workarea.edesc)}}</td>
+                            <td class="align-middle">{{getName(item.employee.bu7.tdesc,item.employee.bu7.edesc)}}</td>
+                            <td class="align-middle text-center">{{getName(item.employee.status.tdesc,item.employee.status.edesc)}}</td>
+                            <td class="align-middle"></td>
+                            <td class="align-middle text-center" *ngFor="let listDate of counter(numOfDate) let l =index" [ngStyle]="{'color':colorStatus(item['date'+(l+1)])}" >{{item['date'+(l+1)]}}</td>
+                            <td class="align-middle text-center" >{{timeSum[i].sumL}}</td>
+                            <td class="align-middle text-center" >{{timeSum[i].sumT}}</td>
+                            <td class="align-middle text-center text-danger" >{{timeSum[i].sumOFF}}</td>
+                            <td class="align-middle text-center" >{{timeSum[i].sumPH}}</td>
+                            <td class="align-middle text-center" >{{timeSum[i].sumAll}}</td>
+                            <td class="align-middle text-center" >{{getStatus(item.approve) | translate}}</td>
+                          </tr>
+                        </tbody>
+                        </table>
+                    <!-- </cdk-virtual-scroll-viewport> -->
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+<ng-template #workingAreaModal let-modal>
+    <div class="modal-body"  >
+        <div class="card" style="margin-bottom:-15px">
+            <div class="card-header bg-myhr">
+                <h4>{{"Working Area Table" | translate}}</h4>
+            </div>
+            <div class="card-body pt-0 pt-2">
+                <div class="d-flex col-5 mb-1 p-0">
+                    <input type="text"
+                        placeholder="{{'systemcode.search' | translate}} {{'Working Area Code' | translate}} {{' / '}} {{'High cost:Store Name' | translate}}"
+                        class="form-control" [ngModel]="searchModal"
+                        (ngModelChange)="searchFilter('workarea',$event)">
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                            <tr class="text-white font-weight-normal">
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"Working Area Code"| translate}}
+                                </th>
+                                <th class="font-weight-normal " scope="col">
+                                    {{"Store Name (Thai)"| translate}}
+                                </th>
+                                <th class="font-weight-normal " scope="col">
+                                    {{"Store Name (Eng.)"| translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="workAreaListLoading">
+                            <tr>
+                                <td colSpan="100%" class="text-center">
+                                    <div *ngFor="let item of [1,2,3]"
+                                        class="spinner-grow text-info m-t-5 m-r-5 m-b-5 m-l-5" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="!workAreaListLoading&&workAreaList.length == 0">
+                            <tr>
+                                <td colspan="100%" class="font-weight-normal text-center">
+                                    {{"No Data Found" | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="!workAreaListLoading&&workAreaList.length != 0">
+                            <tr class="cursor-myhr"
+                                *ngFor="let item of workAreaList | slice: (pageModal-1) * pageSizeModal : ((pageModal-1) * pageSizeModal) + pageSizeModal; let i=index"
+                                (click)="slectWorkArea(item);modal.close('Close click')">
+                                <td class="font-weight-normal text-center">
+                                    {{item.workareaId}}
+                                </td>
+                                <td class="font-weight-normal">
+                                    {{item.tdesc}}
+                                </td>
+                                <td class="font-weight-normal">
+                                    {{item.edesc}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-end p-2">
+                    <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSizeModal"
+                        (ngModelChange)="pageModal=1">
+                        <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                        <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                        <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+                    </select>
+                    <ngb-pagination [collectionSize]="workAreaList.length" [(page)]="pageModal"
+                        [pageSize]="pageSizeModal" [maxSize]="3" [rotate]="true">
+                        <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+                        <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+            {{"Close"| translate}}
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #alertError let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+        <button type="button" class="close" (click)="this.modalService.dismissAll()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12" >
+                <p>{{'Unable to import data' | translate}}</p>
+                <ul *ngFor="let item of resultData; let i= index" class="m-t-5">
+                    <li class="mb-2"  *ngFor="let itemData of item.value">
+                        <span class="font-14">{{item.key}} : {{coverData(itemData.message)}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+        <button type="button" class="close" (click)="this.modalService.dismissAll()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{errormsg}}
+    </div>
+</ng-template>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Close')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{msg | translate}}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="modal.close()">{{"confirm"|  translate}}</button> 
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss('Close')">{{"cancel"|
+        translate}}</button>
+    </div>
+  </ng-template>

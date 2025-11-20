@@ -1,0 +1,321 @@
+<div class="card">
+  <div class="card-header bg-myhr">
+    <h4>{{"work.timestamp" | translate}}</h4>
+  </div>
+  <div class="card-body ">
+    <form novalidate="" class="form-horizontal ">
+      <div class="row g-2 align-middle">
+        <div class="form-group col-md-2 " style="text-align: center;margin-top: 5px;">
+          <label class="font-weight-bold text-end control-label col-form-label"
+            style="font-size: 14px;">{{"subordinate"| translate}}</label>
+        </div>
+        <div class="form-group col-md-3 col-5 col-sm-5" style="margin-top: 5px;">
+          <ng-template #rt let-r="result" let-t="term">
+            {{ r.groupId}}
+          </ng-template>
+          <input placeholder="{{'subordinate.group.id'| translate}}" id="typeahead-focus" type="text"
+            class="form-control" [(ngModel)]="model" (ngModelChange)="changeModel()" [ngbTypeahead]="search"
+            (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value)"
+            #instance="ngbTypeahead" [inputFormatter]="formatter" [resultTemplate]="rt"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="form-group col-md-3 col-5 col-sm-5" style="margin-top: 5px;">
+          <input readonly type="text" class="form-control" placeholder="{{'subordinate.description'| translate}}"
+            id="inputCity" [value]="(model?.groupId)?(model?.getDesc()):''">
+        </div>
+        <div class="form-group col-md-2 col-2 col-sm-2" style="text-align: left;margin-top: 5px;">
+          <button type="button" class="btn btn-danger  btn-sm btn-circle  m-r-5 m-l-10" (click)="clearSearch()"><i
+              class="fa fa-times"></i> </button>
+        </div>
+        <div class="form-group col-md-2" style="margin-top: 5px; text-align: right;">
+
+        </div>
+      </div>
+    </form>
+    <!-- ค้นหาเดือน/ปี -->
+    <form novalidate="" class="form-horizontal ">
+      <div class="row g-2 align-middle">
+        <div class="form-group offset-md-2 col-md-3 col-5 col-sm-5" style="margin-top: 5px;">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon13">
+                  {{"Start Date" | translate}}
+                </span>
+              </div>
+              <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" [(ngModel)]="selectStartDate"
+                ngbDatepicker #d1="ngbDatepicker"
+                oninput="value = value.replace(/[^0-9/]/g, '');" #c1="ngModel" (change)="selectStartDate = datepickerService.validateFormatDate(c1)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-3 col-5 col-sm-5" style="margin-top: 5px;">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon13">
+                  {{"End Date" | translate}}
+                </span>
+              </div>
+              <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" [(ngModel)]="selectEndDate" ngbDatepicker
+                #d2="ngbDatepicker"
+                [minDate]="selectStartDate" #c2="ngModel" (change)="selectEndDate = datepickerService.validateFormatDate(c2)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-2 col-2 col-sm-2" style="text-align: left;margin-top: 5px;">
+          <button type="button" class="btn btn-info  btn-sm btn-circle  m-r-5 m-l-10" (click)="getSubEmp()"><i
+              class="fa fa-search"></i> </button>
+        </div>
+        <div class="form-group col-md-2" style="margin-top: 5px; text-align: right;">
+
+        </div>
+      </div>
+    </form>
+    <div class="justify-content-center text-center" role="status" *ngIf="loading">
+      <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div class="table-responsive"
+      *ngFor="let items of dataList| slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ;let i = index">
+      <h5 class="m-t-20">{{translateService.currentLang == 'th'? (items.dateId.split("-")[2]+"-"+items.dateId.split("-")[1]+"-"+items.dateId.split("-")[0]  | thaidate : "fullSpace"): (items.dateId.split("-")[2]+"-"+items.dateId.split("-")[1]+"-"+items.dateId.split("-")[0] | date:'EEEE d MMMM y')}} </h5>
+      <div class="wrapper">
+        <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle">
+          <thead class="bg-info ">
+            <tr class="text-white font-weight-normal">
+              <th class="font-weight-normal " scope="col">{{"No."| translate}}</th>
+              <th class="font-weight-normal " scope="col">{{"Name-Surname"| translate}}</th>
+              <th class="font-weight-normal " scope="col">{{"Shift ID"| translate}}</th>
+              <th class="font-weight-normal " scope="col">{{"Work Time"| translate}}</th>
+              <th class="font-weight-normal " scope="col">{{"Punch Time"| translate}}</th>
+              <th class="font-weight-normal " scope="col">{{"Day Type"| translate}}</th>
+              <th class="font-weight-normal " scope="col">{{"Total(Hr:Min)"| translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items.list;let l = index">
+              <td class="align-middle">{{l+1}}</td>
+              <td class="align-middle"><a class="link-myhr link-hover"
+                  (click)="openDialog(dialog,item.employeeId)">{{item.employeeId}} : {{ getFullname(item.employeeId)
+                  }}</a></td>
+              <td class="align-middle">{{ item.timeCode }}</td>
+              <td class="align-middle">{{ item.startTime | number:'2.2' }} - {{item.endTime | number:'2.2' }}</td>
+              <td class="align-middle">{{ item.swipeTime ? item.swipeTime : '-'}}</td>
+              <td class="align-middle" [ngStyle]="{'color':item.eventgrp.tdesc == 'วันหยุด'? 'red' : 'green'}">{{
+                item.eventgrp.getDesc() }}</td>
+              <td class="align-middle" [ngStyle]="{'color':item.eventgrp.tdesc == 'วันหยุด'? 'red' : ''}">
+                {{item.apot>0?item.apot.toFixed(2):(item.hourD>0?item.hourD.toFixed(2): '')}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" class="align-middle text-end">{{"OT Total" |  translate}}</td>
+                <td class="align-middle">{{allOt[i+((page-1) * pageSize)].toFixed(2)}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" class="align-middle text-end">{{"systemcode.leave.total" |  translate}}</td>
+                <td class="align-middle">{{allLeave[i+((page-1) * pageSize)].toFixed(2)}}</td>
+            </tr>
+            <tr>
+                <td colspan="6" class="align-middle text-end">{{"systemcode.working.total" |  translate}}</td>
+                <td class="align-middle">{{allWorking[i+((page-1) * pageSize)]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr>
+    </div>
+    <div class="d-flex justify-content-end p-2" *ngIf="dataList && !loading">
+      <select class="form-select m-r-5" style="width: auto"  [(ngModel)]="pageSize" (ngModelChange)="page=1">
+        <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+        <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+        <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+      </select>
+
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3">
+        <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+        <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+      </ngb-pagination>
+    </div>
+  </div>
+</div>
+<!-- Dialog -->
+<ng-template #dialog let-modal>
+  <div class="modal-content dialog-height-myhr" >
+    <div class="card cardmyhr-mb-set p-3">
+      <div class="card-header bg-myhr">
+        <h4>{{"date-detail" | translate}} {{('0'+selectStartDate.day).slice(-2)}}-{{('0'+selectStartDate.month).slice(-2)}}-{{selectStartDate.year}}
+          {{"to2" | translate}} {{('0'+selectEndDate.day).slice(-2)}}-{{('0'+selectEndDate.month).slice(-2)}}-{{selectEndDate.year}} </h4>
+      </div>
+            <!-- Row -->
+            <div class="row mt-3">
+              <div class="col-lg-3 col-md-6">
+                <div class="card border-left  border-bottom  border-top  border-right border-info">
+                  <div class="card-body" style="padding: 0.50rem 1.25rem 0.50rem 1.25rem;">
+                    <div class="d-flex no-block align-items-center">
+                      <div>
+                        <span class="text-info display-6">
+                          <i class="ti-clipboard"></i>
+                        </span>
+                      </div>
+                      <div class="ms-auto">
+                        <h3>{{wTime.toFixed(2)}} <small>{{"Hours"| translate}}</small></h3>
+                        <h6 class="text-muted">{{"Work Time"| translate}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="card border-left  border-bottom  border-top  border-right border-info">
+                  <div class="card-body" style="padding: 0.50rem 1.25rem 0.50rem 1.25rem;">
+                    <div class="d-flex no-block align-items-center">
+                      <div>
+                        <span class="text-info display-6">
+                          <i class="ti-time"></i>
+                        </span>
+                      </div>
+                      <div class="ms-auto">
+                        <h3>{{oTime.toFixed(2)}} <small>{{"Hours"| translate}}</small></h3>
+                        <h6 class="text-muted">{{"OT Time"| translate}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="card border-left  border-bottom  border-top  border-right border-info">
+                  <div class="card-body" style="padding: 0.50rem 1.25rem 0.50rem 1.25rem;">
+                    <div class="d-flex no-block align-items-center">
+                      <div>
+                        <span class="text-info display-6">
+                          <i class="ti-write"></i>
+                        </span>
+                      </div>
+                      <div class="ms-auto">
+                        <h3>{{lTime.toFixed(2)}} <small>{{"Hours"| translate}}</small></h3>
+                        <h6 class="text-muted">{{"Leave Time"| translate}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="card border-left  border-bottom  border-top  border-right border-info">
+                  <div class="card-body" style="padding: 0.50rem 1.25rem 0.50rem 1.25rem;">
+                    <div class="d-flex no-block align-items-center">
+                      <div>
+                        <span class="text-info display-6">
+                          <i class="ti-bar-chart"></i>
+                        </span>
+                      </div>
+                      <div class="ms-auto">
+                        <h3>{{aTime}} <small>{{"Hours"| translate}}</small></h3>
+                        <h6 class="text-muted">{{"Working Total (Hr:Min)"| translate}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Row -->
+    </div>
+    <div class="modal-body " [perfectScrollbar]="config">
+    <div class="card cardmyhr-mb-reset15">
+      <div class="table-responsive">
+        <div class="wrapper">
+          <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+            <thead class="bg-info ">
+              <tr class="text-white font-weight-normal">
+                <th class="font-weight-normal text-center" scope="col">{{"dmy" | translate}}</th>
+                <th class="font-weight-normal text-center" scope="col">{{"day" | translate}}</th>
+                <th class="font-weight-normal text-center" scope="col">{{"Work Time" | translate}}</th>
+                <th class="font-weight-normal text-center" scope="col">{{"Total(Hr:Min)" | translate}}</th>
+                <th class="font-weight-normal text-center" scope="col">{{"Day Type" | translate}}</th>
+                <th class="font-weight-normal text-center" scope="col">{{"Punch Time" | translate}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="loadingTime">
+              <td colspan="6" class="font-weight-normal text-center">
+                <div class="justify-content-center text-center" role="status">
+                  <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </td>
+            </tbody>
+            <tbody *ngIf="!loadingTime">
+              <tr *ngIf="noData">
+                <td colspan="6" class="font-weight-normal text-center">{{"No Data Found" | translate}}</td>
+              </tr>
+              <tr
+                *ngFor="let item of dataTime | slice: (pageModal-1) * pageSizeModal : (pageModal-1) * pageSizeModal + pageSizeModal; let i=index">
+                <td class="align-middle text-center">{{item.dateId }}</td>
+                <td class="align-middle text-center">{{"systemcode.memployee.workplan.day." + convertToEEEE(item.dateId)
+                  | translate}}</td>
+                <td class="align-middle text-center">{{item.startTime | number:'2.2'}} - {{item.endTime | number:'2.2'}}
+                </td>
+                <td class="align-middle text-center">{{item.hourD | number:'2.2' }}</td>
+                <td class="align-middle text-center"
+                  [ngStyle]="{'color':item.eventgrp.tdesc == 'วันหยุด'? 'red' : 'green'}"> {{item.eventgrp.getDesc() }}
+                </td>
+                <td class="align-middle text-center" [ngStyle]="{'color':item.eventgrp.tdesc == 'วันหยุด'? 'red' : ''}">
+                  {{item.costCenter}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end p-2">
+        <select class="form-select m-r-5" style="width: auto"  [(ngModel)]="pageSizeModal" (ngModelChange)="pageModal=1">
+          <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+          <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+          <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+        </select>
+
+        <ngb-pagination [collectionSize]="collectionSizeModal" [(page)]="pageModal" [pageSize]="pageSizeModal" [maxSize]="3" [rotate]="true">
+          <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+          <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close"| translate}}</button>
+  </div>
+</ng-template>
+<!-- END Dialog -->
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Alert Message</h5>
+    <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{msg}}
+  </div>
+</ng-template>

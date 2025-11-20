@@ -1,0 +1,90 @@
+<!-- ข้อมูลพนักงาน -->
+<div class="col-12">
+    <app-workflow-emp-information [employeeId]="employeeId"></app-workflow-emp-information>
+</div>
+<!-- ปิดข้อมูลพนักงาน -->
+<!-- รายละเอียดใบขอโอที -->
+<ng-container *ngTemplateOutlet="OtTable"></ng-container>
+<!-- ปิดรายละเอียดใบขอโอที -->
+<!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+<div class="col-12">
+    <app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+    </app-workflow-detail-footer>
+</div>
+<!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+
+
+<ng-template #OtTable>
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">
+                    {{"Detail" | translate}}
+                    {{"ot.table" | translate}}
+                </h6>
+            </div>
+            <div class="card-body pe-0 ps-0">
+                <div class="table-responsive">
+                    <div class="wrapper">
+                        <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                            <thead class="bg-info ">
+                                <tr class="text-white font-weight-normal">
+                                    <th class="font-weight-normal text-center" scope="col">{{"Start Date" | translate }}
+                                    </th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"Start Time" | translate }}
+                                    </th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"end.date" | translate }}
+                                    </th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"End Time" | translate }}
+                                    </th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.ot.reason" |
+                                        translate }}</th>
+                                    <th class="font-weight-normal text-center" scope="col">
+                                        {{"Shift Work" | translate }}
+                                    </th>
+                                    <th class="font-weight-normal text-center" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let item of otTableList | slice: (page-1) * pageSize : ((page-1) * pageSize) + pageSize;; let i=index">
+                                    <td class="align-middle text-center">
+                                        {{dateShow(item.date.start)}}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{item.time.start}}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{dateShow(item.date.end)}}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{item.time.end}}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{getMessageTranslate(item.reason.tdesc,item.reason.edesc)}}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{getMessageTranslate(item.shift.tdesc,item.shift.edesc)}}
+                                    </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end p-2" *ngIf="otTableList.length>0">
+                    <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSize"
+                        (ngModelChange)="page=1">
+                        <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                        <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                        <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+                    </select>
+                    <ngb-pagination [collectionSize]="otTableList.length" [(page)]="page" [pageSize]="pageSize"
+                        [maxSize]="3" [rotate]="true">
+                        <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+                        <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+                    </ngb-pagination>
+                </div>
+                <app-workflow-remark [wfid]="wfid"></app-workflow-remark>
+            </div>
+        </div>
+    </div>
+</ng-template>

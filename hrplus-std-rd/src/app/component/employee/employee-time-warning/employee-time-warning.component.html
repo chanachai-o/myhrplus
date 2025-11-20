@@ -1,0 +1,343 @@
+<!-- Main Card -->
+<div class="card main-content-card">
+  <div class="card-header bg-myhr">
+    <h4 class="card-title">{{"menu.sup-time-warning" | translate}}</h4>
+  </div>
+  <div class="card-body">
+
+    <!-- Tabs for Date Selection -->
+    <div class="card-tabs-container">
+      <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs-modern">
+        <li [ngbNavItem]="1" [destroyOnHide]="true">
+          <a ngbNavLink (click)="wom='';page=1;pageSize = pageSizeShow">
+            <i class="mdi mdi-calendar-range"></i>&nbsp; {{"Custom" | translate}}
+          </a>
+          <ng-template ngbNavContent>
+            <form class="filter-bar mt-3">
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">{{"Start Date" | translate}}</span>
+                  <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" [(ngModel)]="selectStartDate" ngbDatepicker #d1="ngbDatepicker" #c1="ngModel" (change)="selectStartDate = datepickerService.validateFormatDate(c1)">
+                  <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button"><i class="mdi mdi-calendar"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">{{"End Date" | translate}}</span>
+                  <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" [minDate]="selectStartDate" [(ngModel)]="selectEndDate" ngbDatepicker #d2="ngbDatepicker" #c2="ngModel" (change)="selectEndDate = datepickerService.validateFormatDate(c2)">
+                  <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i class="mdi mdi-calendar"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary btn-icon mb-3" (click)="loadData()"><i class="mdi mdi-magnify"></i></button>
+            </form>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink (click)="wom='Week';nowData();page=1;pageSize=data?data.length:0">
+            <i class="mdi mdi-calendar-week"></i>&nbsp; {{"Period" | translate}}
+          </a>
+          <ng-template ngbNavContent>
+            <div class="filter-bar mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary" (click)="prevData()"><i class="mdi mdi-chevron-left"></i></button>
+                <button type="button" class="btn btn-outline-secondary" (click)="nowData()">{{"Now" | translate}}</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="nextData()"><i class="mdi mdi-chevron-right"></i></button>
+              </div>
+              <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic">
+                <label ngbButtonLabel class="btn-primary-outline">
+                  <input ngbButton type="radio" name="rediocheck" [value]="'Week'" (click)="showWeek();nowData();"> {{"Week"| translate}}
+                </label>
+                <label ngbButtonLabel class="btn-primary-outline ms-3">
+                  <input ngbButton type="radio" name="rediocheck" [value]="'Month'" (click)="showMonth();nowData();"> {{"month"| translate}}
+                </label>
+              </div>
+              <div class="form-group period-date-display">
+                <div class="input-group">
+                  <input readonly class="form-control" name="dp1_period" [value]="parserFormat.format(selectStartDate)">
+                  <span class="date-separator">-</span>
+                  <input readonly class="form-control" name="dp2_period" [value]="parserFormat.format(selectEndDate)">
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+    </div>
+
+    <!-- Filter Checkboxes -->
+    <div class="filter-pills-container">
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkForgotIn" [(ngModel)]="forgotswipein" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkForgotIn">{{"forgot.swipein" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkForgotOut" [(ngModel)]="forgotswipeout" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkForgotOut">{{"forgot.swipeout" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkLate" [(ngModel)]="late" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkLate">{{"late" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkOtBefore" [(ngModel)]="otbefore" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkOtBefore">{{"ot.before" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkOtAfter" [(ngModel)]="otafter" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkOtAfter">{{"ot.after" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkLeaveBeforeFinish" [(ngModel)]="leavebeforefinish" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkLeaveBeforeFinish">{{"leave.before.finish" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkSwipeCardHoliday" [(ngModel)]="swipecardinholiday" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkSwipeCardHoliday">{{"swipe.card.in.holiday" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkOtOverBefore" [(ngModel)]="otoverbefore" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkOtOverBefore">{{"ot.over.before" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkOtOverAfter" [(ngModel)]="otoverafter" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkOtOverAfter">{{"ot.over.after" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkOtLessBefore" [(ngModel)]="otlessbefore" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkOtLessBefore">{{"ot.less.before" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkOtLessAfter" [(ngModel)]="otlessafter" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkOtLessAfter">{{"ot.less.after" | translate}}</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="checkSelectAll" (click)="selectAll();" (ngModelChange)="changeFilter()">
+        <label class="form-check-label" for="checkSelectAll">{{"systemcode.select.all" | translate}}</label>
+      </div>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-input-container mb-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
+        </div>
+        <input type="text" placeholder="{{'systemcode.search.date' | translate}}" class="form-control" [(ngModel)]='searchTerm'>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="d-flex justify-content-center align-items-center py-5" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+      <span class="ms-3 fw-bold text-secondary">{{"Loading Data" | translate}}...</span>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-lg-block" *ngIf="!loading">
+      <table class="table table-hover v-middle">
+        <thead class="thead-light">
+          <tr>
+            <th>{{"date" | translate}}</th>
+            <th>{{"day" | translate}}</th>
+            <th *ngIf="forgotswipein">{{"forgot.swipein" | translate}}</th>
+            <th *ngIf="forgotswipeout">{{"forgot.swipeout" | translate}}</th>
+            <th *ngIf="late">{{"late" | translate}}</th>
+            <th *ngIf="otbefore">{{"ot.before" | translate}}</th>
+            <th *ngIf="otafter">{{"ot.after" | translate}}</th>
+            <th *ngIf="leavebeforefinish">{{"leave.before.finish" | translate}}</th>
+            <th *ngIf="swipecardinholiday">{{"swipe.card.in.holiday" |translate}}</th>
+            <th *ngIf="otoverbefore">{{"ot.over.before" | translate}}</th>
+            <th *ngIf="otoverafter">{{"ot.over.after" | translate}}</th>
+            <th *ngIf="otlessbefore">{{"ot.less.before" | translate}}</th>
+            <th *ngIf="otlessafter">{{"ot.less.after" | translate}}</th>
+            <th class="text-center">{{"Other" | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="noData"><td [attr.colspan]="13 + (forgotswipein?1:0) + (forgotswipeout?1:0) + (late?1:0) + (otbefore?1:0) + (otafter?1:0) + (leavebeforefinish?1:0) + (swipecardinholiday?1:0) + (otoverbefore?1:0) + (otoverafter?1:0) + (otlessbefore?1:0) + (otlessafter?1:0)" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td></tr>
+          <tr *ngFor="let item of dataShow | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;let i = index">
+            <td class="align-middle">{{getDateshow(item) | date:'dd-MM-yyyy'}}</td>
+            <td class="align-middle">{{"systemcode.memployee.workplan.day." + convertyyyyMMddTodate(item.dateId) | translate}}</td>
+            <td class="align-middle text-danger" *ngIf="forgotswipein">{{item.warn00}}</td>
+            <td class="align-middle text-danger" *ngIf="forgotswipeout">{{item.warn01}}</td>
+            <td class="align-middle" *ngIf="late">{{item.warn02}}</td>
+            <td class="align-middle" *ngIf="otbefore">{{item.warn03}}</td>
+            <td class="align-middle" *ngIf="otafter">{{item.warn04}}</td>
+            <td class="align-middle" *ngIf="leavebeforefinish">{{item.warn05}}</td>
+            <td class="align-middle" *ngIf="swipecardinholiday">{{item.warn11?item.warn11.replaceAll(',',' '):''}}</td>
+            <td class="align-middle" *ngIf="otoverbefore">{{item.warn12}}</td>
+            <td class="align-middle" *ngIf="otoverafter">{{item.warn13}}</td>
+            <td class="align-middle" *ngIf="otlessbefore">{{item.warn14}}</td>
+            <td class="align-middle" *ngIf="otlessafter">{{item.warn15}}</td>
+            <td class="align-middle text-center">
+              <button type="button" class="btn btn-warning btn-sm btn-icon-circle" *ngIf="checkButton(item) == true" (click)="openDialog(dialog,(i+((page-1)*pageSize)))">
+                <i class="fas fa-exclamation"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="d-lg-none mt-3" *ngIf="!loading">
+      <div *ngIf="noData" class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+      <div *ngFor="let item of dataShow | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;let i = index" class="warning-card-mobile">
+        <div class="card-header">
+          <div class="date">{{getDateshow(item) | date:'dd-MM-yyyy'}}</div>
+          <div class="day">{{"systemcode.memployee.workplan.day." + convertyyyyMMddTodate(item.dateId) | translate}}</div>
+          <div class="other-btn-container" *ngIf="checkButton(item) == true">
+            <button type="button" class="btn btn-warning btn-sm btn-icon-circle" (click)="openDialog(dialog,(i+((page-1)*pageSize)))">
+              <i class="fas fa-exclamation"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="details-grid">
+            <div class="detail-item" *ngIf="forgotswipein"><span>{{"forgot.swipein" | translate}}</span><strong [ngClass]="{'text-danger': item.warn00}">{{item.warn00 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="forgotswipeout"><span>{{"forgot.swipeout" | translate}}</span><strong [ngClass]="{'text-danger': item.warn01}">{{item.warn01 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="late"><span>{{"late" | translate}}</span><strong>{{item.warn02 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="otbefore"><span>{{"ot.before" | translate}}</span><strong>{{item.warn03 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="otafter"><span>{{"ot.after" | translate}}</span><strong>{{item.warn04 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="leavebeforefinish"><span>{{"leave.before.finish" | translate}}</span><strong>{{item.warn05 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="swipecardinholiday"><span>{{"swipe.card.in.holiday" |translate}}</span><strong>{{item.warn11?item.warn11.replaceAll(',',' '):'-'}}</strong></div>
+            <div class="detail-item" *ngIf="otoverbefore"><span>{{"ot.over.before" | translate}}</span><strong>{{item.warn12 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="otoverafter"><span>{{"ot.over.after" | translate}}</span><strong>{{item.warn13 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="otlessbefore"><span>{{"ot.less.before" | translate}}</span><strong>{{item.warn14 || '-'}}</strong></div>
+            <div class="detail-item" *ngIf="otlessafter"><span>{{"ot.less.after" | translate}}</span><strong>{{item.warn15 || '-'}}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-end p-2" *ngIf="wom=='' && !loading && !noData">
+      <div class="pagination-controls">
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="page=1;pageSizeShow = pageSize;">
+          <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+          <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+          <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+        </select>
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+          <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+          <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<ng-template #dialog let-modal>
+  <div class="modal-header bg-myhr">
+    <h5 class="modal-title text-white">{{"detail" | translate}}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="detail-card-container" *ngIf="dataShow && dataShow[index]">
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"dashboard.employeeid" |translate}}</small>
+          <h6>{{dataShow[index].employee.employeeId}} {{dataShow[index].employee.getFullname()}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.1" |translate}}</small>
+          <h6>{{dataShow[index].dateId!= undefined?(dataShow[index].dateId | date:'dd-MM-yyyy'):'-'}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.2" |translate}}</small>
+          <h6>{{dataShow[index].cdtBg!= undefined?(dataShow[index].cdtBg | date:'dd-MM-yyyy'):'-'}} {{dataShow[index].ctmBg!= undefined?(dataShow[index].ctmBg | number: '2.2'):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.3" |translate}}</small>
+          <h6>{{dataShow[index].cdtEn!= undefined?(dataShow[index].cdtEn | date:'dd-MM-yyyy'):'-'}} {{dataShow[index].ctmEn!= undefined?(dataShow[index].ctmEn | number: '2.2'):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.4" |translate}}</small>
+          <h6>{{dataShow[index].mdtBg!= undefined?(dataShow[index].mdtBg | date:'dd-MM-yyyy'):'-'}} {{dataShow[index].mtmBg!= undefined?(dataShow[index].mtmBg | number: '2.2'):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.5" |translate}}</small>
+          <h6>{{dataShow[index].mdtEn!= undefined?(dataShow[index].mdtEn | date:'dd-MM-yyyy'):'-'}} {{dataShow[index].mtmEn!= undefined?(dataShow[index].mtmEn | number: '2.2'):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.6" |translate}}</small>
+          <h6>{{dataShow[index].warn00!= undefined?dataShow[index].warn00:'-'}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.7" |translate}}</small>
+          <h6>{{dataShow[index].warn01!= undefined?dataShow[index].warn01:'-'}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.8" |translate}}</small>
+          <h6>{{dataShow[index].warn02!= undefined?dataShow[index].warn02:'-'}} {{dataShow[index].warn02!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.9" |translate}}</small>
+          <h6>{{dataShow[index].warn03!= undefined?dataShow[index].warn03:'-'}} {{dataShow[index].warn03!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.10" |translate}}</small>
+          <h6>{{dataShow[index].warn04!= undefined?dataShow[index].warn04:'-'}} {{dataShow[index].warn04!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.11" |translate}}</small>
+          <h6>{{dataShow[index].warn05!= undefined?dataShow[index].warn05:'-'}} {{dataShow[index].warn05!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.12" |translate}}</small>
+          <h6>-</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.13" |translate}}</small>
+          <h6>{{dataShow[index].warn11!= undefined?dataShow[index].warn11.replaceAll(',',' '):'-'}} </h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.14" |translate}}</small>
+          <h6>{{dataShow[index].warn12!= undefined?dataShow[index].warn12:'-'}} {{dataShow[index].warn12!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.15" |translate}}</small>
+          <h6>{{dataShow[index].warn13!= undefined?dataShow[index].warn13:'-'}} {{dataShow[index].warn13!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.16" |translate}}</small>
+          <h6>{{dataShow[index].warn14!= undefined?dataShow[index].warn14:'-'}} {{dataShow[index].warn14!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"system.code.emp.dialog.17" |translate}}</small>
+          <h6>{{dataShow[index].warn15!= undefined?dataShow[index].warn15:'-'}} {{dataShow[index].warn15!= undefined?("Hours" | translate):''}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close"| translate}}</button>
+  </div>
+</ng-template>

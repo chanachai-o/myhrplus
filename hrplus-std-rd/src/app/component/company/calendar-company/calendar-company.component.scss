@@ -1,0 +1,392 @@
+/*
+    MODERN CALENDAR COMPANY COMPONENT STYLES
+    Refactored for a single, unified calendar component with an integrated header.
+*/
+
+// Modern Card Container
+.calendar-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+// Card Header
+.card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.25rem 1.5rem;
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+        font-family: 'Prompt', sans-serif;
+    }
+
+    .card-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+// Calendar Container
+.calendar-container {
+    background: var(--background-light, #f8f9fa);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Loading spinner container
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-secondary);
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        border-width: .25em;
+        color: var(--primary-color);
+    }
+
+    .loading-text {
+        font-family: 'Prompt', sans-serif;
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+}
+
+
+// Syncfusion Schedule specific styling
+::ng-deep {
+    .e-quick-popup-wrapper .e-event-popup .e-popup-header .e-subject-wrap .e-subject {
+        max-height: none !important
+    }
+
+    // Custom Header Template
+    .custom-schedule-header {
+        padding: 10px 0;
+
+        .schedule-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .schedule-navigation {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap; // Allow wrapping on smaller screens
+            justify-content: flex-end;
+        }
+
+        .btn-group {
+            .btn {
+                font-family: 'Prompt', sans-serif;
+                font-weight: 500;
+                transition: all 0.2s ease-in-out;
+                display: flex;
+                align-items: center;
+                gap: 0.35rem;
+            }
+
+            .btn-primary {
+                box-shadow: 0 2px 4px rgba(var(--primary-color-rgb), 0.3);
+            }
+
+            .btn-outline-primary:hover {
+                transform: translateY(-1px);
+            }
+        }
+
+        .divider-vertical {
+            border-left: 1px solid var(--border-color);
+            height: 2rem;
+            align-self: center;
+        }
+    }
+
+    // General Schedule styles
+    .schedule-unified-style.e-schedule {
+        border: none;
+        font-family: 'Prompt', sans-serif;
+
+        .e-table-container,
+        .e-content-table {
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .e-work-cells:hover {
+            background-color: rgba(var(--primary-color-rgb), 0.05);
+        }
+
+        .e-current-day {
+            background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .e-appointment {
+            border-radius: 4px;
+            padding: 2px 5px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border: none;
+            color: white !important;
+        }
+    }
+
+    // General Toolbar Button Styling
+    .schedule-unified-style.e-schedule .e-toolbar-items {
+
+        // Style for Today, Prev, Next, and Date Range buttons
+        .e-toolbar-item .e-tbar-btn {
+            background-color: transparent;
+            color: var(--text-primary);
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            box-shadow: none !important;
+            padding: 6px 12px !important;
+            min-height: 36px !important;
+            height: auto !important;
+
+            .e-tbar-btn-text,
+            .e-btn-icon {
+                color: var(--text-primary);
+            }
+
+            &:hover {
+                background-color: var(--background-light);
+                border-color: var(--primary-hover);
+                color: var(--primary-hover);
+
+                .e-tbar-btn-text,
+                .e-btn-icon {
+                    color: var(--primary-hover);
+                }
+            }
+
+            &:active {
+                background-color: rgba(var(--primary-color-rgb), 0.1);
+            }
+        }
+
+        // Specific style for icon-only buttons (Prev/Next)
+        .e-toolbar-item.e-prev .e-tbar-btn,
+        .e-toolbar-item.e-next .e-tbar-btn {
+            padding: 6px !important;
+            width: 36px !important;
+        }
+
+        // Remove border from date range button to make it look cleaner
+        .e-toolbar-item.e-date-range .e-tbar-btn {
+            border: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+
+        // Style for the "Today" button to make it stand out a bit more
+        .e-toolbar-item.e-today .e-tbar-btn {
+            background-color: var(--background-light);
+            border-color: var(--border-color);
+        }
+    }
+
+    // Modern Pill-style View Switcher for Syncfusion Toolbar
+    .schedule-unified-style.e-schedule .e-toolbar-items .e-toolbar-right {
+        .e-toolbar-item.e-views {
+            padding: 0;
+            margin: 0 2px;
+
+            .e-tbar-btn {
+                border: none !important;
+                border-radius: 16px !important;
+                font-weight: 500;
+                padding: 6px 16px !important;
+                color: var(--text-secondary);
+                background-color: transparent !important;
+                transition: all 0.3s ease;
+                font-family: 'Prompt', sans-serif;
+                height: auto !important;
+                min-height: 36px !important;
+                line-height: 1.5;
+                box-shadow: none !important;
+
+                .e-tbar-btn-text {
+                    font-size: 0.9rem;
+                    color: var(--text-secondary);
+                }
+
+                .e-btn-icon {
+                    display: none; // Hiding default icons for a cleaner look
+                }
+
+                &:hover {
+                    background-color: rgba(var(--primary-color-rgb), 0.08) !important;
+                }
+            }
+
+            // Style for the active button
+            &.e-active-view .e-tbar-btn {
+                background-color: var(--primary-color) !important;
+                color: white !important;
+                box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.4) !important;
+
+                .e-tbar-btn-text {
+                    color: white !important;
+                }
+            }
+        }
+
+        // Group the buttons together to look like a pill container
+        .e-toolbar-item.e-views+.e-toolbar-item.e-views {
+            margin-left: 0;
+        }
+    }
+
+    // Datepicker Popup (Calendar) Header Styling
+    .e-header-calendar.e-calendar .e-header {
+        padding: 10px;
+
+        .e-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .e-icon-container {
+
+            .e-prev,
+            .e-next {
+                background-color: transparent;
+                border: 1px solid var(--border-color, #dee2e6);
+                border-radius: 8px !important;
+                transition: all 0.2s ease-in-out;
+                width: 32px;
+                height: 32px;
+
+                .e-icons {
+                    color: var(--text-primary);
+                }
+
+                &:hover {
+                    background-color: var(--background-light);
+                    border-color: var(--primary-hover);
+
+                    .e-icons {
+                        color: var(--primary-hover);
+                    }
+                }
+            }
+        }
+    }
+
+    // Year View Specifics
+    .schedule-unified-style.e-schedule {
+        .e-year-view .e-content-wrap table {
+            width: 100%;
+        }
+
+        .e-month-header .e-header-cells {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .e-appointment {
+            font-size: 0.75em;
+            padding: 1px 3px;
+        }
+    }
+
+    // Alert Modal Styling
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+        color: white;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        border-bottom: none;
+
+        .modal-title {
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-close {
+            filter: invert(1) grayscale(100) brightness(200%);
+        }
+    }
+
+    .modal-body {
+        font-family: 'Prompt', sans-serif;
+        color: var(--text-primary);
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        background-color: var(--background-light);
+        border-top: 1px solid #dee2e6;
+    }
+
+    // Subtle Quick Info Popup Styling
+    .e-quick-popup-wrapper {
+        border-radius: 12px !important;
+        border: none !important;
+        font-family: 'Prompt', sans-serif;
+
+        .e-popup-header {
+            background-color: white !important;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .e-popup-content {
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .e-recurrence-details,
+        .e-time-zone-details {
+            display: none !important;
+        }
+
+        .e-popup-footer {
+            display: none !important;
+        }
+    }
+}

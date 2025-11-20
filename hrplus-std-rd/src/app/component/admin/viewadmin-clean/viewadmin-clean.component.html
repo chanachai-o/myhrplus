@@ -1,0 +1,167 @@
+<!-- Modern Admin View (History) Layout -->
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "View Document (history)" | translate }}</h4>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-container">
+      <!-- Employee Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="employeeSwitch" [(ngModel)]="dataSelected.employee.select">
+          <label class="form-check-label" for="employeeSwitch">{{ "Employee" | translate }}</label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{ 'Employee ID' | translate }}" [(ngModel)]="dataSelected.employee.id" (ngModelChange)="selectData('employee', 'employee')" [disabled]="!dataSelected.employee.select">
+          <button class="btn btn-outline-secondary btn-icon" (click)="openModal(modalDataSelect, 'employee', 'employee')" [disabled]="!dataSelected.employee.select">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+        <input type="text" class="form-control" disabled [value]="dataSelected.employee.data.getFullName()">
+      </div>
+
+      <!-- Workflow Definition Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="definitionSwitch" [(ngModel)]="dataSelected.workflowDefinition.select">
+          <label class="form-check-label" for="definitionSwitch">{{ "documents.type" | translate }}</label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{ 'Workflow ID.WF_REMARK' | translate }}" [(ngModel)]="dataSelected.workflowDefinition.id" (ngModelChange)="selectData('workflowDefinition', 'workflowDefinition')" [disabled]="!dataSelected.workflowDefinition.select">
+          <button class="btn btn-outline-secondary btn-icon" (click)="openModal(modalDataSelect, 'workflowDefinition', 'workflowDefinition')" [disabled]="!dataSelected.workflowDefinition.select">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+        <input type="text" class="form-control" disabled [value]="dataSelected.workflowDefinition.data.getName()">
+      </div>
+
+      <!-- Late Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="lateSwitch" [(ngModel)]="dataSelected.late.select">
+          <label class="form-check-label" for="lateSwitch">{{ "documents.late" | translate }}</label>
+        </div>
+      </div>
+
+      <!-- Date Filter -->
+      <div class="filter-group filter-group-date">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="dateSwitch" [(ngModel)]="dataSelected.dateFull.select" (ngModelChange)="checkDatePeriod('dateFull')">
+          <label class="form-check-label" for="dateSwitch">{{ "Date Full" | translate }}</label>
+        </div>
+        <div class="date-inputs">
+          <div class="input-group">
+            <span class="input-group-text">{{ "Start" | translate }}</span>
+            <input class="form-control" placeholder="{{ 'dd.mm.yyyy' | translate }}" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="dataSelected.dateFull.startDate" [maxDate]="dataSelected.dateFull.endDate" (dateSelect)="checkBetweenDate()" [disabled]="!dataSelected.dateFull.select">
+            <button class="btn btn-outline-secondary btn-icon" (click)="d1.toggle()" type="button" [disabled]="!dataSelected.dateFull.select"><i class="mdi mdi-calendar"></i></button>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">{{ "to2" | translate }}</span>
+            <input class="form-control" placeholder="{{ 'dd.mm.yyyy' | translate }}" ngbDatepicker #d2="ngbDatepicker" [(ngModel)]="dataSelected.dateFull.endDate" [minDate]="dataSelected.dateFull.startDate" (dateSelect)="checkBetweenDate()" [disabled]="!dataSelected.dateFull.select">
+            <button class="btn btn-outline-secondary btn-icon" (click)="d2.toggle()" type="button" [disabled]="!dataSelected.dateFull.select"><i class="mdi mdi-calendar"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-button-container">
+      <button class="btn btn-primary w-25" (click)="submit('search')">
+        <i class="mdi mdi-magnify me-1"></i>
+        {{ "systemcode.search" | translate }}
+      </button>
+    </div>
+
+    <!-- Results Section -->
+    <div class="document-view-container">
+      <div class="inbox-container">
+        @if (dataList.workflow.load.loading && dataList.workflow.data.length === 0) {
+          <div class="loading-container">
+            <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+          </div>
+        }
+
+        <div class="inbox-main-content">
+          <!-- Left Pane -->
+          <div class="inbox-list-pane" [class.detail-visible]="dataSelected.workflow.data && !windowWidth(768)">
+            <div class="list-pane-header">
+                <div class="search-input-container input-group input-group-sm">
+                    <span class="input-group-text bg-transparent border-0"><i class="mdi mdi-magnify"></i></span>
+                    <input type="text" class="form-control border-0 bg-transparent" placeholder="{{ 'systemcode.search' | translate }} {{ 'Doc No.' | translate }}" [(ngModel)]="dataSelected.workflow.search" (ngModelChange)="searchWorkflow()">
+                </div>
+                <span class="list-count">{{ 'all' | translate }} {{ dataList.workflow.list.length }} {{ 'Note(s)' | translate }}</span>
+            </div>
+            <div #pfs1 class="list-pane-body">
+                @if (dataList.workflow.list.length > 0) {
+                    @for (item of dataList.workflow.list | slice:(tableWorkflow.page-1) * tableWorkflow.pageSize : (tableWorkflow.page-1) * tableWorkflow.pageSize + tableWorkflow.pageSize; track item.show.wf_seq_no) {
+                        <div class="workflow-item" [class.active]="dataSelected.workflow.data?.wf_seq_no === item.show.wf_seq_no" (click)="dataSelected.workflow.data = item.show; scrollToTop('workflowChange')">
+                            <div class="item-avatar">
+                                <img appShowLoading src="{{ baseUrl + item.show.initiator_pic }}" alt="user" />
+                            </div>
+                            <div class="item-content">
+                                <div class="content-header">
+                                    <span class="sender-name">{{ item.show.getInitiatorDesc() }}</span>
+                                    <span class="timestamp">{{ (convertDate(item.show.date) | date:'EE') | translate }} {{ convertTime(item.show.date) }}</span>
+                                </div>
+                                <div class="content-subject">{{ item.show.getSubjectDesc() }}</div>
+                                <div class="content-footer">
+                                    <span class="doc-no">{{ item.show.docNo }}</span>
+                                    <div class="status-icon" [ngbTooltip]="getWorkflowStatusInfo(item.show).tooltip | translate">
+                                        <i class="mdi" [ngClass]="getWorkflowStatusInfo(item.show).icon" [style.color]="getWorkflowStatusInfo(item.show).color"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                } @else if (!dataList.workflow.load.loading) {
+                    <div class="empty-list-message">
+                        <i class="mdi mdi-file-search-outline"></i>
+                        <h5>{{ 'No Data Found' | translate }}</h5>
+                    </div>
+                }
+            </div>
+            @if (tableWorkflow.collectionSize > tableWorkflow.pageSize) {
+                <div class="list-pane-footer">
+                    <ngb-pagination [collectionSize]="tableWorkflow.collectionSize" [(page)]="tableWorkflow.page" [pageSize]="tableWorkflow.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" (pageChange)="scrollToTop('pageChange')"></ngb-pagination>
+                </div>
+            }
+          </div>
+
+          <!-- Right Pane -->
+          <div class="inbox-detail-pane" [class.visible]="dataSelected.workflow.data && !windowWidth(768)">
+            @if (dataSelected.workflow.data; as workflow) {
+                <div class="detail-content-wrapper">
+                    <div class="detail-header">
+                        <button class="btn btn-icon btn-light-secondary back-button" (click)="dataSelected.workflow.data = undefined"><i class="mdi mdi-arrow-left"></i></button>
+                        <h4 class="detail-subject">{{ workflow.getSubjectDesc() }}</h4>
+                        <div class="status-icon" [ngbTooltip]="getWorkflowStatusInfo(workflow).tooltip | translate">
+                            <i class="mdi" [ngClass]="getWorkflowStatusInfo(workflow).icon" [style.color]="getWorkflowStatusInfo(workflow).color"></i>
+                        </div>
+                    </div>
+                    <div #pfs2 class="detail-body">
+                        <app-workflow-type [workflow]="workflow" [fromPage]="'history-view'"></app-workflow-type>
+                    </div>
+                </div>
+            } @else {
+                <div class="placeholder">
+                    <i class="mdi mdi-file-eye-outline"></i>
+                    <h5>{{ 'systemcode.select.workflow' | translate }}</h5>
+                </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<ng-template #modalDataSelect let-modal>
+    <!-- This modal can be improved with the same styling as the data selection modal in trouble-box -->
+</ng-template>
+
+<ng-template #alertModal let-modal>
+    <!-- This modal can be improved with modern styling -->
+</ng-template>

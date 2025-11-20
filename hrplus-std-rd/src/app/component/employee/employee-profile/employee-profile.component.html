@@ -1,0 +1,898 @@
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Profile Header -->
+    <div class="profile-header row" *ngIf="profileData">
+      <div class="col-lg-3 col-md-4 text-center">
+        <img appShowLoading src="{{profileData?.getPictureUrl()}}" class="profile-picture">
+      </div>
+      <div class="col-lg-9 col-md-8 profile-summary">
+        <h2 class="profile-name">{{profileData?.getFullname()}}</h2>
+        <div class="profile-details">
+          <div>
+            <label class="form-label detail-label">{{"Employee ID" | translate}}</label>
+            <span class="detail-value">{{profileData?.employeeId}}</span>
+          </div>
+          <div>
+            <label class="form-label detail-label">{{"Position" | translate}}</label>
+            <span class="detail-value">{{profileData?.position?.getPositionDesc() || '-'}}</span>
+          </div>
+          <div>
+            <label class="form-label detail-label">{{"E-Mail" | translate}}</label>
+            <span class="detail-value">{{profileData?.email || '-'}}</span>
+          </div>
+          <div>
+            <label class="form-label detail-label">{{"Tel" | translate}}</label>
+            <span class="detail-value"><app-mask-toggle [value]="profileData?.mobile"
+                fieldName="mobile"></app-mask-toggle></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs-modern mt-4">
+      <li [ngbNavItem]="1" [destroyOnHide]="true">
+        <a ngbNavLink><i class="mdi mdi-account-details-outline me-2"></i>{{"Personal Information" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="info-card mt-3">
+            <div class="card-body">
+              <div class="detail-grid">
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Name-Surname" | translate}}</label>
+                  <h6>{{profileData?.getFullnameTH?.()}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Name-Surname" | translate}} (Eng)</label>
+                  <h6>{{profileData?.getFullnameEN?.()}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Nick Name (Thai)" | translate}}</label>
+                  <h6>{{profileData?.nickname ? profileData?.nickname:'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Birthday"| translate}}</label>
+                  <h6 *ngIf="profileData?.birthDate; else noDate">
+                    {{ profileData.birthDate | date:'dd-MM-yyyy' }}
+                  </h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Age" | translate}}</label>
+                  <h6>{{profileData?.age?profileData?.getAge():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Tel" | translate}}</label>
+                  <h6><app-mask-toggle [value]="profileData?.mobile" fieldName="mobile"> </app-mask-toggle></h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Tel Home" | translate}}</label>
+                  <h6><app-mask-toggle [value]="profileData?.telNo" fieldName="telNo"></app-mask-toggle></h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"E-Mail" | translate}}</label>
+                  <h6>{{profileData?.email?profileData?.email:'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"ID Card No." |translate}}</label>
+                  <h6><app-mask-toggle [value]="profileData?.idPeople" fieldName="idPeople"></app-mask-toggle></h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"ID Card Expire Date" | translate}}</label>
+                  <h6 *ngIf="profileData?.idexpdate; else noDate">
+                    {{ profileData.idexpdate | date:'dd-MM-yyyy' }}
+                  </h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Passport ID" | translate}}</label>
+                  <h6><app-mask-toggle [value]="profileData?.passport_no" fieldName="passport_no"></app-mask-toggle>
+                  </h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Passport Expire Date" | translate}}</label>
+                  <h6>{{profileData?.passport_expire_date?profileData?.passport_expire_date:'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Race" | translate}}</label>
+                  <h6>{{profileData?.national?profileData?.national.getDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Nationality" | translate}}</label>
+                  <h6>{{profileData?.nationality?profileData?.nationality.getDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Height" | translate}}</label>
+                  <h6>{{profileData?.height?profileData?.height:'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Weight" | translate}}</label>
+                  <h6>{{profileData?.weight?profileData?.weight:'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Blood Group" | translate}}</label>
+                  <h6>{{'systemcode.employee.tablle.blood.group.'+profileData?.blood | translate}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Sex" | translate}}</label>
+                  <h6>{{'systemcode.memployee.sex.'+profileData?.sex | translate}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Eye Color" | translate}}</label>
+                  <h6>{{'systemcode.memployee.color.'+profileData?.eyeColor | translate}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Hair Color" | translate}}</label>
+                  <h6>{{'systemcode.memployee.color.'+profileData?.hairColor | translate}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Shirt Size" | translate}}</label>
+                  <h6>{{profileData?.shirtSize?(profileData?.shirtSize | uppercase):'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Waist Size" | translate}}</label>
+                  <h6>{{profileData?.waistSize?(profileData?.waistSize | uppercase):'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Religion" | translate}}</label>
+                  <h6>{{profileData?.religion?(profileData?.religion.getDesc()):'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Employee ID Card" | translate}}</label>
+                  <h6>{{profileData?.employeeId}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Employee Status" | translate}}</label>
+                  <h6>{{profileData?.status?profileData?.getStatus():'-'}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2" *ngIf="addr">
+        <a ngbNavLink><i class="mdi mdi-map-marker-outline me-2"></i>{{"Address" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3" *ngFor="let item of addr; let i=index">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{'address.'+item.addr_current | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid-sm">
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"systemcode.addr.village" | translate}}</label>
+                      <h6>{{item.ThEnVillage()!=''&&item.ThEnVillage()!=undefind?item.ThEnVillage():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Address No." | translate}}</label>
+                      <h6>{{item.ThEnAddr()!=''&&item.ThEnAddr()!=undefind?item.ThEnAddr():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"systemcode.addr.room"| translate}}</label>
+                      <h6>{{item.ThEnRoom()!=''&&item.ThEnRoom()!=undefind?item.ThEnRoom():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"systemcode.addr.floor"| translate}}</label>
+                      <h6>{{item.ThEnFloor()!=''&&item.ThEnFloor()!=undefind?item.ThEnFloor():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Soi" | translate}}</label>
+                      <h6>{{item.ThEnSoi()!=''&&item.ThEnSoi()!=undefind?item.ThEnSoi():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"systemcode.addr.moo" | translate}}</label>
+                      <h6>{{item.ThEnMoo()!=''&&item.ThEnMoo()!=undefind?item.ThEnMoo():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Road" | translate}}</label>
+                      <h6>{{item.ThEnRoad()!=''&&item.ThEnRoad()!=undefind?item.ThEnRoad():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Sub District" | translate}}</label>
+                      <h6>{{item.ThEnSubDis()!=''&&item.ThEnSubDis()!=undefind?item.ThEnSubDis():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"District" | translate}}</label>
+                      <h6>{{item.ThEnDesc()!=undefind?item.ThEnDesc():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Province" | translate}}</label>
+                      <h6>{{item.ThEnLongname()!=''&&item.ThEnLongname()!=undefind?item.ThEnLongname():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"systemcode.addr.zip.zipid" | translate}}</label>
+                      <h6>{{item.zipcode?item.zipcode.zipcodeId:'-'}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="3" *ngIf="fml">
+        <a ngbNavLink><i class="mdi mdi-account-group-outline me-2"></i>{{"Family Information" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3" *ngFor="let item of fml; let i=index">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{"Family Information" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid-sm">
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Name-Surname" | translate}}</label>
+                      <h6>
+                        {{item.getFullnamePrefix()!=''&&item.getFullnamePrefix()!=undefind?item.getFullnamePrefix():'-'}}
+                      </h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Tel" | translate}}</label>
+                      <h6><app-mask-toggle [value]="item.tel != '' && item.tel != undefined ? item.tel : '-'"
+                          fieldName="tel"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Relation" | translate}}</label>
+                      <h6>{{item.getRelation()!=''&&item.getRelation()!=undefind?item.getRelation():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Occupation" | translate}}</label>
+                      <h6>{{item.getOccupation()!=''&&item.getOccupation()!=undefind?item.getOccupation():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Birthday" | translate}}</label>
+                      <h6>{{item.birthday!=''&&item.birthday!=undefind?(item.birthday| date:'dd-MM-yyyy'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Status" | translate}}</label>
+                      <h6>{{item.status!=''&&item.status!=undefind?('systemcode.memployee.status.'+item.status |
+                        translate):'-'}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="4">
+        <a ngbNavLink><i class="mdi mdi-dots-horizontal-circle-outline me-2"></i>{{"Other" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 mb-3" *ngIf="bnk">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{"Bank Information" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid-sm">
+                    <div class="detail-item-col" *ngFor="let item of bnk">
+                      <label class="form-label text-muted">{{"Bank Name" | translate}}</label>
+                      <h6>{{item.bank.getDesc()!=''&&item.bank.getDesc()!=undefind?item.bank.getDesc():'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of bnk">
+                      <label class="form-label text-muted">{{"Account Number" | translate}}</label>
+                      <h6><app-mask-toggle [value]="item.accountId" fieldName="accountid"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of bnk">
+                      <label class="form-label text-muted">{{"Branch" | translate}}</label>
+                      <h6>
+                        {{item.bankBranch.getDesc()!=''&&item.bankBranch.getDesc()!=undefind?item.bankBranch.getDesc():'-'}}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3" *ngFor="let item of crd">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{item.cardType.getDesc() | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid-sm">
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Card ID" | translate}}</label>
+                      <h6><app-mask-toggle [value]="item.cardNo" fieldName="idPeople"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Place of Issue" | translate}}</label>
+                      <h6>{{item.createBy!=''&&item.createBy!=undefind?item.createBy:'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Card Issue Date" | translate}}</label>
+                      <h6>{{item.activeDate!=''&&item.activeDate!=undefind?(item.activeDate | date:"dd-MM-yyyy"):'-'}}
+                      </h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Card Expire Date" | translate}}</label>
+                      <h6>{{item.expireDate!=''&&item.expireDate!=undefind?(item.expireDate | date:"dd-MM-yyyy"):'-'}}
+                      </h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Attach file" | translate}}</label>
+                      <h6><a target="_blank"
+                          href="{{url}}/FileDownload.jsp?uploadfield=mempl_card.atfile&filename={{item.atFile}}"
+                          class="text-info" style="padding:0px">Download</a></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 mb-3" *ngIf="taxs">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{"Tax Information" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid">
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Taxpayer Number" | translate}}</label>
+                      <h6><app-mask-toggle [value]="taxs.idtax!=''&&taxs.idtax!=undefind?taxs.idtax:'-'"
+                          fieldName="idtax"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Marry Status" | translate}}</label>
+                      <h6>
+                        {{taxs.statmarry!=''&&taxs.statmarry!=undefind?('systemcode.memployee.statmarry.'+taxs.statmarry
+                        | translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Marry Register" | translate}}</label>
+                      <h6>{{taxs.marryregister!=''&&taxs.marryregister!=undefind?('systemcode.marry.'+taxs.marryregister
+                        | translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Name" | translate}}</label>
+                      <h6>{{taxs.fname_spouse!=''&&taxs.fname_spouse!=undefind?taxs.fname_spouse:'-'}}
+                        {{taxs.lname_spouse!=''&&taxs.lname_spouse!=undefind?taxs.lname_spouse:'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Tax ID" | translate}}</label>
+                      <h6><app-mask-toggle
+                          [value]="taxs.idspousetax!=''&&taxs.idspousetax!=undefind?taxs.idspousetax:'-'"
+                          fieldName="idspousetax"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Income" | translate}}</label>
+                      <h6>{{taxs.inc_spouse!=''&&taxs.inc_spouse!=undefind?('spouse.income.'+taxs.inc_spouse |
+                        translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse ID Card" | translate}}</label>
+                      <h6><app-mask-toggle
+                          [value]="taxs.id_people_spouse!=''&&taxs.id_people_spouse!=undefind?taxs.id_people_spouse:'-'"
+                          fieldName="id_people_spouse"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Total Children" | translate}}</label>
+                      <h6>{{calChild(taxs.child_domestic, taxs.child_abroad)}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Child Deductible Allowance of 30000" | translate}}</label>
+                      <h6>{{taxs.child_domestic!=''&&taxs.child_domestic!=undefind?taxs.child_domestic:'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Child Deductible Allowance of 60000" | translate}}</label>
+                      <h6>{{taxs.child_abroad!=''&&taxs.child_abroad!=undefind?taxs.child_abroad:'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Child Non Study" | translate}}</label>
+                      <h6>{{taxs.child3_edu!=''&&taxs.child3_edu!=undefind?taxs.child3_edu:'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Insurance" | translate}}</label>
+                      <h6>{{taxs.insurance!=''&&taxs.insurance!=undefind?(taxs.insurance | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Insurance Spouse" | translate}}</label>
+                      <h6>{{taxs.insurance_spouse!=''&&taxs.insurance_spouse!=undefind?(taxs.insurance_spouse |
+                        number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Donation" | translate}}</label>
+                      <h6>{{taxs.donation!=''&&taxs.donation!=undefind?(taxs.donation | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Education Donation" | translate}}</label>
+                      <h6>{{taxs.edudonation!=''&&taxs.edudonation!=undefind?(taxs.edudonation | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Sport Donation" | translate}}</label>
+                      <h6>{{taxs.sportdonation!=''&&taxs.sportdonation!=undefind?(taxs.sportdonation |
+                        number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Interest" | translate}}</label>
+                      <h6>{{taxs.interest!=''&&taxs.interest!=undefind?(taxs.interest | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"GBK" | translate}}</label>
+                      <h6>{{taxs.gbk!=''&&taxs.gbk!=undefind?(taxs.gbk | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"RMF" | translate}}</label>
+                      <h6>{{taxs.rmf!=''&&taxs.rmf!=undefind?(taxs.rmf | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"LTF" | translate}}</label>
+                      <h6>{{taxs.ltf!=''&&taxs.ltf!=undefind?(taxs.ltf | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Shop D" | translate}}</label>
+                      <h6>{{taxs.shopD!=''&&taxs.shopD!=undefind?(taxs.shopD | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Social Enterprise" | translate}}</label>
+                      <h6>{{taxs.socialEnterprise!=''&&taxs.socialEnterprise!=undefind?(taxs.socialEnterprise |
+                        number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Tourist in Country" | translate}}</label>
+                      <h6>{{taxs.touristSecondCity!=''&&taxs.touristSecondCity!=undefind?(taxs.touristSecondCity |
+                        number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Home Repair" | translate}}</label>
+                      <h6>{{taxs.homeRepair!=''&&taxs.homeRepair!=undefind?(taxs.homeRepair | number:'.2'):'-'}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="taxs">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{"Parent of Taxpayer" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid-sm">
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Father People ID" | translate}}</label>
+                      <h6><app-mask-toggle [value]="taxs.fthidcard!=''&&taxs.fthidcard!=undefind?taxs.fthidcard:'-'"
+                          fieldName="fthidcard"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Father Deduction" | translate}}</label>
+                      <h6>{{taxs.fthyn!=''&&taxs.fthyn!=undefind?('spouse.income.'+taxs.fthyn | translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Insurance Father Amount" | translate}}</label>
+                      <h6>{{taxs.ins_fat!=''&&taxs.ins_fat!=undefind?(taxs.ins_fat | number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Mother People ID" | translate}}</label>
+                      <h6><app-mask-toggle [value]="taxs.mthidcard!=''&&taxs.mthidcard!=undefind?taxs.mthidcard:'-'"
+                          fieldName="mthidcard"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Mother Deduction" | translate}}</label>
+                      <h6>{{taxs.mthyn!=''&&taxs.mthyn!=undefind?('spouse.income.'+taxs.mthyn | translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Insurance Mother Amount" | translate}}</label>
+                      <h6>{{taxs.ins_mot!=''&&taxs.ins_mot!=undefind?(taxs.ins_mot | number:'.2'):'-'}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="taxs">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{"Parent Spouse of Taxpayer" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid-sm">
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Father People ID" | translate}}</label>
+                      <h6><app-mask-toggle
+                          [value]="taxs.fthmryidcard!=''&&taxs.fthmryidcard!=undefind?taxs.fthmryidcard:'-'"
+                          fieldName="fthmryidcard"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Father Deduction" | translate}}</label>
+                      <h6>{{taxs.fthmryyn!=''&&taxs.fthmryyn!=undefind?('spouse.income.'+taxs.fthmryyn |
+                        translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Insurance Spouse Father Amount" | translate}}</label>
+                      <h6>{{taxs.ins_fat_spouse!=''&&taxs.ins_fat_spouse!=undefind?(taxs.ins_fat_spouse |
+                        number:'.2'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Mother People ID" | translate}}</label>
+                      <h6><app-mask-toggle
+                          [value]="taxs.mthmryidcard!=''&&taxs.mthmryidcard!=undefind?taxs.mthmryidcard:'-'"
+                          fieldName="mthmryidcard"></app-mask-toggle></h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Spouse Mother Deduction" | translate}}</label>
+                      <h6>{{taxs.mthmryyn!=''&&taxs.mthmryyn!=undefind?('spouse.income.'+taxs.mthmryyn |
+                        translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col">
+                      <label class="form-label text-muted">{{"Insurance Spouse Mother Amount" | translate}}</label>
+                      <h6>{{taxs.ins_mot_spouse!=''&&taxs.ins_mot_spouse!=undefind?(taxs.ins_mot_spouse |
+                        number:'.2'):'-'}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 mb-3" *ngIf="pvf">
+              <div class="info-card h-100">
+                <div class="card-header bg-myhr">
+                  <h6 class="card-title text-white">{{"Provident Fund" | translate}}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="detail-grid">
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"Fund Name" | translate}}</label>
+                      <h6>
+                        {{item.fundtable.getFundDesc()!=''&&item.fundtable.getFundDesc()!=undefind?item.fundtable.getFundDesc():'-'}}
+                      </h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"Provident Amount" | translate}}</label>
+                      <h6>{{item.amount!=''&&item.amount!=undefind?item.amount:'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"Calculate PVF" | translate}}</label>
+                      <h6>{{taxs.calpvf ?('spouse.income.'+taxs.calpvf | translate):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"Register Date" | translate}}</label>
+                      <h6>{{item.registerDate!=''&&item.registerDate!=undefind?(item.registerDate |
+                        date:'dd-MM-yyyy'):'-'}}</h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"Expire Date" | translate}}</label>
+                      <h6>{{item.expireDate!=''&&item.expireDate!=undefind?(item.expireDate | date:'dd-MM-yyyy'):'-'}}
+                      </h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"PVF Table (Company)" | translate}}</label>
+                      <h6>{{translateService.currentLang=='th'?taxs.fundtablec.tdesc:taxs.fundtablec.edesc}}</h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"PVF Table (Employee)" | translate}}</label>
+                      <h6>{{translateService.currentLang=='th'?taxs.fundtablem.tdesc:taxs.fundtablem.edesc}}</h6>
+                    </div>
+                    <div class="detail-item-col" *ngFor="let item of pvf">
+                      <label class="form-label text-muted">{{"Recieve method" | translate}}</label>
+                      <h6>
+                        {{item.recieveMethod!=''&&item.recieveMethod!=undefind?('systemcode.recieveMethod.'+item.recieveMethod
+                        | translate):'-'}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="5" *ngIf="empStuInf">
+        <a ngbNavLink><i class="mdi mdi-school-outline me-2"></i>{{"Education Information" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="info-card mt-3">
+            <div class="card-body">
+              <ul class="timeline-modern">
+                <li class="timeline-item" *ngFor="let item of empStuInf; let i=index">
+                  <div class="timeline-badge bg-warning-light">
+                    <span class="font-12 text-warning">{{item.yearEnd}}</span>
+                  </div>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h5 class="timeline-title">
+                        {{item.ThEnInstitue()!=''&&item.ThEnInstitue()!=undefind?item.ThEnInstitue():'-'}}</h5>
+                      <p class="timeline-date">
+                        {{item.ThEnDegree()!=''&&item.ThEnDegree()!=undefind?item.ThEnDegree():'-'}}</p>
+                    </div>
+                    <div class="timeline-body">
+                      <div class="detail-grid-sm">
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"GPA" | translate}}</label>
+                          <h6>{{item.gpa!=''&&item.gpa!=undefind?item.gpa:'-'}}</h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Honorably" | translate}}</label>
+                          <h6>
+                            {{item.honourably!=''&&item.honourably!=undefind?('systemcode.memployee.educate.honourably.'+item.honourably
+                            | translate):'-'}}</h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Faculty" | translate}}</label>
+                          <h6>{{item.ThEnFaculty()!=''&&item.ThEnFaculty()!=undefind?item.ThEnFaculty():'-'}}</h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Major" | translate}}</label>
+                          <h6>{{item.major.majorId!=''&&item.major.majorId!=undefind?item.ThEnMajor():'-'}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="6" *ngIf="work">
+        <a ngbNavLink><i class="mdi mdi-briefcase-outline me-2"></i>{{"Works Experience" | translate}}</a>
+        <ng-template ngbNavContent let-active>
+          <div class="info-card mt-3">
+            <div class="card-body">
+              <ul class="timeline-modern">
+                <li class="timeline-item" *ngFor="let item of work; let i=index">
+                  <div class="timeline-badge bg-info-light">
+                    <span class="font-12 text-info">{{item.expTo | date:'yyyy'}}</span>
+                  </div>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h5 class="timeline-title">
+                        {{item.companyName!=''&&item.companyName!=undefind?item.companyName:'-'}}</h5>
+                      <p class="timeline-date">{{item.expFrom!=''&&item.expFrom!=undefind?(item.expFrom |
+                        date:'dd-MM-yyyy'):'-'}} - {{item.expTo!=''&&item.expTo!=undefind?(item.expTo |
+                        date:'dd-MM-yyyy'):'-'}}</p>
+                    </div>
+                    <div class="timeline-body">
+                      <div class="detail-grid-sm">
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Position" | translate}}</label>
+                          <h6>{{item.expPosition!=''&&item.expPosition!=undefind?item.expPosition:'-'}}</h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Salary" | translate}}</label>
+                          <h6>{{item.salary!=''&&item.salary!=undefind?item.salary:'-'}}</h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"system.resign.reason" | translate}}</label>
+                          <h6>{{item.resignReason!=''&&item.resignReason!=undefind?item.resignReason:'-'}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+  </div>
+</div>
+
+<!-- Detail Modal (reused from employee-work-information) -->
+<ng-template #dialogCourse let-modal>
+  <div class="modal-header bg-myhr">
+    <h5 class="modal-title text-white">{{"system.position.adjustment" | translate}}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="detail-card-container" *ngIf="modelhadjposition">
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"Issued date" | translate}}</small>
+          <h6>{{modelhadjposition.adjDate?(modelhadjposition.adjDate| date:'dd-MM-yyyy'):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"systemcode.start.using" | translate}}</small>
+          <h6>{{modelhadjposition.effDate?(modelhadjposition.effDate| date:'dd-MM-yyyy'):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"Document Number2" | translate}}</small>
+          <h6>{{modelhadjposition.docNo?modelhadjposition.docNo:''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"Signed By" | translate}}</small>
+          <h6>{{modelhadjposition.signBy?modelhadjposition.signBy:''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"Movement Type" | translate}}</small>
+          <h6>{{getName(modelhadjposition.adjType.tdesc,modelhadjposition.adjType.edesc)}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small class="text-muted">{{"Movement reason" | translate}}</small>
+          <h6>{{getName(modelhadjposition.adjReason.tdesc,modelhadjposition.adjReason.edesc)}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small class="text-muted">{{"Probation" | translate}}</small>
+          <h6>{{modelhadjposition.probStart| date:'dd-MM-yyyy'}} {{modelhadjposition.probFinish| date:'dd-MM-yyyy'}}
+          </h6>
+        </div>
+      </div>
+
+      <h5 class="section-title mt-4 mb-3">{{"Details of Change" | translate}}</h5>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Type Employee" | translate}}</small>
+          <div class="value-pair">
+            <span>{{modelhadjposition.oldAdjust.oldEmpType || '-'}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{modelhadjposition.newAdjust.newEmpType || '-'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Company" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBranch.tdesc,modelhadjposition.oldAdjust.oldBranch.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBranch.tdesc,modelhadjposition.newAdjust.newBranch.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"systemcode.job.description" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldJob.tdesc,modelhadjposition.oldAdjust.oldJob.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newJob.tdesc,modelhadjposition.newAdjust.newJob.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"system.grade.id" | translate}}</small>
+          <div class="value-pair">
+            <span>{{modelhadjposition.oldAdjust.oldSubGrade?modelhadjposition.oldAdjust.oldSubGrade:'-'}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{modelhadjposition.newAdjust.newSubGrade?modelhadjposition.newAdjust.newSubGrade:'-'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"systemcode.position" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldEmpPosition.tdesc,modelhadjposition.oldAdjust.oldEmpPosition.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newEmpPosition.tdesc,modelhadjposition.newAdjust.newEmpPosition.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Segment" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu1.tdesc,modelhadjposition.oldAdjust.oldBu1.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu1.tdesc,modelhadjposition.newAdjust.newBu1.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Department" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu2.tdesc,modelhadjposition.oldAdjust.oldBu2.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu2.tdesc,modelhadjposition.newAdjust.newBu2.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Section 1" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu3.tdesc,modelhadjposition.oldAdjust.oldBu3.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu3.tdesc,modelhadjposition.newAdjust.newBu3.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Section 2" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu4.tdesc,modelhadjposition.oldAdjust.oldBu4.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu4.tdesc,modelhadjposition.newAdjust.newBu4.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Section 3" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu5.tdesc,modelhadjposition.oldAdjust.oldBu5.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu5.tdesc,modelhadjposition.newAdjust.newBu5.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Section 4" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu6.tdesc,modelhadjposition.oldAdjust.oldBu6.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu6.tdesc,modelhadjposition.newAdjust.newBu6.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Section 5" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldBu7.tdesc,modelhadjposition.oldAdjust.oldBu7.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newBu7.tdesc,modelhadjposition.newAdjust.newBu7.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Salary Type" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldSalatype.tdesc,modelhadjposition.oldAdjust.oldSalatype.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newSalatype.tdesc,modelhadjposition.newAdjust.newSalatype.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Shift ID" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldTime0.tdesc,modelhadjposition.oldAdjust.oldTime0.edesc)}}
+              ({{modelhadjposition.oldAdjust.oldTime0.time0id}})</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newTime0.tdesc,modelhadjposition.newAdjust.newTime0.edesc)}}
+              ({{modelhadjposition.newAdjust.newTime0.time0id}})</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Working Area" | translate}}</small>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition.oldAdjust.oldWorkarea.tdesc,modelhadjposition.oldAdjust.oldWorkarea.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition.newAdjust.newWorkarea.tdesc,modelhadjposition.newAdjust.newWorkarea.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small class="text-muted">{{"Remark" | translate}}</small>
+          <h6>{{modelhadjposition.remarks?modelhadjposition.remarks:'-'}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close"| translate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #noDate>-</ng-template>

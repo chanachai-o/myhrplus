@@ -1,0 +1,189 @@
+<!-- Main Card -->
+<div class="card main-content-card">
+  <div class="card-header bg-myhr">
+    <h4 class="card-title">{{"menu.employee-attendance" | translate}}</h4>
+  </div>
+  <div class="card-body">
+
+    <!-- Tabs for Date Selection -->
+    <div class="card-tabs-container">
+      <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs-modern">
+        <li [ngbNavItem]="1" [destroyOnHide]="true">
+          <a ngbNavLink (click)="wom='';page=1;pageSize = pageSizeShow">
+            <i class="mdi mdi-calendar-range"></i>&nbsp; {{"Custom" | translate}}
+          </a>
+          <ng-template ngbNavContent>
+            <form class="filter-bar mt-3">
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">{{"Start Date" | translate}}</span>
+                  <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" [(ngModel)]="selectStartDate" ngbDatepicker #d1="ngbDatepicker" #c1="ngModel" (change)="selectStartDate = datepickerService.validateFormatDate(c1)">
+                  <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button"><i class="mdi mdi-calendar"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">{{"End Date" | translate}}</span>
+                  <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" [(ngModel)]="selectEndDate" ngbDatepicker #d2="ngbDatepicker" [minDate]="selectStartDate" #c2="ngModel" (change)="selectEndDate = datepickerService.validateFormatDate(c2)">
+                  <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i class="mdi mdi-calendar"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary btn-icon mb-3" (click)="loadData()"><i class="mdi mdi-magnify"></i></button>
+            </form>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink (click)="wom='Week';nowData();page=1;pageSize=data?data.length:0">
+            <i class="mdi mdi-calendar-week"></i>&nbsp; {{"Period" | translate}}
+          </a>
+          <ng-template ngbNavContent>
+            <div class="filter-bar mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary" (click)="prevData()"><i class="mdi mdi-chevron-left"></i></button>
+                <button type="button" class="btn btn-outline-secondary" (click)="nowData()">{{"Now" | translate}}</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="nextData()"><i class="mdi mdi-chevron-right"></i></button>
+              </div>
+              <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic">
+                <label ngbButtonLabel class="btn-primary-outline">
+                  <input ngbButton type="radio" name="rediocheck" [value]="'Week'" (click)="showWeek();nowData();"> {{"Week"| translate}}
+                </label>
+                <label ngbButtonLabel class="btn-primary-outline ms-3">
+                  <input ngbButton type="radio" name="rediocheck" [value]="'Month'" (click)="showMonth();nowData();"> {{"month"| translate}}
+                </label>
+              </div>
+              <div class="form-group period-date-display">
+                <div class="input-group">
+                  <input readonly class="form-control" name="dp1_period" [value]="parserFormat.format(selectStartDate)">
+                  <span class="date-separator">-</span>
+                  <input readonly class="form-control" name="dp2_period" [value]="parserFormat.format(selectEndDate)">
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row summary-cards-container">
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="icon-box bg-info-light"><i class="mdi mdi-clipboard text-info"></i></div>
+          <div class="content">
+            <h3>{{wTime.toFixed(2)}} <small>{{"Hours"| translate}}</small></h3>
+            <h6 class="text-muted">{{"Work Time"| translate}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="icon-box bg-info-light"><i class="mdi mdi-clock text-info"></i></div>
+          <div class="content">
+            <h3>{{oTime.toFixed(2)}} <small>{{"Hours"| translate}}</small></h3>
+            <h6 class="text-muted">{{"OT Time"| translate}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="icon-box bg-info-light"><i class="mdi mdi-calendar-remove text-info"></i></div>
+          <div class="content">
+            <h3>{{lTime.toFixed(2)}} <small>{{"Hours"| translate}}</small></h3>
+            <h6 class="text-muted">{{"Leave Time"| translate}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="icon-box bg-info-light"><i class="mdi mdi-chart-bar text-info"></i></div>
+          <div class="content">
+            <h3>{{aTime}} <small>{{"Hours"| translate}}</small></h3>
+            <h6 class="text-muted">{{"Working Total (Hr:Min)"| translate}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-input-container mb-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
+        </div>
+        <input type="text" placeholder="{{'systemcode.search.date' | translate}}" class="form-control" [(ngModel)]='searchTerm'>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="d-flex justify-content-center align-items-center py-5" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+      <span class="ms-3 fw-bold text-secondary">{{"Loading Data" | translate}}...</span>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-lg-block" *ngIf="!loading">
+      <table class="table table-hover v-middle">
+        <thead class="thead-light">
+          <tr>
+            <th>{{"date" | translate}}</th>
+            <th>{{"day" | translate}}</th>
+            <th>{{"Shift ID" | translate}}</th>
+            <th>{{"Work Time" | translate}}</th>
+            <th>{{"Punch Time" | translate}}</th>
+            <th>{{"Day Type" | translate}}</th>
+            <th>{{"Total(Hr:Min)" | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="noData"><td colspan="7" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td></tr>
+          <tr *ngFor="let item of dataShow | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize" [ngClass]="{'row-holiday': item.eventgrp.tdesc === 'วันหยุด'}">
+            <td class="align-middle">{{item.dateId}}</td>
+            <td class="align-middle">{{"systemcode.memployee.workplan.day." + convertToEEEE(item.dateId) | translate}}</td>
+            <td class="align-middle">{{item.timeCode}}</td>
+            <td class="align-middle">{{item.startDate}} - {{item.startTime.toFixed(2)}} : {{item.endDate}} - {{item.endTime.toFixed(2)}}</td>
+            <td class="align-middle">{{item.costCenter}}</td>
+            <td class="align-middle">{{item.eventgrp.getDesc()}}</td>
+            <td class="align-middle">{{item.apot>0?item.apot.toFixed(2):item.hourD>0?item.hourD.toFixed(2): (item.hourS > 0 && item.eventgrp.eventgrpId=='T' ? item.hourS.toFixed(2) : '')}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="d-lg-none mt-3" *ngIf="!loading">
+      <div *ngIf="noData" class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+      <div *ngFor="let item of dataShow | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize" class="attendance-card-mobile" [ngClass]="{'holiday': item.eventgrp.tdesc === 'วันหยุด'}">
+        <div class="card-header">
+          <div class="date">{{item.dateId}}</div>
+          <div class="day">{{"systemcode.memployee.workplan.day." + convertToEEEE(item.dateId) | translate}}</div>
+          <div class="day-type">{{item.eventgrp.getDesc()}}</div>
+        </div>
+        <div class="card-body">
+          <div class="info-row">
+            <div class="info-item"><span>{{"Shift ID"|translate}}</span><strong>{{item.timeCode}}</strong></div>
+            <div class="info-item"><span>{{"Work Time"|translate}}</span><strong>{{item.startDate}} - {{item.startTime.toFixed(2)}} : {{item.endDate}} - {{item.endTime.toFixed(2)}}</strong></div>
+            <div class="info-item"><span>{{"Punch Time"|translate}}</span><strong>{{item.costCenter}}</strong></div>
+            <div class="info-item"><span>{{"Total(Hr:Min)"|translate}}</span><strong>{{item.apot>0?item.apot.toFixed(2):item.hourD>0?item.hourD.toFixed(2): (item.hourS > 0 && item.eventgrp.eventgrpId=='T' ? item.hourS.toFixed(2) : '')}}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-end p-2" *ngIf="wom=='' && !loading && !noData">
+      <div class="pagination-controls">
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="page=1;pageSizeShow = pageSize;">
+          <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+          <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+          <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+        </select>
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3" [rotate]="true">
+          <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+          <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+</div>

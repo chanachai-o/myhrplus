@@ -1,0 +1,134 @@
+<div class="card main-content-card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="card-title-container">
+            <h4 class="card-title">{{"Import Mtime2" | translate}}</h4>
+        </div>
+
+        <!-- Upload Form Area -->
+        <div class="filter-bar mb-4">
+            <div class="form-group">
+                <label class="form-label">{{"Select File" | translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" [value]="uploadFilename" readonly placeholder="{{'No file selected' | translate}}">
+                    <input type="file" class="d-none" #fileInput (change)="onFileSelected($event)">
+                    <button class="btn btn-outline-secondary" type="button" (click)="fileInput.click()">
+                        {{"Browse" | translate}}
+                    </button>
+                </div>
+            </div>
+            <div class="form-group-buttons">
+                <button type="button" class="btn btn-outline-primary me-2" (click)="showexample()">
+                    <i class="mdi mdi-download me-1"></i> {{"Download Template" | translate}}
+                </button>
+                <button type="button" class="btn btn-primary" [disabled]="!newFile || loading" (click)="openOnSubmit()">
+                    <span *ngIf="!loading"><i class="mdi mdi-upload me-1"></i> {{"Upload" | translate}}</span>
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Spinner for table -->
+        <div class="d-flex justify-content-center align-items-center py-5" *ngIf="loading">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="ms-3 font-weight-bold text-secondary">{{"Loading Data" | translate}}...</span>
+        </div>
+
+        <!-- Processed Data Table -->
+        <div class="row mb-3" *ngIf="!loading && listtimeExcel">
+            <div class="col-12 d-flex justify-content-end align-items-center mb-2">
+                <span class="badge rounded-pill badge-primary-light p-2">
+                    {{'all'| translate}} <strong class="text-primary mx-1">{{shiftTimeListShow.length}}</strong> {{"records" | translate}}
+                </span>
+            </div>
+            <div class="col-12">
+                <div class="table-responsive d-none d-lg-block">
+                    <table class="table table-hover v-middle">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center sticky-col-th first-col">{{"No." | translate}}</th>
+                                <th class="text-center sticky-col-th second-col">{{"Employee ID" | translate}}</th>
+                                <th class="text-center">{{"Name-Surname" | translate}}</th>
+                                <th *ngFor="let day of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]" class="text-center">{{day}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="!listtimeExcel.content || listtimeExcel.content.length === 0">
+                                <td colspan="34" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                            </tr>
+                            <tr *ngFor="let item of listtimeExcel.content; let i = index">
+                                <td class="text-center sticky-col first-col">{{i+1}}</td>
+                                <td class="text-center sticky-col second-col">{{item.employeeId}}</td>
+                                <td>{{item.fullname}}</td>
+                                <td *ngFor="let day of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]" class="text-center">
+                                    {{item['time'+('0'+day).slice(-2)]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Card View -->
+                <div class="d-lg-none mt-3">
+                    <div *ngIf="!listtimeExcel.content || listtimeExcel.content.length === 0" class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+                    <div *ngFor="let item of listtimeExcel.content; let i = index" class="import-mtime2-card-mobile">
+                        <div class="card-body">
+                            <div class="info-item"><span>{{"No." | translate}}</span><strong>{{i+1}}</strong></div>
+                            <div class="info-item"><span>{{"Employee ID" | translate}}</span><strong>{{item.employeeId}}</strong></div>
+                            <div class="info-item"><span>{{"Name-Surname" | translate}}</span><strong>{{item.fullname}}</strong></div>
+                            <div class="info-item"><span>{{"Daily Times" | translate}}</span>
+                                <div class="daily-times-grid">
+                                    <span *ngFor="let day of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]">
+                                        <strong>{{day}}:</strong> {{item['time'+('0'+day).slice(-2)]}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Action Buttons -->
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-center mt-3">
+                    <button type="button" class="btn btn-success" [disabled]="loading" (click)="onSubmit()">
+                        <span *ngIf="!loading"><i class="mdi mdi-content-save me-1"></i> {{"Save" | translate}}</span>
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <ng-template #confirmModal let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title">{{"Confirm" | translate}}</h5>
+                <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{errormsg}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="modal.dismiss('cancel')">{{"Cancel" | translate}}</button>
+                <button type="button" class="btn btn-primary" (click)="modal.close('confirm')">{{"Confirm" | translate}}</button>
+            </div>
+        </ng-template>
+
+        <ng-template #alertModal let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title">{{"Alert" | translate}}</h5>
+                <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{errormsg}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="modal.close('Close')">{{"OK" | translate}}</button>
+            </div>
+        </ng-template>
+    </div>
+</div>

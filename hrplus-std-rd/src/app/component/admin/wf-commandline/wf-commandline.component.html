@@ -1,0 +1,232 @@
+<!-- Modern WfCommandline Layout -->
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "Command Line Definition" | translate }}</h4>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <!-- Employee Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="employeeSwitch" [(ngModel)]="employeeCheckbox">
+          <label class="form-check-label" for="employeeSwitch">{{ "Employee ID" | translate }}</label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{ 'Employee ID' | translate }}" [(ngModel)]="employeeIdFilter" (ngModelChange)="employeeIdFilterChange()" [disabled]="!employeeCheckbox">
+          <button class="btn btn-outline-secondary btn-icon" (click)="openEmployeeModal(modalEmployee)" [disabled]="!employeeCheckbox">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+        <input type="text" class="form-control" disabled [value]="getDesc(employeeNameFilter.tdesc, employeeNameFilter.edesc) || ('Employee Name' | translate)">
+      </div>
+
+      <!-- Position Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="positionSwitch" [(ngModel)]="positionCheckbox">
+          <label class="form-check-label" for="positionSwitch">{{ "Position" | translate }}</label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{ 'Position' | translate }}" [(ngModel)]="positionIdFilter" (ngModelChange)="positionIdFilterChange()" [disabled]="!positionCheckbox">
+          <button class="btn btn-outline-secondary btn-icon" (click)="openPositionModal(modalPosition)" [disabled]="!positionCheckbox">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+        <input type="text" class="form-control" disabled [value]="getDesc(positionNameFilter.tdesc, positionNameFilter.edesc) || ('Position Name' | translate)">
+      </div>
+
+      <!-- Division (BU2) Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="divisionSwitch" [(ngModel)]="divisionCheckbox">
+          <label class="form-check-label" for="divisionSwitch">{{ "commandline.bu2" | translate }}</label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{ 'commandline.bu2.id' | translate }}" [(ngModel)]="divisionIdFilter" (ngModelChange)="divisionIdFilterChange()" [disabled]="!divisionCheckbox">
+          <button class="btn btn-outline-secondary btn-icon" (click)="openBu2Modal(modalBu2)" [disabled]="!divisionCheckbox">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+        <input type="text" class="form-control" disabled [value]="getDesc(divisionNameFilter.tdesc, divisionNameFilter.edesc) || ('commandline.bu2.name' | translate)">
+      </div>
+
+      <!-- Workflow Filter -->
+      <div class="filter-group">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="workflowSwitch" [(ngModel)]="workflowCheckbox">
+          <label class="form-check-label" for="workflowSwitch">{{ "commandline.workflow" | translate }}</label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{ 'commandline.workflow.id' | translate }}" [(ngModel)]="workflowIdFilter" (ngModelChange)="workflowIdFilterChange()" [disabled]="!workflowCheckbox">
+          <button class="btn btn-outline-secondary btn-icon" (click)="openWorkflowModal(modalWorkflow)" [disabled]="!workflowCheckbox">
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </div>
+        <input type="text" class="form-control" disabled [value]="getDesc(workflowNameFilter.tdesc, workflowNameFilter.edesc) || ('commandline.workflow.name' | translate)">
+      </div>
+    </div>
+
+    <div class="search-button-container">
+      <button class="btn btn-primary" (click)="commandlineFilter()">
+        <i class="mdi mdi-magnify me-1"></i>
+        {{ "systemcode.search" | translate }}
+      </button>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-container">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>{{ "commandline.workflowmenu" | translate }}</th>
+              <th>{{ "Employee ID" | translate }}</th>
+              <th>{{ "Employee Name" | translate }}</th>
+              <th>{{ "Position" | translate }}</th>
+              <th>{{ "commandline.bu2" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (commandlineLoading) {
+              <tr>
+                <td [attr.colspan]="5" class="text-center p-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (!commandlineLoading && commandLineList.length === 0) {
+              <tr>
+                <td [attr.colspan]="5" class="text-center p-5">{{ "No Data Found" | translate }}</td>
+              </tr>
+            }
+            @for (item of commandLineList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; track item.employee.employeeId + item.workflowDefinition.wfId) {
+              <tr>
+                <td>{{ item.workflowDefinition.wfId }} - {{ getDesc(item.workflowDefinition.tdesc, item.workflowDefinition.edesc) }}</td>
+                <td>
+                  <span class="action-link" (click)="openCommandlineModal(modalCommandline, item)">
+                    {{ item.employee.employeeId }}
+                  </span>
+                </td>
+                <td>{{ getDesc(item.employee.thFullName, item.employee.engFullName) }}</td>
+                <td>{{ item.employee.position.positionId }} - {{ getDesc(item.employee.position.tdesc, item.employee.position.edesc) }}</td>
+                <td>{{ item.employee.bu2.bu2id }} - {{ getDesc(item.employee.bu2.tdesc, item.employee.bu2.edesc) }}</td>
+              </tr>
+            }
+          </tbody>
+          <tfoot *ngIf="!commandlineLoading">
+            <tr>
+              <td [attr.colspan]="5" class="text-center" (click)="openCommandlineModal(modalCommandline)">
+                <i class="mdi mdi-plus"></i> {{ 'Add New Command Line' | translate }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <select class="form-select w-auto" [(ngModel)]="pageSize" (ngModelChange)="page=1">
+            @for (size of [10, 50, 100]; track size) {
+                <option [ngValue]="size">{{ "Items per page" | translate }}: {{size}}</option>
+            }
+        </select>
+        <ngb-pagination [collectionSize]="commandLineList.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"></ngb-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Command Line Detail -->
+<ng-template #modalCommandline let-modal>
+  <div class="modal-header bg-myhr">
+    <h5 class="modal-title text-white">{{ "Command Line Detail" | translate }}</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body command-detail-modal">
+    <div class="form-group-grid">
+      <label>{{ "commandline.workflow" | translate }}</label>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="{{ 'commandline.workflow.id' | translate }}" [(ngModel)]="commandLineSelectWorkflowId" [disabled]="commandLineDetailEdit" (ngModelChange)="workflowIdFilterChange('modalCommandline')">
+        <button class="btn btn-outline-secondary btn-icon" (click)="openWorkflowModal(modalWorkflow, 'modalCommandline')" [disabled]="commandLineDetailEdit">
+          <i class="mdi mdi-magnify"></i>
+        </button>
+        <input type="text" class="form-control" disabled [value]="getDesc(commandLineSelectWorkflowName.tdesc, commandLineSelectWorkflowName.edesc)">
+      </div>
+    </div>
+    <div class="form-group-grid">
+      <label>{{ "Employee ID" | translate }}</label>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="{{ 'Employee ID' | translate }}" [(ngModel)]="commandLineSelectEmployeeId" [disabled]="commandLineDetailEdit" (ngModelChange)="employeeIdFilterChange('modalCommandline')">
+        <button class="btn btn-outline-secondary btn-icon" (click)="openEmployeeModal(modalEmployee, 'modalCommandline')" [disabled]="commandLineDetailEdit">
+          <i class="mdi mdi-magnify"></i>
+        </button>
+        <input type="text" class="form-control" disabled [value]="getDesc(commandLineSelectEmployeeName.tdesc, commandLineSelectEmployeeName.edesc)">
+      </div>
+    </div>
+
+    @if (!commandLineDetailEdit) {
+      <div class="d-grid">
+        <button class="btn btn-primary" (click)="getCommandlineDetail()">{{ "systemcode.search" | translate }}</button>
+      </div>
+    }
+
+    @if (commandLineDetailLoading) {
+        <div class="text-center p-4"><div class="spinner-border text-primary"></div></div>
+    }
+
+    @if (!commandLineDetailLoading && commandLineDetailSearch) {
+      <div class="boss-section">
+        @for (i of [0, 1, 2, 3, 4, 5]; track i) {
+          <div class="form-group">
+            <label class="form-label">{{ "Boss ID" | translate }} {{ i + 1 }}</label>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="{{ 'Boss ID' | translate }}" [(ngModel)]="commandLineSelectBossId[i]" (ngModelChange)="employeeIdFilterChange('modalCommandline', i)">
+              <button class="btn btn-outline-secondary btn-icon" (click)="openEmployeeModal(modalEmployee, 'modalCommandline', i)">
+                <i class="mdi mdi-magnify"></i>
+              </button>
+              <input type="text" class="form-control" disabled [value]="getDesc(commandLineSelectBossName[i].tdesc, commandLineSelectBossName[i].edesc)">
+            </div>
+          </div>
+        }
+      </div>
+      <div class="comment-section">
+        <label class="form-label">{{ "Comment" | translate }}</label>
+        <textarea class="form-control" rows="3" [(ngModel)]="commandLineSelectComment"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-success" (click)="saveCommandline()">
+          <i class="mdi mdi-content-save-outline me-1"></i> {{ "Save" | translate }}
+        </button>
+        <button class="btn btn-danger" (click)="deleteCommandline()">
+          <i class="mdi mdi-delete-outline me-1"></i> {{ "systemcode.delete" | translate }}
+        </button>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">{{ "Close" | translate }}</button>
+  </div>
+</ng-template>
+
+<!-- All other modals (Employee, Position, BU2, Workflow) can be refactored into standalone components for better reusability -->
+<!-- For now, their internal structure is kept, but they are opened with modern styling -->
+<ng-template #modalEmployee let-modal>
+    <!-- This modal can be improved with the same styling as the data selection modal in trouble-box -->
+</ng-template>
+
+<ng-template #modalPosition let-modal>
+    <!-- This modal can be improved with the same styling as the data selection modal in trouble-box -->
+</ng-template>
+
+<ng-template #modalBu2 let-modal>
+    <!-- This modal can be improved with the same styling as the data selection modal in trouble-box -->
+</ng-template>
+
+<ng-template #modalWorkflow let-modal>
+    <!-- This modal can be improved with the same styling as the data selection modal in trouble-box -->
+</ng-template>

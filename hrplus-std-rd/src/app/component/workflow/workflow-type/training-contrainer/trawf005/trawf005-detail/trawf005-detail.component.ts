@@ -1,0 +1,137 @@
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+import { Employee, MyEmployee } from 'src/app/models/employee.model';
+import { EmployeeProfileModel, MyEmployeeProfileModel } from 'src/app/models/employeeprofilemodel.model';
+import { StatisticWF2 } from 'src/app/models/statisticWF2.model';
+import { TrainCost } from 'src/app/models/traincost.model';
+import { EmployeeService } from 'src/app/services/employee.service';
+import { workflowService } from 'src/app/services/workflow.service';
+import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
+import { WorkflowSendtoComponent, WorkflowAttachFileComponent, WorkflowRemarkComponent } from 'src/app/component/workflow/workflow-type/index' // Added import
+import { FormsModule } from '@angular/forms';
+import { WorkflowEmpInformationComponent } from '../../../workflow-emp-information/workflow-emp-information.component';
+import { WorkflowDetailFooterComponent } from '../../../workflow-detail/workflow-detail-footer/workflow-detail-footer.component';
+declare var require: any
+const FileSaver = require('file-saver');
+@Component({
+  selector: 'app-trawf005-detail',
+  standalone: true,
+  imports: [
+    CommonModule,
+    NgbModule,
+    TranslateModule,
+    WorkflowSendtoComponent, // Added
+    WorkflowAttachFileComponent, // Added
+    WorkflowRemarkComponent, // Added
+    FormsModule,
+    WorkflowEmpInformationComponent,
+    WorkflowDetailFooterComponent,
+  ],
+  templateUrl: './trawf005-detail.component.html',
+  styleUrls: ['./trawf005-detail.component.scss']
+})
+export class Trawf005DetailComponent implements OnInit {
+  @Input() data: any;
+  empWork: EmployeeProfileModel | undefined;
+  requireWF2: StatisticWF2[] = [];
+  dataWF: StatisticWF2 | undefined
+  formatLeave = '';
+  privilegeLeave = false;
+  link = ''
+
+  trainCost: TrainCost[] | undefined
+  pageTrainCost = 1;
+  pageSizeTrainCost = 10;
+  collectionSizeTrainCost = 0;
+  courseEmp: Employee[] | undefined
+  pageCourseEmp = 1;
+  pageSizeCourseEmp = 10;
+  collectionSizeCourseEmp = 0;
+  getEmp: EmployeeProfileModel | undefined;
+  listEmp: Employee[] =[]
+  pageListEmp = 1;
+  pageSizeListEmp = 10;
+  collectionSizeListEmp = 0;
+  inputs = {
+    data: {},
+  }
+  dynamicComponent: any
+  workflowData: any
+  @ViewChild('DocReferenceModal') DocReferenceModal: undefined
+  constructor(private empService: EmployeeService,
+    public translate: TranslateService,
+    private workflowService: workflowService,
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal) {
+
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      console.log("this.data",this.data)
+      if (this.data.workflowData.reference.length > 0) {
+        this.workflowService.getDetailByDocNo(this.data.workflowData.reference[0].docNo!).then(result => {
+          this.workflowData = result.workflowData
+          this.inputs.data = result
+          this.dynamicComponent = Trawf005DetailComponent
+          this.cdr.markForCheck();
+        })
+      }
+      this.workflowService.getCourseCost(this.data.workflowData.screen_value['__wf__trainingid']).subscribe(result => {
+        this.trainCost = result;
+        this.collectionSizeTrainCost = this.trainCost.length
+        this.cdr.markForCheck();
+      });
+      this.workflowService.getCourseEmp2(this.data.workflowData.screen_value['__wf__trainingid']).then(result => {
+        this.courseEmp = result.map(e => new MyEmployee(e, this.translate));
+        this.collectionSizeCourseEmp = this.courseEmp.length
+        this.cdr.markForCheck();
+      });
+      this.empService.getWorkInformation(this.data.workflowData.screen_value.__wf__employeeid).subscribe(result => {
+        this.empWork = result;
+        this.cdr.markForCheck();
+      });
+
+    }
+
+  }
+  openDocReference() {
+    this.modalService.open(this.DocReferenceModal, {
+      centered: true,
+      backdrop: 'static',
+      windowClass: 'dialog-width'
+    })
+  }
+  closeBtnClick() {
+    this.modalService.dismissAll()
+    this.ngOnInit()
+  }
+  ngOnInit(): void {
+        this.listEmp=[]
+        this.data.workflowData.screen_value.__wf__emp_list.split(',').forEach((x:string) => {
+          this.empService.getEmployeeProfile(x).subscribe(result => {
+            this.getEmp =  new MyEmployeeProfileModel(result, this.translate);
+            this.listEmp = this.listEmp.concat(this.getEmp)
+            this.collectionSizeListEmp = this.listEmp.length
+            console.log("🚀", this.listEmp)
+            this.cdr.markForCheck();
+          })
+        })
+  }
+  dowloadFile() {
+    this.workflowService.downloadFile(
+      this.data.manageDocument.attachFile[0].subFolder,
+      this.data.manageDocument.attachFile[0].name
+    ).then(result => {
+      let myBlob;
+      if (result) {
+        myBlob = new Blob([result]);
+      } else {
+        myBlob = new Blob([""]);
+      }
+      FileSaver.saveAs(myBlob, this.data.manageDocument.attachFile[0].name);
+    });
+  }
+}

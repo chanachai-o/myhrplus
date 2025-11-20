@@ -1,0 +1,414 @@
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Profile Header -->
+    <div class="profile-header row" *ngIf="profileData">
+      <div class="col-lg-3 col-md-4 text-center">
+        <img appShowLoading src="{{profileData.getPictureUrl()}}" class="profile-picture">
+      </div>
+      <div class="col-lg-9 col-md-8 profile-summary">
+        <h2 class="profile-name">{{profileData.getFullname()}}</h2>
+        <div class="profile-details">
+          <div>
+            <label class="form-label detail-label">{{"Employee ID" | translate}}</label>
+            <span class="detail-value">{{profileData.employeeId}}</span>
+          </div>
+          <div>
+            <label class="form-label detail-label">{{"Position" | translate}}</label>
+            <span class="detail-value">{{profileData.position?.getPositionDesc() || '-'}}</span>
+          </div>
+          <div>
+            <label class="form-label detail-label">{{"E-Mail" | translate}}</label>
+            <span class="detail-value">{{profileData.email || '-'}}</span>
+          </div>
+          <div>
+            <label class="form-label detail-label">{{"Internal Number" | translate}}</label>
+            <span class="detail-value">{{empWork?.telExt || '-'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs-modern mt-4">
+      <li [ngbNavItem]="1" [destroyOnHide]="true">
+        <a ngbNavLink><i class="mdi mdi-information-outline me-2"></i>{{"Personal Information" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="info-card mt-3">
+            <div class="card-header bg-myhr">
+              <h6 class="card-title text-white">{{"menu.employee-work-information" | translate}}</h6>
+            </div>
+            <div class="card-body" *ngIf="empWork">
+              <div class="detail-grid">
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"job.title.id" | translate}}</label>
+                  <h6>{{empWork.job?empWork.job.getJobDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"pl.id" | translate}}</label>
+                  <h6>{{empWork.pl?empWork.pl.plId:'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"Head Employee ID" | translate}}</label>
+                  <h6>{{empWork.bossId?empWork.bossId:'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"Employee Group" | translate}}</label>
+                  <h6>{{empWork.group?empWork.group.getGroupDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Position" | translate}}</label>
+                  <h6>{{empWork.position?empWork.position.getPositionDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted" [translate]="'BU_DESC'"
+                    [translateParams]="swaplangService.getSwaplangByCode('BU1')"></label>
+                  <h6>{{empWork.bu1?empWork.bu1.getBu1Desc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted" [translate]="'BU_DESC'"
+                    [translateParams]="swaplangService.getSwaplangByCode('BU2')"></label>
+                  <h6>{{empWork.bu2?empWork.bu2.getBu2Desc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted" [translate]="'BU_DESC'"
+                    [translateParams]="swaplangService.getSwaplangByCode('BU3')"></label>
+                  <h6>{{empWork.bu3?empWork.bu3.getBu3Desc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted" [translate]="'BU_DESC'"
+                    [translateParams]="swaplangService.getSwaplangByCode('BU4')"></label>
+                  <h6>{{empWork.bu4?empWork.bu4.getBu4Desc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted" [translate]="'BU_DESC'"
+                    [translateParams]="swaplangService.getSwaplangByCode('BU5')"></label>
+                  <h6>{{empWork.bu5?empWork.bu5.getBu5Desc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"Branch" | translate}}</label>
+                  <h6>{{empWork.branch?empWork.branch.getBranchDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"Work Place" | translate}}</label>
+                  <h6>{{empWork.workarea?empWork.workarea.getWorkAreaDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Type Employee" | translate}}</label>
+                  <h6>{{empWork.type?empWork.type.getTypeDesc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col">
+                  <label class="form-label text-muted">{{"Shitf" | translate}}</label>
+                  <h6>{{empWork.time0?empWork.time0.getTime0Desc():'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"system.grade.id" | translate}}</label>
+                  <h6>{{empWork.grade?empWork.grade.gradeDesc:'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"Start Date" | translate}}</label>
+                  <h6>{{empWork.firstHiredate?(empWork.firstHiredate | date:'dd-MM-yyyy'):'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"system.approve" | translate}}</label>
+                  <h6>{{empWork.approveDate?(empWork.approveDate| date:'dd-MM-yyyy'):'-'}}</h6>
+                </div>
+                <div class="detail-item-col" *ngIf="empId==''">
+                  <label class="form-label text-muted">{{"Years of service" | translate}}</label>
+                  <h6>{{ yearGenerate() }} {{ 'systemcode.year' | translate}} {{ monthGenerate() }} {{
+                    'systemcode.month' | translate}} {{ dateGenerate() }} {{ 'systemcode.day' | translate}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2" *ngIf="empId==''">
+        <a ngbNavLink><i class="mdi mdi-history me-2"></i>{{"system.position.adjustment" | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="info-card mt-3">
+            <div class="card-body">
+              <ul class="timeline-modern">
+                <li class="timeline-item" *ngFor="let item of empMove; let i=index">
+                  <div class="timeline-badge">
+                    <span class="font-12">{{item.eff_date!=''&&item.eff_date!=undefind?(item.eff_date |
+                      date:'yyyy'):'-'}}</span>
+                  </div>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h5 class="timeline-title">{{getName(item?.adj_reason?.tdesc,item?.adj_reason?.edesc)}}</h5>
+                      <p class="timeline-date">{{item.eff_date!=''&&item.eff_date!=undefind?(item.eff_date |
+                        date:'dd-MM-yyyy'):'-'}}</p>
+                      <span class="badge badge-info-light"
+                        *ngIf="item.getPositionMovement()!=''&&item.getPositionMovement()!=undefind">{{item.getPositionMovement()!=''&&item.getPositionMovement()!=undefind?item.getPositionMovement():'-'}}</span>
+                    </div>
+                    <div class="timeline-body">
+                      <div class="detail-grid-sm">
+                        <div class="detail-item-col">
+                          <small class="text-muted">{{"New Position" | translate}}</small>
+                          <h6>
+                            {{item.getPositionMovement()!=''&&item.getPositionMovement()!=undefind?item.getPositionMovement():'-'}}
+                          </h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Segment" | translate}}</label>
+                          <h6>{{item.getBu1Movement()!=''&&item.getBu1Movement()!=undefind?item.getBu1Movement():'-'}}
+                          </h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Department" | translate}}</label>
+                          <h6>{{item.getBu2Movement()!=''&&item.getBu2Movement()!=undefind?item.getBu2Movement():'-'}}
+                          </h6>
+                        </div>
+                        <div class="detail-item-col">
+                          <label class="form-label text-muted">{{"Section 1" | translate}}</label>
+                          <h6>{{item.getBu3Movement()!=''&&item.getBu3Movement()!=undefind?item.getBu3Movement():'-'}}
+                          </h6>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-outline-primary mt-3"
+                        (click)="openDialog(dialogCourse,item.eff_date)">
+                        <i class="mdi mdi-eye"></i> {{"view_details" | translate}}
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<ng-template #dialogCourse let-modal>
+  <div class="modal-header justify-content-between">
+    <h5 class="modal-title">{{"system.position.adjustment" | translate}}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="detail-card-container" *ngIf="modelhadjposition">
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"Issued date" | translate}}</label>
+          <h6>{{modelhadjposition.adjDate?(modelhadjposition.adjDate| date:'dd-MM-yyyy'):''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"systemcode.start.using" | translate}}</label>
+          <h6>{{modelhadjposition.effDate?(modelhadjposition.effDate| date:'dd-MM-yyyy'):''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"Document Number2" | translate}}</label>
+          <h6>{{modelhadjposition.docNo?modelhadjposition.docNo:''}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"Signed By" | translate}}</label>
+          <h6>{{modelhadjposition.signBy?modelhadjposition.signBy:''}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"Movement Type" | translate}}</label>
+          <h6>{{getName(modelhadjposition?.adjType?.tdesc,modelhadjposition?.adjType?.edesc)}}</h6>
+        </div>
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"Movement reason" | translate}}</label>
+          <h6>{{getName(modelhadjposition?.adjReason?.tdesc,modelhadjposition?.adjReason?.edesc)}}</h6>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <label class="form-label text-muted">{{"Probation" | translate}}</label>
+          <h6>{{modelhadjposition?.probStart| date:'dd-MM-yyyy'}} {{modelhadjposition?.probFinish| date:'dd-MM-yyyy'}}
+          </h6>
+        </div>
+      </div>
+
+      <h5 class="section-title mt-4 mb-3">{{"Details of Change" | translate}}</h5>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Type Employee" | translate}}</label>
+          <div class="value-pair">
+            <span>{{modelhadjposition?.oldAdjust?.oldEmpType || '-'}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{modelhadjposition?.newAdjust?.newEmpType || '-'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Company" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBranch?.tdesc,modelhadjposition?.oldAdjust?.oldBranch?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBranch?.tdesc,modelhadjposition?.newAdjust?.newBranch?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"systemcode.job.description" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldJob?.tdesc,modelhadjposition?.oldAdjust?.oldJob?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newJob?.tdesc,modelhadjposition?.newAdjust?.newJob?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"system.grade.id" | translate}}</label>
+          <div class="value-pair">
+            <span>{{modelhadjposition.oldAdjust.oldSubGrade?modelhadjposition.oldAdjust.oldSubGrade:'-'}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{modelhadjposition.newAdjust.newSubGrade?modelhadjposition.newAdjust.newSubGrade:'-'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"systemcode.position" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldEmpPosition?.tdesc,modelhadjposition?.oldAdjust?.oldEmpPosition?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newEmpPosition?.tdesc,modelhadjposition?.newAdjust?.newEmpPosition?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Segment" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu1?.tdesc,modelhadjposition?.oldAdjust?.oldBu1?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu1?.tdesc,modelhadjposition?.newAdjust?.newBu1?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Department" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu2?.tdesc,modelhadjposition?.oldAdjust?.oldBu2?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu2?.tdesc,modelhadjposition?.newAdjust?.newBu2?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Section 1" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu3?.tdesc,modelhadjposition?.oldAdjust?.oldBu3?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu3?.tdesc,modelhadjposition?.newAdjust?.newBu3?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Section 2" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu4?.tdesc,modelhadjposition?.oldAdjust?.oldBu4?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu4?.tdesc,modelhadjposition?.newAdjust?.newBu4?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Section 3" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu5?.tdesc,modelhadjposition?.oldAdjust?.oldBu5?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu5?.tdesc,modelhadjposition?.newAdjust?.newBu5?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Section 4" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu6?.tdesc,modelhadjposition?.oldAdjust?.oldBu6?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu6?.tdesc,modelhadjposition?.newAdjust?.newBu6?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Section 5" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldBu7?.tdesc,modelhadjposition?.oldAdjust?.oldBu7?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newBu7?.tdesc,modelhadjposition?.newAdjust?.newBu7?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Salary Type" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldSalatype?.tdesc,modelhadjposition?.oldAdjust?.oldSalatype?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newSalatype?.tdesc,modelhadjposition?.newAdjust?.newSalatype?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Shift ID" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldTime0?.tdesc,modelhadjposition?.oldAdjust?.oldTime0?.edesc)}}
+              ({{modelhadjposition.oldAdjust.oldTime0.time0id}})</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newTime0?.tdesc,modelhadjposition?.newAdjust?.newTime0?.edesc)}}
+              ({{modelhadjposition.newAdjust.newTime0.time0id}})</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Working Area" | translate}}</label>
+          <div class="value-pair">
+            <span>{{getName(modelhadjposition?.oldAdjust?.oldWorkarea?.tdesc,modelhadjposition?.oldAdjust?.oldWorkarea?.edesc)}}</span>
+            <i class="mdi mdi-arrow-right"></i>
+            <span>{{getName(modelhadjposition?.newAdjust?.newWorkarea?.tdesc,modelhadjposition?.newAdjust?.newWorkarea?.edesc)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <label class="form-label text-muted">{{"Remark" | translate}}</label>
+          <h6>{{modelhadjposition.remarks?modelhadjposition.remarks:'-'}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close"| translate}}</button>
+  </div>
+</ng-template>

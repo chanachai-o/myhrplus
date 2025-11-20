@@ -1,0 +1,448 @@
+<div class="card main-content-card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="card-title-container">
+            <h4 class="card-title">{{"Applicant" | translate}}</h4>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar mb-4">
+            <div class="form-group">
+                <label class="form-label">{{"Requisition ID" | translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'Requisition ID' | translate}}"
+                        [(ngModel)]="dataSelected.requestApplicant.id" (ngModelChange)="selectData('requestApplicant')">
+                    <button class="btn btn-outline-secondary btn-icon" type="button" (click)="openModal(requestApplicantModal,'requestApplicant')">
+                        <i class="mdi mdi-magnify"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{"Job Title" | translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'Job Code ID' | translate}}"
+                        [(ngModel)]="dataSelected.jobcode.id" (ngModelChange)="selectData('jobcode')">
+                    <button class="btn btn-outline-secondary btn-icon" type="button" (click)="openModal(jobcodeModal,'jobcode')">
+                        <i class="mdi mdi-magnify"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{"Employee ID" | translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'Employee ID' | translate}}"
+                        [(ngModel)]="dataSelected.employee.id" (ngModelChange)="selectData('employee')">
+                    <button class="btn btn-outline-secondary btn-icon" type="button" (click)="openModal(employeeModal,'employee')">
+                        <i class="mdi mdi-magnify"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{"Name" | translate}}</label>
+                <input type="text" class="form-control" placeholder="{{'Name' | translate}}"
+                    [(ngModel)]="dataSelected.name.name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{"Surname" | translate}}</label>
+                <input type="text" class="form-control" placeholder="{{'Surname' | translate}}"
+                    [(ngModel)]="dataSelected.name.surname">
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{"Start Date" | translate}}</label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" ngbDatepicker #d1="ngbDatepicker"
+                        [(ngModel)]="dataSelected.date.start" (ngModelChange)="searchdate()">
+                    <button class="btn btn-outline-secondary btn-icon" (click)="d1.toggle()" type="button">
+                        <i class="mdi mdi-calendar"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{"End Date" | translate}}</label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" ngbDatepicker #d2="ngbDatepicker"
+                        [(ngModel)]="dataSelected.date.end" (ngModelChange)="searchdate()">
+                    <button class="btn btn-outline-secondary btn-icon" (click)="d2.toggle()" type="button">
+                        <i class="mdi mdi-calendar"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group-buttons">
+                <button type="button" class="btn btn-primary me-2" (click)="filterJobApplicants()">
+                    <i class="mdi mdi-magnify me-1"></i> {{"Search" | translate}}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="clearFilter()">
+                    <i class="mdi mdi-close me-1"></i> {{"Clear" | translate}}
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <ul ngbNav #navRecruit="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs-modern mt-4">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink><i class="mdi mdi-account-check me-2"></i>{{"Internal Applicant" | translate}}</a>
+                <ng-template ngbNavContent>
+                    <div> <!-- New wrapper div -->
+                        <div class="table-responsive d-none d-lg-block mt-3">
+                            <table class="table table-hover v-middle">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>{{"Requisition ID" | translate}}</th>
+                                        <th>{{"Job Title" | translate}}</th>
+                                        <th>{{"Employee ID" | translate}}</th>
+                                        <th>{{"Name-Surname" | translate}}</th>
+                                        <th>{{"Applicant Date" | translate}}</th>
+                                        <th>{{"Want Interview" | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="dataList.recruitApplicant.load.loading">
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="spinner-border text-primary" role="status"></div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="!dataList.recruitApplicant.load.loading && dataList.recruitApplicant.list.internal.length == 0">
+                                        <td colspan="6" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                                    </tr>
+                                    <tr *ngFor="let item of dataList.recruitApplicant.list.internal | slice: (pageTable[0].page-1) * pageTable[0].pageSize : (pageTable[0].page-1) * pageTable[0].pageSize + pageTable[0].pageSize">
+                                        <td>{{item.recruitApplicant.requestId}}</td>
+                                        <td>{{item.jobcode.getDesc()}}</td>
+                                        <td>{{item.recruitApplicant.employeeId}}</td>
+                                        <td>{{item.recruitApplicant.personal.getFullName()}}</td>
+                                        <td>{{item.recruitApplicant.applicantDate | date:'dd-MM-yyyy'}}</td>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" [id]="'internalCheck'+item.recruitApplicant.applicantId" [(ngModel)]="item.recruitApplicant.wantInterview" (ngModelChange)="wantInterview(item.recruitApplicant)">
+                                                <label class="custom-control-label" [for]="'internalCheck'+item.recruitApplicant.applicantId"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Mobile Card View -->
+                        <div class="d-lg-none mt-3">
+                            <div *ngIf="dataList.recruitApplicant.load.loading">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                            <div *ngIf="!dataList.recruitApplicant.load.loading && dataList.recruitApplicant.list.internal.length == 0" class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+                            <div *ngFor="let item of dataList.recruitApplicant.list.internal | slice: (pageTable[0].page-1) * pageTable[0].pageSize : (pageTable[0].page-1) * pageTable[0].pageSize + pageTable[0].pageSize" class="rec-applicant-card-mobile">
+                                <div class="card-body">
+                                    <div class="info-item"><span>{{"Requisition ID" | translate}}</span><strong>{{item.recruitApplicant.requestId}}</strong></div>
+                                    <div class="info-item"><span>{{"Job Title" | translate}}</span><strong>{{item.jobcode.getDesc()}}</strong></div>
+                                    <div class="info-item"><span>{{"Employee ID" | translate}}</span><strong>{{item.recruitApplicant.employeeId}}</strong></div>
+                                    <div class="info-item"><span>{{"Name-Surname" | translate}}</span><strong>{{item.recruitApplicant.personal.getFullName()}}</strong></div>
+                                    <div class="info-item"><span>{{"Applicant Date" | translate}}</span><strong>{{item.recruitApplicant.applicantDate | date:'dd-MM-yyyy'}}</strong></div>
+                                    <div class="info-item">
+                                        <span>{{"Want Interview" | translate}}</span>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" [id]="'internalMobileCheck'+item.recruitApplicant.applicantId" [(ngModel)]="item.recruitApplicant.wantInterview" (ngModelChange)="wantInterview(item.recruitApplicant)">
+                                            <label class="custom-control-label" [for]="'internalMobileCheck'+item.recruitApplicant.applicantId"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination-controls d-flex justify-content-end p-2">
+                                <select class="form-select" [(ngModel)]="pageTable[0].pageSize" (ngModelChange)="pageTable[0].page=1">
+                                    <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                                    <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                                    <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+                                </select>
+                                <ngb-pagination [collectionSize]="pageTable[0].collectionSize" [(page)]="pageTable[0].page" [pageSize]="pageTable[0].pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink><i class="mdi mdi-account-multiple-outline me-2"></i>{{"External Applicant" | translate}}</a>
+                <ng-template ngbNavContent>
+                    <div> <!-- New wrapper div -->
+                        <div class="table-responsive d-none d-lg-block mt-3">
+                            <table class="table table-hover v-middle">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>{{"Requisition ID" | translate}}</th>
+                                        <th>{{"Job Title" | translate}}</th>
+                                        <th>{{"Name-Surname" | translate}}</th>
+                                        <th>{{"Applicant Date" | translate}}</th>
+                                        <th>{{"Want Interview" | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="dataList.recruitApplicant.load.loading">
+                                        <td colspan="5" class="text-center py-4">
+                                            <div class="spinner-border text-primary" role="status"></div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="!dataList.recruitApplicant.load.loading && dataList.recruitApplicant.list.external.length == 0">
+                                        <td colspan="5" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                                    </tr>
+                                    <tr *ngFor="let item of dataList.recruitApplicant.list.external | slice: (pageTable[1].page-1) * pageTable[1].pageSize : (pageTable[1].page-1) * pageTable[1].pageSize + pageTable[1].pageSize">
+                                        <td>{{item.recruitApplicant.requestId}}</td>
+                                        <td>{{item.jobcode.getDesc()}}</td>
+                                        <td>{{item.recruitApplicant.personal.getFullName()}}</td>
+                                        <td>{{item.recruitApplicant.applicantDate | date:'dd-MM-yyyy'}}</td>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" [id]="'externalCheck'+item.recruitApplicant.applicantId" [(ngModel)]="item.recruitApplicant.wantInterview" (ngModelChange)="wantInterview(item.recruitApplicant)">
+                                                <label class="custom-control-label" [for]="'externalCheck'+item.recruitApplicant.applicantId"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Mobile Card View -->
+                        <div class="d-lg-none mt-3">
+                            <div *ngIf="dataList.recruitApplicant.load.loading">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                            <div *ngIf="!dataList.recruitApplicant.load.loading && dataList.recruitApplicant.list.external.length == 0" class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+                            <div *ngFor="let item of dataList.recruitApplicant.list.external | slice: (pageTable[1].page-1) * pageTable[1].pageSize : (pageTable[1].page-1) * pageTable[1].pageSize + pageTable[1].pageSize" class="rec-applicant-card-mobile">
+                                <div class="card-body">
+                                    <div class="info-item"><span>{{"Requisition ID" | translate}}</span><strong>{{item.recruitApplicant.requestId}}</strong></div>
+                                    <div class="info-item"><span>{{"Job Title" | translate}}</span><strong>{{item.jobcode.getDesc()}}</strong></div>
+                                    <div class="info-item"><span>{{"Name-Surname" | translate}}</span><strong>{{item.recruitApplicant.personal.getFullName()}}</strong></div>
+                                    <div class="info-item"><span>{{"Applicant Date" | translate}}</span><strong>{{item.recruitApplicant.applicantDate | date:'dd-MM-yyyy'}}</strong></div>
+                                    <div class="info-item">
+                                        <span>{{"Want Interview" | translate}}</span>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" [id]="'externalMobileCheck'+item.recruitApplicant.applicantId" [(ngModel)]="item.recruitApplicant.wantInterview" (ngModelChange)="wantInterview(item.recruitApplicant)">
+                                            <label class="custom-control-label" [for]="'externalMobileCheck'+item.recruitApplicant.applicantId"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination-controls d-flex justify-content-end p-2">
+                                <select class="form-select" [(ngModel)]="pageTable[1].pageSize" (ngModelChange)="pageTable[1].page=1">
+                                    <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                                    <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                                    <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+                                </select>
+                                <ngb-pagination [collectionSize]="pageTable[1].collectionSize" [(page)]="pageTable[1].page" [pageSize]="pageTable[1].pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="navRecruit" class="mt-2"></div>
+    </div>
+</div>
+
+<!-- Modals -->
+<ng-template #requestApplicantModal let-modal>
+    <div class="modal-header justify-content-between">
+        <h5 class="modal-title">{{"Table of MREQUEST Detail" | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true" class="text-black">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="search-input-container mb-3">
+            <i class="mdi mdi-magnify"></i>
+            <input type="text" class="form-control" placeholder="{{'Requisition ID' | translate}}"
+                [(ngModel)]="modalDetail.search" (ngModelChange)="searchDataModal('requestApplicant')">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover v-middle">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{"Requisition ID" | translate}}</th>
+                        <th>{{"Job Title Req" | translate}}</th>
+                        <th>{{"Position Req" | translate}}</th>
+                        <th>{{"Number of Employee" | translate}}</th>
+                        <th>{{"Type" | translate}}</th>
+                        <th>{{"First date of request" | translate}}</th>
+                        <th>{{"Last date of request" | translate}}</th>
+                        <th>{{"Requisition Status" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="modalDetail.load">
+                        <td colspan="8" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!modalDetail.load && modalDetail.data.length == 0">
+                        <td colspan="8" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                    </tr>
+                    <tr class="cursor-myhr" *ngFor="let item of modalDetail.data | slice: (modalDetail.page.page-1) * modalDetail.page.pageSize : (modalDetail.page.page-1) * modalDetail.page.pageSize + modalDetail.page.pageSize"
+                        (click)="modal.close(item)">
+                        <td>{{item.list.requestApplicant.requestId}}</td>
+                        <td>{{item.list.jobcode.getDesc()}}</td>
+                        <td>{{item.list.position.getDesc()}}</td>
+                        <td>{{item.list.requestApplicant.numberOfEmployee}}</td>
+                        <td>{{item.list.requestApplicant.employmentType}}</td>
+                        <td>{{item.list.requestApplicant.approveDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{item.list.requestApplicant.lastDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{ translateService.currentLang == 'th' 
+                            ? item.list.requisitionStatus?.tdesc 
+                            : item.list.requisitionStatus?.edesc }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-controls d-flex justify-content-end p-2">
+            <select class="form-select" [(ngModel)]="modalDetail.page.pageSize" (ngModelChange)="modalDetail.page.page=1">
+                <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="modalDetail.page.collectionSize" [(page)]="modalDetail.page.page" [pageSize]="modalDetail.page.pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+                <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">{{"Close" | translate}}</button>
+    </div>
+</ng-template>
+
+<ng-template #jobcodeModal let-modal>
+    <div class="modal-header justify-content-between">
+        <h5 class="modal-title">{{"Master Job Code" | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true" class="text-black">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="search-input-container mb-3">
+            <i class="mdi mdi-magnify"></i>
+            <input type="text" class="form-control" placeholder="{{'Job Code ID' | translate}}"
+                [(ngModel)]="modalDetail.search" (ngModelChange)="searchDataModal('jobcode')">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover v-middle">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{"Job Code ID" | translate}}</th>
+                        <th>{{"Job Title Name (Thai)" | translate}}</th>
+                        <th>{{"Job Title Name (Eng.)"| translate}}</th>
+                        <th>{{"Action" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="modalDetail.load">
+                        <td colspan="4" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!modalDetail.load && modalDetail.data.length == 0">
+                        <td colspan="4" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                    </tr>
+                    <tr class="cursor-myhr" *ngFor="let item of modalDetail.data | slice: (modalDetail.page.page-1) * modalDetail.page.pageSize : (modalDetail.page.page-1) * modalDetail.page.pageSize + modalDetail.page.pageSize"
+                        (click)="modal.close(item)">
+                        <td>{{item.list.jobcodeId}}</td>
+                        <td>{{item.list.tdesc}}</td>
+                        <td>{{item.list.edesc}}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-primary btn-sm" (click)="modal.close(item)">{{"choose"| translate}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-controls d-flex justify-content-end p-2">
+            <select class="form-select" [(ngModel)]="modalDetail.page.pageSize" (ngModelChange)="modalDetail.page.page=1">
+                <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="modalDetail.page.collectionSize" [(page)]="modalDetail.page.page" [pageSize]="modalDetail.page.pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+                <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">{{"Close" | translate}}</button>
+    </div>
+</ng-template>
+
+<ng-template #employeeModal let-modal>
+    <div class="modal-header justify-content-between">
+        <h5 class="modal-title">{{"Employee Table" | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true" class="text-black">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="search-input-container mb-3">
+            <i class="mdi mdi-magnify"></i>
+            <input type="text" class="form-control" placeholder="{{'Search Employee ID / Name-Surname' | translate}}"
+                [(ngModel)]="modalDetail.search" (ngModelChange)="searchDataModal('employee')">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover v-middle">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{"Employee ID"| translate}}</th>
+                        <th>{{"Name-Surname"| translate}}</th>
+                        <th>{{"Position"| translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="modalDetail.load">
+                        <td colspan="3" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!modalDetail.load && modalDetail.data.length == 0">
+                        <td colspan="3" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                    </tr>
+                    <tr class="cursor-myhr" *ngFor="let item of modalDetail.data | slice: (modalDetail.page.page-1) * modalDetail.page.pageSize : (modalDetail.page.page-1) * modalDetail.page.pageSize + modalDetail.page.pageSize"
+                        (click)="modal.close(item)">
+                        <td>{{item.list.employeeId}}</td>
+                        <td>{{item.list.getFullName()}}</td>
+                        <td>{{item.list.job.position.getDesc()}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-controls d-flex justify-content-end p-2">
+            <select class="form-select" [(ngModel)]="modalDetail.page.pageSize" (ngModelChange)="modalDetail.page.page=1">
+                <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="modalDetail.page.collectionSize" [(page)]="modalDetail.page.page" [pageSize]="modalDetail.page.pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+                <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">{{"Close" | translate}}</button>
+    </div>
+</ng-template>
+
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{"Alert Message" | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{messageAlert}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.close('Close')">{{"OK" | translate}}</button>
+    </div>
+</ng-template>

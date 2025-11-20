@@ -1,0 +1,232 @@
+<div class="row">
+    <!-- รายละเอียดข้อมูลพนักงาน -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"Employee Detail" | translate}}</h6>
+            </div>
+            <div class="card-body" *ngIf="empWork">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Employee ID"| translate}}</small>
+                        <h6>{{empWork.employeeId}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Name-Surname"| translate}}</small>
+                        <h6>{{empWork.getFullname()}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Position"| translate}}</small>
+                        <h6>{{empWork.position?empWork.position.getPositionDesc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu1"| translate}}</small>
+                        <h6>{{empWork.bu1?empWork.bu1.getBu1Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu2"| translate}}</small>
+                        <h6>{{empWork.bu2?empWork.bu2.getBu2Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu3"| translate}}</small>
+                        <h6>{{empWork.bu3?empWork.bu3.getBu3Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu4"| translate}}</small>
+                        <h6>{{empWork.bu4?empWork.bu4.getBu4Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu5"| translate}}</small>
+                        <h6>{{empWork.bu5?empWork.bu5.getBu5Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"tel"| translate}}</small>
+                        <h6>{{empWork.telExt?empWork.telExt:'-'}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- รายละเอียดการสะสมวันหยุด -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"systemcode.detail.posting.type" | translate }}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r col-10">
+                        <div class="form-group">
+                            <small class="text-muted">{{"systemcode.dayoff"| translate }}</small>
+                            <h6>{{data.workflowData.screen_value['__wf__dateid'] }}</h6>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">{{"systemcode.posting.type"| translate}}</small>
+                <h6 *ngIf="data.workflowData.screen_value['__wf__format_type']=='0'">{{"systemcode.day.Request.1" |
+                    translate}}</h6>
+                <h6 *ngIf="data.workflowData.screen_value['__wf__format_type']=='2'">{{"systemcode.day.Request.2" |
+                    translate}}</h6>
+                <h6 *ngIf="data.workflowData.screen_value['__wf__format_type']=='3'">{{"systemcode.day.Request.3" |
+                    translate}}</h6>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <div class="form-group">
+                            <small class="text-muted">{{"reason"| translate}}</small>
+                            <h6>{{data.workflowData.screen_value['__wf__remarks']}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <app-workflow-remark [wfid]="data.workflowData.wf_id"></app-workflow-remark>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- หมายเหตุ -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"Note" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"Note"| translate}}</small>
+                        <h6>{{data.workflowData.remark}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- เอกสารอ้างอิง -->
+    <div class="col-12" *ngIf="workflowData">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"Doc Reference" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <div class="form-group">
+                            <h6 class="cursor-myhr" (click)="openDocReference()">
+                                {{translate.currentLang=="th"?workflowData.thaiSubject:workflowData.engSubject}}
+                                [{{workflowData.doc_no}}]
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- แนบไฟล์ -->
+    <div class="col-12" *ngIf="data.manageDocument.attachFile">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"attach_file" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"selected_file"| translate}}</small>
+                        <h6><a class="text-dark" style="cursor: hand;cursor: pointer;"
+                                (click)="dowloadFile()">{{data.manageDocument.attachFile[0].name}}</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- History Document Routing -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"History Document Routing" | translate}}</h6>
+            </div>
+            <div class="card-body ps-0 pe-0">
+                <div class="table-responsive">
+                    <div class="wrapper">
+                        <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                            <thead class="bg-info ">
+                                <tr class="text-white font-weight-normal">
+                                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.no" |
+                                        translate}}</th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.emp.name" |
+                                        translate}}</th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"Position" |
+                                        translate}}
+                                    </th>
+                                    <th class="font-weight-normal text-center" scope="col">
+                                        {{"systemcode.start.time"|
+                                        translate}}</th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.end.time"|
+                                        translate}}</th>
+                                    <th class="font-weight-normal text-center" scope="col">{{"systemcode.status" |
+                                        translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of data.manageDocument.routingHistory; let i=index">
+                                    <td class="align-middle text-center">{{i+1}}</td>
+                                    <td class="align-middle text-center">
+                                        {{translate.currentLang=='th'?item.fullName_tdesc:item.fullName_edesc}}</td>
+                                    <td class="align-middle text-center">
+                                        {{translate.currentLang=='th'?item.position_tdesc:item.position_edesc}}</td>
+                                    <td class="align-middle text-center">{{item.startTime}}</td>
+                                    <td class="align-middle text-center">{{item.completionTime}}</td>
+                                    <td class="align-middle text-center">{{item.action | translate}}</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row ใบขอสะสมัวันหยุด -->
+
+<ng-template #DocReferenceModal let-modal>
+    <div class="modal-content dialog-height">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editLabel">{{"systemcode.documents.detail" | translate}}</h5>
+            <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" [perfectScrollbar]="config">
+            <div class="card" style="margin-bottom:-15px">
+                <div class="card-body">
+                    <!-- ใส่เอกสารตรงนี้นะจ๊ะ -->
+                    <ng-template #workflowView [ngComponentOutlet]="dynamicComponent" [ndcDynamicInputs]="inputs"
+                        [ndcDynamicOutputs]="outputs"></ng-template>
+                    <!-- <app-wel210-nstda-create></app-wel210-nstda-create> -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" (click)="modal.dismiss('Cross click')">{{"confirm"|
+                translate}}</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- แจ้งเตือน -->
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editLabel">{{"Alert Message"|translate}}</h5>
+        <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{msg}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="modal.dismiss('Cross click')">{{"confirm"|
+            translate}}</button> <button type="button" class="btn btn-danger"
+            (click)="modal.dismiss('Cross click')">{{"cancel"| translate}}</button>
+    </div>
+</ng-template>

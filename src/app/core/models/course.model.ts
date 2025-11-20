@@ -1,7 +1,7 @@
 import { BaseModel, TranslateService } from './base.model';
-import { CrsCategory, MyCrsCategory } from './crs-category.model';
+import { CrsCategory } from './crs-category.model';
 import { CrsGroup, MyCrsGroup } from './crs-group.model';
-import { CrsType, MyCrsType } from './crs-type.model';
+import { CrsType } from './crs-type.model';
 
 /**
  * Course model
@@ -51,13 +51,13 @@ export class MyCourse extends BaseModel implements Course {
     this.every = data.every;
     this.frequencyEvery = data.frequencyEvery;
     this.crsCategory = data.crsCategory
-      ? new MyCrsCategory(data.crsCategory, this.translateService!)
+      ? new CrsCategory(data.crsCategory, this.translateService!)
       : undefined;
     this.crsGroup = data.crsGroup
       ? new MyCrsGroup(data.crsGroup, this.translateService!)
       : undefined;
     this.crsType = data.crsType
-      ? new MyCrsType(data.crsType, this.translateService!)
+      ? new CrsType(data.crsType, this.translateService!)
       : undefined;
   }
 

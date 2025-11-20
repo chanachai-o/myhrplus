@@ -1,0 +1,95 @@
+<!-- Loading Spinner -->
+<div class="d-flex justify-content-center align-items-center py-5" *ngIf="loading">
+  <div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>
+  <span class="ms-3 font-weight-bold text-secondary">{{"Loading Data" | translate}}...</span>
+</div>
+
+<div class="card main-content-card" *ngIf="!loading">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container mb-3">
+      <h4 class="card-title">{{"menu.welfare-check" | translate}}</h4>
+    </div>
+
+    <div ngbAccordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+      <div ngbAccordionItem *ngFor="let items of dataShow ; let i=index">
+        <div ngbAccordionHeader class="accordion-header-custom">
+          <button ngbAccordionToggle class="accordion-button-custom">
+            <h5 class="mb-0">{{items[0].welgrp.getWelgrp() }}</h5>
+          </button>
+        </div>
+        <div ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <ng-template>
+              <!-- Desktop Table View -->
+              <div class="table-responsive d-none d-lg-block">
+                <table class="table table-hover v-middle">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>{{"welfareid" | translate}}</th>
+                      <th>{{"Detail" | translate}}</th>
+                      <th>{{"welfarecost" | translate}}</th>
+                      <th>{{"Used" | translate}}</th>
+                      <th>{{"Remain" | translate}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of items">
+                      <td class="align-middle">{{item.welId}}</td>
+                      <td class="align-middle">{{item.getDesc()}}</td>
+                      <!-- <td class="align-middle">{{item.getLimit()? (item.welCost | number: '.0') : "-"}}</td>
+                      <td class="align-middle">{{item.getUse()?(item.sumCost | number: '.0') : "-"}}</td>
+                      <td class="align-middle">{{(item.getRemain()&&item.getLimit()? ((item.welCost-(item.getUse()?item.sumCost:0)) | number: '.0') :'-' )}} </td> -->
+                      <td class="align-middle">{{ item.welCost | number: '.0'}}</td>
+                      <td class="align-middle">{{ item.sumCost | number: '.0'}}</td>
+                      <td class="align-middle">
+                        {{ ((item.welCost-(item.getUse()?item.sumCost:0)) | number: '.0') }}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot *ngIf="aSum||bSum">
+                    <tr class="total-row">
+                      <th class="text-end" colspan="2">{{"Total" | translate}}</th>
+                      <th>{{aSum[i] | number: '.0'}}</th>
+                      <th>{{bSum[i] < 0? "0" :bSum[i] | number: '.0' }}</th>
+                      <th>{{(aSum[i]-bSum[i]) < 0? "0" : (aSum[i]-bSum[i]) | number: '.0' }}</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- Mobile Card View -->
+              <div class="d-lg-none mt-3">
+                <div *ngFor="let item of items" class="welfare-card-mobile">
+                  <div class="card-header">
+                    <div class="welfare-id">{{"welfareid" | translate}}: <strong>{{item.welId}}</strong></div>
+                    <div class="welfare-detail"><strong>{{item.getDesc()}}</strong></div>
+                  </div>
+                  <div class="card-body">
+                    <div class="info-row">
+                      <div class="info-item"><span>{{"welfarecost"|translate}}</span><strong>{{item.getLimit()?
+                          (item.welCost | number: '.0') : "-"}}</strong></div>
+                      <div class="info-item"><span>{{"Used"|translate}}</span><strong>{{item.getUse()?(item.sumCost |
+                          number: '.0') : "-"}}</strong></div>
+                      <div class="info-item">
+                        <span>{{"Remain"|translate}}</span><strong>{{(item.getRemain()&&item.getLimit()?
+                          ((item.welCost-(item.getUse()?item.sumCost:0)) | number: '.0') :'-' )}}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="total-row-mobile" *ngIf="aSum||bSum">
+                  <span>{{"Total" | translate}}</span>
+                  <span>Limit: <strong>{{aSum[i] | number: '.0'}}</strong></span>
+                  <span>Used: <strong>{{bSum[i] < 0? "0" :bSum[i] | number: '.0' }}</strong></span>
+                  <span>Remain: <strong>{{(aSum[i]-bSum[i]) < 0? "0" : (aSum[i]-bSum[i]) | number: '.0' }}</strong>
+                  </span>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

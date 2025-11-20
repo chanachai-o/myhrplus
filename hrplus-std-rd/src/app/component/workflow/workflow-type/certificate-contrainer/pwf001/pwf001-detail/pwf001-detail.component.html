@@ -1,0 +1,150 @@
+<!-- แบบฟอร์มขอหนังสือรับรอง -->
+<div class="row" *ngIf="empWork">
+    <!-- รายละเอียดข้อมูลพนักงาน -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"Employee Detail" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Employee ID"| translate}}</small>
+                        <h6>{{empWork.employeeId}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Name-Surname"| translate}}</small>
+                        <h6>{{empWork.getFullname()}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Position"| translate}}</small>
+                        <h6>{{empWork.position?empWork.position.getPositionDesc():'-'}}</h6>
+                    </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU1"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU1"):"Bu1"| translate}}</small>
+                    <h6>{{empWork.bu1?empWork.bu1.getBu1Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU2"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU2"):"Bu2"| translate}}</small>
+                    <h6>{{empWork.bu2?empWork.bu2.getBu2Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU3"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU3"):"Bu3"| translate}}</small>
+                    <h6>{{empWork.bu3?empWork.bu3.getBu3Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU4"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU4"):"Bu4"| translate}}</small>
+                    <h6>{{empWork.bu4?empWork.bu4.getBu4Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU5"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU5"):"Bu5"| translate}}</small>
+                    <h6>{{empWork.bu5?empWork.bu5.getBu5Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU6"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU6"):"Bu6"| translate}}</small>
+                    <h6>{{empWork.bu6?empWork.bu6.getBu6Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{(SwaplangCodeService.getSwapLangCodeFromModelList("BU7"))?SwaplangCodeService.getSwapLangCodeFromModelList("BU7"):"Bu7"| translate}}</small>
+                    <h6>{{empWork.bu7?empWork.bu7.getBu7Desc():'-'}}</h6>
+                  </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"tel"| translate}}</small>
+                        <h6>{{empWork.telExt?empWork.telExt:'-'}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ประเภทหนังสือรับรอง -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"pwf001.certificate.type" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"pwf001.certificate.type"| translate}}</small>
+                        <h6>{{__wf__certificatedesc | translate}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ฉบับ -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"pwf001.copy" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="__wf__chkTnum">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"pwf001.copy"| translate}}</small>
+                        <h6>{{"systemcode.thai" | translate}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"systemcode.amount"| translate}}</small>
+                        <h6>{{__wf__chkTnum}}</h6>
+                    </div>
+                </div>
+                <div class="row" *ngIf="__wf__chkEnum">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"pwf001.copy"| translate}}</small>
+                        <h6>{{"systemcode.eng" | translate}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"systemcode.amount"| translate}}</small>
+                        <h6>{{__wf__chkEnum}}</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"Note"| translate}}</small>
+                        <h6>{{"systemcode.pwf.001.note" | translate}}</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <app-workflow-remark [wfid]="data.workflowData.wf_id"></app-workflow-remark>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- รายละเอียดการขอ Visa -->
+    <div class="col-12" *ngIf="__wf__certificate=='1'">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"pwf001.visa" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"systemcode.goto.country.id"| translate}}</small>
+                        <h6>{{__wf__country}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"systemcode.goto.country"| translate}}</small>
+                        <h6>{{__wf__countrydesc}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"systemcode.going.date"| translate}}</small>
+                        <h6>{{__wf__datefrom | date:"dd-MM-yyyy"}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"end.date"| translate}}</small>
+                        <h6>{{__wf__dateto | date:"dd-MM-yyyy"}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+    <div class="col-12">
+        <app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+        </app-workflow-detail-footer>
+    </div>
+    <!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+</div>
+<!-- Row ปิดแบบฟอร์มขอหนังสือรับรอง -->

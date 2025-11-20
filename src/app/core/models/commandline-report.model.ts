@@ -1,0 +1,31 @@
+export interface CommandLineReportModel {
+  bossId1: string
+  bossId2: string
+  bossId3: string
+  bossId4: string
+  bossId5: string
+  bossId6: string
+  companyId: string
+  employeeId: string
+  engFullName: string
+  engFullName1: string
+  engFullName2: string
+  engFullName3: string
+  engFullName4: string
+  engFullName5: string
+  engFullName6: string
+  lineNo1: string
+  lineNo2: string
+  lineNo3: string
+  lineNo4: string
+  lineNo5: string
+  lineNo6: string
+  thFullName: string
+  thFullName1: string
+  thFullName2: string
+  thFullName3: string
+  thFullName4: string
+  thFullName5: string
+  thFullName6: string
+  wfId: string
+}

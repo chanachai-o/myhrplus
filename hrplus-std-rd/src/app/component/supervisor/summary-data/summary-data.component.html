@@ -1,0 +1,506 @@
+<div class="card form-section">
+    <div class="card-header bg-myhr">
+        <h4><i class="fas fa-user-edit me-2"></i>{{"Summary Data" | translate}}</h4>
+    </div>
+    <div class="card-body p-3 p-md-4">
+
+        <!-- Profile Picture & Upload Section -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-3 text-center mb-3 mb-md-0">
+                <img appShowLoading [src]="imgPath +nameFile" class="rounded-circle shadow-sm" width="150" height="150" style="object-fit: cover; border: 4px solid #fff;">
+            </div>
+            <div class="col-md-6 mb-3 mb-md-0">
+                <label class="form-label">{{"upload_file" | translate}}</label>
+                <input #fileInput type="file" class="form-control" id="inputGroupFile01" (change)="onFileSelected($event)" accept="{{uploadConfig?uploadConfig.filter.replaceAll('*',''):''}}">
+                <div *ngIf="uploadConfig" class="mt-2">
+                    <small class="text-muted">{{"Maximum upload size" | translate}} {{uploadConfig.maxSize/1024/1024}} MB. {{"Extensions are support" | translate}} {{uploadConfig.filter}}</small>
+                </div>
+            </div>
+            <div class="col-md-3 align-self-center">
+                <button type="button" class="btn btn-outline-danger w-100" (click)="resetIMG()"><i class="fas fa-times me-2"></i>{{"cancel"| translate}}</button>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Identity Section -->
+        <div class="row">
+            <div class="col-md-5">
+                <div class="mb-3">
+                    <label class="form-label">{{"ID Card No."| translate}}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" maxlength="13" [(ngModel)]="modelProfile.idPeople" (ngModelChange)="checkIdPeople()">
+                        <button type="button" class="btn btn-info" (click)="onCheckId('1')" [disabled]="checkbtn"><i class="fas fa-search me-1"></i>{{"Check"| translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="mb-3">
+                    <label class="form-label">{{"AD_ACCOUNT"| translate}}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"[(ngModel)]="modelProfile.adAccount" (ngModelChange)="checkAccount()">
+                        <button type="button" class="btn btn-info" (click)="onCheckId('2')" [disabled]="modelProfile.adAccount.length == 0"><i class="fas fa-search me-1"></i>{{"Check"| translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-3">
+                    <label class="form-label">{{"Employee ID"| translate}}</label>
+                    <input type="text" class="form-control" disabled value="0">
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Name Section -->
+        <form [formGroup]="nameForm">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="form-label">{{"systemcode.prefix"| translate}} *</label>
+                        <select class="form-select" [(ngModel)]="modelProfile.empPrefix" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let item of prefixList" [ngValue]="item">{{item.tdesc}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label class="form-label">{{"systemcode.emp.fname"| translate}} *</label>
+                        <input formControlName="fname" type="text" class="form-control" maxlength="30" [(ngModel)]="modelProfile.fname">
+                        <small *ngIf="nameForm.controls['fname'].hasError('required')" class="form-text text-danger">{{'This field is required' | translate}}, {{'maxlength 30' | translate}}</small>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label class="form-label">{{"systemcode.emp.lname"| translate}} *</label>
+                        <input formControlName="lname" type="text" class="form-control" maxlength="40" [(ngModel)]="modelProfile.lname">
+                        <small *ngIf="nameForm.controls['lname'].hasError('required')" class="form-text text-danger">{{'This field is required' | translate}}, {{'maxlength 40' | translate}}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="form-label">{{"systemcode.eprefix"| translate}} *</label>
+                        <select class="form-select" [(ngModel)]="modelProfile.empPrefix" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let item of prefixList" [ngValue]="item">{{item.edesc}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label class="form-label">{{"systemcode.emp.efname"| translate}} *</label>
+                        <input formControlName="efname" type="text" class="form-control" maxlength="30" [(ngModel)]="modelProfile.efname">
+                        <small *ngIf="nameForm.controls['efname'].hasError('required')" class="form-text text-danger">{{'This field is required' | translate}}, {{'maxlength 30' | translate}}</small>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label class="form-label">{{"systemcode.emp.elname"| translate}} *</label>
+                        <input formControlName="elname" type="text" class="form-control" maxlength="40" [(ngModel)]="modelProfile.elname">
+                        <small *ngIf="nameForm.controls['elname'].hasError('required')" class="form-text text-danger">{{'This field is required' | translate}}, {{'maxlength 40' | translate}}</small>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr class="my-4">
+
+        <!-- Employment Details Section -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{"Employee ID Card"| translate}}</label>
+                    <input type="text" class="form-control" [(ngModel)]="modelProfile.swipecardId">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{"Salary Type"| translate}} *</label>
+                    <select class="form-select" [(ngModel)]="modelProfile.salaType">
+                        <option *ngFor="let item of salatypeLists let i=index" [ngValue]="item">{{item.getName()}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <div class="form-check pt-2">
+                    <input type="checkbox" class="form-check-input" id="customCheck1" [(ngModel)]="handicappedCheck" (ngModelChange)="changeHandicapped()">
+                    <label class="form-check-label" for="customCheck1">{{"Handicapped" | translate}}</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label visually-hidden">{{"Handicapped"| translate}}</label>
+                    <select class="form-select" [(ngModel)]="modelProfile.handicappedType" [disabled]="!handicappedCheck">
+                        <option *ngFor="let item of handicappedList" [ngValue]="item">{{item.getName()}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Dates Section -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{"Birth Date"| translate}} *</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="{{ 'dd.mm.yyyy' | translate }}" name="dp1" [minDate]="minDate" [maxDate]="maxDate" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="selectBirthDay" (ngModelChange)="changeBirthDay()" #c2="ngModel" (change)="validateDate(c2)">
+                        <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{"Age"| translate}}</label>
+                    <input readonly type="text" class="form-control" value="{{bYear}} {{'year' | translate}} {{bMonth}} {{'month' | translate}} {{bDay}} {{'day' | translate}}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{"systemcode.start.work.date"| translate}} *</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="{{ 'dd.mm.yyyy' | translate }}" name="dp2" [(ngModel)]="selectStartDate" #c1="ngModel" (change)="selectStartDate = datepickerService.validateFormatDateNull(c1)" ngbDatepicker #d2="ngbDatepicker">
+                        <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Organizational Structure Section -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"Workinq Area ID"| translate}}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="workareaId" (ngModelChange)="selectFilter('workarea')" placeholder="{{'id' | translate}}">
+                        <button class="btn btn-info" type="button" (click)="openModal(workarea,'workarea')"><i class="fa fa-search"></i></button>
+                        <input readonly type="text" class="form-control flex-grow-1" value="{{modelProfile.workArea?modelProfile.workArea?.getName():''}}" placeholder="{{'Name' | translate}}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"Boss"| translate}} *</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{modelProfile.bossId?modelProfile.bossId:''}}" disabled placeholder="{{'id' | translate}}">
+                        <input readonly type="text" class="form-control flex-grow-1" value="{{modelProfile.bossId?textTranslate(bossModal?.fname + ' ' +bossModal?.lname,bossModal?.efname + ' ' +bossModal?.lname):''}}" placeholder="{{'Name' | translate}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"job.title.id"| translate}} *</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="jobId" (ngModelChange)="selectFilter('job')" placeholder="{{'id' | translate}}">
+                        <button [disabled]="jobcodeListShow.length == 0" class="btn btn-info" type="button" (click)="openModal(jobcode,'jobcode')"><i class="fa fa-search"></i></button>
+                        <input readonly type="text" class="form-control flex-grow-1" value="{{modelProfile.job?modelProfile.job?.getJobDesc():''}}" placeholder="{{'Name' | translate}}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"Position"| translate}} *</label>
+                    <div class="input-group">
+                        <input readonly type="text" class="form-control" [(ngModel)]="positionId" (ngModelChange)="selectFilter('positon')" placeholder="{{'id' | translate}}">
+                        <input readonly type="text" class="form-control flex-grow-1" value="{{modelProfile.empPosition?modelProfile.empPosition.getName():''}}" placeholder="{{'Name' | translate}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"Employment Type"| translate}} *</label>
+                    <select class="form-select" [(ngModel)]="modelProfile.empType">
+                        <option *ngFor="let item of empType; let i=index" [ngValue]="item">{{item.getDesc()}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Contact & Legal Section -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"Counterparty"| translate}} *</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="counterpartyId" (ngModelChange)="selectFilter('counterparty')" placeholder="{{'id' | translate}}">
+                        <button class="btn btn-info" type="button" (click)="openModal(Contractparty,'Contractparty')"><i class="fa fa-search"></i></button>
+                        <input readonly type="text" class="form-control flex-grow-1" value="{{modelProfile.contractParty?modelProfile.contractParty.getName():''}}" placeholder="{{'Name' | translate}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"E-Mail Address"| translate}}</label>
+                    <input type="email" class="form-control" [(ngModel)]="modelProfile.email">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">{{"Tel. Ext."| translate}}</label>
+                    <input type="text" class="form-control" [(ngModel)]="modelProfile.telNo">
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Documents Section -->
+        <div class="row align-items-end">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{"documents.type"| translate}}</label>
+                    <select class="form-select" [(ngModel)]="slectDoc">
+                        <option *ngFor="let item of paperList; let i=index" [ngValue]="item">{{item.getName()}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label class="form-label">{{"upload_file"| translate}}</label>
+                    <input #fileInputDoc type="file" class="form-control" id="inputGroupFileDoc" (change)="onFileSelectedDoc($event)" accept="{{uploadConfigDoc?uploadConfigDoc.filter.replaceAll('*',''):''}}">
+                    <div *ngIf="uploadConfigDoc" class="mt-2">
+                        <small class="text-muted">{{"Maximum upload size" | translate}} {{uploadConfigDoc.maxSize/1024/1024}} MB. {{"Extensions are support" | translate}} {{uploadConfigDoc.filter}}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3" *ngIf="modelProfile.paperList.length > 0">
+            <div class="col-md-12">
+                <h6>{{"uploaded_documents" | translate}}</h6>
+                <ul class="list-group">
+                    <li *ngFor="let item of modelProfile.paperList; let i= index" class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="fw-bold">{{item.paper.getName()}}: </span>
+                            <a href="{{filePath + item.reffile}}" target="_blank">{{item.reffile}}</a>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-circle" (click)="deleteDoc(i)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="my-5">
+
+        <!-- Action Buttons -->
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center flex-wrap">
+                <button type="button" class="btn btn-lg btn-success mx-2 mb-2 mb-md-0 px-5" (click)="onSunmit(alertModalOnSunmit)" [disabled]="checkIdCard || !nameForm.valid || checkIdAcc">
+                    <i class="fas fa-save me-2"></i>{{"Save"| translate}}
+                </button>
+                <button type="button" class="btn btn-lg btn-outline-secondary mx-2 mb-2 mb-md-0 px-5" (click)="clearValue()">
+                    <i class="fas fa-undo me-2"></i>{{"Clear2"| translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Redesign: Applying .table, .form-control-search and other styles from _core-design.scss -->
+
+<!-- ModalContractparty -->
+<ng-template #Contractparty let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{"Counterparty" | translate}}</h5>
+        <button type="button" class="btn-close" (click)="modal.close('Close click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex mb-3">
+            <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchFilter('contractparty')" placeholder="{{'systemcode.search' | translate}} {{'Counterparty Id' | translate}}/{{'Counterparty' | translate}}" class="form-control form-control-search w-50">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">{{"Counterparty Id" | translate}}</th>
+                        <th>{{"Counterparty" | translate}}</th>
+                        <th class="text-center">{{"action" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of ContractpartyListShow| slice: (pageModal-1) * pageSizeModal : (pageModal-1) * pageSizeModal + pageSizeModal let i=index">
+                        <td class="text-center">{{item.partyId}}</td>
+                        <td>{{item.getName()}}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-info btn-sm" (click)="selectContractparty(item);modal.close('Close click')">{{"choose"| translate}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <div>
+            <select class="form-select" style="width: auto" [(ngModel)]="pageSizeModal" (ngModelChange)="pageModal=1">
+                <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+            </select>
+        </div>
+        <ngb-pagination [collectionSize]="collectionSizeModal" [(page)]="pageModal" [pageSize]="pageSizeModal" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close" | translate}}</button>
+    </div>
+</ng-template>
+
+<!-- ModalWorkarea -->
+<ng-template #workarea let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{"Working Area" | translate}}</h5>
+        <button type="button" class="btn-close" (click)="modal.close('Close click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex mb-3">
+            <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchFilter('workarea')" placeholder="{{'systemcode.search' | translate}} {{'Working Area ID' | translate}}/{{'Working Area Name' | translate}}" class="form-control form-control-search w-50">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">{{"Working Area ID" | translate}}</th>
+                        <th>{{"Working Area Name (Thai)" | translate}}</th>
+                        <th>{{"Working Area Name (Eng.)"| translate}}</th>
+                        <th class="text-center">{{"action" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of workarea1ListShow| slice: (pageModal-1) * pageSizeModal : (pageModal-1) * pageSizeModal + pageSizeModal let i=index">
+                        <td class="text-center">{{item.workarea.workareaId}}</td>
+                        <td>{{item.workarea.tdesc?item.workarea.tdesc:'-'}}</td>
+                        <td>{{item.workarea.edesc?item.workarea.edesc:'-'}}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-info btn-sm" (click)="selectWorkarea(item);modal.close('Close click')">{{"choose"| translate}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <div>
+            <select class="form-select" style="width: auto" [(ngModel)]="pageSizeModal" (ngModelChange)="pageModal=1">
+                <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+            </select>
+        </div>
+        <ngb-pagination [collectionSize]="collectionSizeModal" [(page)]="pageModal" [pageSize]="pageSizeModal" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close" | translate}}</button>
+    </div>
+</ng-template>
+
+<!-- Modaljobcode -->
+<ng-template #jobcode let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{"Position" | translate}}</h5>
+        <button type="button" class="btn-close" (click)="modal.close('Close click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex mb-3">
+            <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchFilter('job')" placeholder="{{'systemcode.search' | translate}} {{'systemcode.position.id' | translate}}/{{'Position Name' | translate}}" class="form-control form-control-search w-50">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">{{"systemcode.position.id" | translate}}</th>
+                        <th>{{"Position. (Thai)" | translate}}</th>
+                        <th>{{"Position. (Eng.)"| translate}}</th>
+                        <th class="text-center">{{"action" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of jobcodeListShow| slice: (pageModal-1) * pageSizeModal : (pageModal-1) * pageSizeModal + pageSizeModal let i=index">
+                        <td class="text-center">{{item.jobcodeId}}</td>
+                        <td>{{item.tdesc?item.tdesc:'-'}}</td>
+                        <td>{{item.edesc?item.edesc:'-'}}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-info btn-sm" (click)="selectJobcode(item);modal.close('Close click')">{{"choose"| translate}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <div>
+            <select class="form-select" style="width: auto" [(ngModel)]="pageSizeModal" (ngModelChange)="pageModal=1">
+                <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+            </select>
+        </div>
+        <ngb-pagination [collectionSize]="collectionSizeModal" [(page)]="pageModal" [pageSize]="pageSizeModal" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">{{"Close" | translate}}</button>
+    </div>
+</ng-template>
+
+<!-- Alert Modals -->
+<ng-template #alertModal let-modal>
+    <div class="modal-body text-center p-4">
+        <i class="fas fa-exclamation-circle fa-4x text-warning mb-3"></i>
+        <h5 class="modal-title mb-3" id="editLabel">{{'Alert Message' | translate}}</h5>
+        <p>{{msg}}</p>
+        <div class="row" *ngIf="responseSave">
+            <div class="col-12">
+                <ul class="list-unstyled mt-3">
+                    <li class="mb-2">
+                        <span class="fw-bold">{{responseSave.employeeId}} : {{translateService.currentLang == 'th' ?responseSave.thFullName:responseSave.engFullName}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <button type="button" class="btn btn-info mt-3" (click)="modal.close('Close click')">{{"confirm"|translate}}</button>
+    </div>
+</ng-template>
+
+<ng-template #alertModalCheckId let-modal>
+    <div class="modal-body text-center p-4">
+        <i class="fas" [ngClass]="{'fa-check-circle text-success': !checkIdCard && !checkIdAcc, 'fa-times-circle text-danger': checkIdCard || checkIdAcc}" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+        <h5 class="modal-title mb-3" id="editLabel">{{'Alert Message' | translate}}</h5>
+        <div *ngIf="typeCheck =='2'">
+            <p [ngClass]="{'text-danger': checkIdAcc, 'text-success': !checkIdAcc}">{{msg}}</p>
+        </div>
+        <div *ngIf="typeCheck == '1'">
+            <p [ngClass]="{'text-danger': checkIdCard, 'text-success': !checkIdCard}">{{msg}}</p>
+            <div *ngIf="responseCheckid.employeeId" class="text-start mt-3 p-3 bg-light rounded">
+                <div class="detail-item"><span class="detail-label">{{"Employee ID" | translate}}</span><strong class="detail-value">{{responseCheckid.employeeId}}</strong></div>
+                <div class="detail-item"><span class="detail-label">{{"Position" | translate}}</span><strong class="detail-value">{{responseCheckid.empPosition?(translateService.currentLang == 'th'?responseCheckid.empPosition.tdesc:responseCheckid.empPosition.edesc):'-'}}</strong></div>
+                <div class="detail-item"><span class="detail-label">{{"Type Employee" | translate}}</span><strong class="detail-value">{{responseCheckid.empType?(translateService.currentLang == 'th'?responseCheckid.empType.tdesc:responseCheckid.empType.edesc):'-'}}</strong></div>
+                <div class="detail-item"><span class="detail-label">{{"Working Area" | translate}}</span><strong class="detail-value">{{responseCheckid.workArea?(translateService.currentLang == 'th'?responseCheckid.workArea.tdesc:responseCheckid.workArea.edesc):'-'}}</strong></div>
+                <div class="detail-item mb-0"><span class="detail-label">{{"systemcode.status" | translate}}</span><strong class="detail-value">{{responseCheckid.status?(translateService.currentLang == 'th'?responseCheckid.status.tdesc:responseCheckid.status.edesc):'-'}}</strong></div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-info mt-3" (click)="modal.close('Close click')">{{"confirm"|translate}}</button>
+    </div>
+</ng-template>
+
+<ng-template #alertModalOnSunmit let-modal>
+    <div class="modal-body text-center p-4">
+        <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+        <h5 class="modal-title mb-3" id="editLabel">{{"success" | translate}}</h5>
+        <strong>{{"บันทึกข้อมูล เชื่อมต่อ ZeeMe และประมวลผลสำเร็จ"}}</strong>
+        <ul class="list-unstyled mt-3">
+            <li>
+                <strong>{{ modelProfile.idPeople }}</strong> : <strong>{{ modelProfile.fname }}</strong>
+            </li>
+        </ul>
+        <button type="button" class="btn btn-success mt-3" (click)="modal.close('Close click')">{{"ok" | translate}}</button>
+    </div>
+</ng-template>

@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <h5 class="modal-title text-white">
+    {{ "menu.empview-workflow" | translate }}
+  </h5>
+  <button
+    type="button"
+    class="btn-close btn-close-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  ></button>
+</div>
+<div class="modal-body p-0">
+  <div class="row g-0">
+    <div class="col-12 col-lg-4 border-end workflow-height-doc">
+      <ul
+        ngbNav
+        #navVp="ngbNav"
+        [(activeId)]="activeId"
+        class="nav-tabs-modern nav-tabs-vertical"
+        orientation="vertical"
+      >
+        @for (items of workflowMenuList; track items.code) {
+        <li [ngbNavItem]="$index">
+          <a ngbNavLink class="d-flex align-items-center p-3">
+            <img
+              src="{{ 'assets/images/iconworkflow/' + items.code + 'img.png' }}"
+              alt="{{ items.code | translate }}"
+              class="me-3"
+              style="height: 50px; width: 50px; object-fit: contain"
+            />
+            <span class="font-prompt-medium font-16 text-primary">
+              {{ items.code | translate }}
+            </span>
+          </a>
+          <ng-template ngbNavContent>
+            <div class="info-card p-3 mt-3">
+              <div class="row">
+                @for (item of items.child; track item.id) {
+                <div class="col-12 mb-2">
+                  <a
+                    class="d-block p-2 rounded hover-bg-light text-primary text-decoration-none"
+                    (click)="setWorkflowName(item); activeModal.dismiss()"
+                    routerLink="../workflow/workflow-type/{{
+                      getWorkflowId(item)
+                    }}"
+                  >
+                    {{ item.getDesc() }}
+                  </a>
+                </div>
+                }
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="col-12 col-lg-8">
+      <div class="position-relative workflow-height-doc-list">
+        <div [ngbNavOutlet]="navVp"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="activeModal.dismiss()"
+  >
+    <i class="fa fa-times"></i> {{ "Close" | translate }}
+  </button>
+</div>

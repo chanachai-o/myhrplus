@@ -1,0 +1,204 @@
+// Host component animation
+:host {
+  display: block;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+// Main card styling from Gemini.md
+.main-content-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-title-container {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  .card-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+
+
+// Modern Tabs (reused from other components)
+.nav-tabs-modern {
+  border-bottom: 2px solid var(--border-color) !important;
+  .nav-link {
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    margin-right: 0.5rem;
+    border-radius: 8px 8px 0 0 !important;
+    transition: all 0.3s ease;
+    i {
+      transition: transform 0.3s ease;
+    }
+
+    &.active,
+    &:hover {
+      color: var(--primary-hover);
+      background-color: var(--background-light);
+      border-bottom: 2px solid var(--primary-hover);
+      transform: translateY(-2px);
+      i {
+        transform: scale(1.1);
+      }
+    }
+
+    &.active {
+      font-weight: 600;
+    }
+  }
+}
+
+// Table styling from Gemini.md
+.table {
+  thead.thead-light th {
+    background-color: var(--background-light);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+  }
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: var(--background-light);
+    }
+  }
+}
+
+// Mobile Card View
+.rec-applicant-card-mobile {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
+
+  .info-item {
+    span {
+      display: block;
+      font-size: 0.8em;
+      color: var(--text-secondary);
+    }
+    strong {
+      display: block;
+      font-size: 0.95em;
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+  }
+}
+
+// Pagination controls styling from Gemini.md
+.pagination-controls {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  .custom-select {
+    border-radius: 8px;
+    border-color: var(--border-color);
+    padding: 0.45rem 0.8rem;
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+      border-color: var(--primary-color);
+    }
+  }
+
+  
+}
+
+// Modal styling from Gemini.md
+.modal-header {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    .close {
+        color: white;
+        opacity: 0.9;
+        &:hover { opacity: 1; }
+    }
+}
+.modal-footer {
+    background-color: var(--background-light);
+    border-top: 1px solid var(--border-color);
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    background-color: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0 0.5rem;
+    flex-basis: 100%;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+    i {
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+    }
+
+    .form-control {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    &:focus-within {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+    }
+}
+
+// Validation styles
+.form-control.is-invalid {
+    border-color: var(--danger-color, #dc3545);
+    &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(var(--danger-color-rgb, 220, 53, 69), 0.25);
+    }
+}
+
+.form-control.is-valid {
+    border-color: var(--success-color, #28a745);
+    &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(var(--success-color-rgb, 40, 167, 69), 0.25);
+    }
+}
+
+.invalid-feedback {
+    color: var(--danger-color, #dc3545);
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+// General animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-control, .custom-select {
+    border-radius: 8px !important;
+    border: 1px solid var(--border-color);
+}

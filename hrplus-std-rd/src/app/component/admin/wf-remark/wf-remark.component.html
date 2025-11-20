@@ -1,0 +1,115 @@
+<!--
+  Modernized Workflow Remark Component
+  - Aligns with Gemini Design System
+  - Features a clean, responsive form layout
+  - Refactored modal for a consistent UX
+-->
+<div class="card main-content-card wf-remark-container">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "Remark Document" | translate }}</h4>
+    </div>
+
+    <!-- Remark Form -->
+    <div class="form-container">
+      <div class="row">
+        <div class="col-md-8">
+          <label class="form-label">{{ "Workflow ID.WF_REMARK" | translate }}</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="{{ 'Workflow ID.WF_REMARK' | translate }}" [(ngModel)]="workflowDefinitionSelect.wfId" (ngModelChange)="findWorkflowDefinition()">
+            <button class="btn btn-outline-secondary btn-icon" (click)="openWorkflowDefinitionModal(workflowDefinitionModal)">
+              <i class="mdi mdi-magnify"></i>
+            </button>
+          </div>
+          <input type="text" class="form-control-plaintext mb-3" readonly [value]="workflowDefinitionSelect.getName()">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mb-3">
+          <label for="remarkTh" class="form-label">{{ "Workflow Remark (Thai)" | translate }}</label>
+          <textarea id="remarkTh" class="form-control" rows="3" [(ngModel)]="remarkTh"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mb-3">
+          <label for="remarkEn" class="form-label">{{ "Workflow Remark (Eng.)" | translate }}</label>
+          <textarea id="remarkEn" class="form-control" rows="3" [(ngModel)]="remarkEn"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <hr>
+    <div class="form-actions">
+      <button type="button" class="btn btn-danger" (click)="clearDefination()">
+        {{ "systemcode.delete" | translate }}
+      </button>
+      <button type="button" class="btn btn-primary" (click)="setWorkflowDefinition()">
+        {{ "Save" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Workflow Definition Modal -->
+<ng-template #workflowDefinitionModal let-modal>
+  <div class="modal-header bg-myhr">
+    <h5 class="modal-title text-white">{{ "Workflow Definition.WF_REMARK" | translate }}</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="search-input-container input-group mb-3">
+      <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
+      <input type="text" class="form-control" placeholder="{{ 'systemcode.search' | translate }}..." [(ngModel)]='workflowDefinitionSearch' (ngModelChange)='searchWorkflowDefinition()'>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>{{ 'No.' | translate }}</th>
+            <th>{{ 'Workflow ID.WF_REMARK' | translate }}</th>
+            <th>{{ 'Workflow Version' | translate }}</th>
+            <th>{{ 'Workflow Name (Thai)' | translate }}</th>
+            <th>{{ 'Workflow Name (Eng.)' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (workflowDefinitionLoading && !workflowDefinitionFilter.length) {
+            <tr>
+              <td colspan="5" class="text-center">
+                <div class="spinner-border text-primary my-3" role="status"><span class="visually-hidden">Loading...</span></div>
+              </td>
+            </tr>
+          }
+          @if (!workflowDefinitionLoading && !workflowDefinitionFilter.length) {
+            <tr>
+              <td colspan="5" class="text-center py-4">{{ "No Data Found" | translate }}</td>
+            </tr>
+          }
+          @for (item of workflowDefinitionFilter | slice: (pageWfd-1) * pageSizeWfd : (pageWfd-1) * pageSizeWfd + pageSizeWfd; let i = $index; track item.wfId) {
+            <tr (click)="modal.close(item)" class="table-row-clickable">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ item.wfId }}</td>
+              <td class="text-center">1</td>
+              <td>{{ item.tname }}</td>
+              <td>{{ item.ename }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex justify-content-between w-100">
+      <select class="form-select w-auto" [(ngModel)]="pageSizeWfd" (ngModelChange)="pageWfd=1">
+        @for (item of [10, 50, 100]; track item) {
+          <option [ngValue]="item">{{ "Items per page" | translate }}: {{ item }}</option>
+        }
+      </select>
+      <ngb-pagination [collectionSize]="workflowDefinitionFilter.length" [(page)]="pageWfd" [pageSize]="pageSizeWfd" [maxSize]="3" [rotate]="true"></ngb-pagination>
+    </div>
+  </div>
+</ng-template>

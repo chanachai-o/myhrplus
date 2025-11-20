@@ -1,0 +1,87 @@
+
+:host {
+    font-family: 'Prompt', sans-serif;
+}
+
+.holiday-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem 1.5rem;
+    align-items: flex-end;
+}
+
+.holiday-form-grid .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.holiday-form-grid .form-control, 
+.holiday-form-grid .custom-select, 
+.holiday-form-grid .form-select {
+    border-radius: 8px;
+    border-color: var(--border-color);
+}
+
+.holiday-form-grid .input-group-append .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.instruction-panel {
+    background-color: #f3f7fb; /* --background-light */
+    border: 1px solid #e0e6ed;
+    border-left: 4px solid var(--info-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.instruction-panel .instruction-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.instruction-panel ol, .instruction-panel ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.instruction-panel li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.instruction-panel hr {
+    margin: 1.5rem 0;
+}
+
+.ps-section strong {
+    color: var(--text-primary);
+}
+
+/* FullCalendar Styles */
+::ng-deep {
+    .fc {
+        font-family: 'Prompt', sans-serif;
+    }
+    .fc .fc-button-primary {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+        transition: background-color 0.2s ease-in-out;
+    }
+    .fc .fc-button-primary:hover {
+        background-color: var(--primary-hover) !important;
+        border-color: var(--primary-hover) !important;
+    }
+    .fc .fc-toolbar-title {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+    .fc .fc-daygrid-day.fc-day-today {
+        background-color: rgba(7, 57, 156, 0.07);
+    }
+}

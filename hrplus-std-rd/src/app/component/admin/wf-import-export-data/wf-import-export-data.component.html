@@ -1,0 +1,63 @@
+<!-- Modern Import/Export Layout -->
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "Import Data and Export Data" | translate }}</h4>
+    </div>
+
+    <div class="actions-container">
+      <!-- Import Card -->
+      <div class="action-card">
+        <i class="mdi mdi-database-import-outline card-icon"></i>
+        <h5 class="action-title">{{ "Import" | translate }}</h5>
+        <p class="action-description">{{ "Upload a .csv file to import command line data." | translate }}</p>
+
+        <div class="file-input-container">
+          <label for="fileUpload" class="form-label">
+            <i class="mdi mdi-upload"></i>
+            <span>{{ file.name !== 'browse_file' ? ('Change File' | translate) : ('Choose File' | translate) }}</span>
+          </label>
+          <input id="fileUpload" type="file" class="d-none" accept=".csv" (change)="selectFile($event.target.files)">
+          
+          @if (file.name !== 'browse_file') {
+            <p class="file-name mt-2">{{ file.name }}</p>
+          } @else if (uploadConfig) {
+            <small class="upload-info d-block mt-2">
+                {{ "Maximum upload size" | translate }}: {{ uploadConfig.maxSize / 1024 / 1024 }} MB | {{ "Extensions are support" | translate }}: .csv
+            </small>
+          }
+        </div>
+
+        <div class="action-button-container">
+            <button type="button" class="btn btn-primary w-100" (click)="importData()" [disabled]="file.name === 'browse_file'">
+                <i class="mdi mdi-arrow-right-bold-box-outline me-1"></i>
+                {{ "Import Data" | translate }}
+            </button>
+        </div>
+      </div>
+
+      <!-- Export Card -->
+      <div class="action-card">
+        <i class="mdi mdi-database-export-outline card-icon"></i>
+        <h5 class="action-title">{{ "Export" | translate }}</h5>
+        <p class="action-description">{{ "Download all command line data as a .csv file." | translate }}</p>
+        
+        <div class="action-button-container">
+            @if (exportToExcelLoading) {
+                <button class="btn btn-secondary w-100" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">{{ "Loading..." | translate }}</span>
+                </button>
+            } @else {
+                <button type="button" class="btn btn-success w-100" (click)="exportToExcel()">
+                    <i class="mdi mdi-file-excel-outline me-1"></i>
+                    {{ "Export to CSV" | translate }}
+                </button>
+            }
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

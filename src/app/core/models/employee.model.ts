@@ -15,7 +15,7 @@ import { MyTime0, Time0 } from './time0.model';
 import { Branch, MyBranch } from './branch.model';
 import { MyStatus, Status } from './status.model';
 import { BaseModel, TranslateService } from './base.model';
-import { MyPrefix, Prefix } from './prefix.model';
+import { Prefix } from './prefix.model';
 import { MyPl, Pl } from './pl.model';
 import { environment } from '../../../environments/environment';
 
@@ -156,7 +156,7 @@ export class MyEmployee extends BaseModel implements Employee {
     this.time0 = data.time0 ? new MyTime0(data.time0, this.translateService!) : data.time0;
     this.branch = data.branch ? new MyBranch(data.branch, this.translateService!) : data.branch;
     this.status = data.status ? new MyStatus(data.status, this.translateService!) : data.status;
-    this.prefix = data.prefix ? new MyPrefix(data.prefix, this.translateService!) : data.prefix;
+    this.prefix = data.prefix ? new Prefix(data.prefix, this.translateService!) : data.prefix;
     this.salatype = data.salatype ? new MySalatype(data.salatype, this.translateService!) : data.salatype;
     this.fname = data.fname || '';
     this.lname = data.lname || '';

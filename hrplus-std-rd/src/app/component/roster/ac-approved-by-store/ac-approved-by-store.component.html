@@ -1,0 +1,342 @@
+<div class="card">
+    <div class="card-header bg-myhr" >
+      <h4>{{"Manager Approved Workarea" | translate}}</h4>
+    </div>
+    <div class="card-body " >
+            <div class="filter-grid">
+            <div>
+                <label class="form-label">{{"Workarea"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" [(ngModel)]="selectWorkArea.workareaId" (ngModelChange)="searchWorkAreaId($event)">
+                    <button class="btn me-0 btn-info" type="button" (click)="openBranchModal(branchModal)"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Workarea Name"| translate}}</label>
+                <input type="text" [value]="getName(selectWorkArea.tdesc,selectWorkArea.edesc)" placeholder="" class="form-control" disabled>
+            </div>
+            <div>
+                <label class="form-label">{{"month"| translate}}</label>
+                <select class="form-select" [(ngModel)]="selectMonth" (ngModelChange)="changeDate()">
+                    <option *ngFor="let item of monthList; let i=index" [ngValue]="item.val">{{item.name| translate}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"year"| translate}}</label>
+                <select class="form-select" [(ngModel)]="selectYear" (ngModelChange)="changeDate()">
+                    <option *ngFor="let item of yearList; let i=index" [ngValue]="item">{{item}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"date"| translate}}</label>
+                <div class="radio-group">
+                    <div class="form-check">
+                        <input type="radio" name="dateType" class="form-check-input" id="date16-15" [value]="1" [(ngModel)]="dateType">
+                        <label class="form-check-label" for="date16-15">16 - 15</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="dateType" class="form-check-input" id="date25-24" [value]="2" [(ngModel)]="dateType">
+                        <label class="form-check-label" for="date25-24">25 - 24</label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Employee"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'Employee ID'| translate}}" aria-describedby="basic-addon1" [(ngModel)]="employeeSelect.employeeId" (ngModelChange)="findEmployee()">
+                    <button class="btn me-0 btn-info" type="button" (click)="openEmployeeModal()"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Name-Surname"| translate}}</label>
+                <input type="text" placeholder="{{'Name-Surname'| translate}}" [value]="employeeSelect.getName()" class="form-control" disabled>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <span class="badge bg-light text-dark p-2">{{'all'| translate}} <span class="badge bg-danger">{{timecurrentList.length?timecurrentList.length:'0'}}</span></span>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary" (click)="searchData()" [disabled]="!selectWorkArea.workareaId">
+                <i class="mdi mdi-magnify me-1"></i> {{"systemcode.search" | translate}}
+            </button>
+            &nbsp;
+            <button type="submit" class="btn btn-secondary">
+                <i class="mdi mdi-close-circle-outline me-1"></i> {{"Clear" | translate}}
+            </button>
+        </div>
+        <!-- Desktop Table View -->
+        <div class="table-responsive mt-3 d-none d-lg-block">
+            <div class="wrapper">
+                <table class="table table-bordered table-sm no-wrap v-middle" id="table">
+                    <thead class="bg-info">
+                        <tr class="text-white font-weight-normal">
+                            <th class="font-weight-normal width-table sticky-col-th first-col align-middle text-center" scope="col" rowspan="2">{{"Name-Surname" | translate}}</th>
+                            <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">Job Title</th>
+                            <th class="font-weight-normal width-table text-center" scope="col" [colSpan]="sumDate">
+                                ช่วงวันที่ {{dateType == 1?'16':'25'}} {{getDay(selectMonth,'start') | translate}} {{getDay(selectYear,'yearStart')}} ถึง {{dateType == 1?'15':'24'}} {{getDay(selectMonth,'end') | translate}} {{selectYear}}
+                            </th>
+                            <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"Work hour"| translate}}</th>
+                            <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"Work hour+OT"| translate}}</th>
+                            <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"late"| translate}}</th>
+                            <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"Early"| translate}}</th>
+                            <th class="font-weight-normal width-table text-center align-middle" scope="col" rowspan="2">{{"ชั่วโมงจ่าย"| translate}}</th>
+                            <th class="font-weight-normal width-table text-center" scope="col" colspan="4">{{"OT (ชม)"| translate}}</th>
+                            <th class="font-weight-normal width-table text-center" scope="col" colspan="6">{{"รายได้เพิ่มเติม (บาท)"| translate}}</th>
+                        </tr>
+                        <tr class="text-white font-weight-normal">
+                            <th class="font-weight-normal width-table text-center" scope="col" *ngFor="let item of counter(getEndOfMonthf()) let i =index">{{dateType == 1?16+i:25+i}}</th>
+                            <th class="font-weight-normal width-table text-center" scope="col" *ngFor="let item of counter(dateType==1?15:24) let i =index">{{1+i}}</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">1</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">1.5</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">2</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">3</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">Shift</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">WOW</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">Rider</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">Leaflet</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">เบี้ยเลี้ยง</th>
+                            <th class="font-weight-normal width-table text-center" scope="col">High Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="loading">
+                        <tr>
+                            <td colspan="100" class="font-weight-normal text-center">
+                                {{"No Data Found" | translate}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!loading">
+                        <tr *ngFor="let item of timecurrentList; let i = index">
+                            <td class="align-middle sticky-col first-col bg-white">{{item.employee?item.employee.employeeId:'-'}} : {{item.employee?getName(item.employee.thFullName,item.employee.engFullName):'-'}}</td>
+                            <td class="align-middle">{{getName(item.ttimeCurrentSum.empPosition.tdesc,item.ttimeCurrentSum.empPosition.edesc)}}</td>
+                            <td class="align-middle text-center cursor-myhr {{statusFontColor(time.holiday,time.timeTemp)}}" [ngStyle]="{'background-color':statusColor(time.acApprove,time.rgmApprove)}" [ngClass]="{'bg-info text-white ': time.isSelect}" *ngFor="let time of item.ttimeCurrentSum.ttimeCurrentList; let l = index" (click)="onSelectDate(time,i,l)">{{dataCheck(time.hourD,time.leave,time.transfer)}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.sumHour?item.ttimeCurrentSum.sumHour.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.sumHourAndOt?item.ttimeCurrentSum.sumHourAndOt.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.sumLt?item.ttimeCurrentSum.sumLt.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.sumMlv?item.ttimeCurrentSum.sumMlv.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.hourPay?item.ttimeCurrentSum.hourPay.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.ot1?item.ttimeCurrentSum.ot1.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.ot15?item.ttimeCurrentSum.ot15.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.ot2?item.ttimeCurrentSum.ot2.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.ot3?item.ttimeCurrentSum.ot3.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.shift?item.ttimeCurrentSum.shift.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.wow?item.ttimeCurrentSum.wow.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.rider?item.ttimeCurrentSum.rider.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.leaflet?item.ttimeCurrentSum.leaflet.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.allowance?item.ttimeCurrentSum.allowance.toFixed(2):'0'}}</td>
+                            <td class="align-middle text-center">{{item.ttimeCurrentSum.highCost?item.ttimeCurrentSum.highCost.toFixed(2):'0'}}</td>
+                        </tr>
+                        <tr>
+                            <td class="align-middle sticky-col first-col table-info text-center text-dark">{{'system.total' | translate}}</td>
+                            <td class="align-middle text-center text-dark table-info">{{timecurrentList.length?timecurrentList.length:'0'}}</td>
+                            <td class="align-middle text-center text-dark table-info" *ngFor="let item of counter(sumDate); let i = index" id="sumVal{{i+1}}"></td>
+                            <td class="align-middle text-center text-dark table-info" *ngFor="let item of counter(15); let i = index" id="sumVal{{sumDate+i+1}}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="d-lg-none mt-3">
+            <div *ngIf="loading || timecurrentList.length === 0" class="text-center py-3 text-muted">{{"No Data Found" | translate}}</div>
+            <div *ngFor="let item of timecurrentList; let i = index" class="approved-card-mobile">
+                <div class="card-header">
+                    <span>{{item.employee?item.employee.employeeId:'-'}} : {{item.employee?getName(item.employee.thFullName,item.employee.engFullName):'-'}}</span>
+                    <span class="badge bg-info text-white">{{getName(item.ttimeCurrentSum.empPosition.tdesc,item.ttimeCurrentSum.empPosition.edesc)}}</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item"><span>{{"Work hour"| translate}}</span><strong>{{item.ttimeCurrentSum.sumHour?item.ttimeCurrentSum.sumHour.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"Work hour+OT"| translate}}</span><strong>{{item.ttimeCurrentSum.sumHourAndOt?item.ttimeCurrentSum.sumHourAndOt.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"late"| translate}}</span><strong>{{item.ttimeCurrentSum.sumLt?item.ttimeCurrentSum.sumLt.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"Early"| translate}}</span><strong>{{item.ttimeCurrentSum.sumMlv?item.ttimeCurrentSum.sumMlv.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"ชั่วโมงจ่าย"| translate}}</span><strong>{{item.ttimeCurrentSum.hourPay?item.ttimeCurrentSum.hourPay.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"OT (ชม) 1"| translate}}</span><strong>{{item.ttimeCurrentSum.ot1?item.ttimeCurrentSum.ot1.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"OT (ชม) 1.5"| translate}}</span><strong>{{item.ttimeCurrentSum.ot15?item.ttimeCurrentSum.ot15.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"OT (ชม) 2"| translate}}</span><strong>{{item.ttimeCurrentSum.ot2?item.ttimeCurrentSum.ot2.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"OT (ชม) 3"| translate}}</span><strong>{{item.ttimeCurrentSum.ot3?item.ttimeCurrentSum.ot3.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"Shift"| translate}}</span><strong>{{item.ttimeCurrentSum.shift?item.ttimeCurrentSum.shift.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"WOW"| translate}}</span><strong>{{item.ttimeCurrentSum.wow?item.ttimeCurrentSum.wow.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"Rider"| translate}}</span><strong>{{item.ttimeCurrentSum.rider?item.ttimeCurrentSum.rider.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"Leaflet"| translate}}</span><strong>{{item.ttimeCurrentSum.leaflet?item.ttimeCurrentSum.leaflet.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"เบี้ยเลี้ยง"| translate}}</span><strong>{{item.ttimeCurrentSum.allowance?item.ttimeCurrentSum.allowance.toFixed(2):'0'}}</strong></div>
+                        <div class="info-item"><span>{{"High Cost"| translate}}</span><strong>{{item.ttimeCurrentSum.highCost?item.ttimeCurrentSum.highCost.toFixed(2):'0'}}</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group mt-3">
+            <button type="button" class="btn btn-primary" [disabled]="timecurrentListApproveAll.length == 0" (click)="onApproved('approveAll')">
+                <i class="mdi mdi-check-all me-1"></i> {{"Manager Approver All"| translate}}
+            </button>
+            &nbsp;
+            <button type="submit" class="btn btn-primary" [disabled]="ListApproved.length == 0" (click)="onApproved('approve')">
+                <i class="mdi mdi-check me-1"></i> {{"Manager Approve" | translate}}
+            </button>
+            &nbsp;
+            <button type="submit" class="btn btn-danger" [disabled]="ListApproved.length == 0" (click)="onApproved('cancel')">
+                <i class="mdi mdi-close me-1"></i> {{"Cancel Approve" | translate}}
+            </button>
+            &nbsp;
+            <button type="submit" class="btn btn-info" (click)="exportexcel()" [disabled]="timecurrentList.length == 0">
+                <i class="mdi mdi-file-excel me-1"></i> {{"Export Excel" | translate}}
+            </button>
+        </div>
+
+        <div class="d-flex justify-content-start p-2">
+            <div class="p-2 bd-highlight">
+                <span class="badge badge-light rounded-pill" style="padding:2.5px 10px 2.5px 10px ;background-color:#e4b928;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Part time
+                    </p>
+                </span>
+            </div>
+            <div class="p-2 bd-highlight">
+                <span class="badge badge-light rounded-pill" style="padding:2.5px 10px 2.5px 10px ;background-color:#30e428;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Full time
+                    </p>
+                </span>
+            </div>
+            <div class="p-2 bd-highlight">
+                <span class="badge badge-light rounded-pill" style="padding:2.5px 10px 2.5px 10px ;background-color:#eafc8f;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Manager Approve
+                    </p>
+                </span>
+            </div>
+            <div class="p-2 bd-highlight">
+                <span class="badge badge-light rounded-pill" style="padding:2.5px 10px 2.5px 10px ;background-color:#b8e2ec;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> Leader Approver
+                    </p>
+                </span>
+            </div>
+            <div class="p-2 bd-highlight">
+                <span class="badge badge-light rounded-pill" style="padding:2.5px 10px 2.5px 10px ;background-color:#c7b191;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> No Approve
+                    </p>
+                </span>
+            </div>
+            <div class="p-2 bd-highlight">
+                <span class="badge badge-light rounded-pill border" style="padding:2.5px 10px 2.5px 10px ;background-color:#f4f4f4;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14"> No Plan
+                    </p>
+                </span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-start p-2 ">
+            <div class="p-2 bd-highlight">
+                <span class="text-warning">ตัวเลขสีส้ม</span> = มีการแก้ไขเวลาเข้า ออก ของพนักงาน, <span class="text-danger">ตัวเลขสีแดง</span> = วันหยุด, * = มีการยืมตัวพนักงาน, L = มีการลา
+            </div>
+        </div>
+        <div class="d-flex justify-content-end p-2">
+            <select class="form-select me-2" style="width: auto" [(ngModel)]="pageSize">
+                <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+            </select>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+                <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+                <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+            </ngb-pagination>
+        </div>
+
+<ng-template #branchModal let-modal>
+    <div class="modal-body" [perfectScrollbar]>
+        <div class="card" style="margin-bottom:-15px">
+            <div class="card-header bg-myhr">
+                <h4>{{"Working Area Table" | translate}}</h4>
+            </div>
+            <div class="card-body pt-0 pt-2">
+                <div class="d-flex col-5 mb-1 p-0">
+                    <input type="text"
+                        placeholder="{{'systemcode.search' | translate}} {{'Working Area ID' | translate}}{{' / '}}{{'Working Area Name' | translate}}"[ngModel]="searchModal" (ngModelChange)="searchFilter('workarea',$event)"
+                        class="form-control">
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                            <tr class="text-white font-weight-normal">
+                                <th class="font-weight-normal text-center" scope="col">{{"Working Area ID"| translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">{{"Working Area Name (Thai)"|
+                                    translate}}</th>
+                                <th class="font-weight-normal text-center" scope="col">{{"Working Area Name (Eng.)"|
+                                    translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="workareaListShow.length == 0">
+                                <td colspan="100%" class="font-weight-normal text-center">
+                                    {{"No Data Found" | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr class="cursor-myhr"
+                            *ngFor="let item of workareaListShow | slice: (pageModal-1) * pageSizeModal : ((pageModal-1) * pageSizeModal) + pageSizeModal; let i=index"
+                            (click)="slectWorkArea(item);modal.close('Close click')">
+                            <td class="font-weight-normal text-center">
+                                {{item.workareaId}}
+                            </td>
+                            <td class="font-weight-normal">
+                                {{item.tdesc}}
+                            </td>
+                            <td class="font-weight-normal">
+                                {{item.edesc}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-end p-2">
+                    <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSizeModal"
+                        (ngModelChange)="page=1">
+                        <option [ngValue]="10">{{"Items per page" | translate}}: 10</option>
+                        <option [ngValue]="50">{{"Items per page" | translate}}: 50</option>
+                        <option [ngValue]="100">{{"Items per page" | translate}}: 100</option>
+                    </select>
+                    <ngb-pagination [collectionSize]="workareaListShow.length" [(page)]="pageModal" [pageSize]="pageSizeModal"
+                        [maxSize]="3" [rotate]="true">
+                        <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+                        <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+            {{"Close"| translate}}
+        </button>
+    </div>
+</ng-template>
+<ng-template #confirmModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Close')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{msg | translate}}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="modal.close()">{{"confirm"|  translate}}</button> 
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss('Close')">{{"cancel"|
+        translate}}</button>
+    </div>
+  </ng-template>
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+      <h5 class="modal-title" id="editLabel">{{"Alert Message" | translate}}</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Close')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    {{msg | translate}}
+  </div>
+</ng-template>

@@ -6,8 +6,8 @@ import { Bu2, MyBu2 } from './bu2.model';
 import { Bu3, MyBu3 } from './bu3.model';
 import { OldJob, MyOldJob } from './old-job.model';
 import { OldEmpPosition, MyOldEmpPosition } from './old-emp-position.model';
-import { AdjTypeModel, MyAdjTypeModel } from './adj-type.model';
-import { AdjReasonModel, MyAdjReasonModel } from './adj-reason.model';
+import { AdjTypeModel } from './adj-type.model';
+import { AdjReasonModel } from './adj-reason.model';
 
 /**
  * Movements model
@@ -94,11 +94,11 @@ export class MyMovementsModel
       ? new MyBu3(data.bu3, this.translateService!)
       : data.bu3;
     this.adj_type = data?.adj_type
-      ? new MyAdjTypeModel(data.adj_type, translateService!)
-      : new MyAdjTypeModel({}, translateService!);
+      ? new AdjTypeModel(data.adj_type, translateService!)
+      : new AdjTypeModel({}, translateService!);
     this.adj_reason = data?.adj_reason
-      ? new MyAdjReasonModel(data.adj_reason, translateService!)
-      : new MyAdjReasonModel({}, translateService!);
+      ? new AdjReasonModel(data.adj_reason, translateService!)
+      : new AdjReasonModel({}, translateService!);
     this.positionId = data.positionId || '';
     this.tdesc = data.tdesc || '';
     this.edesc = data.edesc || '';

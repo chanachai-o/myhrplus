@@ -1,0 +1,52 @@
+<!--
+  Modernized Workflow Admin Menu Component
+  - Aligns with Gemini Design System
+  - Replaces large image-based nav with a clean, list-based menu
+  - Improves layout and responsiveness
+-->
+<div class="card main-content-card admin-menu-container">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "ADMINISTRATOR" | translate }}</h4>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row g-0">
+      <!-- Left Pane: Menu List -->
+      <div class="col-12 col-md-4 admin-menu-sidebar">
+        <ul ngbNav #listMenuChild="ngbNav" [(activeId)]="active" orientation="vertical" class="nav-pills admin-menu-list">
+          @for (item of listMenu; let i = $index; track item.link) {
+            <li [ngbNavItem]="i + 1" (click)="routerLink(item.link)">
+              <a ngbNavLink class="admin-menu-item">
+                <i class="menu-icon" [ngClass]="item.icon || 'mdi mdi-chevron-right'"></i>
+                <span class="menu-text">{{ item.name | translate }}</span>
+              </a>
+              <ng-template ngbNavContent>
+                <div class="sub-menu-container">
+                  @for (child of item.child; track child.link) {
+                    <a class="sub-menu-item" routerLink="{{ child.link }}">
+                      {{ getDesc(child.tName, child.eName) }}
+                    </a>
+                  }
+                </div>
+              </ng-template>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Right Pane: Sub-menu Content -->
+      <div class="col-12 col-md-8 admin-menu-content">
+        <div [ngbNavOutlet]="listMenuChild"></div>
+        @if (active === 0 && !windowWidthBelow(768)) {
+          <div class="placeholder">
+            <i class="mdi mdi-cogs placeholder-icon"></i>
+            <h5>{{ "Select menu." | translate }}</h5>
+            <p>{{ "Select an item from the list to see the options." | translate }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

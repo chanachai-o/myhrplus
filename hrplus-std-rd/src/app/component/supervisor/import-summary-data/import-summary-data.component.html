@@ -1,0 +1,239 @@
+<!-- 
+  Refactored by Gemini
+  - Applied Gemini Design System principles for a modern and consistent UI.
+  - Replaced outdated Bootstrap 4 classes with Bootstrap 5 equivalents (e.g., custom-file -> form-control, m-b-0 -> mb-0).
+  - Implemented a responsive design with a card-based list for mobile view and a table for desktop view.
+  - Switched to modern Angular control flow syntax (@if, @for) for improved performance and readability.
+  - Standardized modal dialogs to match the design system.
+  - Simplified loading indicators for a cleaner look.
+-->
+<div class="main-content-card">
+  <div class="card-header bg-myhr">
+    <h4 class="mb-0 text-white">{{"Import Summary Data" | translate}}</h4>
+  </div>
+
+  <div class="card-body">
+    @if (loadingJob) {
+      <!-- Filter/Action Bar -->
+      <div class="filter-bar mb-3">
+        <div class="row w-100">
+          <div class="col-lg-6 col-md-12 mb-2 mb-lg-0">
+            <label for="fileInput" class="form-label">{{"selected_file" | translate}}</label>
+            <div class="input-group">
+              <input #fileInput type="file" class="form-control" id="fileInput" (change)="onFileChange($event.target.files)">
+              <label class="input-group-text" for="fileInput">{{ nameFile | translate }}</label>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 d-flex align-items-end justify-content-start justify-content-lg-end">
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary" (click)="showexample()">
+                <i class="mdi mdi-file-excel me-1"></i>
+                {{"example" | translate}}
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="disabledbtn" (click)="onSunmit()">
+                <i class="mdi mdi-upload me-1"></i>
+                {{"upload" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State for Table/Cards -->
+      @if (loading) {
+        <div class="d-flex justify-content-center p-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } @else {
+        <!-- Desktop Table View -->
+        <div class="d-none d-lg-block">
+          <div class="table-responsive">
+            <table class="table table-hover v-middle">
+              <thead class="thead-light">
+                <tr>
+                  <th class="text-center" scope="col">{{"No." | translate}}</th>
+                  <th scope="col">{{"Name-Surname" | translate}}</th>
+                  <th scope="col">{{"position" | translate}}</th>
+                  <th scope="col">{{"Segment" | translate}}</th>
+                  <th scope="col">{{"Department " | translate}}</th>
+                  <th scope="col">{{"Section 1" | translate}}</th>
+                  <th scope="col">{{"Section 2" | translate}}</th>
+                  <th scope="col">{{"Section 3" | translate}}</th>
+                  <th scope="col">{{"Section 4" | translate}}</th>
+                  <th scope="col">{{"Section 5" | translate}}</th>
+                  <th class="text-center" scope="col">{{"Remark" | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of modelProfile; track item.idPeople; let i = $index) {
+                  <tr [class.text-danger]="item.checkId">
+                    <td class="text-center align-middle">{{ i + 1 }}</td>
+                    <td class="align-middle">{{ item.getFullname() }}</td>
+                    <td class="align-middle">{{ item.empPosition ? item.empPosition.getName() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu1 ? item.job.bu1.getBu1Desc() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu2 ? item.job.bu2.getBu2Desc() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu3 ? item.job.bu3.getBu3Desc() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu4 ? item.job.bu4.getBu4Desc() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu5 ? item.job.bu5.getBu5Desc() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu6 ? item.job.bu6.getBu6Desc() : '-' }}</td>
+                    <td class="align-middle">{{ item.job?.bu7 ? item.job.bu7.getBu7Desc() : '-' }}</td>
+                    <td class="text-center align-middle">
+                      <button type="button" class="btn btn-info btn-sm" (click)="openCheckError(item);">
+                        {{"systemcode.description" | translate}}
+                      </button>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="11" class="text-center p-4">{{"No data to display" | translate}}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="d-lg-none">
+          @for (item of modelProfile; track item.idPeople; let i = $index) {
+            <div class="card info-card card-hover mb-3" [class.border-danger]="item.checkId">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="mb-0" [class.text-danger]="item.checkId">{{ item.getFullname() }}</h6>
+                <span class="badge bg-light text-dark">{{ i + 1 }}</span>
+              </div>
+              <div class="card-body">
+                <div class="info-row">
+                  <div class="info-item">
+                    <span>{{"position" | translate}}</span>
+                    <strong>{{ item.empPosition ? item.empPosition.getName() : '-' }}</strong>
+                  </div>
+                  <div class="info-item">
+                    <span>{{"Segment" | translate}}</span>
+                    <strong>{{ item.job?.bu1 ? item.job.bu1.getBu1Desc() : '-' }}</strong>
+                  </div>
+                  <div class="info-item">
+                    <span>{{"Department " | translate}}</span>
+                    <strong>{{ item.job?.bu2 ? item.job.bu2.getBu2Desc() : '-' }}</strong>
+                  </div>
+                </div>
+                <hr>
+                <div class="details-grid">
+                  <div class="detail-item"><span>{{"Section 1" | translate}}</span><strong>{{ item.job?.bu3 ? item.job.bu3.getBu3Desc() : '-' }}</strong></div>
+                  <div class="detail-item"><span>{{"Section 2" | translate}}</span><strong>{{ item.job?.bu4 ? item.job.bu4.getBu4Desc() : '-' }}</strong></div>
+                  <div class="detail-item"><span>{{"Section 3" | translate}}</span><strong>{{ item.job?.bu5 ? item.job.bu5.getBu5Desc() : '-' }}</strong></div>
+                  <div class="detail-item"><span>{{"Section 4" | translate}}</span><strong>{{ item.job?.bu6 ? item.job.bu6.getBu6Desc() : '-' }}</strong></div>
+                  <div class="detail-item"><span>{{"Section 5" | translate}}</span><strong>{{ item.job?.bu7 ? item.job.bu7.getBu7Desc() : '-' }}</strong></div>
+                </div>
+                <div class="mt-3 text-center">
+                  <button type="button" class="btn btn-info btn-sm" (click)="openCheckError(item);">
+                    {{"systemcode.description" | translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center p-4">{{"No data to display" | translate}}</div>
+          }
+        </div>
+      }
+    } @else {
+      <!-- Main Loading State -->
+      <div class="d-flex justify-content-center p-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modals -->
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{"Alert Message" | translate}}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    {{ errormsg | translate }}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.dismiss('cancel')">{{"cancel" | translate}}</button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit(); modal.close('Confirm click')">{{"confirm" | translate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{"Alert Message" | translate}}</h5>
+    <button type="button" class="btn-close" (click)="modal.close('Close')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <p>{{ msg }}</p>
+    @if (modelProfileList.length > 0) {
+      <ul class="list-unstyled mt-3">
+        @for (item of modelProfileList; track item.idPeople) {
+          <li class="mb-2">
+            <i class="mdi mdi-account-check text-success me-2"></i>
+            <span>{{ item.idPeople }} : {{ translateService.currentLang == 'th' ? item.fname + ' ' + item.lname : item.efname + ' ' + item.elname }}</span>
+          </li>
+        }
+      </ul>
+    }
+    @if (unableProfileList.length > 0) {
+      <p class="text-danger mt-3">{{'Unable to import data' | translate}}</p>
+      <ul class="list-unstyled mt-2">
+        @for (item of unableProfileList; track item.idPeople) {
+          <li class="mb-2">
+            <i class="mdi mdi-account-alert text-danger me-2"></i>
+            <span>{{ item.idPeople }} : {{ translateService.currentLang == 'th' ? item.fname + ' ' + item.lname : item.efname + ' ' + item.elname }}</span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</ng-template>
+
+<ng-template #checkModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{"systemcode.description" | translate}}</h5>
+    <button type="button" class="btn-close" (click)="modal.close('Close')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.employeeId">EMPLOYEEID *:</span> {{checkModel.employeeId}}</li>
+          <li class="list-group-item"><span [class.text-danger]="checkModel.adAccount === 'ข้อมูลซ้ำ'">AD_ACCOUNT:</span> {{checkModel.adAccount}}</li>
+          <li class="list-group-item"><span>COMPANYID:</span> {{checkModel.companyId}}</li>
+          <li class="list-group-item"><span>EMP_PREFIX:</span> {{checkModel.empPrefix?.prefixId || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.fname">FNAME *:</span> {{checkModel.fname || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.lname">LNAME *:</span> {{checkModel.lname || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.efname">EFNAME *:</span> {{checkModel.efname || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.elname">ELNAME *:</span> {{checkModel.elname || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.idPeople">ID_PEOPLE *:</span> {{checkModel.idPeople || ''}}</li>
+          <li class="list-group-item"><span>SWIPECARDID:</span> {{checkModel.swipecardId || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.salaType">SALATYPE *:</span> {{checkModel.salaType?.codeId || ''}}</li>
+          <li class="list-group-item"><span>ISHANDICAPPED:</span> {{checkModel.isHandicapped || ''}}</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><span>HANDICAPPEDTYPE:</span> {{checkModel.handicappedType}}</li>
+          <li class="list-group-item"><span>BIRTHDAY *:</span> {{checkModel.birthDay}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.workArea">WORKAREA:</span> {{checkModel.workArea?.workareaId || ''}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.startDate">STARTDATE:</span> {{checkModel.startDate}}</li>
+          <li class="list-group-item"><span [class.text-danger]="!checkModel.job">JOB:</span> {{checkModel.job?.jobcodeId || ''}}</li>
+          <li class="list-group-item"><span>CONTRACT_PARTY:</span> {{checkModel.contractParty}}</li>
+          <li class="list-group-item"><span>EMP_POSITION:</span> {{checkModel.empPosition?.positionId || ''}}</li>
+          <li class="list-group-item"><span>EMP_TYPE:</span> {{checkModel.empType?.codeId || ''}}</li>
+          <li class="list-group-item"><span>BOSSID:</span> {{checkModel.bossId}}</li>
+          <li class="list-group-item"><span>EMAIL:</span> {{checkModel.email}}</li>
+          <li class="list-group-item"><span>TEL_NO:</span> {{checkModel.telNo}}</li>
+          <li class="list-group-item"><strong [class.text-danger]="checkModel.checkId">{{"Remark" | translate}}:</strong> {{checkModel.msgStatus}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>

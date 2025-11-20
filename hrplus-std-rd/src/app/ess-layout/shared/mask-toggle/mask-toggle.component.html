@@ -1,0 +1,8 @@
+<span>{{ display || '-' }}</span>
+
+<button type="button"
+        class="btn btn-link p-0 ms-1 align-baseline"
+        (click)="toggle()"
+        [attr.aria-label]="show ? 'Hide' : 'Show'">
+  <i-feather [name]="show ? 'eye-off' : 'eye'"></i-feather>
+</button>

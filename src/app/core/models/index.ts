@@ -11,6 +11,7 @@ export * from './error.model';
 
 // Base models
 export * from './base.model';
+export * from './base-code-description.model';
 export * from './sort.model';
 export * from './sort2.model';
 export * from './pageable.model';
@@ -198,7 +199,8 @@ export * from './old-job.model';
 export * from './old-emp-position.model';
 export * from './adj-type.model';
 export * from './adj-reason.model';
-export * from './employee-type.model';
+// Note: employee-type.model.ts is deprecated, use emp-type.model.ts instead
+// export * from './employee-type.model'; // DEPRECATED - use emp-type.model.ts
 export * from './emp-group.model';
 export * from './sala-type.model';
 export * from './handicapped-type.model';

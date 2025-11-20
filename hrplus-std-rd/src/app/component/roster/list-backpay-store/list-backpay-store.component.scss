@@ -1,0 +1,88 @@
+/* Updated SCSS for list-backpay-store */
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: .375rem;
+}
+
+.filter-grid .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.report-table {
+    th.sticky-col {
+        position: sticky;
+        left: 0;
+        background-color: #0275d8; /* bg-info */
+    }
+    td.sticky-col {
+        position: sticky;
+        left: 0;
+        background-color: white;
+    }
+    thead.bg-info th {
+        position: sticky;
+        top: 0;
+    }
+}
+
+/* Mobile Card View */
+.backpay-card-mobile {
+    border: 1px solid #dee2e6;
+    border-radius: .375rem;
+    margin-bottom: 1rem;
+
+    .card-header {
+        background-color: #f8f9fa;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .income-deduct-section {
+        .section-title {
+            font-weight: 500;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            &.income { color: #28a745; } // success
+            &.deduct { color: #dc3545; } // danger
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .info-item {
+            span { display: block; font-size: 0.85rem; color: #6c757d; }
+            strong { display: block; font-size: 1rem; }
+        }
+    }
+}

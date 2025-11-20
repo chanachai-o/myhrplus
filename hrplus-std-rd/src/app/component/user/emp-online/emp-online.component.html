@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="card-header bg-myhr">
+        <h4>
+            {{"Emp Online" | translate}}
+        </h4>
+    </div>
+    <div class="card-body">
+        <div class="row align-middle  justify-content-end">
+            <div class="form-group col-md-2 col-6 col-sm-6" style = "margin-top: 5px;
+            text-align: right">
+                <span class="badge badge-light rounded-pill" style = "width: 130px;
+                padding: 4px;">
+                    <p class="mb-0 me-1 text-dark font-weight-bold font-14">
+                        {{"all" | translate}}
+                        <span class="badge badge-danger rounded-pill px-3 font-weight-blod font-14">
+                            <!-- {{userList.length?userList.length:0}} -->
+                            {{collectionSize?collectionSize:0}}
+                    </span>
+                    </p>
+                </span>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="wrapper">
+                <table class="table table-hover table-striped-myhr table-sm mb-0 no-wrap v-middle">
+                    <thead class="bg-info">
+                        <tr class="text-white font-weight-normal">
+                            <th class="font-weight-normal text-center" scope="col">
+                                {{"No." | translate}}
+                            </th>
+                            <th class="font-weight-normal" scope="col">
+                                {{"Uname" | translate}}
+                            </th>
+                            <th class="font-weight-normal" scope="col">
+                                {{"Name-Surname"| translate}}
+                            </th>
+                            <th class="font-weight-normal" scope="col">
+                                {{"IP" | translate}}
+                            </th>
+                            <th class="font-weight-normal" scope="col">
+                                {{"Login Time" | translate}}
+                            </th>
+                            <th class="font-weight-normal" scope="col">
+                                {{"On page" | translate}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let u of actionOnline | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index ">
+                            
+                            <td class="align-middle text-center" scope = "row">
+                                {{i+1}}
+                            </td>
+                            <td class="align-middle" >
+                                {{u.userCode}}
+                            </td>
+                            <td class="align-middle">
+                                {{u.user.employee.getFullname()}}
+                            </td>
+                            <td class="align-middle">
+                                {{u.remoteIp}}
+                            </td>
+                            <td class="align-middle">
+                                {{u.loginTime}}
+                            </td>
+                            <td class="align-middle">
+                                {{u.moduleName}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end p-2">
+                <select  class="form-select m-r-5" style="width: auto;" [(ngModel)] = "pageSize">
+                    <option [ngValue]="10">
+                        {{"Items per page" | translate}}: 10
+                    </option>
+                    <option [ngValue]="50">
+                        {{"Items per page" | translate}}: 50
+                    </option>
+                    <option [ngValue]="100">
+                        {{"Items per page" | translate}}: 100
+                    </option>
+                </select>
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3" [rotate]="true">
+                    <ng-template ngbPaginationPrevious>
+                        {{"Prev" | translate}}
+                    </ng-template>
+                    <ng-template ngbPaginationNext>
+                        {{"Next" | translate}}
+                    </ng-template>
+                    
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>

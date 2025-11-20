@@ -1,0 +1,10 @@
+.border-color-red {
+    border-color: red transparent red red !important;
+}
+.border-color-red:focus {
+    color: #4f5467 !important;
+    background-color: #fff !important;
+    border-color: red !important;
+    outline: 0 !important;
+    box-shadow: transparent;
+}

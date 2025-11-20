@@ -1,5 +1,5 @@
 import { BaseModel, TranslateService } from './base.model';
-import { Prefix, MyPrefix } from './prefix.model';
+import { Prefix } from './prefix.model';
 import { Bu7, MyBu7 } from './bu7.model';
 import { StatsuWorkingTimeModel } from './status-working-time.model';
 
@@ -45,7 +45,7 @@ export class EmployeeWorkingTiemModel
     super(data!, translateService!);
     this.employeeId = data.employeeId || '';
     this.prefix = data.prefix
-      ? new MyPrefix(data.prefix, translateService!)
+      ? new Prefix(data.prefix, translateService!)
       : ({} as Prefix);
     this.bu7 = data.bu7
       ? new MyBu7(data.bu7, translateService!)

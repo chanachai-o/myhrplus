@@ -1,0 +1,1025 @@
+
+<div class="row">
+
+
+<!-- ข้อมูลพนักงาน -->
+<div class="col-12">
+    <app-workflow-emp-information [employeeId]="employeeId"
+        (changeEmpInformation)="changeEmpInformation($event)"></app-workflow-emp-information>
+</div>
+<!-- ปิดข้อมูลพนักงาน -->
+<!-- รายละเอียดใบขอแก้ไขข้อมูลธนาคาร -->
+<div class="col-12">
+    <div class="card mb-0">
+        <div class="card-header bg-myhr">
+            <h6 class="card-title">{{"Detail" | translate }}</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <label class="text-center font-weight-bold font-14 ">
+                        {{tax.topic.getName()}}
+                    </label>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <label class="text-center font-weight-bold font-14 ">
+                        {{getMessageTranslate("วัน/เดือน/ปี ที่แจ้งรายการ",
+                        "Date declared")}} {{reqdate}}
+                    </label>
+                </div>
+                <!-- แผนก -->
+<!--                <label for="Dept" class="col-6 col-md-3 col-form-label text-center mb-3">-->
+<!--                    {{getMessageTranslate("แผนก","Dept")}}-->
+<!--                </label>-->
+<!--                <div class="col-6 col-md-3 mb-3">-->
+<!--                    <input type="text" class="form-control" id="Dept"-->
+<!--                        placeholder="{{getMessageTranslate('แผนก','Dept')}}" disabled [value]="tax.bu1.getName()">-->
+<!--                </div>-->
+                <!-- ปิดแผนก -->
+                <!-- เลขประจำตัวผู้เสียภาษีอากร -->
+                <label for="TaxIDNumber" class="col-6 col-md-3 col-form-label text-center mb-3">
+                    {{getMessageTranslate("เลขประจำตัวผู้เสียภาษีอากร","Tax ID Number")}}
+                </label>
+                <div class="col-6 col-md-3 mb-3">
+                    <input type="text" appMaskInput="idTAX" class="form-control" id="TaxIDNumber"
+                        placeholder="{{getMessageTranslate('เลขประจำตัวผู้เสียภาษีอากร','Tax ID Number')}}" disabled
+                        [(ngModel)]="tax.idTAX">
+                </div>
+                <!-- ปิดเลขประจำตัวผู้เสียภาษีอากร -->
+                <!-- สาขา -->
+<!--                <label for="Branch" class="col-6 col-md-3 col-form-label text-center  mb-3">-->
+<!--                    {{getMessageTranslate("สาขา","Branch")}}-->
+<!--                </label>-->
+<!--                <div class="col-6 col-md-3 mb-3">-->
+<!--                    <input type="text" class="form-control" id="Branch"-->
+<!--                        placeholder="{{getMessageTranslate('สาขา','Branch')}}" disabled [value]="tax.bu2.getName()">-->
+<!--                </div>-->
+                <!-- ปิดสาขา -->
+                <!-- เลขประจำตัวประชาชน -->
+                <label for="IDCardNo" class="col-6 col-md-3 col-form-label text-center  mb-3">
+                    {{getMessageTranslate("เลขประจำตัวประชาชน","ID Card No")}}
+                </label>
+                <div class="col-6 col-md-3 mb-3">
+                    <input type="text" appMaskInput="idPeople" class="form-control" id="IDCardNo"
+                        placeholder="{{getMessageTranslate('เลขประจำตัวประชาชน','ID Card No')}}" disabled
+                        [(ngModel)]="tax.idPeople">
+                </div>
+                <!-- ปิดเลขประจำตัวประชาชน -->
+                <!-- รหัสพนักงาน -->
+                <label for="EmployeeCode" class="col-6 col-md-3 col-form-label text-center  mb-3">
+                    {{getMessageTranslate("รหัสพนักงาน","Employee Code")}}
+                </label>
+                <div class="col-6 col-md-3 mb-3">
+                    <input type="text" class="form-control" id="EmployeeCode"
+                        placeholder="{{getMessageTranslate('รหัสพนักงาน','Employee Code')}}" disabled
+                        [value]="tax.employee.employeeId">
+                </div>
+                <!-- ปิดรหัสพนักงาน -->
+                <!-- วันที่เริ่มทำงาน -->
+                <label for="TaxFirstHireDate" class="col-6 col-md-3 col-form-label text-center mb-3">
+                    {{getMessageTranslate("วันที่เริ่มทำงาน","Start Date")}}
+                </label>
+                <div class="col-6 col-md-3">
+                    <div class="form-group input-group">
+                        <input class="form-control" ngbDatepicker #DpTaxFirstHireDate="ngbDatepicker"
+                            id="TaxFirstHireDate" placeholder="{{'dd.mm.yyyy' | translate}}"
+                            [(ngModel)]="taxFirstHireDate" disabled>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-info no-shadow"
+                                (click)="DpTaxFirstHireDate.toggle()" disabled>
+                                <i class="far fa-calendar-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- ปิดวันที่เริ่มทำงาน -->
+                <!-- ผู้มีเงินได้ชื่อ -->
+                <label for="TaxpayerName" class="col-6 col-md-3 col-form-label text-center  mb-3">
+                    {{getMessageTranslate("ผู้มีเงินได้ชื่อ","Taxpayer Name")}}
+                </label>
+                <div class="col-6 col-md-3 mb-3">
+                    <input type="text" class="form-control" id="TaxpayerName"
+                        placeholder="{{getMessageTranslate('ผู้มีเงินได้ชื่อ','Taxpayer Name')}}" disabled
+                        [value]="tax.employee.getName()">
+                </div>
+                <!-- ปิดผู้มีเงินได้ชื่อ -->
+                <!-- วัน/เดือน/ปีเกิด(ผู้มีเงินได้) -->
+                <label for="TaxBirthDay" class="col-6 col-md-3 col-form-label text-center  mb-3">
+                    {{getMessageTranslate("วัน/เดือน/ปีเกิด(ผู้มีเงินได้)","Taxpayer s Birthdate")}}
+                </label>
+                <div class="col-6 col-md-3">
+                    <div class="form-group input-group">
+                        <input class="form-control" ngbDatepicker #DpTaxBirthDay="ngbDatepicker" id="TaxBirthDay"
+                            placeholder="{{'dd.mm.yyyy' | translate}}" [(ngModel)]="taxBirthDay" disabled>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-info no-shadow"
+                                (click)="DpTaxBirthDay.toggle()" disabled>
+                                <i class="far fa-calendar-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- ปิดวัน/เดือน/ปีเกิด(ผู้มีเงินได้) -->
+                <ng-container *ngTemplateOutlet="Choice1"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice2"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice3"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice4"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice5"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice6"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice7"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice8"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice9"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice10"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice11"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice12"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice13"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice14"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice15"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice16"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice17"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice18"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice19"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice20"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice21"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice22"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice23"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice24"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice25"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice26"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice27"></ng-container>
+                <ng-container *ngTemplateOutlet="Choice28"></ng-container>
+                <label class="col-12 text-center mb-3">
+                    {{getMessageTranslate("ข้าพเจ้าขอรับรองว่ารายการที่แสดงไว้เป็นความจริงทุกประการ",
+                    "I here by certify that all above information is true.")}}
+                </label>
+                <label class="col-1 mb-3">
+                    {{getMessageTranslate("หมายเหตุ","Remark")}}
+                </label>
+                <div class="col-11 mb-3">
+                    <div class="row">
+                        <label class="col-12">
+                            (1) {{getMessageTranslate("ปีภาษี หมายถึง เดือน มกราคม - ธันวาคม",
+                            "Tax year represents the periods during January December")}}
+                        </label>
+                        <label class="col-12">
+                            (2) {{getMessageTranslate("คู่สมรส หมายถึง "+
+                            "คู่สมรสของผู้มีเงินได้ที่จดทะเบียนถูกต้องตามกฎหมาย",
+                            "Spouse means husband or wife who has the marriage registration certificate.")}}
+                        </label>
+                    </div>
+                </div>
+                <app-workflow-remark [wfid]="wfid"></app-workflow-remark>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ปิดรายละเอียดใบขอแก้ไขข้อมูลธนาคาร -->
+</div>
+<!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+<app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+</app-workflow-detail-footer>
+<!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+
+<ng-template #Choice1>
+    <label class="col-6 col-md-3 font-weight-bold font-14 mb-3">
+        1. {{getMessageTranslate("สถานภาพสมรส","Marital Status")}}
+    </label>
+    <div class="col-6 col-md-9 mb-3">
+        <div class="row">
+            <div class="col-12" *ngIf="taxStatMarry=='S'">
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="Single" (click)="choice1RadioChange('S')"
+                        [checked]="taxStatMarry=='S'" disabled>
+                    <label class="custom-control-label" for="Single">
+                        {{getMessageTranslate("โสด","Single")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="taxStatMarry=='M0'">
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="Marriage" class="custom-control-input" (click)="choice1RadioChange('M0')"
+                        [checked]="taxStatMarry=='M0'" disabled>
+                    <label class="custom-control-label" for="Marriage">
+                        {{getMessageTranslate("สมรสไม่จดทะเบียน","Marriage is not registered")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="taxStatMarry=='M1'">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="Marriage1" class="custom-control-input"
+                                (click)="choice1RadioChange('M1')" [checked]="taxStatMarry=='M1'" disabled>
+                            <label class="custom-control-label" for="Marriage1">
+                                {{getMessageTranslate("สมรสจดทะเบียน กรุณาระบุ วันเดือนปีที่จดทะเบียนสมรส",
+                                "Marriage registration Please insert Date of the registration")}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 ">
+                        <div class="input-group">
+                            <input class="form-control" ngbDatepicker #DpTaxMarrRegDate="ngbDatepicker"
+                                placeholder="{{'dd.mm.yyyy' | translate}}" [ngModel]="taxMarrRegDate"
+                                (ngModelChange)="choice1DateChange($event)" disabled>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-info no-shadow"
+                                    (click)="DpTaxMarrRegDate.toggle()" disabled>
+                                    <i class="far fa-calendar-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="taxStatMarry=='M1'">
+                <div class="row">
+                    <div class="col-12 col-md-4" *ngIf="tax.incSpouse=='0'">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="TaxIncSpouse" class="custom-control-input"
+                                (click)="tax.incSpouse='0'" [checked]="tax.incSpouse=='0'" disabled>
+                            <label class="custom-control-label" for="TaxIncSpouse">
+                                {{getMessageTranslate("คู่สมรสไม่มีเงินได้","Spouse has no income")}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" *ngIf="tax.incSpouse=='1'">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="TaxIncSpouse1" class="custom-control-input"
+                                (click)="tax.incSpouse='1';choice1IncSpouseRadioChange()" [checked]="tax.incSpouse=='1'"
+                                disabled>
+                            <label class="custom-control-label" for="TaxIncSpouse1">
+                                {{getMessageTranslate("คู่สมรสมีเงินได้","Spouse has income but")}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="tax.statMarry=='W'">
+                <div class="row">
+                    <div class="col-12 col-md-4" *ngIf="taxStatMarry=='W1'">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="Widow" class="custom-control-input"
+                                (click)="choice1RadioChange('W1')" [checked]="taxStatMarry=='W1'" disabled>
+                            <label class="custom-control-label" for="Widow">
+                                {{getMessageTranslate("หม้าย /คู่สมรสเสียชีวิต","Widow /Spouse died")}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" *ngIf="taxStatMarry=='W2'">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="Widow1" class="custom-control-input"
+                                (click)="choice1RadioChange('W2')" [checked]="taxStatMarry=='W2'" disabled>
+                            <label class="custom-control-label text-nowrap" for="Widow1">
+                                {{getMessageTranslate("หม้าย/คู่สมรสเสียชีวิตระหว่างปีภาษี",
+                                "Widow/Spouse died during the tax year")}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="tax.statMarry=='D'">
+                <div class="row">
+                    <div class="col-12 col-md-4" *ngIf="taxStatMarry=='D1'">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="Divorced" class="custom-control-input"
+                                (click)="choice1RadioChange('D1')" [checked]="taxStatMarry=='D1'" disabled>
+                            <label class="custom-control-label" for="Divorced">
+                                {{getMessageTranslate("หย่า","Divorced")}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" *ngIf="taxStatMarry=='D2'">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="Divorced1" class="custom-control-input"
+                                (click)="choice1RadioChange('D2')" [checked]="taxStatMarry=='D2'" disabled>
+                            <label class="custom-control-label" for="Divorced1">
+                                {{getMessageTranslate("หย่าระหว่างปีภาษี","Divorced during the year")}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice2>
+    <label class="col-12">
+        2. {{getMessageTranslate(
+        "ค่าลดหย่อนบุตร (จะต้องเป็นบุตรอายุไม่เกิน 25 ปี และบุตรต้องมีเงินได้ในปีไม่ถึง 30,000 บาท)",
+        "ค่าลดหย่อนบุตร (จะต้องเป็นบุตรอายุไม่เกิน 25 ปี และบุตรต้องมีเงินได้ในปีไม่ถึง 30,000 บาท)")}}
+    </label>
+    <label for="ChildsDomestic" class="col-9 col-form-label ps-3">
+        {{getMessageTranslate(
+        "- บุตรที่ลดหย่อน 30,000 บาท",
+        "- Childs allowance 30,000 bath")}}
+        &nbsp;
+        <input type="text" class="form-control" oninput="value = value.replace(/[^0-9]/g, '').replace(/^0([0-9])/g, '$1');
+            this.value = parseInt(this.value.split(',').join(''))>10?'10':this.value"
+            onchange="this.value = value.replace(/^$/g, '0')" style="width: 4rem;display: inline-block"
+            [(ngModel)]="tax.childDomestic" disabled>
+        &nbsp;
+        {{getMessageTranslate(
+        "คน (เป็นบุตรที่เกิดก่อนปี พ.ศ.2561 หรือบุตรคนแรกที่เกิดในหรือหลัง พ.ศ.2561)",
+        "Persons (เป็นบุตรที่เกิดก่อนปี พ.ศ.2561 หรือบุตรคนแรกที่เกิดในหรือหลัง พ.ศ.2561)")}}
+    </label>
+    <div class="col-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="ChildsDomestic" disabled
+                [value]="choice2Calculate('childDomestic')">
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+    <label for="ChildsAbroad" class="col-9 col-form-label ps-3 mb-3">
+        {{getMessageTranslate(
+        "- บุตรที่ลดหย่อน 60,000 บาท",
+        "- Childs allowance 60,000 bath")}}
+        &nbsp;
+        <input type="text" class="form-control" oninput="value = value.replace(/[^0-9]/g, '').replace(/^0([0-9])/g, '$1');
+            this.value = parseInt(this.value.split(',').join(''))>10?'10':this.value"
+            onchange="this.value = value.replace(/^$/g, '0')" style="width: 4rem;display: inline-block"
+            [(ngModel)]="tax.childAbroad" disabled>
+        &nbsp;
+        {{getMessageTranslate(
+        "คน (เป็นบุตรที่เกิดในหรือหลัง พ.ศ.2561 และไม่ใช่บุตรคนแรก)",
+        "Persons (childs that birth in or after 2019 and not first child)")}}
+    </label>
+    <div class="col-3 mb-3  d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="ChildsAbroad" disabled
+                [value]="choice2Calculate('childAbroad')">
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice3>
+    <label class="col-12">
+        3. {{getMessageTranslate(
+        "บิดามารดา ที่อยู่ในอุปการะเลี้ยงดูของผู้มีเงินได้ (โดยมีอายุตั้งแต่ 60 ขึ้นไป "+
+        "และต้องมีเงินได้พึงประเมินในปีภาษีไม่เกิน 30,000 บาท)",
+        "Parent allowance for Taxpayer's and Spouse's Parent "+
+        "(Age of parent is equal or over 60 and has annual income not exceed Bht 30,000)")}}
+    </label>
+    <div class="col-9 mb-3 ps-3">
+        <div class="row">
+            <div class="col-12 ">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="FthYn"
+                        (click)="tax.fthYn = tax.fthYn=='1'?'0':'1'" [checked]="tax.fthYn=='1'" disabled>
+                    <label class="custom-control-label" for="FthYn">
+                        {{getMessageTranslate("บิดาของผู้มีเงินได้","Father of Taxpayer")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 ">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="MthYn"
+                        (click)="tax.mthYn = tax.mthYn=='1'?'0':'1'" [checked]="tax.mthYn=='1'" disabled>
+                    <label class="custom-control-label" for="MthYn">
+                        {{getMessageTranslate("มารดาของผู้มีเงินได้","Mother of Taxpayer")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="FthMryYn"
+                        (click)="tax.fthMryYn = tax.fthMryYn=='1'?'0':'1'" [checked]="tax.fthMryYn=='1'" disabled>
+                    <label class="custom-control-label" for="FthMryYn">
+                        {{getMessageTranslate("บิดาของคู่สมรส","Father of Spouse")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 ">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="MthMryYn"
+                        (click)="tax.mthMryYn = tax.mthMryYn=='1'?'0':'1'" [checked]="tax.mthMryYn=='1'" disabled>
+                    <label class="custom-control-label" for="MthMryYn">
+                        {{getMessageTranslate("มารดาของคู่สมรส","Mother of Spouse")}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3 mb-3  d-flex align-items-end">
+        <div class="input-group ">
+            <input type="text" class="form-control" disabled [value]="choice3Calculate()">
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice4>
+    <label class="col-12">
+        4. {{getMessageTranslate(
+        "เบี้ยประกันสุขภาพบิดามารดาของผู้มีเงินได้และคู่สมรส ( ตามจ่ายจริงแต่ไม่เกิน ",
+        "Health Insurance Premium for Taxpayer's and Spouse's Parent ( The actual cost but not exceeding ")}}
+        {{stringToMoney(findConfig("PY7001"))}}
+        {{getMessageTranslate( " บาท )", " bath )")}}
+    </label>
+    <div class="col-9 mb-3  ps-3 d-flex align-items-center">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="InsFat" disabled [checked]="tax.insFat!=0">
+            <label class="custom-control-label" for="InsFat">
+                {{tax.insFat}}
+                {{getMessageTranslate("บิดาของผู้มีเงินได้","Father of Taxpayer")}}
+            </label>
+        </div>
+    </div>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" (input)="findValue($event,'PY7001')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInsFat" (ngModelChange)="choice4Change('insFat',$event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+    <div class="col-9 mb-3 ps-3 d-flex align-items-center">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="InsMot" disabled [checked]="tax.insMot!=0">
+            <label class="custom-control-label" for="InsMot">
+                {{getMessageTranslate("มารดาของผู้มีเงินได้","Mother of Taxpayer")}}
+            </label>
+        </div>
+    </div>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" (input)="findValue($event,'PY7001')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInsMot" (ngModelChange)="choice4Change('insMot',$event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+    <div class="col-9 mb-3 ps-3 d-flex align-items-center">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="InsFatSpouse" disabled
+                [checked]="tax.insFatSpouse!=0">
+            <label class="custom-control-label" for="InsFatSpouse">
+                {{getMessageTranslate("บิดาของคู่สมรส","Father of Spouse")}}
+            </label>
+        </div>
+    </div>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" (input)="findValue($event,'PY7001')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInsFatSpouse" (ngModelChange)="choice4Change('insFatSpouse',$event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+    <div class="col-9 mb-3 ps-3 d-flex align-items-center">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="InsMotSpouse" disabled
+                [checked]="tax.insMotSpouse!=0">
+            <label class="custom-control-label" for="InsMotSpouse">
+                {{getMessageTranslate("มารดาของคู่สมรส","Mother of Spouse")}}
+            </label>
+        </div>
+    </div>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" (input)="findValue($event,'PY7001')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInsMotSpouse" (ngModelChange)="choice4Change('insMotSpouse',$event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice5>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice5">
+        5. {{getMessageTranslate(
+        "เบี้ยประกันชีวิตของผู้มีเงินได้ ( กรมธรรม์ 10 ปี ตามจ่ายจริงแต่ไม่เกิน ",
+        "Life insurance premium paid this year ( Over 10 year insurance, "+
+        "The actual cost but not exceeding ")}}
+        {{stringToMoney(findConfig("PY3011"))}}
+        {{getMessageTranslate( " บาท ) จ่ายจริง", " bath ) Actual paid")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice5" (input)="findValue($event,'PY3011')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInsurance" (ngModelChange)="choice5Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice6>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice6">
+        6. {{getMessageTranslate(
+        "เบี้ยประกันชีวิตของคู่สมรส กรณีไม่มีเงินได้ ( กรมธรรม์ 10 ปี ตามจ่ายจริงแต่ไม่เกิน ",
+        "If spouse has no income, actual premium for spouse is also deductible"+
+        "( Over 10 year insurance, The actual cost but not exceeding ")}}
+        {{stringToMoney(findConfig("PY3012"))}}
+        {{getMessageTranslate( " บาท ) จ่ายจริง", " bath ) Actual paid")}}
+    </label>
+    <ng-container
+        *ngIf="taxStatMarry=='M1' && tax.incSpouse=='0' then Choice6TaxStatMarryM1IncSpouse0 else Choice6NotTaxStatMarryM1IncSpouse0">
+    </ng-container>
+    <ng-template #Choice6TaxStatMarryM1IncSpouse0>
+        <div class="col-3 mb-3 d-flex align-items-center">
+            <div class="input-group ">
+                <input type="text" class="form-control" id="Choice6" (input)="findValue($event,'PY3012')"
+                    onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                    [ngModel]="taxInsuranceSpouse" (ngModelChange)="choice6Change($event)" disabled>
+                <span class="input-group-text font-weight-bold font-14">
+                    {{getMessageTranslate( "บาท", "bath")}}
+                </span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #Choice6NotTaxStatMarryM1IncSpouse0>
+        <div class="col-3 mb-3 d-flex align-items-center">
+            <div class="input-group ">
+                <input type="text" class="form-control" id="Choice6" [ngModel]="taxInsuranceSpouse" disabled>
+                <span class="input-group-text font-weight-bold font-14">
+                    {{getMessageTranslate( "บาท", "bath")}}
+                </span>
+            </div>
+        </div>
+    </ng-template>
+</ng-template>
+
+<ng-template #Choice7>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice7">
+        7. {{getMessageTranslate(
+        "เบี้ยประกันสุขภาพของผู้มีเงินได้ ลดหย่อนได้ ","Health insurance premiums for taxpayers deduction ")}}
+        {{stringToMoney(findConfig("PY3047"))}}
+        {{getMessageTranslate( " บาท รวมเบี้ยประกันชีวิตไม่เกิน 100,000.00 บาท ", " bath, Including life insurance premiums not exceeding 100,000.00 bath")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice7" (input)="findValue($event,'PY3047')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxHealthInsurance" (ngModelChange)="choice7Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice8>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice8">
+        8. {{getMessageTranslate(
+        "เบี้ยประกันชีวิตสำหรับกรมธรรม์ประกันชีวิตแบบบำนาญ "+
+        "( ตามที่จ่ายจริงไม่เกินร้อยละ ",
+        "Life insurance premiums for life insurance and pensions ( As actually paid  ")}}
+        {{stringToMoney(findConfig("PY3032S"))}}
+        {{getMessageTranslate( " ของเงินได้พึงประเมิน แต่ไม่เกิน ", " Person of assessable income but not exceed ")}}
+        {{stringToMoney(findConfig("PY3032"))}}
+        {{getMessageTranslate( " บาท ) จ่ายจริง", " bath ) amount paid.")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice8" (input)="findValue($event,'PY3032')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInsPensions" (ngModelChange)="choice8Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice9>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice9">
+        9. {{getMessageTranslate(
+        "เงินที่จ่ายเข้ากองทุนสำรองเลี้ยงชีพ/กองทุน กบข. /กองทุนสงเคราะห์ครูโรงเรียนเอกชน "+
+        "(เฉพาะสวนที่ไม่เกินร้อยละ 15 ของเงินได้และไม่เกิน 500,000 บาท) ภายในปีภาษี"+'"'+
+        "หักโดยบริษัท สามารถตรวจสอบจาก Pay Slip"+'"',
+        "Provident Fund Contribution (Not exceed Bht 500,000)"+'"'+
+        "Company deduct"+'"')}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice9" disabled
+                oninput="this.value = this.value.replace(/[^\d\.]/g,'').replace(/^\./g,'0.').replace(/(.*)\.(.*\..{0,2}).*/g, '$1$2').replace(/(.*)(\..{0,2}).*/g, '$1$2').replace(/^0+/g,'0').replace(/^0+(\d+)/g,'$1').split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('').replace(/^,(.*)/g,'$1')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxGbk" (ngModelChange)="choice9Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice10>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice10">
+        10. {{getMessageTranslate(
+        "ค่าซื้อหน่วยลงทุนในกองทุนรวมเพื่อการเลี้ยงชีพ RMF ( เฉพาะส่วนที่ไม่เกินร้อยละ ",
+        "Investment in Retirement Mutual Fund (RMF) for the portion not exceed ")}}
+        {{stringToMoney(findConfig("PY3019"))}}
+        {{getMessageTranslate( "ของเงินได้ โดยเมื่อรวมกับเงินสะสมที่จ่ายเข้ากองทุนสำรองเลี้ยงชีพและหรือกองทุน กบข. แล้วไม่เกิน ", " % of annual income and not exceed ")}}
+        {{stringToMoney(findConfig("PY3019S"))}}
+        {{getMessageTranslate( " บาท ) ภายในปีภาษี", " Bath combining with Provident Fund Contribution in No. 6.")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice10" (input)="findValue($event,'PY3019S')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxRmf" (ngModelChange)="choice10Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice11>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice11">
+        11. {{getMessageTranslate(
+        "ค่าซื้อหน่วยลงทุนในกองทุนรวมหุ้นระยะยาว ssf "+
+        "( เฉพาะส่วนที่ไม่เกินร้อยละ ",
+        "Super Saving Funds ( SSF ) not exceed ")}}
+        {{stringToMoney(findConfig("PY3033"))}}
+        {{getMessageTranslate( "ของเงินได้ แต่ไม่เกิน ", " % of annual income and not exceed ")}}
+        {{stringToMoney(findConfig("PY3034"))}}
+        {{getMessageTranslate( "บาท )", "bath ")}}   
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice11" (input)="findValue($event,'PY3034')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxSsf" (ngModelChange)="choice11Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice12>
+    <!-- <label class="col-9 mb-3 d-flex align-items-center" for="Choice12">
+        12. {{getMessageTranslate(
+        "ค่าซื้อหน่วยลงทุนในกองทุนรวมหุ้นระยะยาว ssf พิเศษ(ไม่เกิน 200,000.00 บาท) (1 เม.ย.63 ถึง 30 มิ.ย.63)",
+        "Super Saving Funds (SSF) not exceed exceed Bht 200,000.00")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice12" oninput="this.value = this.value.replace(/[^\d\.]/g,'').replace(/^\./g,'0.').replace(/(.*)\.(.*\..{0,2}).*/g, '$1$2').replace(/(.*)(\..{0,2}).*/g, '$1$2').replace(/^0+/g,'0').replace(/^0+(\d+)/g,'$1').split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('').replace(/^,(.*)/g,'$1');
+            this.value = parseFloat(this.value.split(',').join(''))>200000?'200,000':this.value"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxSsfSpecial" (ngModelChange)="choice12Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div> -->
+</ng-template>
+
+<ng-template #Choice13>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice13">
+        12. {{getMessageTranslate(
+            "ดอกเบี้ยเงินกู้ยืมเพื่อซื้อ เช่าซื้อ หรือ สร้างอาคารที่อยู่อาศัยตามจำนวนที่จ่ายจริงแต่ไม่เกิน ",
+            "Interest on housing loan, actual payment but not exceed ")}}
+            {{stringToMoney(findConfig("PY3013"))}}
+            {{getMessageTranslate("บาท ( กรณีมีผู้กู้หลายรายให้นำดอกเบี้ยหารจำนวนผู้กู้ และ กรณีสามีภริยาร่วมกันกู้โดยสามีหรือภริยามีเงินได้ฝ่ายเดียวให้ผู้มีเงินได้ใช้สิทธิ์ได้เต็มตามจำนวนที่จ่ายจริง ) จำนวนที่หารแล้ว ","Baht ( Interest will average by number of Co borrowers and if taxpayer is mariage and spouse has income th ) Divide the amount already.")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice13" (input)="findValue($event,'PY3013')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxInterest" (ngModelChange)="choice13Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice14>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice14">
+        13. {{getMessageTranslate(
+        "เงินสมทบกองทุนประกันสังคมภายในปีภาษี"+'"'+"หักโดยบริษัท สามารถตรวจสอบจาก Pay Slip"+'"',
+        "Social Security Fund Contribution"+'"'+"Company deduct"+'"')}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice14" disabled value="0.00">
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice15>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice15">
+        14. {{getMessageTranslate(
+        "อุปการะเลี้ยงดูคนพิการหรือทุพพลภาพของผู้มีเงินได้ ( คนละ ",
+        "Taking care of a crippled or disabled person ( ")}}
+        {{stringToMoney(findConfig("PY3036"))}}
+        {{getMessageTranslate( " บาท รวมทั้งสิ้น ", " baht per person,total amount ")}}
+        &nbsp;
+        <input type="text" class="form-control" oninput="value = value.replace(/[^0-9]/g, '').replace(/^0([0-9])/g, '$1');
+        this.value = parseInt(this.value.split(',').join(''))>20?'20':this.value"
+            onchange="this.value = value.replace(/^$/g, '0')" style="width: 4rem;display: inline-block"
+            [(ngModel)]="tax.totalCripple" disabled>
+        &nbsp;
+        {{getMessageTranslate( "คน)", "persons)")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice15" disabled [value]="choice15Calculate()">
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice16>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice16">
+        15. {{getMessageTranslate(
+            "เงินบริจาคสนับสนุนการศึกษา ( ลดหย่อนได้ ",
+            "Contribution to education( Maximum deduction ")}}
+            {{stringToMoney(findConfig("PY3030"))}}
+            {{getMessageTranslate( " เท่าของจำนวนจ่ายจริง แต่ไม่เกินร้อยละ 10.00 ของเงินได้หลังหักค่าใช้จ่ายและลดหย่อน )", " Times the actual amount paid. But not more than a percentage 10.00 Of income after expenses and deductions. )")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice16" oninput="this.value = this.value.replace(/[^\d\.]/g,'').replace(/^\./g,'0.').replace(/(.*)\.(.*\..{0,2}).*/g, '$1$2').replace(/(.*)(\..{0,2}).*/g, '$1$2').replace(/^0+/g,'0').replace(/^0+(\d+)/g,'$1').split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('').replace(/^,(.*)/g,'$1');
+            this.value = parseFloat(this.value.split(',').join(''))>900000000?'900,000,000':this.value"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxEduDonation" (ngModelChange)="choice16Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice17>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice17">
+        16. {{getMessageTranslate(
+            "เงินบริจาคโรงพยาบาลของรัฐ ( ลดหย่อนได้ ",
+            "Public hospital donations( Maximum deduction ")}}
+            {{stringToMoney(findConfig("PY3060"))}}
+            {{getMessageTranslate( " เท่าของจำนวนจ่ายจริง แต่ไม่เกินร้อยละ 10.00 ของเงินได้หลังหักค่าใช้จ่ายและลดหย่อน )", " Times the actual amount paid. But not more than a percentage 10.00 Of income after expenses and deductions. )")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice17" oninput="this.value = this.value.replace(/[^\d\.]/g,'').replace(/^\./g,'0.').replace(/(.*)\.(.*\..{0,2}).*/g, '$1$2').replace(/(.*)(\..{0,2}).*/g, '$1$2').replace(/^0+/g,'0').replace(/^0+(\d+)/g,'$1').split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('').replace(/^,(.*)/g,'$1');
+            this.value = parseFloat(this.value.split(',').join(''))>900000000?'900,000,000':this.value"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxHospitalDonation" (ngModelChange)="choice17Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice18>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice18">
+        17. {{getMessageTranslate(
+            "เงินบริจาค ( ลดหย่อนได้ไม่เกินร้อยละ ",
+            "Donation ( allowances paid but not exceeding ")}}
+            {{stringToMoney(findConfig("PY3018"))}}
+            {{getMessageTranslate( " ของเงินได้หลังหักค่าใช้จ่ายและลดหย่อน )", "  Percent of Income after deduction of expense. )")}} 
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice18" oninput="this.value = this.value.replace(/[^\d\.]/g,'').replace(/^\./g,'0.').replace(/(.*)\.(.*\..{0,2}).*/g, '$1$2').replace(/(.*)(\..{0,2}).*/g, '$1$2').replace(/^0+/g,'0').replace(/^0+(\d+)/g,'$1').split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('').replace(/^,(.*)/g,'$1');
+            this.value = parseFloat(this.value.split(',').join(''))>900000000?'900,000,000':this.value"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxDonation" (ngModelChange)="choice18Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice19>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice19">
+        18. {{getMessageTranslate(
+            "เงินบริจาคพรรคการเมือง ( ลดหย่อนได้ไม่เกิน ",
+            "Political party donations ( Maximum deduction ")}}
+            {{stringToMoney(findConfig("PY9901"))}}
+            {{getMessageTranslate( "บาท", "bath")}} )
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice19" (input)="findValue($event,'PY9901')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxPoliticalDonation" (ngModelChange)="choice19Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice20>
+    <label class="col-4">
+        19. {{getMessageTranslate(
+        "ลดหย่อนผู้ที่มีอายุ 65 ปีขึ้นไป",
+        "Allowance for those aged 65 or older")}}
+    </label>
+    <div class="col-8">
+        <div class="row">
+            <div class="col-12 col-md-4" *ngIf="tax.isCripple65==1">
+                <div class="custom-control custom-radio">
+                    <input type="radio" name="Choice20_1" id="Choice20_1Yes" class="custom-control-input" (click)="tax.isCripple65=1"
+                        [checked]="tax.isCripple65==1" disabled>
+                    <label class="custom-control-label" for="Choice20_1Yes">
+                        {{getMessageTranslate("ใช่","Yes")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-md-4" *ngIf="tax.isCripple65==0">
+                <div class="custom-control custom-radio">
+                    <input type="radio" name="Choice20_1" id="Choice20_1No" class="custom-control-input" (click)="tax.isCripple65=0"
+                        [checked]="tax.isCripple65==0" disabled>
+                    <label class="custom-control-label" for="Choice20_1No">
+                        {{getMessageTranslate("ไม่ใช่","No")}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <label class="col-4 ps-3 mb-3">
+        {{getMessageTranslate(
+        "ลดหย่อนผู้พิการ",
+        "Cripple Deduction")}}
+    </label>
+    <div class="col-8 mb-3">
+        <div class="row">
+            <div class="col-12 col-md-4" *ngIf="tax.isCripple==1">
+                <div class="custom-control custom-radio">
+                    <input type="radio" name="Choice20_2" id="Choice20_2Yes" class="custom-control-input" (click)="tax.isCripple=1"
+                        [checked]="tax.isCripple==1" disabled>
+                    <label class="custom-control-label" for="Choice20_2Yes">
+                        {{getMessageTranslate("ใช่","Yes")}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-12 col-md-4" *ngIf="tax.isCripple==0">
+                <div class="custom-control custom-radio">
+                    <input type="radio" name="Choice20_2" id="Choice20_2No" class="custom-control-input" (click)="tax.isCripple=0"
+                        [checked]="tax.isCripple==0" disabled>
+                    <label class="custom-control-label" for="Choice20_2No">
+                        {{getMessageTranslate("ไม่ใช่","No")}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice21>
+    <!-- <label class="col-9 mb-3 d-flex align-items-center" for="Choice21">
+        21. {{getMessageTranslate(
+        "ค่าซื้อบ้านหลังแรกที่มีมูลค่าไม่เกิน 3,000,000 บาท ( ซึ่งได้มีการจดทะเบียนโอนกรรมสิทธิในระหว่างปี 2558 ถึง "+
+        "2559 สามารถยกเว้นภาษีได้ 20% ของมูลค่าของอสังหาริมทรัพย์ สูงสุด 120,000 บาท สามารถใช้สิทธิเป็นเวลา 5 "+
+        "ปีภาษีต่อเนื่องกัน โดยต้องใช้สิทธิเป็นจำนวนเท่าๆกัน ในแต่ละปีภาษี )",
+        "The cost of buying the first house that is not more than 3,000,000 Baht(Which has registered the ownership "+
+        "rights between the years 2015 to 2016, can exempt tax of 20% of the value of real estate Can exercise the "+
+        "right for 5 consecutive tax years Which requires equal amounts of rights In each tax year)")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice21" oninput="this.value = this.value.replace(/[^\d\.]/g,'').replace(/^\./g,'0.').replace(/(.*)\.(.*\..{0,2}).*/g, '$1$2').replace(/(.*)(\..{0,2}).*/g, '$1$2').replace(/^0+/g,'0').replace(/^0+(\d+)/g,'$1').split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('').replace(/^,(.*)/g,'$1');
+            this.value = parseFloat(this.value.split(',').join(''))>3000000?'3,000,000':this.value"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxFirstHome" (ngModelChange)="choice21Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div> -->
+</ng-template>
+
+<ng-template #Choice22>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice22">
+        20. {{getMessageTranslate("ค่าฝากครรภ์และค่าคลอดบุตร ( ลดหย่อนตามที่จ่ายสูงสุดไม่เกิน ","Childbirths ( Deduct as the maximum payment does not exceed ")}}{{stringToMoney(findConfig("PY3051"))}}
+        {{getMessageTranslate( "บาท", "bath")}} )
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice22" (input)="findValue($event,'PY3051')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxChildBirth" (ngModelChange)="choice22Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice23>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice23">
+        21. {{getMessageTranslate("เงินสะสมกองทุนการออมแห่งชาติ ( ลดหย่อนได้ไม่เกิน ","National Savings Fund savings ( Maximum deduction ")}}{{stringToMoney(findConfig("PY3048"))}}
+        {{getMessageTranslate( "บาท", "bath")}} )
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice23" (input)="findValue($event,'PY3048')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxSavings" (ngModelChange)="choice23Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Choice24>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice24">
+        22. {{getMessageTranslate( "ค่าลดหย่อนโครงการ Easy E-Receipt ( ลดหย่อนได้ไม่เกิน ", "Easy E-Receipt ( Maximum deduction ")}}{{stringToMoney(findConfig("PY3066"))}}
+        {{getMessageTranslate( "บาท", "bath")}} )
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice24" (input)="findValue($event,'PY3066')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [(ngModel)]="taxShopD" (ngModelChange)="choice24Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #Choice25>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice25">
+        23. {{getMessageTranslate('เงินลงทุนธุรกิจ Social Enterprise (วิสาหกิจเพื่อสังคม) ( ลดหย่อนได้ไม่เกิน ', "Social Enterprise ( Deduction not over ")}}{{stringToMoney(findConfig("PY3067"))}}
+        {{getMessageTranslate( "บาท", "bath")}} )
+  </label>
+  <div class="col-3 mb-3 d-flex align-items-center">
+      <div class="input-group ">
+            <input type="text" class="form-control" id="Choice25" (input)="findValue($event,'PY3067')"
+              onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [ngModel]="taxSocialEnterprise" (ngModelChange)="choice25Change($event)" disabled>
+          <span class="input-group-text font-weight-bold font-14">
+              {{getMessageTranslate( "บาท", "bath")}}
+          </span>
+      </div>
+  </div>
+</ng-template>
+<ng-template #Choice26>
+  <label class="col-9 mb-3 d-flex align-items-center" for="Choice26">
+        24. {{getMessageTranslate('ค่าซื้อหน่วยกองทุนในกองทุนรวมไทยเพื่อความยั่งยืน TESG ( เฉพาะส่วนไม่เกินร้อยละ', "Cost of purchasing fund units in the Thai Mutual Fund for Sustainability TESG ( only the part not exceeding")}} {{findConfig("PY3027")}}% {{getMessageTranslate("ของเงินได้ แต่ไม่เกิน","of income, but not more than")}} {{stringToMoney(findConfig("PY3028"))}}{{getMessageTranslate( " บาท ", " bath ")}})
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+          <input type="text" class="form-control" id="Choice26" (input)="findValue($event,'PY3028')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+              [ngModel]="taxLtf" (ngModelChange)="choice26Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #Choice27>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice27">
+        25. {{getMessageTranslate( "ค่าท่องเที่ยว \"จังหวัดท่องเที่ยวเมืองรอง\" ( ลดหย่อนได้ไม่เกิน ","Secondary city travel ( Deduction not over ")}}{{stringToMoney(findConfig("PY9905"))}}
+        {{getMessageTranslate("บาท )","bath )")}}
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice27" (input)="findValue($event,'PY9905')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [(ngModel)]="taxTouristSecondCity" (ngModelChange)="choice27Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+  </ng-template>
+  <ng-template #Choice28>
+    <label class="col-9 mb-3 d-flex align-items-center" for="Choice28">
+        26. {{getMessageTranslate( "ค่าจ้างก่อสร้างอาคารเพื่ออยู่อาศัย ( ลดหย่อนได้ 10,000 บาท ต่อทุกจำนวนค่าก่อสร้าง 1 ล้านบาท สูงสุดไม่เกิน", 
+        "Wages for construction of buildings for living ( Deductible of 10,000 baht for every 1 million baht of construction costs, Deduction not over")}}
+        {{stringToMoney(findConfig("PY9907"))}} {{getMessageTranslate( "บาท", "bath")}} )
+    </label>
+    <div class="col-3 mb-3 d-flex align-items-center">
+        <div class="input-group ">
+            <input type="text" class="form-control" id="Choice28" (input)="findValue($event,'PY9907')"
+                onchange="this.value = this.value.replace(/^(\d{1,2})$/g,'$1.00').replace(/(\d{3})$/g,'$1.00').replace(/(.*\.\d)$/g,'$10').replace(/(.*\.)$/g,'$100') ; this.value = value.replace(/^$/g, '0.00')"
+                [(ngModel)]="taxHomeRepair" (ngModelChange)="choice28Change($event)" disabled>
+            <span class="input-group-text font-weight-bold font-14">
+                {{getMessageTranslate( "บาท", "bath")}}
+            </span>
+        </div>
+    </div>
+  </ng-template>

@@ -1,0 +1,167 @@
+<div class="modern-card oil-price-card">
+    <div class="card-header">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <div class="card-title-section">
+                <h4 class="card-title">
+                    <span class="material-symbols-outlined me-2">local_gas_station</span>
+                    {{"Oil Price" | translate}}
+                </h4>
+                <p class="card-subtitle text-muted mb-0">{{ "Manage oil price information" | translate }}</p>
+            </div>
+            <div class="card-actions">
+                <button type="button" class="btn btn-outline-secondary btn-icon" (click)="refreshData()"
+                    [attr.aria-label]="'Refresh' | translate"
+                    [title]="'Refresh' | translate">
+                    <span class="material-symbols-outlined">refresh</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Form Area (Add/Edit) -->
+        <div class="filter-bar mb-4">
+            <div class="mb-3">
+                <label class="form-label">{{"Date" | translate}}</label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp" [(ngModel)]="date" ngbDatepicker #d="ngbDatepicker" #c="ngModel" (change)="date = datepickerService.validateFormatDate(c)">
+                    <button class="btn btn-outline-secondary btn-icon" (click)="d.toggle()" type="button"
+                        [attr.aria-label]="'Open calendar' | translate"
+                        [title]="'Open calendar' | translate">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">{{"Price" | translate}}</label>
+                <input type="number" class="form-control" [(ngModel)]="price" placeholder="{{'Price' | translate}}">
+            </div>
+            <div class="form-group-button">
+                <button type="button" class="btn btn-primary w-100" (click)="onSubmit()" [disabled]="isLoading"
+                    [attr.aria-label]="'Save' | translate"
+                    [title]="'Save' | translate">
+                    @if (!isLoading) {
+                        <span class="material-symbols-outlined me-1">save</span> {{"Save" | translate}}
+                    } @else {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Spinner for list -->
+        @if (isLoading) {
+            <div class="loading-container">
+                <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                <span class="ms-3 font-weight-bold text-secondary">{{"Loading Data" | translate}}...</span>
+            </div>
+        } @else {
+            <!-- Desktop Table View -->
+            <div class="table-responsive d-none d-lg-block">
+                <table class="table table-hover v-middle">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>{{"Date" | translate}}</th>
+                            <th>{{"Price" | translate}}</th>
+                            <th class="text-center">{{"Actions" | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of pagedOliprice; track item.dateId) {
+                            <tr>
+                                <td>{{item.dateId | date:'dd-MM-yyyy'}}</td>
+                                <td>{{item.price | number:'.2'}}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-outline-primary btn-icon me-2" (click)="selectDate(item)"
+                                        [attr.aria-label]="'Edit' | translate"
+                                        [title]="'Edit' | translate">
+                                        <span class="material-symbols-outlined">edit</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-icon" (click)="deleteOilPrice(item)"
+                                        [attr.aria-label]="'Delete' | translate"
+                                        [title]="'Delete' | translate">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        } @empty {
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="d-lg-none mt-3">
+                @for (item of pagedOliprice; track item.dateId) {
+                    <div class="oil-price-card-mobile">
+                        <div class="card-body">
+                            <div class="info-row">
+                                <div class="info-item"><span>{{"Date" | translate}}</span><strong>{{item.dateId | date:'dd-MM-yyyy'}}</strong></div>
+                                <div class="info-item"><span>{{"Price" | translate}}</span><strong>{{item.price | number:'.2'}}</strong></div>
+                            </div>
+                            <div class="actions-row mt-3">
+                                <button type="button" class="btn btn-outline-primary btn-sm" (click)="selectDate(item)"
+                                    [attr.aria-label]="'Edit' | translate"
+                                    [title]="'Edit' | translate">
+                                    <span class="material-symbols-outlined me-1">edit</span> {{"Edit" | translate}}
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm ms-2" (click)="deleteOilPrice(item)"
+                                    [attr.aria-label]="'Delete' | translate"
+                                    [title]="'Delete' | translate">
+                                    <span class="material-symbols-outlined me-1">delete</span> {{"Delete" | translate}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                } @empty {
+                    <div class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (pagedOliprice && pagedOliprice.length > 0) {
+                <div class="pagination-controls d-flex justify-content-end p-2">
+                    <select class="form-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+                        <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                        <option [ngValue]="30">{{"Items per page"| translate}}: 30</option>
+                        <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                    </select>
+                    <ngb-pagination [collectionSize]="collectionSize" [page]="page" (pageChange)="onPageChange($event)" [pageSize]="pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+                        <ng-template ngbPaginationPrevious><span class="material-symbols-outlined">chevron_left</span></ng-template>
+                        <ng-template ngbPaginationNext><span class="material-symbols-outlined">chevron_right</span></ng-template>
+                    </ngb-pagination>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Modals -->
+<ng-template #confirmModal let-modal>
+    <div class="modal-header bg-myhr">
+        <h5 class="modal-title">{{"Confirm" | translate}}</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        {{msg}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss('cancel')">{{"Cancel" | translate}}</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close('confirm')">{{"Confirm" | translate}}</button>
+    </div>
+</ng-template>
+
+<ng-template #alertModal let-modal>
+    <div class="modal-header bg-myhr">
+        <h5 class="modal-title">{{"Alert" | translate}}</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        {{msg}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.close('Close')">{{"OK" | translate}}</button>
+    </div>
+</ng-template>

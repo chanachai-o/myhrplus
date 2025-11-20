@@ -1,0 +1,423 @@
+<div class="justify-content-center text-center" role="status" *ngIf="loading">
+    <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="card" *ngIf="!loading">
+    <div class="card-header bg-myhr">
+        <h4>{{"menu.setup-shift-employees" | translate}}</h4>
+    </div>
+    <div class="card-body">
+        <form novalidate="" class="form-horizontal ">
+            <div class="row g-2 align-middle">
+                <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: center;margin-top: 5px;">
+                    <label class="font-weight-bold text-end control-label col-form-label" style="font-size: 14px;">
+                        {{"Business Unit"| translate}}
+                    </label>
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5" style="margin-top: 5px;">
+                    <select class="form-select" [(ngModel)]="businessUnitSelect.val"
+                        (ngModelChange)="buSelect=0;empSelect=0;employeeID='';empIdChange()"
+                        [ngModelOptions]="{standalone: true}">
+                        <option [ngValue]="businessUnitSelect.val" [disabled]="true" hidden
+                            *ngIf="businessUnitSelect.val == '0'">
+                            {{"Name Business Unit"| translate}}
+                        </option>
+                        <option *ngFor="let item of businessUnit;let i = index" [ngValue]="item.val">
+                            {{translateService.currentLang=='th'?item.tdesc:item.edesc}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row g-2 align-middle" *ngIf="businessUnitSelect.val!='0'">
+                <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: center">
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5">
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="buSelect"
+                        (ngModelChange)="empSelect=0;empIdChange()">
+                        <option *ngFor="let item of buList[businessUnitSelect.val-1];let i = index" [ngValue]="i">
+                            {{item.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5">
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="empSelect"
+                        (ngModelChange)="empIdChange()">
+                        <option *ngFor="let item of buList[businessUnitSelect.val-1][buSelect].emp;let i = index"
+                            [ngValue]="i">
+                            {{translateService.currentLang=='th'?item.getFullnameTh():item.getFullnameEn()}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2 col-2 col-sm-2 " style="text-align: left;">
+                    <button type="button" class="btn btn-danger  btn-sm btn-circle  m-r-5 m-l-10"
+                        (click)="clearBusiness();empIdChange()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row g-2 align-middle" *ngIf="businessUnitSelect.val=='0'">
+                <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: center;">
+                    <label class="font-weight-bold text-end control-label col-form-label" style="font-size: 14px;">
+                        {{"Employee ID"| translate}}
+                    </label>
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5">
+                    <input readonly type="text" class="form-control " placeholder="{{'Employee ID'| translate}}"
+                        value="{{employeeID}}" aria-describedby="basic-addon1">
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5">
+                    <input readonly type="text" class="form-control" placeholder="{{'Name-Surname'| translate}}"
+                        id="inputCity"
+                        value="{{translateService.currentLang=='th'?employeeName.tdesc:employeeName.edesc}}">
+                </div>
+                <div class="form-group col-md-2 col-2 col-sm-2 " style="text-align: left;">
+                    <button type="button" class="btn btn-info  btn-sm btn-circle  m-r-5 m-l-10"
+                        (click)="openModal(contentEmp,'business')">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row g-2 align-middle">
+                <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: center;">
+                    <label class="font-weight-bold text-end control-label col-form-label" style="font-size: 14px;">
+                        {{"month"| translate}}
+                    </label>
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5">
+                    <select class="form-select" [(ngModel)]="monthSelect" (ngModelChange)="monthChange()"
+                        [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let item of month" [ngValue]="item.val">
+                            {{item.name | translate}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 col-5 col-sm-5">
+                    <select class="form-select" [(ngModel)]="yearSelect" [ngModelOptions]="{standalone: true}"
+                        (ngModelChange)="monthChange()">
+                        <option *ngFor="let item of years" [ngValue]="item">
+                            {{item}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row g-2 align-middle">
+                <div class="form-group col-md-12 col-12 col-sm-12" style="text-align: center"
+                    *ngIf="(employeeID!=''||empSelect!=-1)&&showShift">
+                    <button type="submit" class="btn btn-info waves-effect waves-light "
+                        (click)="openModal(contentChangeShift,'ChangeShift')">
+                        {{"Change Shift" | translate}}
+                    </button>
+                    <ng-container *ngIf="employeeID!=''&&changeShiftList.length>0&&empShift">
+                        &nbsp;
+                        <div class="row g-2 align-middle mt-5" *ngIf="!loadingSave">
+                            <div class="form-group col-md-12 col-12 col-sm-12" style="text-align: center"
+                                *ngIf="changeShiftList.length>0&&empShift">
+                                <button type="submit" class="btn btn-success waves-effect waves-light btn-w-100"
+                                    (click)="changeShiftEmp()">
+                                    {{"Save" | translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="justify-content-center text-center mt-5" role="status" *ngIf="loadingSave">
+                            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <full-calendar #calendarShift [options]="calendarOptions"></full-calendar>
+        </ng-container>
+    </div>
+</div>
+
+
+
+
+
+
+<ng-template #contentShift let-modal>
+    <div class="modal-content dialog-height">
+        <div class="modal-body" [perfectScrollbar]="config">
+            <div class="card" style="margin-bottom:-15px">
+                <div class="card-header bg-myhr">
+                    <h4>{{"working-table" | translate}}</h4>
+                </div>
+                <div class="card-body pt-0 pt-2">
+                    <div class="d-flex mb-1">
+                        <input type="text" placeholder="{{'time-code' | translate}}" class="form-control w-25"
+                            [(ngModel)]='searchTerm' (ngModelChange)="setSearchTerm($event)">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                            <thead class="bg-info ">
+                                <tr class="text-white font-weight-normal">
+                                    <th class="font-weight-normal" scope="col">{{"time-code"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"th-detail"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"en-detail"| translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="shiftListShow.length==0">
+                                    <td colspan="4" class="font-weight-normal text-center">{{"No Data Found" |
+                                        translate}}</td>
+                                </tr>
+                                <tr class="cursor-myhr"
+                                    *ngFor="let item of shiftListShow | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index"
+                                    (click)="selectShift(item);modal.dismiss('Cross click');">
+                                    <td class="align-middle">{{item.time0id}}</td>
+                                    <td class="align-middle">{{item.tdesc}}</td>
+                                    <td class="align-middle">{{item.edesc}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end p-2">
+
+                        <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSize">
+                            <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                            <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                            <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+                        </select>
+
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+                            <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+                            <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+                        </ngb-pagination>
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">
+                {{"Close"| translate}}</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #contentChangeShift let-modal>
+    <div class="modal-content dialog-height">
+        <div class="modal-body">
+            <div class="card" style="margin-bottom:-15px">
+                <div class="card-header bg-myhr">
+                    <h4>{{"Change Shift" | translate}}</h4>
+                </div>
+                <div class="card-body ">
+                    <div class="justify-content-center row">
+                        <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: right;">
+                            <label class="font-weight-bold text-end control-label col-form-label"
+                                style="font-size: 14px;">
+                                {{"working-table"| translate}}
+                            </label>
+                        </div>
+                        <div class="form-group col-md-3 col-5 col-sm-5">
+                            <input readonly type="text" class="form-control " placeholder="{{'time-code'| translate}}"
+                                value="{{shiftSelect.time0id!=''?(translateService.currentLang=='th'?shiftSelect.time0id+' : '+shiftSelect.tdesc:shiftSelect.time0id+' : '+shiftSelect.edesc):''}}"
+                                aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group col-md-2 col-2 col-sm-2" style="text-align: left">
+                            <button type="button" class="btn btn-info  btn-sm btn-circle  m-r-5 m-l-10"
+                                (click)="openModal(contentShift,'shift')">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="justify-content-center row">
+                        <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: right;">
+                            <label class="font-weight-bold text-end control-label col-form-label"
+                                style="font-size: 14px;">
+                                {{"Change Date Request"| translate}}
+                            </label>
+                        </div>
+                        <div class="form-group mb-0 mb-2 col-md-3">
+                            <div class="form-group mb-0 mb-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"
+                                        placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1"
+                                        [(ngModel)]="changeDateSelectS" ngbDatepicker #d1="ngbDatepicker"
+                                        [maxDate]="changeDateSelectE" [minDate]="minDate" #ngd1="ngModel"
+                                        (change)="changeDateSelectS = datepickerService.validateFormatDateNull(ngd1)">
+                                        <!-- (ngModelChange)="changeDateCheck('changeDateSelectS')" -->
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-info no-shadow" (click)="d1.toggle()"
+                                            type="button">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2 col-2 col-sm-2" style="text-align: left">
+                        </div>
+                    </div>
+                    <div class="justify-content-center row">
+                        <div class="form-group col-md-3 col-5 col-sm-5" style="text-align: right;">
+                            <label class="font-weight-bold text-end control-label col-form-label"
+                                style="font-size: 14px;">
+                                {{"to2"| translate}}
+                            </label>
+                        </div>
+                        <div class="form-group mb-0 mb-2 col-md-3">
+                            <div class="form-group mb-0 mb-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"
+                                        placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2"
+                                        [(ngModel)]="changeDateSelectE" ngbDatepicker #d2="ngbDatepicker"
+                                        [maxDate]="maxDate" [minDate]="changeDateSelectS"  #ngd2="ngModel"
+                                        (change)="changeDateSelectE = datepickerService.validateFormatDateNull(ngd2)">
+                                        <!-- (ngModelChange)="changeDateCheck('changeDateSelectE')" -->
+                                        <div class="input-group-append">
+                                        <button class="btn btn-outline-info no-shadow" (click)="d2.toggle()"
+                                            type="button">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2 col-2 col-sm-2" style="text-align: left">
+                        </div>
+                    </div>
+                    <div class="justify-content-center row" *ngIf="shiftSelect.tdesc!=''||shiftSelect.edesc!=''">
+                        <div class="form-group col-md-12 col-12 col-sm-12" style="text-align: center">
+                            <button type="submit" class="btn btn-info waves-effect waves-light "
+                                (click)="changeShift();modal.dismiss('Cross click')">
+                                {{"Change Shift" | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">
+                {{"Close"| translate}}
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentEmp let-modal>
+    <div class="modal-content dialog-height">
+        <div class="modal-body" [perfectScrollbar]="config">
+            <div class="card" style="margin-bottom:-15px">
+                <div class="card-header bg-myhr">
+                    <h4>{{"subordinate list" | translate}}</h4>
+                </div>
+                <div class="card-body pt-0 pt-2">
+                    <div class="d-flex mb-1">
+                        <input type="text" placeholder="{{'Name-Surname' | translate}}" class="form-control w-25"
+                            [(ngModel)]='searchTerm' (ngModelChange)="setSearchTerm($event)">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                            <thead class="bg-info ">
+                                <tr class="text-white font-weight-normal">
+                                    <th class="font-weight-normal" scope="col">{{"No."| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Employee ID"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Name-Surname"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Position"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Bu1"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Bu2"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Bu3"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Bu4"| translate}}</th>
+                                    <th class="font-weight-normal" scope="col">{{"Bu5"| translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="loading">
+                                <tr>
+                                    <td colspan="9" class="font-weight-normal text-center">
+                                        <div class="justify-content-center text-center" role="status">
+                                            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="!loading">
+                                <tr *ngIf="workingsShow.length==0">
+                                    <td colspan="9" class="font-weight-normal text-center">{{"No Data Found" |
+                                        translate}}</td>
+                                </tr>
+                                <tr class="cursor-myhr"
+                                    *ngFor="let item of workingsShow | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index"
+                                    (click)="selectEmp(item);modal.dismiss('Cross click');">
+                                    <th class="align-middle text-center" scope="row">{{i+((page-1)*pageSize)+1}}</th>
+                                    <td class="align-middle">{{item.employeeId}}</td>
+                                    <td class="align-middle">{{item.getFullname()}}</td>
+                                    <td class="align-middle">
+                                        {{item.position.getPositionDesc()?item.position.getPositionDesc():'-'}}
+                                    </td>
+                                    <td class="align-middle">{{item.bu1.getBu1Desc()?item.bu1.getBu1Desc():'-'}}</td>
+                                    <td class="align-middle">{{item.bu2.getBu2Desc()?item.bu2.getBu2Desc():'-'}}</td>
+                                    <td class="align-middle">{{item.bu3.getBu3Desc()?item.bu3.getBu3Desc():'-'}}</td>
+                                    <td class="align-middle">{{item.bu4.getBu4Desc()?item.bu4.getBu4Desc():'-'}}</td>
+                                    <td class="align-middle">{{item.bu5.getBu5Desc()?item.bu5.getBu5Desc():'-'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end p-2">
+                        <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSize"
+                            (ngModelChange)="page=1">
+                            <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+                            <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+                            <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+                        </select>
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            [maxSize]="3" [rotate]="true">
+                            <ng-template ngbPaginationPrevious>{{"Prev"| translate}}</ng-template>
+                            <ng-template ngbPaginationNext>{{"Next"| translate}}</ng-template>
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">
+                {{"Close"| translate}}
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editLabel">Alert Message</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{msg}}
+    </div>
+</ng-template>

@@ -1,0 +1,30 @@
+<div class="row justify-content-center p-2" style="background-color: #eef5f9;"
+    *ngIf="loading">
+    <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="card card-hover" *ngIf="!loading">
+    <div class="card-header bg-myhr">
+        <h4>{{"Work Schedule" | translate}}</h4>
+    </div>
+    <div class="card-body">
+        <full-calendar #fullCalendar [options]="calendarOptions"></full-calendar>
+    </div>
+</div>
+<ng-template #alertModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editLabel">Alert Message</h5>
+        <button class="close" (click)="modal.close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{alert.message}}
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-info" (click)="modal.close()">
+            {{"confirm"| translate}}
+        </button>
+    </div>
+</ng-template>

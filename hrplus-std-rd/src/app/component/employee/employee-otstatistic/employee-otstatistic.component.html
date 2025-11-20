@@ -1,0 +1,164 @@
+<!-- Main Card -->
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container mb-3">
+      <h4 class="card-title">{{"menu.employee-otstatistic" | translate}}</h4>
+    </div>
+
+    <!-- Tabs for Date Selection -->
+    <div class="card-tabs-container">
+      <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="false" class="nav-tabs-modern">
+        <li [ngbNavItem]="1" [destroyOnHide]="true">
+          <a ngbNavLink (click)="wom='';page=1;pageSize = pageSizeShow">
+            <i class="mdi mdi-calendar-range"></i>&nbsp; {{"Custom" | translate}}
+          </a>
+          <ng-template ngbNavContent>
+            <form class="filter-bar mt-3">
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">{{"Start Date" | translate}}</span>
+                  <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp1" [(ngModel)]="selectStartDate" ngbDatepicker #d1="ngbDatepicker" #c1="ngModel" (change)="selectStartDate = datepickerService.validateFormatDate(c1)">
+                  <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button"><i class="mdi mdi-calendar"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">{{"End Date" | translate}}</span>
+                  <input class="form-control" placeholder="{{'dd.mm.yyyy' | translate}}" name="dp2" [(ngModel)]="selectEndDate" ngbDatepicker #d2="ngbDatepicker" [minDate]="selectStartDate" #c2="ngModel" (change)="selectEndDate = datepickerService.validateFormatDate(c2)">
+                  <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i class="mdi mdi-calendar"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary btn-icon mb-3" (click)="loadData()"><i class="mdi mdi-magnify"></i></button>
+            </form>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink (click)="wom='Week';nowData();page=1;pageSize=data?data.length:0">
+            <i class="mdi mdi-calendar-week"></i>&nbsp; {{"Period" | translate}}
+          </a>
+          <ng-template ngbNavContent>
+            <div class="filter-bar mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary" (click)="prevData()"><i class="mdi mdi-chevron-left"></i></button>
+                <button type="button" class="btn btn-outline-secondary" (click)="nowData()">{{"Now" | translate}}</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="nextData()"><i class="mdi mdi-chevron-right"></i></button>
+              </div>
+              <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic">
+                <label ngbButtonLabel class="btn-primary-outline">
+                  <input ngbButton type="radio" name="rediocheck" [value]="'Week'" (click)="showWeek();nowData();"> {{"Week"| translate}}
+                </label>
+                <label ngbButtonLabel class="btn-primary-outline ms-3">
+                  <input ngbButton type="radio" name="rediocheck" [value]="'Month'" (click)="showMonth();nowData();"> {{"month"| translate}}
+                </label>
+              </div>
+              <div class="form-group period-date-display">
+                <div class="input-group">
+                  <input readonly class="form-control" name="dp1_period" [value]="parserFormat.format(selectStartDate)">
+                  <span class="date-separator">-</span>
+                  <input readonly class="form-control" name="dp2_period" [value]="parserFormat.format(selectEndDate)">
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+    </div>
+
+    <!-- Total Count Badge -->
+    <div class="total-count-badge-container">
+      <span class="badge badge-primary-light">
+        {{'all'| translate}} <span class="badge badge-primary">{{data.length?data.length:0}}</span>
+      </span>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="d-flex justify-content-center align-items-center py-5" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+      <span class="ms-3 fw-bold text-secondary">{{"Loading Data" | translate}}...</span>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-lg-block" *ngIf="!loading">
+      <table class="table table-hover v-middle">
+        <thead class="thead-light">
+          <tr>
+            <th>{{"OT No" | translate}}</th>
+            <th>{{"Start Date" | translate}}</th>
+            <th>{{"End Date" | translate}}</th>
+            <th>{{"Start Time" | translate}}</th>
+            <th>{{"End Time" | translate}}</th>
+            <th>{{"Note" | translate}}</th>
+            <th>{{"Doc Reference" | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="noData"><td colspan="7" class="text-center text-muted py-4">{{"No Data Found" | translate}}</td></tr>
+          <tr *ngFor="let item of data | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+            <td class="align-middle">{{item.otid}}</td>
+            <td class="align-middle">{{item.start_date | date:'dd-MM-yyyy'}}</td>
+            <td class="align-middle">{{item.end_date | date:'dd-MM-yyyy'}}</td>
+            <td class="align-middle">{{item.start_time.toFixed(2)}}</td>
+            <td class="align-middle">{{item.end_time.toFixed(2)}}</td>
+            <td class="align-middle">{{item.header.remark}}</td>
+            <td class="align-middle">{{item.wf_ref_doc}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="d-lg-none mt-3" *ngIf="!loading">
+      <div *ngIf="noData" class="text-center text-muted py-4">{{"No Data Found" | translate}}</div>
+      <div *ngFor="let item of data | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize" class="ot-card-mobile">
+        <div class="card-header">
+          <div class="ot-no">{{"OT No" | translate}}: <strong>{{item.otid}}</strong></div>
+          <div class="doc-ref">{{"Doc Reference" | translate}}: <strong>{{item.wf_ref_doc}}</strong></div>
+        </div>
+        <div class="card-body">
+          <div class="info-row">
+            <div class="info-item"><span>{{"Start Date"|translate}}</span><strong>{{item.start_date | date:'dd-MM-yyyy'}}</strong></div>
+            <div class="info-item"><span>{{"End Date"|translate}}</span><strong>{{item.end_date | date:'dd-MM-yyyy'}}</strong></div>
+            <div class="info-item"><span>{{"Start Time"|translate}}</span><strong>{{item.start_time.toFixed(2)}}</strong></div>
+            <div class="info-item"><span>{{"End Time"|translate}}</span><strong>{{item.end_time.toFixed(2)}}</strong></div>
+          </div>
+          <div class="note-section">
+            <span>{{"Note"|translate}}</span>
+            <p>{{item.header.remark}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-end p-2" *ngIf="wom=='' && !loading && !noData">
+      <div class="pagination-controls">
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="page=1;pageSizeShow = pageSize;">
+          <option [ngValue]="10">{{"Items per page"| translate}}: 10</option>
+          <option [ngValue]="50">{{"Items per page"| translate}}: 50</option>
+          <option [ngValue]="100">{{"Items per page"| translate}}: 100</option>
+        </select>
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="3" [rotate]="true" [boundaryLinks]="true">
+          <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i></ng-template>
+          <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Alert Modal -->
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title text-primary"><i class="mdi mdi-alert-circle-outline"></i>&nbsp; Alert Message</h5>
+    <button type="button" class="btn-close" (click)="closeBtnClick()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    {{msg}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="closeBtnClick()">{{"Close"| translate}}</button>
+  </div>
+</ng-template>

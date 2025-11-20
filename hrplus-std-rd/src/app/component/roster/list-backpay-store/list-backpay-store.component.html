@@ -1,0 +1,130 @@
+<div class="card">
+    <div class="card-header bg-myhr">
+        <h4>{{"List Backpay (Workarea)" | translate}}</h4>
+    </div>
+    <div class="card-body">
+        <!-- Filter Form -->
+        <div class="filter-grid">
+            <div>
+                <label class="form-label">{{"Workarea"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'Working Area ID'| translate}}" [ngModel]="workarea.workareaId" (ngModelChange)="modelWorkareaChange($event)">
+                    <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openWorkareaModal()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Workarea Name" | translate}}</label>
+                <input type="text" class="form-control" [ngModel]="workarea.getDesc()" disabled>
+            </div>
+            <div>
+                <label class="form-label">{{"month"| translate}}</label>
+                <select class="form-select" [(ngModel)]="dateSelect.month">
+                    <option *ngFor="let item of monthList; let i=index" [ngValue]="item.id">{{item.name| translate}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"year"| translate}}</label>
+                <select class="form-select" [(ngModel)]="dateSelect.year">
+                    <option *ngFor="let item of yearList; let i=index" [ngValue]="item">{{item}}</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">{{"Employee"| translate}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{'Employee ID'| translate}}" [ngModel]="employee.employeeId" (ngModelChange)="modelEmployeeChange($event)">
+                    <div class="input-group-append">
+                        <button class="btn me-0 btn-info" type="button" (click)="openEmployeeModal()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">{{"Employee Name" | translate}}</label>
+                <input type="text" class="form-control" [value]="employee.getName()" disabled>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="radio-group justify-content-center">
+                    <label class="form-label me-3">{{"date"| translate}}:</label>
+                    <div class="form-check">
+                        <input type="radio" name="radio-date" class="form-check-input" id="date1-15" value="01" [ngModel]="dateSelect.dateStart" (ngModelChange)="dateSelect.dateStart=$event" checked>
+                        <label class="custom-control-label" for="date1-15">1 - 15</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="radio-date" class="form-check-input" id="date16-end" value="16" [ngModel]="dateSelect.dateStart" (ngModelChange)="dateSelect.dateStart=$event">
+                        <label class="custom-control-label" for="date16-end">16 - {{'End of the month'| translate}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary" (click)="searchBackpayDetail()">
+                <i class="mdi mdi-magnify me-1"></i> {{"systemcode.search" | translate}}
+            </button>
+            <button type="submit" class="btn btn-danger" (click)="clearBackpayDetail()">
+                <i class="mdi mdi-refresh me-1"></i> {{"Clear" | translate}}
+            </button>
+        </div>
+
+        <ng-container *ngIf="backpayTable > 1">
+            <div class="button-group">
+                <button type="submit" class="btn btn-outline-secondary" (click)="backTable()">
+                    <i class="mdi mdi-arrow-left me-1"></i> {{getMessageTranslate("ย้อนกลับ","Back")}}
+                </button>
+            </div>
+        </ng-container>
+
+        <!-- Desktop Table View -->
+        <div class="d-none d-lg-block">
+            <ng-container *ngIf="backpayTable == 1 then Table1"></ng-container>
+            <ng-container *ngIf="backpayTable == 2 then Table2"></ng-container>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="d-lg-none">
+            <div *ngIf="backPayTotalLoading" class="text-center py-3"><div class="spinner-border text-primary"></div></div>
+            <div *ngIf="!backPayTotalLoading && backPayTotal.backPayEmployee.length === 0" class="text-center py-3 text-muted">{{"No Data Found" | translate}}</div>
+            
+            <div *ngIf="backpayTable == 1">
+                <div *ngFor="let item of backPayTotal.backPayEmployee; let i=index" class="backpay-card-mobile">
+                    <div class="card-header">
+                        <a class="link-myhr link-hover" (click)="setBackPayEmployee(item)">{{item.employee.getName()}}</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="income-deduct-section">
+                            <div class="section-title income">{{"จ่ายเพิ่ม" | translate}}</div>
+                            <div class="info-grid">
+                                <div class="info-item"><span>{{"Pay Back" | translate}}</span><strong>{{item.backPayDateSum.sumInCome.sumHourBackPay}}</strong></div>
+                                <div class="info-item"><span>{{"OT 1.5" | translate}}</span><strong>{{item.backPayDateSum.sumInCome.sumHourOt15}}</strong></div>
+                                <!-- Add more income fields as needed -->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="income-deduct-section">
+                            <div class="section-title deduct">{{"หักคืน" | translate}}</div>
+                            <div class="info-grid">
+                                <div class="info-item"><span>{{"Pay Back" | translate}}</span><strong>{{item.backPayDateSum.sumDeduct.sumHourBackPay}}</strong></div>
+                                <div class="info-item"><span>{{"OT 1.5" | translate}}</span><strong>{{item.backPayDateSum.sumDeduct.sumHourOt15}}</strong></div>
+                                <!-- Add more deduct fields as needed -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="backpayTable == 2">
+                <!-- Mobile view for Table2 can be implemented here -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Templates for Desktop Tables and Modals -->
+<ng-template #Table1> ... </ng-template>
+<ng-template #Table2> ... </ng-template>
+<ng-template #Table3 let-modal> ... </ng-template>

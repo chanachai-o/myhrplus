@@ -1,0 +1,968 @@
+<!--
+Modern Dashboard Layout by Gemini
+- Uses modern Angular control flow (@for, @if)
+- Responsive layout with Bootstrap 5
+- Styled with BEM-like conventions from dashboards.component.scss
+- Enhanced UX with animations and clean card design
+-->
+
+<!-- Banner Section -->
+<!-- @if (bannerList.length) {
+<div class="dashboard-section">
+  <ngb-carousel>
+    @for (slide of bannerList; track slide) {
+    <ng-template ngbSlide>
+      <div class="card overflow-hidden">
+        <img [src]="slide.getPictureUrl()" alt="Banner Image" class="img-fluid" />
+      </div>
+    </ng-template>
+    }
+  </ngb-carousel>
+</div>
+}
+
+<div class="dashboard-section">
+  <div class="summary-stats-container">
+    @if (empviewMenuList.menuNewEmp) {
+    <div class="summary-card" [class.is-clickable]="workings.length > 0"
+      (click)="workings.length > 0 ? openModal(newHireShow, 'newHireShow') : ''">
+      <div class="summary-icon"><i class="mdi mdi-account-plus"></i></div>
+      <div class="summary-content">
+        <h3>{{ summaryEmployee.newEmployeeInMonth }}</h3>
+        <span>{{ "dashboard.employee.new-employee.month" | translate }}</span>
+      </div>
+    </div>
+    }
+
+    @if (empviewMenuList.menuAnniversary) {
+    <div class="summary-card" [class.is-clickable]="summaryEmployee.listOfAnniversaryWork?.length > 0" (click)="
+        summaryEmployee.listOfAnniversaryWork?.length > 0
+          ? openModal(anniversaryShow, 'anniversaryShow')
+          : ''
+      ">
+      <div class="summary-icon"><i class="mdi mdi-star-circle"></i></div>
+      <div class="summary-content">
+        <h3>{{ summaryEmployee.anniversaryWork }}</h3>
+        <span>{{ "dashboard.anniversaryWork" | translate }}</span>
+      </div>
+    </div>
+    }
+    @if (empviewMenuList.menuBirthday) {
+    <div class="summary-card" [class.is-clickable]="summaryEmployee.listOfBirthDate?.length > 0" (click)="
+        summaryEmployee.listOfBirthDate?.length > 0
+          ? openModal(birthDayShow, 'birthDayShow')
+          : ''
+      ">
+      <div class="summary-icon"><i class="mdi mdi-cake-variant"></i></div>
+      <div class="summary-content">
+        <h3>{{ summaryEmployee.birthDayToday }}</h3>
+        <span>{{ "dashboard.birthday.today" | translate }}</span>
+      </div>
+    </div>
+    }
+  </div>
+</div> -->
+@if (bannerList.length) {
+<div class="dashboard-section">
+  <ngb-carousel>
+    @for (slide of bannerList; track slide) {
+    <ng-template ngbSlide>
+      <div class="card overflow-hidden">
+        <img [src]="slide.getPictureUrl()" alt="Banner Image" class="img-fluid" />
+      </div>
+    </ng-template>
+    }
+  </ngb-carousel>
+</div>
+}
+
+<div class="card card-hover card-gradient m-t-10">
+    <div class="card-body">
+        <!-- <h5 *ngIf="
+                empviewMenuList.menuNewEmp ||
+                empviewMenuList.menuAnniversary ||
+                empviewMenuList.menuBirthday
+            " class="card-subtitle text-white op-4">
+            {{ "menu.home" | translate }}
+        </h5>
+        <h4 *ngIf="
+                !empviewMenuList.menuNewEmp &&
+                !empviewMenuList.menuAnniversary &&
+                !empviewMenuList.menuBirthday
+            " class="card-subtitle text-white op-4">
+            {{ "menu.home" | translate }}
+        </h4> -->
+        <div class="row justify-content-between align-items-center">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-md-4" *ngIf="empviewMenuList.menuNewEmp">
+                        <div class="info d-flex align-items-center" [ngClass]="{
+                                'cursor-myhr': workings.length > 0,
+                                'justify-content-between': !windowWidth(768)
+                            }" (click)="
+                                workings.length > 0
+                                    ? openModal(newHireShow, 'newHireShow')
+                                    : ''
+                            ">
+                             <div class="summary-icon"><i class="mdi mdi-account-plus"></i></div>
+                            <div class="summary-content">
+                                <h3 class="text-white m-b-0" [ngClass]="{
+                                        'text-right': !windowWidth(768)
+                                    }">
+                                    {{ summaryEmployee.newEmployeeInMonth }}
+                                </h3>
+                                <a>
+                                    <span class="text-white op-5">
+                                        {{
+                                        "dashboard.employee.new-employee.month"
+                                        | translate
+                                        }}
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" *ngIf="empviewMenuList.menuAnniversary">
+                        <div class="info d-flex align-items-center" [ngClass]="{
+                                'cursor-myhr':
+                                    summaryEmployee.listOfAnniversaryWork
+                                        ? summaryEmployee.listOfAnniversaryWork
+                                              .length > 0
+                                        : false,
+                                'justify-content-between': !windowWidth(768)
+                            }" (click)="
+                                (
+                                    summaryEmployee.listOfAnniversaryWork
+                                        ? summaryEmployee.listOfAnniversaryWork
+                                              .length > 0
+                                        : false
+                                )
+                                    ? openModal(
+                                          anniversaryShow,
+                                          'anniversaryShow'
+                                      )
+                                    : ''
+                            ">
+                            <div class="summary-icon"><i class="mdi mdi-star-circle"></i></div>
+                            <div class="summary-content">
+                                <h3 class="text-white m-b-0" [ngClass]="{
+                                        'text-right': !windowWidth(768)
+                                    }">
+                                    {{ summaryEmployee.anniversaryWork }}
+                                </h3>
+                                <a>
+                                    <span class="text-white op-5">{{
+                                        "dashboard.anniversaryWork" | translate
+                                        }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" *ngIf="empviewMenuList.menuBirthday">
+                        <div class="info d-flex align-items-center" [ngClass]="{
+                                'cursor-myhr': summaryEmployee.listOfBirthDate
+                                    ? summaryEmployee.listOfBirthDate.length > 0
+                                    : false,
+                                ' justify-content-between': !windowWidth(768)
+                            }" (click)="
+                                (
+                                    summaryEmployee.listOfBirthDate
+                                        ? summaryEmployee.listOfBirthDate
+                                              .length > 0
+                                        : false
+                                )
+                                    ? openModal(birthDayShow, 'birthDayShow')
+                                    : ''
+                            ">
+                            <div class="summary-icon"><i class="mdi mdi-cake-variant"></i></div>
+                            <div class="summary-content">
+                                <h3 class="text-white m-b-0" [ngClass]="{
+                                        'text-right': !windowWidth(768)
+                                    }">
+                                    {{ summaryEmployee.birthDayToday }}
+                                </h3>
+                                <a>
+                                    <span class="text-white op-5">
+                                        {{
+                                        "dashboard.birthday.today"
+                                        | translate
+                                        }}
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Time Stats Section -->
+@if (empviewMenuList.menuDashboardTime) {
+<div class="dashboard-section">
+  <div class="time-stats-container">
+    <div class="time-stat-card">
+      <div class="time-stat-icon"><i class="ti-clipboard"></i></div>
+      <h3>
+        {{ wTime.toFixed(2) }} <small>{{ "Hours" | translate }}</small>
+      </h3>
+      <h6>{{ "Work Time" | translate }}</h6>
+    </div>
+    <div class="time-stat-card">
+      <div class="time-stat-icon"><i class="ti-time"></i></div>
+      <h3>
+        {{ oTime.toFixed(2) }} <small>{{ "Hours" | translate }}</small>
+      </h3>
+      <h6>{{ "OT Time" | translate }}</h6>
+    </div>
+    <div class="time-stat-card">
+      <div class="time-stat-icon"><i class="ti-write"></i></div>
+      <h3>
+        {{ lTime.toFixed(2) }} <small>{{ "Hours" | translate }}</small>
+      </h3>
+      <h6>{{ "Leave Time" | translate }}</h6>
+    </div>
+    <div class="time-stat-card">
+      <div class="time-stat-icon"><i class="ti-help-alt"></i></div>
+      <h3>
+        {{ lateTime.toFixed(2) }} <small>{{ "Hours" | translate }}</small>
+      </h3>
+      <h6>{{ "Late/Early" | translate }}</h6>
+    </div>
+    <div class="time-stat-card">
+      <div class="time-stat-icon"><i class="ti-info-alt"></i></div>
+      <h3>
+        {{ absent.toFixed(2) }} <small>{{ "Hours" | translate }}</small>
+      </h3>
+      <h6>{{ "Absent" | translate }}</h6>
+    </div>
+    <div class="time-stat-card">
+      <div class="time-stat-icon"><i class="ti-bar-chart"></i></div>
+      <h3>
+        {{ aTime }} <small>{{ "Hours" | translate }}</small>
+      </h3>
+      <h6>{{ "Working Total (Hr:Min)" | translate }}</h6>
+    </div>
+    
+  </div>
+</div>
+}
+
+<!-- Main Content Section (News, Calendar, etc.) -->
+<div class="row dashboard-section">
+  <!-- News Column -->
+  @if (empviewMenuList.menuNews) {
+  <div class="col-lg-6 mb-4">
+    <div class="card main-content-card">
+      <div class="card-header bg-myhr">
+        <h4 class="mb-0">{{ "News" | translate }}</h4>
+      </div>
+      <div class="card-body content-list">
+        @for (item of news; track item.newsId) {
+        <div class="content-item" (click)="openModal(newsShow, 'newsShow', item)">
+          <img appShowLoading [src]="item.getPictureUrl()" alt="news" class="content-item-img" />
+          <div class="content-item-body">
+            <h6>{{ item.getTopicDesc() }}</h6>
+            <span class="meta-data">{{ item.startDate | date : "dd-MM-yyyy" }}
+              {{ "systemcode.to" | translate }}
+              {{ item.endDate | date : "dd-MM-yyyy" }}</span>
+            <span class="read-more">{{ "Read more" | translate }} <i class="mdi mdi-arrow-right"></i></span>
+          </div>
+        </div>
+        } @empty {
+        <div class="p-4 text-center text-muted">
+          {{ "No news available." | translate }}
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Calendar Column -->
+  <div class="col-lg-6 mb-4">
+    <div class="card main-content-card">
+      <div class="card-header bg-myhr">
+        <h4 class="mb-0">{{ "Calendar" | translate }}</h4>
+      </div>
+      <div class="card-body p-0">
+        <ul ngbNav #navKC="ngbNav" (navChange)="onNavChange($event)" [(activeId)]="activeKeep" [destroyOnHide]="false"
+          class="nav-tabs nav-tabs-modern">
+          @if (empviewMenuList.menuOIHOLIDAY) {
+          <li [ngbNavItem]="1" [destroyOnHide]="false">
+            <a ngbNavLink>{{ "Calendar" | translate }}</a>
+            <ng-template ngbNavContent>
+              <div class="calendar-container">
+                <div class="fc-container">
+                  <full-calendar #fullCalendar [options]="calendarOptions"></full-calendar>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          } @if (empviewMenuList.menuTrainingPlan) {
+          <li [ngbNavItem]="empviewMenuList.menuOIHOLIDAY ? 2 : 1">
+            <a ngbNavLink>{{ "menu.traning-plan" | translate }}</a>
+            <ng-template ngbNavContent>
+              <div class="calendar-container">
+                <div class="calendar-controls">
+                  <label for="trainingTypeSelect" class="form-label mb-0">{{
+                    "Select Type" | translate
+                    }}</label>
+                  <select id="trainingTypeSelect" class="form-select w-auto" [(ngModel)]="classres"
+                    (ngModelChange)="calendarAddTrainingList()">
+                    <option value="class">
+                      {{ "Class Date" | translate }}
+                    </option>
+                    <option value="res">
+                      {{ "Reserve Date" | translate }}
+                    </option>
+                  </select>
+                </div>
+                <div class="training-legend">
+                  <div class="legend-item">
+                    <span class="legend-box" style="background-color: #710067"></span><span>{{ "Coming soon" | translate
+                      }}</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-box" style="background-color: #007ec3"></span><span>{{ "Can Reserve" | translate
+                      }}</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-box" style="background-color: #ff9b2b"></span><span>{{ "Waiting Approve" |
+                      translate }}</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-box" style="background-color: #038600"></span><span>{{ "Approved" | translate
+                      }}</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-box" style="background-color: #ff4f41"></span><span>{{ "Not approve" | translate
+                      }}</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-box" style="background-color: #6e6565"></span><span>{{ "Out of date for Reserve"
+                      | translate }}</span>
+                  </div>
+                </div>
+                <div class="fc-container">
+                  <full-calendar #fullCalendarTraning [options]="calendarOptionsTraning"></full-calendar>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          }
+        </ul>
+        <div [ngbNavOutlet]="navKC" class="mt-1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Links Section -->
+<div class="dashboard-section">
+  <div class="quick-links-container">
+    @if (empviewMenuList.menuPromotion) {
+    <div class="quick-link-card" (click)="openModal(Promotion, 'Promotion')">
+      <i class="mdi mdi-account-convert quick-link-icon text-danger"></i>
+      <h4>{{ "Promotion" | translate }}</h4>
+    </div>
+    } @if (empviewMenuList.menuHandbook) {
+    <div class="quick-link-card" (click)="openModal(Employee_Handbook, 'Employee_Handbook')">
+      <i class="mdi mdi-format-float-left quick-link-icon text-cyan"></i>
+      <h4>{{ "Employee Handbook" | translate }}</h4>
+    </div>
+    } @if (empviewMenuList.menuVideo) {
+    <div class="quick-link-card" (click)="openModal(Video, 'Video')">
+      <i class="mdi mdi-laptop-mac quick-link-icon text-purple"></i>
+      <h4>{{ "Video" | translate }}</h4>
+    </div>
+    } @if (empviewMenuList.menuExLinks) {
+    <div class="quick-link-card" (click)="openModal(External_Links, 'External_Links')">
+      <i class="mdi mdi-link quick-link-icon text-info"></i>
+      <h4>{{ "External Links" | translate }}</h4>
+    </div>
+    } @if (empviewMenuList.menuMylearn) {
+    <div class="quick-link-card" (click)="openMylearn()">
+      <img src="assets/images/logo/mylearn-logo.png" class="quick-link-icon" alt="Mylearn Logo" />
+      <h4>{{ "mylearn" | translate }}</h4>
+    </div>
+    }
+  </div>
+</div>
+
+<!-- Events Section -->
+@if (empviewMenuList.menuEvent) {
+<div class="dashboard-section">
+  <div class="card main-content-card">
+    <div class="card-header bg-myhr">
+      <h4 class="mb-0">{{ "Event" | translate }}</h4>
+    </div>
+    <div class="card-body content-list">
+      @for (item of tevent; track item.eventId) {
+      <div class="content-item" (click)="openModal(Event, 'Event', item)">
+        <img appShowLoading [src]="item.getPictureUrl()" alt="event" class="content-item-img" />
+        <div class="content-item-body">
+          <h6>{{ item.getTopicDesc() }}</h6>
+          <p class="text-muted mb-2">{{ item.getTabstractDesc() }}</p>
+          <span class="meta-data">{{ "systemcode.location" | translate }}:
+            {{ item.getPlaceDesc() }}</span>
+          <span class="meta-data">{{ "date" | translate }}:
+            {{ item.dateStart | date : "dd-MM-yyyy" }}
+            {{ "systemcode.to" | translate }}
+            {{ item.dateEnd | date : "dd-MM-yyyy" }}</span>
+          <span class="read-more">{{ "Read more" | translate }} <i class="mdi mdi-arrow-right"></i></span>
+        </div>
+      </div>
+      } @empty {
+      <div class="p-4 text-center text-muted">
+        {{ "No events available." | translate }}
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- Draggable IFrame Grid Section -->
+@if (ktdGrid?.layout.length > 0) {
+<div class="dashboard-section">
+  <ktd-grid [cols]="cols" [rowHeight]="rowHeight" [layout]="ktdGrid.layout" [compactType]="compactType"
+    [preventCollision]="preventCollision" [scrollableParent]="autoScroll ? document : null" scrollSpeed="4"
+    (layoutUpdated)="updatedKtdGridItem($event)">
+    @for (item of ktdGrid.layout; track ktdGrid.trackById($index, item)) {
+    <ktd-grid-item [id]="item.id" class="ktd-grid-item-table">
+      <div class="card-header bg-myhr d-flex justify-content-between align-items-center">
+        <h4 class="mb-0 text-white text-truncate">
+          {{ dashBoard[$index].name }}
+        </h4>
+        <button (click)="removeKtdGridItem(item.id)" class="btn btn-danger btn-sm btn-circle">
+          <i class="mdi mdi-close"></i>
+        </button>
+      </div>
+      <iframe [src]="dashBoard[$index].link | safe" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+    </ktd-grid-item>
+    }
+  </ktd-grid>
+</div>
+}
+
+<!-- MODAL TEMPLATES -->
+
+<!-- Generic Profile List Modal (New Hire, Anniversary, Birthday) -->
+<ng-template #newHireShow let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ "dashboard.employee.new-employee.month" | translate }}
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body profile-list-modal">
+    <div class="row">
+      @for (item of workings; track item.empId) {
+      <div class="col-md-6 col-lg-4">
+        <div class="profile-card">
+          <div class="profile-pic mb-3">
+            <img appShowLoading [src]="item.getPictureUrl()" width="120" height="120" class="rounded-circle"
+              alt="user" />
+          </div>
+          <h5 class="mb-1">{{ item.getFullname() }}</h5>
+          <p class="text-muted small mb-1">
+            {{ item.position.getPositionDesc() || "-" }}
+          </p>
+          <p class="text-muted small">{{ item.bu2.getBu2Desc() || "-" }}</p>
+          <div class="mt-3 pt-3 border-top">
+            <i class="mdi mdi-calendar-check"></i>
+            {{ "system.start.date" | translate }}:
+            {{ item.firstHiredate | date : "dd-MM-yyyy" }}
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #anniversaryShow let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ "dashboard.anniversaryWork" | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body profile-list-modal">
+    <div class="row">
+      @for (item of summaryEmployee.listOfAnniversaryWork; track item.empId) {
+      <div class="col-md-6 col-lg-4">
+        <div class="profile-card">
+          <div class="profile-pic mb-3">
+            <img [src]="item.getPictureUrl()" width="120" height="120" class="rounded-circle" alt="user" />
+          </div>
+          <h5 class="mb-1">{{ item.getFullname() }}</h5>
+          <p class="text-muted small mb-1">
+            {{ item.position.getPositionDesc() || "-" }}
+          </p>
+          <p class="text-muted small">{{ item.bu2.getBu2Desc() || "-" }}</p>
+          <div class="mt-3 pt-3 border-top">
+            <i class="mdi mdi-medal"></i> {{ item.ageOfWork.year }}
+            {{ "systemcode.year" | translate }} {{ item.ageOfWork.month }}
+            {{ "systemcode.month" | translate }}
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #birthDayShow let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ "dashboard.birthday.today" | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body profile-list-modal">
+    <div class="row">
+      @for (item of summaryEmployee.listOfBirthDate; track item.empId) {
+      <div class="col-md-6 col-lg-4">
+        <div class="profile-card">
+          <div class="profile-pic mb-3">
+            <img [src]="item.getPictureUrl()" width="120" height="120" class="rounded-circle" alt="user" />
+          </div>
+          <h5 class="mb-1">{{ item.getFullname() }}</h5>
+          <p class="text-muted small mb-1">
+            {{ item.position.getPositionDesc() || "-" }}
+          </p>
+          <p class="text-muted small">{{ item.bu2.getBu2Desc() || "-" }}</p>
+          <div class="mt-3 pt-3 border-top text-danger">
+            <i class="mdi mdi-cake-variant"></i>
+            {{ "Happy.birthday" | translate }}
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Promotion Modal -->
+<ng-template #Promotion let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ "Promotion" | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body profile-list-modal">
+    <div class="row">
+      @for (item of empPromotion; track item.employee.empId) {
+      <div class="col-md-6 col-lg-4">
+        <div class="profile-card">
+          <div class="profile-pic mb-3">
+            <img [src]="item.employee.picture" width="120" height="120" class="rounded-circle" alt="user" />
+          </div>
+          <h5 class="mb-1">
+            {{
+            translateService.currentLang == "th"
+            ? item.employee.fname + " " + item.employee.lname
+            : item.employee.efname + " " + item.employee.elname
+            }}
+          </h5>
+          <div class="mt-3 pt-3 border-top position-details">
+            @if (item.position.positionId != item.oldPosition.positionId) {
+            <div class="d-flex align-items-center justify-content-center fw-medium fs-6">
+              <span>{{
+                translateService.currentLang == "th"
+                ? item.oldPosition.tdesc
+                : item.oldPosition.edesc
+                }}</span>
+              <i class="mdi mdi-arrow-right font-20 mx-1"></i>
+              <span>{{
+                translateService.currentLang == "th"
+                ? item.position.tdesc
+                : item.position.edesc
+                }}</span>
+            </div>
+            } @if (item.workarea.workareaId != item.oldWorkarea.workareaId) {
+            <div class="d-flex align-items-center justify-content-center fw-medium fs-6 text-warning mt-1">
+              <span>{{
+                translateService.currentLang == "th"
+                ? item.oldWorkarea.tdesc
+                : item.oldWorkarea.edesc
+                }}</span>
+              <i class="mdi mdi-autorenew font-20 mx-1"></i>
+              <span>{{
+                translateService.currentLang == "th"
+                ? item.workarea.tdesc
+                : item.workarea.edesc
+                }}</span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Handbook Modal -->
+<ng-template #Employee_Handbook let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ "Employee Handbook" | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="list-group handbook-list">
+      @for (item of thandbook; track item.handbookId) {
+      <a href="{{ item.getAttachment() }}" target="_blank" class="list-group-item list-group-item-action">
+        <button class="btn btn-info text-white btn-circle me-3">
+          <i class="mdi mdi-download"></i>
+        </button>
+        <div class="d-flex flex-column">
+          <h6 class="mb-0">{{ item.getHandBookDesc() }}</h6>
+          <small class="text-muted">{{ item.uploadDate }}</small>
+        </div>
+      </a>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Video Modal -->
+<ng-template #Video let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ "Video" | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    @if(youtubeId) {
+    <div class="ratio ratio-16x9 mb-4">
+      <iframe [src]="youtubeId | safe" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+    }
+    <div class="list-group video-playlist">
+      @for (item of tvideo; track item.videoId) {
+      <a (click)="playYoutube(youtube_Parser(item.link))"
+        class="list-group-item list-group-item-action d-flex align-items-center">
+        <img src="https://i.ytimg.com/vi/{{
+            youtube_Parser(item.link)
+          }}/default.jpg" alt="Video thumbnail" />
+        <h6 class="mb-0">{{ item.getTitleDesc() }}</h6>
+      </a>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- External Links Modal -->
+<ng-template #External_Links let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ "External Links" | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="list-group external-links-list">
+      @for (item of externallink; track item.linkId; let i = $index) {
+      <a href="{{ item.link }}" target="_blank" class="list-group-item list-group-item-action">
+        <span class="badge bg-primary rounded-pill me-3">{{ i + 1 }}</span>
+        {{ item.getNameDesc() }}
+      </a>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- News/Event Detail Modal -->
+<ng-template #newsShow let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ newsSelect.getTopicDesc() }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div [innerHTML]="newsSelect.getDetailDesc()"></div>
+    @if (newsSelect.mainPictures) {
+    <ngb-carousel [interval]="3000" [activeId]="initialSlideId" class="mt-4">
+      @for (item of newsSelect.getListPic(); track item; let i = $index) {
+      <ng-template ngbSlide id="{{ i }}">
+        <div class="ratio ratio-16x9">
+          <img [src]="item" alt="News image" class="rounded" style="object-fit: cover" />
+        </div>
+      </ng-template>
+      }
+    </ngb-carousel>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #Event let-modal>
+  @if(teventSelect) {
+  <div class="modal-header">
+    <h4 class="modal-title">{{ teventSelect.getTopicDesc() }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <img [src]="teventSelect.getPictureUrl()" class="img-fluid rounded" />
+    </div>
+    <div [innerHTML]="teventSelect.getDetailDesc()"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+  }
+</ng-template>
+
+<!-- Training Detail Modal -->
+<ng-template #dialogTraning let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ "Training Reserve" | translate }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <!-- Course Details -->
+    <div class="card info-card mb-4">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{ "course detail" | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span>{{ "courseID" | translate }}</span><strong>{{ trainingSelect.course.courseId || "-" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "course type" | translate }}</span><strong>{{
+              trainingSelect.course.crsType.getCrsTypeDesc() || "-"
+              }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "detailTH" | translate }}</span><strong>{{ trainingSelect.course.tdesc || "-" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "detailENG" | translate }}</span><strong>{{ trainingSelect.course.edesc || "-" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "introduction" | translate }}</span><strong>{{ trainingSelect.course.editorial || "-" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "course content" | translate }}</span><strong>{{ trainingSelect.course.detail || "-" }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Training Details -->
+    <div class="card info-card mb-4">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{ "training detail" | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span>{{ "training id" | translate }}</span><strong>{{ trainingSelect.trainingId || "-" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "training roll" | translate }}</span><strong>{{ trainingSelect.trainingType.getDesc() || "-"
+              }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "booking date" | translate }}</span><strong>{{ trainingSelect.resDateFrm | date : "dd-MM-yyyy" }} -
+              {{ trainingSelect.resDateTo | date : "dd-MM-yyyy" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "training date" | translate }}</span><strong>{{ trainingSelect.classDateFrm | date : "dd-MM-yyyy"
+              }} -
+              {{ trainingSelect.classDateTo | date : "dd-MM-yyyy" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "training institutions" | translate }}</span><strong>{{
+              trainingSelect.academy.getAcademyDesc() || "-"
+              }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "training place" | translate }}</span><strong>{{
+              trainingSelect.location.getLocationDesc() || "-"
+              }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "hours" | translate }}</span><strong>{{ trainingSelect.classHour | number : "2.2" }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>{{ "training room" | translate }}</span><strong>{{ trainingSelect.room.getRoomDesc() || "-"
+              }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Schedule -->
+    <div class="card info-card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{ "time schedule" | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th class="text-center">{{ "day" | translate }}</th>
+                <th class="text-center">{{ "start time" | translate }}</th>
+                <th class="text-center">{{ "end time" | translate }}</th>
+                <th class="text-center">{{ "break hour" | translate }}</th>
+                <th class="text-center">{{ "total time" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of trainingSelect.trainingTimes; track $index) {
+              <tr>
+                <td class="text-center">
+                  {{ item.startDate | date : "dd-MM-yyyy" }}
+                </td>
+                <td class="text-center">
+                  {{ item.startTime | number : "2.2" }}
+                </td>
+                <td class="text-center">{{ item.endTime | number : "2.2" }}</td>
+                <td class="text-center">
+                  {{ item.timeBreak | number : ".2" }}
+                </td>
+                <td class="text-center">{{ item.hour | number : ".2" }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    @if (canReserve) {
+    <button type="button" class="btn btn-primary" routerLink="../workflow-type/7009/0/{{ trainingSelect.trainingId }}"
+      (click)="modal.dismiss()">
+      {{ "Reserve" | translate }}
+    </button>
+    <button type="button" class="btn btn-outline-primary"
+      routerLink="../workflow-type/7005/0/{{ trainingSelect.trainingId }}" (click)="modal.dismiss()">
+      {{ "Reserve for subordinates" | translate }}
+    </button>
+    }
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #workPlanDetailModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ "Work Plan Detail" | translate }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="col-12 m-t-10">
+      <div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-6 b-r mb-3">
+              <p class="text-muted m-0">
+                {{ "date" | translate }}
+              </p>
+              <h6>{{ select.workPlan.dateId }}</h6>
+            </div>
+            <div class="col-12 col-md-6 b-r mb-3">
+              <p class="text-muted m-0">
+                {{ "Shift ID" | translate }}
+              </p>
+              <h6>{{ select.workPlan.timeCode }}</h6>
+            </div>
+            <div class="col-12 b-r mb-3">
+              <p class="text-muted m-0">
+                {{ "Work Time" | translate }}
+              </p>
+              <h6>
+                {{ select.workPlan.startDate }} -
+                {{ select.workPlan.startTime.toFixed(2) }}
+                : {{ select.workPlan.endDate }} -
+                {{ select.workPlan.endTime.toFixed(2) }}
+              </h6>
+            </div>
+            <div class="col-12 col-md-6 b-r mb-3">
+              <p class="text-muted m-0">
+                {{ "Punch Time" | translate }}
+              </p>
+              <h6>
+                {{
+                select.workPlan.costCenter.length > 0
+                ? select.workPlan.costCenter
+                : "-"
+                }}
+              </h6>
+            </div>
+            <div class="col-12 col-md-6 b-r mb-3">
+              <p class="text-muted m-0">
+                {{ "Day Type" | translate }}
+              </p>
+              <h6>
+                {{ select.workPlan.eventgrp.getDesc() }}
+              </h6>
+            </div>
+            <div class="col-auto b-r mb-3 ms-1">
+              <button type="button" class="btn btn-info text-white" routerLink="../workflow-type/8001"
+                (click)="modal.dismiss()">
+                {{ "Leave" | translate }}
+              </button>
+            </div>
+            <div class="col-auto b-r mb-3">
+              <button type="button" class="btn btn-info text-white" routerLink="../workflow-type/8005"
+                (click)="modal.dismiss()">
+                {{ "Update Time" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>

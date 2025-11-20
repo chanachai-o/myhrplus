@@ -1,0 +1,524 @@
+<div class="col-md-12">
+  <ul ngbNav #navKC="ngbNav" [(activeId)]="activeKeep" [destroyOnHide]="true" class="nav-tabs"
+    style="background-color: white; padding: 10px 10px 10px 10px">
+    <li [ngbNavItem]="1" [destroyOnHide]="true" (click)="ngOnInit()">
+      <a ngbNavLink>{{ "โครงสร้างองค์กร" | translate }}</a>
+      <ng-template ngbNavContent>
+        <div class="card card-hover">
+          <div class="card-header bg-myhr">
+            <h4>{{ "Organization Chart" | translate }}</h4>
+          </div>
+          <div class="justify-content-center text-center" role="status" *ngIf="loading">
+            <div class="spinner-grow text-info" role="status" style="margin: 5px">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div class="spinner-grow text-info" role="status" style="margin: 5px">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div class="spinner-grow text-info" role="status" style="margin: 5px">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <!-- <div id="controlPanel"></div> -->
+          <div class="row m-0 bg-transparent">
+            <div class="col-2 me-3 mt-2 mb-2 d-flex justify-content-start">
+              <select name="level" id="level" class="form-control text-center">
+                <option *ngFor="let item of ['1.0', '1.0', '1.2', '2.0', '2.1', '3.0']">
+                  {{ "Version: " + item }}
+                </option>
+              </select>
+            </div>
+            <div class="col me-3 mt-2 mb-2 d-flex justify-content-end">
+              <!-- <button type="button" class="btn btn-primary me-2" (click)="openModal(addNodeModal)">
+                {{ "เพิ่มองค์กรณ์" }}
+              </button>
+              <button type="button" class="btn btn-primary me-2" (click)="openModal(addEmpModal)">
+                {{ "เพิ่มพนักงาน" }}
+              </button>
+              <button type="button" class="btn btn-success me-2" (click)="postcharlist()">
+                {{ "บันทึกโครงสร้างองค์กร" }}
+              </button> -->
+              <button type="button" class="btn btn-danger me-2" (click)="reset()">
+                {{ "รีเซ็ต" }}
+              </button>
+              <button type="button" class="btn btn-info" (click)="openModal(helpModal);">
+                {{ "Help" }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row m-0">
+            <div id="tree"></div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <!-- <li [ngbNavItem]="2" (click)="ngOnInit()">
+      <a ngbNavLink>{{"สายบังคับบัญชา" | translate}}</a>
+      <ng-template ngbNavContent>
+        <div class="card card-hover">
+          <div class="card-header bg-myhr">
+            <h4>{{"สายบังคับบัญชา" | translate}}</h4>
+          </div>
+          <div class="justify-content-center text-center" role="status" *ngIf="loading">
+            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          
+          <div class="row m-0 me-4 justify-content-end" >
+            <button type="button" class="btn btn-primary mt-3" (click)="openAddModal(addEmpModal2)">Add Node</button>
+          </div>
+          <div class="row m-0">
+            <div id="tree_2"></div>
+          </div>
+        </div>
+      </ng-template>
+    </li> -->
+  </ul>
+  <div [ngbNavOutlet]="navKC" class="mt-2"></div>
+</div>
+
+<ng-template #addNodeModal let-modal>
+  <div class="modal-body">
+    <div class="card" style="margin-bottom: -10px">
+      <div class="card-header bg-myhr">
+        <h4>{{ "เพิ่มข้อมูล" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"ID" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'ID' | translate }}" [(ngModel)]="newNode.id" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.fname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.fname' | translate}}"
+                [(ngModel)]="newNode.tdesc" />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.efname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.efname' | translate}}"
+                [(ngModel)]="newNode.edesc" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newNode.level">
+                <option *ngFor="let item of [1, 2, 3, 4, 5]" [ngValue]="item">
+                  {{ "Bu" + item }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 d-flex justify-content-end">
+          <!-- <div class="col me-2 d-flex justify-content-end"> -->
+          <button type="button" class="btn btn-primary me-1" (click)="addNode(newNode); modal.close()">
+            {{ "Add New Node" }}
+          </button>
+          <button type="button" class="btn btn-danger" (click)="modal.close()">
+            {{ "Close" | translate}}
+          </button>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalDetail let-modal>
+  <div class="modal-body">
+    <div class="card" style="margin-bottom: -10px">
+      <div class="card-header bg-myhr">
+        <h4>{{ "รายละเอียด" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"ID" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'ID' | translate }}" [(ngModel)]="selectedNode.id"
+                disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.fname" | translate }}</small>
+              <input type="text" class="form-control" placeholder='{{ "systemcode.emp.fname" | translate }}'
+                [(ngModel)]="selectedNode.tdesc" disabled />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.efname" | translate }}</small>
+              <input type="text" class="form-control" placeholder='{{ "systemcode.emp.efname" | translate }}'
+                [(ngModel)]="selectedNode.edesc" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'Bu' | translate }}"
+                [value]="'Bu' + selectedNode.level" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-end">
+          <!-- <button type="button" class="btn btn-warning me-2">
+            {{ "Edit" | translate}}
+          </button> -->
+          <button type="button" class="btn btn-danger" (click)="modal.close()">
+            {{ "Close" | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalEdit let-modal>
+  <div class="modal-body">
+    <div class="card" style="margin-bottom: -10px">
+      <div class="card-header bg-myhr">
+        <h4>{{ "Edit" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"ID" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'ID' | translate }}" [(ngModel)]="selectedNode.id"
+                disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.fname" | translate }}</small>
+              <input type="text" class="form-control" placeholder='{{ "systemcode.emp.fname" | translate }}'
+                [(ngModel)]="selectedNode.tdesc" />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.efname" | translate }}</small>
+              <input type="text" class="form-control" placeholder='{{ "systemcode.emp.efname" | translate }}'
+                [(ngModel)]="selectedNode.edesc" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <!-- <small class="text-muted">{{"Bu" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'Bu' | translate }}" [(ngModel)]="selectedNode.level" /> -->
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="selectedNode.level">
+                <option *ngFor="let item of [1, 2, 3, 4, 5]" [ngValue]="item">
+                  {{ "Bu" + item }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-end">
+          <button type="button" class="btn btn-success me-2" (click)="updateNode(); modal.close()">
+            {{ "บันทึก" | translate}}
+          </button>
+          <button type="button" class="btn btn-danger" (click)="modal.close()">
+            {{ "Close" | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #addEmpModal let-modal>
+  <div class="modal-body">
+    <div class="card" style="margin-bottom: -10px">
+      <div class="card-header bg-myhr">
+        <h4>{{ "เพิ่มข้อมูล" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"ID" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'ID' | translate }}" [(ngModel)]="newEmp.id" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.fname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.fname' | translate}}"
+                [(ngModel)]="newEmp.fname" (ngModelChange)="newEmp.name = newEmp.fname + ' ' + newEmp.lname" />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.lname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.lname' | translate}}"
+                [(ngModel)]="newEmp.lname" (ngModelChange)="newEmp.name = newEmp.fname + ' ' + newEmp.lname" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.efname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.efname' | translate}}"
+                [(ngModel)]="newEmp.efname" (ngModelChange)="newEmp.name = newEmp.efname + ' ' + newEmp.elname" />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.ee" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.elname' | translate}}"
+                [(ngModel)]="newEmp.elname" (ngModelChange)="newEmp.name = newEmp.efname + ' ' + newEmp.elname" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newEmp.bu1">
+                <option *ngFor="let item of filterBu('1','')" [ngValue]="item.tdesc">
+                  {{item.tdesc}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newEmp.bu2">
+                <option *ngFor="let item of filterBu('2',newEmp.bu1.bu1id)" [ngValue]="item.tdesc">
+                  {{item.tdesc}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newEmp.bu3">
+                <option *ngFor="let item of filterBu('3',newEmp.bu2.bu2id)" [ngValue]="item.tdesc">
+                  {{item.tdesc}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newEmp.bu4">
+                <option *ngFor="let item of filterBu('4',newEmp.bu3.bu3id)" [ngValue]="item.tdesc">
+                  {{item.tdesc}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newEmp.parent">
+                <option *ngFor="let item of filterBu('5',newEmp.bu4.bu4id)" [ngValue]="item">
+                  {{item.tdesc}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "position" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'position' | translate}}"
+                [(ngModel)]="newEmp.position" />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "pictuer" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'pictuer' | translate}}"
+                [(ngModel)]="newEmp.picture" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"plId" | translate}}</small>
+              <select name="level" id="level" class="form-control" [(ngModel)]="newEmp.plId">
+                <option *ngFor="let item of [1,2,3,4,5,6]" [ngValue]="item">
+                  {{"plId " + item}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 d-flex justify-content-end">
+          <!-- <div class="col me-2 d-flex justify-content-end"> -->
+          <button type="button" class="btn btn-primary me-1" (click)="addNewEmp(newEmp); modal.close()">
+            {{ "Add New Node" }}
+          </button>
+          <button type="button" class="btn btn-danger" (click)="modal.close()">
+            {{ "Close" | translate}}
+          </button>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #detailEmpModal let-modal>
+  <div class="modal-body">
+    <div class="card" style="margin-bottom: -10px">
+      <div class="card-header bg-myhr">
+        <h4>{{ "รายละเอียด" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"ID" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'ID' | translate }}" [(ngModel)]="newEmp.id"
+                disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.fname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.fname' | translate}}"
+                [(ngModel)]="newEmp.fname" disabled />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.lname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.lname' | translate}}"
+                [(ngModel)]="newEmp.lname" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.efname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.efname' | translate}}"
+                [(ngModel)]="newEmp.efname" disabled />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "systemcode.emp.elname" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.elname' | translate}}"
+                [(ngModel)]="newEmp.elname" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "Company" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'Company' | translate}}"
+                [(ngModel)]="newEmp.company" disabled />
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-6 b-r" *ngFor="let item of [1,2,3,4,5]">
+            <div class="form-group">
+              <small class="text-muted">{{"Bu" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'systemcode.emp.elname' | translate}}"
+                [value]="newEmp['bu'+item]" disabled>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "position" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'position' | translate}}"
+                [(ngModel)]="newEmp.position" disabled />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{ "pictuer" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'pictuer' | translate}}"
+                [(ngModel)]="newEmp.picture" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 d-flex justify-content-end">
+          <button type="button" class="btn btn-danger" (click)="modal.close()">
+            {{ "Close" | translate}}
+          </button>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #helpModal let-modal>
+  <div class="modal-body">
+    <div class="card" style="margin-bottom: -10px">
+      <div class="card-header bg-myhr">
+        <h4>{{ "Help" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 b-r">
+            <div class="form-group">
+              <small class="text-muted">{{"Help" | translate}}</small>
+              <input type="text" class="form-control" placeholder="{{ 'Help' | translate }}" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-end">
+          <button type="button" class="btn btn-danger" (click)="modal.close()">
+            {{ "Close" | translate}}
+          </button>
+          <!-- <button type="button" class="btn btn-primary" (click)="addNode(newNode); modal.close()">
+            {{ "Add New Node" }}
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+
+<!-- สายบังคับบัญชา -->

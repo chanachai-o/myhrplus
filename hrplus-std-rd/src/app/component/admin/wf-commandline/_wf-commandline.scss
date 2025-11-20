@@ -1,0 +1,141 @@
+/**
+ * Styles for Workflow Commandline Component
+ * Aligns with the Gemini Design System for a modern and consistent look.
+ */
+
+// Import core design variables and mixins
+@use 'src/assets/scss/core-design' as *;
+
+// Main card container
+.main-content-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-title-container {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  .card-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+// Filter section styling
+.filter-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .form-check {
+      padding-left: 0;
+      margin-right: -0.5rem; // Adjust spacing
+    }
+
+    .input-group {
+      flex-grow: 1;
+    }
+  }
+}
+
+.search-button-container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+
+// Table styling
+.table-container {
+  .table {
+    th {
+      background-color: var(--background-light);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .action-link {
+      text-decoration: underline;
+      color: var(--primary-color);
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-hover);
+      }
+    }
+
+    tfoot {
+      tr {
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        &:hover {
+          background-color: var(--background-light);
+        }
+      }
+      .mdi-plus {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+// Pagination styling
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+// Modal specific styles
+.command-detail-modal {
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    gap: 1rem;
+
+    label {
+      font-weight: 500;
+      text-align: right;
+      color: var(--text-secondary);
+    }
+  }
+
+  .boss-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1rem;
+  }
+
+  .comment-section {
+    textarea {
+      min-height: 100px;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+  }
+}

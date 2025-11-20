@@ -1,0 +1,292 @@
+<div class="card main-content-card">
+  <div class="card-body">
+    <!-- Header -->
+    <div class="card-title-container">
+      <h4 class="card-title">{{ "menu.traning-recommend" | translate }}</h4>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="flex-grow-1"></div>
+      <span class="badge rounded-pill badge-primary-light p-2">
+        {{ "all" | translate }}
+        <strong class="text-primary mx-1">{{ collectionSize }}</strong>
+        {{ "person" | translate }}
+      </span>
+    </div>
+
+    <!-- Loading Spinner -->
+    @if (loading) {
+    <div class="d-flex justify-content-center align-items-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    }
+
+    <!-- Desktop Table View -->
+    @if (!loading) {
+    <div class="table-responsive d-none d-lg-block">
+      <table class="table table-hover v-middle">
+        <thead class="thead-light">
+          <tr>
+            <th class="width-table" scope="col">
+              {{ "courseID" | translate }}
+            </th>
+            <th class="width-table" scope="col">
+              {{ "courseName" | translate }}
+            </th>
+            <th class="width-table" scope="col">
+              {{ "systemcode.status" | translate }}
+            </th>
+            <th class="width-table" scope="col">
+              {{ "datePlan" | translate }}
+            </th>
+            <th class="width-table" scope="col">
+              {{ "nextDate" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (nodata) {
+          <tr>
+            <td colspan="5" class="text-center text-muted py-4">
+              {{ "No Data Found" | translate }}
+            </td>
+          </tr>
+          } @else { @for (item of pagedData; track item.course.courseId) {
+          <tr>
+            <td class="align-middle">
+              <a
+                class="text-primary font-weight-bold link-hover"
+                (click)="openDialogCourse(dialogCourse, item)"
+                >{{ item.course.courseId }}</a
+              >
+            </td>
+            <td class="align-middle">
+              <a
+                class="text-primary font-weight-bold link-hover"
+                (click)="openDialogCourse(dialogCourse, item)"
+                >{{ item.course.getCourseDesc() }}</a
+              >
+            </td>
+            <td class="align-middle">
+              <a
+                class="text-primary font-weight-bold link-hover"
+                (click)="openDialogCourse(dialogCourse, item)"
+                >{{ "systemcode.recommend." + item.status | translate }}</a
+              >
+            </td>
+            <td class="align-middle">
+              <a
+                class="text-primary font-weight-bold link-hover"
+                (click)="openDialogCourse(dialogCourse, item)"
+                >{{ item.dateRequest | date : "dd-MM-yyyy" }}</a
+              >
+            </td>
+            <td class="align-middle">
+              <a
+                class="text-primary font-weight-bold link-hover"
+                (click)="openDialogCourse(dialogCourse, item)"
+                >{{ item.reCurrentStartdate | date : "dd-MM-yyyy" }}</a
+              >
+            </td>
+          </tr>
+          } }
+        </tbody>
+      </table>
+    </div>
+    }
+
+    <!-- Mobile Card View -->
+    @if (!loading) {
+    <div class="d-lg-none mt-3">
+      @if (nodata) {
+      <div class="text-center text-muted py-4">
+        {{ "No Data Found" | translate }}
+      </div>
+      } @else { @for (item of pagedData; track item.course.courseId) {
+      <div class="training-recommend-card-mobile">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="course-info">
+              <h5 class="course-title">{{ item.course.getCourseDesc() }}</h5>
+              <p class="course-id">{{ item.course.courseId }}</p>
+            </div>
+            <span class="badge text-bg-info">
+              {{ "systemcode.recommend." + item.status | translate }}
+            </span>
+          </div>
+          <div class="info-row mt-3">
+            <div class="info-item">
+              <span>{{ "datePlan" | translate }}</span
+              ><strong>{{ item.dateRequest | date : "dd-MM-yyyy" }}</strong>
+            </div>
+            <div class="info-item">
+              <span>{{ "nextDate" | translate }}</span
+              ><strong>{{
+                item.reCurrentStartdate | date : "dd-MM-yyyy"
+              }}</strong>
+            </div>
+          </div>
+          <div class="actions-row mt-3">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              (click)="openDialogCourse(dialogCourse, item)"
+            >
+              <i class="mdi mdi-eye-outline me-1"></i>
+              {{ "View Details" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+      } }
+    </div>
+    }
+
+    <!-- Pagination -->
+    @if (!nodata && !loading) {
+    <div class="pagination-controls d-flex justify-content-end p-2">
+      <select
+        class="form-select"
+        [(ngModel)]="pageSize"
+        (ngModelChange)="onPageSizeChange()"
+      >
+        <option [ngValue]="10">{{ "Items per page" | translate }}: 10</option>
+        <option [ngValue]="50">{{ "Items per page" | translate }}: 50</option>
+        <option [ngValue]="100">{{ "Items per page" | translate }}: 100</option>
+      </select>
+      <ngb-pagination
+        [collectionSize]="collectionSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [maxSize]="3"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      >
+        <ng-template ngbPaginationPrevious
+          ><i class="mdi mdi-chevron-left"></i
+        ></ng-template>
+        <ng-template ngbPaginationNext
+          ><i class="mdi mdi-chevron-right"></i
+        ></ng-template>
+      </ngb-pagination>
+    </div>
+    }
+  </div>
+</div>
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header bg-myhr justify-content-between">
+    <h5 class="modal-title" id="editLabel">Alert Message</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="closeBtnClick()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    {{ msg }}
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.close('Close click')"
+    >
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- รายละเอียดหลักสูตร -->
+<ng-template #dialogCourse let-modal>
+  <div class="modal-header bg-myhr justify-content-between">
+    <h5 class="modal-title">{{ "course detail" | translate }}</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="modal.dismiss('Cross click')"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <div class="modal-body">
+    @if (selectedItem) {
+    <div class="detail-card-container">
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small>{{ "courseID" | translate }}</small>
+          <h6>{{ selectedItem.course.courseId || "-" }}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small>{{ "course type" | translate }}</small>
+          <h6>{{ selectedItem.course.crsType.getCrsTypeDesc() || "-" }}</h6>
+        </div>
+      </div>
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small>{{ "detailTH" | translate }}</small>
+          <h6>{{ selectedItem.course.tdesc || "-" }}</h6>
+        </div>
+        <div class="detail-item-col-full">
+          <small>{{ "detailENG" | translate }}</small>
+          <h6>{{ selectedItem.course.edesc || "-" }}</h6>
+        </div>
+      </div>
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small>{{ "introduction" | translate }}</small>
+          <h6>{{ selectedItem.course.editorial || "-" }}</h6>
+        </div>
+        <div class="detail-item-col-full">
+          <small>{{ "course content" | translate }}</small>
+          <h6>{{ selectedItem.course.detail || "-" }}</h6>
+        </div>
+      </div>
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small>{{ "course group" | translate }}</small>
+          <h6>{{ selectedItem.course.crsGroup.getCrsGroupDesc() || "-" }}</h6>
+        </div>
+        <div class="detail-item-col">
+          <small>{{ "course field" | translate }}</small>
+          <h6>
+            {{ selectedItem.course.crsCategory.getCrsCategoryDesc() || "-" }}
+          </h6>
+        </div>
+      </div>
+      <div class="detail-item-group">
+        <div class="detail-item-col">
+          <small>{{ "course style" | translate }}</small>
+          <h6>
+            {{'systemcode.coursekind.' + selectedItem.course.crsKind || '-'}}
+          </h6>
+        </div>
+        <div class="detail-item-col">
+          <small>{{ "objective" | translate }}</small>
+          <h6>{{ selectedItem.course.objective || "-" }}</h6>
+        </div>
+      </div>
+      <div class="detail-item-group">
+        <div class="detail-item-col-full">
+          <small>{{ "pre-trained courses" | translate }}</small>
+          <h6>{{ selectedItem.course.preCrs || "-" }}</h6>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="modal.close('Close click')"
+    >
+      {{ "Close" | translate }}
+    </button>
+  </div>
+</ng-template>

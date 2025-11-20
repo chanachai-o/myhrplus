@@ -1,0 +1,192 @@
+<!-- ใบขอลาหยุดงาน -->
+<div class="row" *ngIf="empWork">
+    <!-- รายละเอียดข้อมูลพนักงาน -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"Employee Detail" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Employee ID"| translate}}</small>
+                        <h6>{{empWork.employeeId}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Name-Surname"| translate}}</small>
+                        <h6>{{empWork.getFullname()}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Position"| translate}}</small>
+                        <h6>{{empWork.position?empWork.position.getPositionDesc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu1"| translate}}</small>
+                        <h6>{{empWork.bu1?empWork.bu1.getBu1Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu2"| translate}}</small>
+                        <h6>{{empWork.bu2?empWork.bu2.getBu2Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu3"| translate}}</small>
+                        <h6>{{empWork.bu3?empWork.bu3.getBu3Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu4"| translate}}</small>
+                        <h6>{{empWork.bu4?empWork.bu4.getBu4Desc():'-'}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"dashboard.bu5"| translate}}</small>
+                        <h6>{{empWork.bu5?empWork.bu5.getBu5Desc():'-'}}</h6>
+                    </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{"dashboard.bu6"| translate}}</small>
+                    <h6>{{empWork.bu6?empWork.bu6.getBu6Desc():'-'}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 b-r">
+                    <small class="text-muted">{{"dashboard.bu7"| translate}}</small>
+                    <h6>{{empWork.bu7?empWork.bu7.getBu7Desc():'-'}}</h6>
+                  </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"tel"| translate}}</small>
+                        <h6>{{empWork.telExt?empWork.telExt:'-'}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- รายละเอียดการลา -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <h6 class="card-title">{{"leave-detail" | translate}}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"leave.type"| translate}}</small>
+                        <h6>{{translate.currentLang=='th'?data.workflowData.screen_value.__wf__absent_tdesc:data.workflowData.screen_value.__wf__absent_edesc}}
+                        </h6>
+                    </div>
+                    <!-- <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"remain"| translate}} ({{"date-hr-min"| translate}})</small>
+                        <h6>{{requireWF2[0].remain}}</h6>
+                    </div> -->
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"Leave Format"| translate}}</small>
+                        <h6>{{ 'workflow.format_leave'+data.workflowData.screen_value.__wf__format_leave | translate}}
+                        </h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"full-day-leave"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__leave_day}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"workflow.format_leave1"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__leave_hours}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"start.date"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__start_date}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"time-start"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__start_time}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"end.date"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__end_date}}</h6>
+                    </div>
+                    <div class="col-md-6 col-xs-12 b-r">
+                        <small class="text-muted">{{"time-end"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__end_time}}</h6>
+                    </div>
+                    <div class="col-md-12 col-xs-12 b-r">
+                        <small class="text-muted">{{"leave-reason"| translate}}</small>
+                        <h6>{{data.workflowData.screen_value.__wf__cause_absent ==
+                            ''?'-':data.workflowData.screen_value.__wf__cause_absent}}</h6>
+                    </div>
+                    <app-workflow-remark [wfid]="data.workflowData.wf_id"></app-workflow-remark>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- สิทธิการลา -->
+    <div class="col-12">
+        <div class="card mb-0">
+            <div class="card-header bg-myhr">
+                <div class="d-flex">
+                    <h6 class="card-title" style="margin-top: 3px;">{{"Privilege Leave" | translate}} </h6>
+                    <button class="btn btn-success btn-sm  ms-auto" (click)="showPrivilegeLeave()"><i
+                            class="{{showP == 'Show Privilege Leave'  ? 'fas fa-eye-slash' : 'fas fa-eye'}}"></i>
+                        {{showP | translate}}</button>
+                </div>
+            </div>
+            <div class="card-body mt-3">
+                <div class="row" *ngIf="this.requireWF2.length==0&&privilegeLeave">
+                    <div class="col-12" style="z-index: 1;position: absolute;top: 50%;text-align: center;">
+                        <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-info" role="status" style="margin: 5px;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="this.requireWF2.length!=0&&privilegeLeave">
+                    <div class="col-lg-4 col-md-6  col-xs-6 mb-2 text-center"
+                        *ngFor="let item of requireWF2; let i=index">
+                        <h4 class="text-white "><span
+                                class="badge bg-info btn-block font-weight-bold">{{item.getStatisticWF2()}}</span>
+                        </h4>
+                        <small class="text-muted">{{"Limit" | translate}}</small>
+                        <h6>{{item.limit}}</h6>
+                        <small class="text-muted">{{"Used" | translate}}</small>
+                        <h6>{{item.used}}</h6>
+                        <small class="text-muted">{{"Remain" | translate}}</small>
+                        <h6>{{item.remain}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+    <div class="col-12">
+        <app-workflow-detail-footer [workflowData]="workflowData" [manageDocument]="manageDocument">
+        </app-workflow-detail-footer>
+    </div>
+    <!-- ปิด หมายเหตุ แนบไฟล์ ประวัติเส้นทางเอกสาร ข้อเสนอแนะ -->
+
+
+</div>
+<!-- Row ปิดใบขอลาหยุดงาน -->
+<ng-template #DocReferenceModal let-modal>
+    <div class="modal-content dialog-height">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editLabel">{{"systemcode.documents.detail" | translate}}</h5>
+            <button type="button" class="close" (click)="closeBtnClick()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" [perfectScrollbar]="config">
+            <div class="card" style="margin-bottom:-15px">
+                <div class="card-body">
+                    <!-- ใส่เอกสารตรงนี้นะจ๊ะ -->
+                    <ng-template #workflowView [ngComponentOutlet]="dynamicComponent" [ndcDynamicInputs]="inputs"
+                        [ndcDynamicOutputs]="outputs"></ng-template>
+                    <!-- <app-wel210-nstda-create></app-wel210-nstda-create> -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" (click)="modal.dismiss('Cross click')">{{"confirm"|
+                translate}}</button>
+        </div>
+    </div>
+</ng-template>

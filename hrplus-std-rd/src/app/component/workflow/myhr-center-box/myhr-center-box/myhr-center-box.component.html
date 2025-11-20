@@ -1,0 +1,88 @@
+<div class="card main-content-card">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="card-title-container">
+            <h4 class="card-title">{{ "Sharebox" | translate }}</h4>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="form-group">
+                <label for="startDate" class="form-label">{{ "start.date" | translate }}</label>
+                <div class="input-group">
+                    <input id="startDate" class="form-control" placeholder="{{ 'dd.mm.yyyy' | translate }}" name="dp1"
+                        [(ngModel)]="selectStartDate" ngbDatepicker #d1="ngbDatepicker" #c1="ngModel"
+                        (ngModelChange)="selectStartDate = datepickerService.validateFormatDate(c1.value)">
+                    <button class="btn btn-outline-secondary btn-icon" (click)="d1.toggle()" type="button">
+                        <i class="mdi mdi-calendar"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate" class="form-label">{{ "end.date" | translate }}</label>
+                <div class="input-group">
+                    <input id="endDate" class="form-control" placeholder="{{ 'dd.mm.yyyy' | translate }}" name="dp2"
+                        [(ngModel)]="selectEndDate" ngbDatepicker #d2="ngbDatepicker" [minDate]="selectStartDate"
+                        #c2="ngModel" (ngModelChange)="selectEndDate = datepickerService.validateFormatDate(c2.value)">
+                    <button class="btn btn-outline-secondary btn-icon" (click)="d2.toggle()" type="button">
+                        <i class="mdi mdi-calendar"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="statusSelect" class="form-label">{{ "status" | translate }}</label>
+                <select id="statusSelect" class="form-select" [(ngModel)]="searchStatus">
+                    <option value="">{{ 'All' | translate }}</option>
+                    <option [value]="0">{{ 'systemcode.status.1' | translate }}</option>
+                    <option [value]="1">{{ 'systemcode.status.2' | translate }}</option>
+                    <option [value]="2">{{ 'systemcode.status.3' | translate }}</option>
+                    <option [value]="3">{{ 'systemcode.status.4' | translate }}</option>
+                    <option [value]="4">{{ 'systemcode.status.5' | translate }}</option>
+                    <option [value]="6">{{ 'systemcode.status.6' | translate }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="workflowSelect" class="form-label">{{ "Workflow Name" | translate }}</label>
+                <select id="workflowSelect" class="form-select" [(ngModel)]="searchWF">
+                    <option value="">{{ 'All' | translate }}</option>
+                    @for (item of wfidList; track item.wfId) {
+                        <option [value]="item.wfId">{{ item.getDesc() }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="searchInput" class="form-label">{{ "Search" | translate }}</label>
+                <input id="searchInput" type="text" class="form-control" placeholder="{{ 'Search Keyword' | translate }}" [(ngModel)]="docNo">
+            </div>
+
+            <div class="form-group-button">
+                <button type="button" class="btn btn-primary w-100" (click)="searchAllWf()">
+                    <i class="mdi mdi-magnify me-1"></i>
+                    {{ "Search" | translate }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Child component for displaying results -->
+        <div class="results-container">
+            <app-share-work 
+                [docNo]="docNo" 
+                [workflowListAllLoading]="workflowListAllLoading"
+                [workflowListLoading]="workflowListLoading" 
+                [workflowList]="workflowList"
+                (sendWorkflowList)="workflowList = $event"
+                (sendDocNo)="changeDocNo($event)"
+                (firstGetShareboxPage)="firstGetShareboxPage($event)" 
+                [checkboxAll]="checkboxAll"
+                (sendCheckboxAll)="checkboxAll = $event" 
+                [page]="shareboxPage" 
+                (sendPage)="shareboxPage = $event">
+            </app-share-work>
+        </div>
+
+    </div>
+</div>

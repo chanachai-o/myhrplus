@@ -1,0 +1,52 @@
+<!-- ส่งถึง -->
+<div class="card mb-0">
+    <div class="card-header bg-myhr">
+        <ng-container *ngIf="cardName!='' else workflowCardNameTemplate">
+            <h6 class="card-title">
+                {{cardName | translate}}
+            </h6>
+        </ng-container>
+        <ng-template #workflowCardNameTemplate>
+            <h6 class="card-title">
+                {{getMessageTranslate(cardNameTh,cardNameEng)}}
+            </h6>
+        </ng-template>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <ng-container *ngIf="sendto">
+                <div class="col-12 b-r">
+                    <div class="form-group">
+                        <small class="text-muted">{{"to" | translate}}</small>
+                        <input type="text" class="form-control" value="{{sentToName}}" disabled>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="col-md-12 col-xs-12 b-r">
+                <div class="form-group">
+                    <small class="text-muted">{{"cc" | translate}}</small>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" value="{{ccName}}" disabled>
+                        <div class="input-group-append">
+                            <button class="btn me-0 btn-info" type="button" (click)="openEmployeeModal()"><i
+                                    class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 b-r">
+                <div class="form-group">
+                    <small class="text-muted">{{"subject" | translate}}</small>
+                    <ng-container *ngIf="subjectName else cardNameTemplate">
+                        <input type="text" class="form-control" value='{{subjectName | translate}}' disabled>
+                    </ng-container>
+                    <ng-template #cardNameTemplate>
+                        <input type="text" class="form-control" value='{{getMessageTranslate(subjectNameTh,subjectNameEng)}}'
+                            disabled>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ปิดส่งถึง -->

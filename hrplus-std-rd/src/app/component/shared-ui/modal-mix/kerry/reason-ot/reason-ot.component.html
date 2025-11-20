@@ -1,0 +1,86 @@
+<div class="modal-content dialog-height">
+    <div class="modal-body"  >
+        <div class="card" style="margin-bottom:-15px">
+            <div class="card-header bg-myhr">
+                <h4>{{"OT.Cause" | translate}}</h4>
+            </div>
+            <div class="card-body pt-0 pt-2">
+                <div class="d-flex col-5 mb-1 p-0">
+                    <input type="text"
+                        placeholder="{{'systemcode.search' | translate}} {{'reason.id' | translate}}{{' / '}}{{'detail' | translate}}"
+                        class="form-control" [ngModel]="search" (ngModelChange)="searchData($event)">
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                            <tr class="text-white font-weight-normal">
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"reason.id"| translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"th-detail"| translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"en-detail"| translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="reasonOtListLoading">
+                            <tr>
+                                <td colspan="100%" class="font-weight-normal text-center">
+                                    <div class="justify-content-center text-center" role="status">
+                                        <div *ngFor="let item of [1,2,3]" class="spinner-grow text-info" role="status"
+                                            style="margin: 5px;">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="!reasonOtListLoading&&reasonOtFilter.length==0">
+                            <tr>
+                                <td colspan="100%" class="font-weight-normal text-center">
+                                    {{"No Data Found" | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="!reasonOtListLoading&&reasonOtFilter.length!=0">
+                            <tr class="cursor-myhr"
+                                *ngFor="let item of reasonOtFilter | slice: (page-1) * pageSize : ((page-1) * pageSize) + pageSize; let i=index"
+                                (click)="activeModal.close(item)">
+                                <td class="font-weight-normal text-center">
+                                    {{item.reasonOtId}}
+                                </td>
+                                <td class="font-weight-normal text-center">
+                                    {{item.tdesc}}
+                                </td>
+                                <td class="font-weight-normal text-center">
+                                    {{item.edesc}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-end p-2">
+                    <select class="form-select m-r-5" style="width: auto" [(ngModel)]="pageSize"
+                        (ngModelChange)="page=1">
+                        <option *ngFor="let item of [10,50,100]" [ngValue]="item">
+                            {{"Items per page"| translate}}: {{item}}
+                        </option>
+                    </select>
+                    <ngb-pagination [collectionSize]="reasonOtFilter.length" [(page)]="page" [pageSize]="pageSize"
+                        [maxSize]="3" [rotate]="true">
+                        <ng-template ngbPaginationPrevious>{{"Prev" | translate}}</ng-template>
+                        <ng-template ngbPaginationNext>{{"Next" | translate}}</ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="activeModal.dismiss()">
+            {{"Close"| translate}}
+        </button>
+    </div>
+</div>

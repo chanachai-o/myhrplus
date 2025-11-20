@@ -1,0 +1,40 @@
+.border-form {
+    min-width: 100%;
+    min-height: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+    border: 1px solid #e9ecef !important;
+    border-color: #1ea7fd !important;
+    padding: 10px;
+}
+
+.border-bottom-form {
+    min-width: 100%;
+    min-height: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+    border-bottom: 2px solid #e9ecef !important;
+    border-color: #1ea7fd !important;
+    padding: 10px;
+}
+
+.disborder-form {
+    min-width: 100%;
+    min-height: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+    padding: 10px;
+}
+
+.col-2-4 {
+    width: calc(2.4 / 12 * 100%);
+}
+.col-4-8 {
+    width: calc(4.8 / 12 * 100%);
+}

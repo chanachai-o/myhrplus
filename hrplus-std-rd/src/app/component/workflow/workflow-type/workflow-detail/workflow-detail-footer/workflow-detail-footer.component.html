@@ -1,0 +1,137 @@
+<!-- หมายเหตุ -->
+<div class="col-12 p-0" *ngIf="workflowData?.remark">
+    <div class="card mb-0">
+        <div class="card-header bg-myhr">
+            <h6 class="card-title">{{"systemcode.pwf.001.remark" | translate}}</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-xs-12 b-r">
+                    <small class="text-muted">{{"systemcode.pwf.001.remark"| translate}}</small>
+                    <h6>{{workflowData.remark}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ปิดหมายเหตุ -->
+<!-- แนบไฟล์ -->
+<div class="col-12 p-0" *ngIf="manageDocument?.attachFile?.length>0">
+    <div class="card mb-0">
+        <div class="card-header bg-myhr">
+            <h6 class="card-title">{{"attach_file" | translate}}</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-xs-12 b-r">
+                    <small class="text-muted">{{"selected_file"| translate}}</small>
+                    <h6>
+                        <a class="text-dark" style="cursor: hand;cursor: pointer;"
+                            (click)="dowloadFile()">{{checkmultiFile()}}</a>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ปิดแนบไฟล์ -->
+<!-- ประวัติเส้นทางเอกสาร -->
+<div class="col-12 p-0" *ngIf="routingHistoryList.length">
+    <div class="card mb-0">
+        <div class="card-header bg-myhr">
+            <h6 class="card-title">{{"History Document Routing" | translate}}</h6>
+        </div>
+        <div class="card-body ps-0 pe-0">
+            <div class="table-responsive">
+                <div class="wrapper">
+                    <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                            <tr class="text-white font-weight-normal">
+                                <th class="font-weight-normal text-center" scope="col">{{"systemcode.no" |
+                                    translate}}</th>
+                                <th class="font-weight-normal text-center" scope="col">{{"systemcode.emp.name" |
+                                    translate}}</th>
+                                <th class="font-weight-normal text-center" scope="col">{{"Position" |
+                                    translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"systemcode.start.time"|
+                                    translate}}</th>
+                                <th class="font-weight-normal text-center" scope="col">{{"systemcode.end.time"|
+                                    translate}}</th>
+                                <th class="font-weight-normal text-center" scope="col">{{"systemcode.status" |
+                                    translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of routingHistoryList; let i=index">
+                                <td class="align-middle text-center">{{i+1}}</td>
+                                <td class="align-middle text-center">
+                                    {{getMessageTranslate(item.fullName_tdesc,item.fullName_edesc)}}
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{getMessageTranslate(item.position_tdesc,item.position_edesc)}}
+                                </td>
+                                <td class="align-middle text-center">{{item.startTime}}</td>
+                                <td class="align-middle text-center">{{item.completionTime}}</td>
+                                <td class="align-middle text-center">{{item.action | translate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ปิดประวัติเส้นทางเอกสาร -->
+<!-- ข้อเสนอแนะ -->
+<div class="col-12 p-0" *ngIf="routingHistoryComments.length>0">
+    <div class="card mb-0">
+        <div class="card-header bg-myhr">
+            <h6 class="card-title">{{"system.code.view.comment" | translate}}</h6>
+        </div>
+        <div class="card-body ps-0 pe-0">
+            <div class="table-responsive">
+                <div class="wrapper">
+                    <table class="table  table-hover table-striped-myhr table-sm  mb-0 no-wrap v-middle ">
+                        <thead class="bg-info ">
+                            <tr class="text-white font-weight-normal">
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"systemcode.no" | translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"systemcode.emp.name" | translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"systemcode.position" | translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"date" | translate}}
+                                </th>
+                                <th class="font-weight-normal text-center" scope="col">
+                                    {{"systemcode.comments" | translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of routingHistoryComments; let i=index">
+                                <td class="align-middle text-center">{{i+1}}</td>
+                                <td class="align-middle text-center">
+                                    {{getMessageTranslate(item.fullName_tdesc,item.fullName_edesc)}}
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{getMessageTranslate(item.position_tdesc,item.position_edesc)}}
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{item.completionTime}}
+                                </td>
+                                <td class="align-middle text-center">{{item.comments}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ปิดข้อเสนอแนะ -->
