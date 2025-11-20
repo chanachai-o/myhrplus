@@ -54,6 +54,7 @@ import { GanttDemoComponent } from './components/gantt-demo/gantt-demo.component
 import { FileManagerDemoComponent } from './components/file-manager-demo/file-manager-demo.component';
 import { SyncfusionUploaderDemoComponent } from './components/syncfusion-uploader-demo/syncfusion-uploader-demo.component';
 import { AutocompleteDemoComponent } from './components/autocomplete-demo/autocomplete-demo.component';
+import { SmartTextAreaDemoComponent } from './components/smart-textarea-demo/smart-textarea-demo.component';
 
 const routes: Routes = [
   {
@@ -271,6 +272,10 @@ const routes: Routes = [
       {
         path: 'autocomplete',
         component: AutocompleteDemoComponent
+      },
+      {
+        path: 'smart-textarea',
+        component: SmartTextAreaDemoComponent
       }
     ]
   }

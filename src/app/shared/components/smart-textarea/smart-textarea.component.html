@@ -1,0 +1,21 @@
+<div class="smart-textarea-container" [ngClass]="customClass" [style.width]="width" [style.height]="height">
+  <ejs-smarttextarea
+    #smartTextarea
+    [placeholder]="placeholder"
+    [floatLabelType]="floatLabelType"
+    [rows]="rows"
+    [cols]="cols"
+    [value]="value"
+    [enabled]="enabled"
+    [readonly]="readonly"
+    [resizeMode]="resizeMode"
+    [userRole]="userRole"
+    [UserPhrases]="userPhrases"
+    [aiSuggestionHandler]="aiSuggestionHandler"
+    (change)="onChange($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    (created)="onCreated($event)">
+  </ejs-smarttextarea>
+</div>
+

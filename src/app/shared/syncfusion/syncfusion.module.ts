@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Syncfusion Buttons & Inputs
 import { ButtonModule, ChipListModule, CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
 import { SplitButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
-import { TextBoxModule, TextAreaModule, NumericTextBoxModule, MaskedTextBoxModule, SliderModule, UploaderModule, ColorPickerModule, SignatureModule, RatingModule, OtpInputModule, SpeechToTextModule } from '@syncfusion/ej2-angular-inputs';
+import { TextBoxModule, TextAreaModule, NumericTextBoxModule, MaskedTextBoxModule, SliderModule, UploaderModule, ColorPickerModule, SignatureModule, RatingModule, OtpInputModule, SpeechToTextModule, SmartTextAreaModule } from '@syncfusion/ej2-angular-inputs';
 
 // Syncfusion Dropdowns
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
@@ -90,6 +90,7 @@ import { FileManagerModule } from '@syncfusion/ej2-angular-filemanager';
     TextBoxModule,
     TextAreaModule,
     SpeechToTextModule,
+    SmartTextAreaModule,
     NumericTextBoxModule,
     MaskedTextBoxModule,
     SliderModule,
@@ -174,6 +175,7 @@ import { FileManagerModule } from '@syncfusion/ej2-angular-filemanager';
     TextBoxModule,
     TextAreaModule,
     SpeechToTextModule,
+    SmartTextAreaModule,
     NumericTextBoxModule,
     MaskedTextBoxModule,
     SliderModule,
