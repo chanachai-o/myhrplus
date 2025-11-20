@@ -1,0 +1,614 @@
+# Angular HR Migration Project - Coding Standards & Conventions
+
+## Project Overview
+This is an Angular 17+ HR Management System with a feature-based architecture, supporting both module-based and standalone components. The project uses TypeScript, SCSS, Tailwind CSS, and Syncfusion UI components.
+
+## Architecture Patterns
+
+### Directory Structure
+```
+src/app/
+├── core/              # Core services, guards, interceptors, models, utilities
+│   ├── services/      # Singleton services (providedIn: 'root')
+│   ├── guards/        # Route guards
+│   ├── interceptors/  # HTTP interceptors
+│   ├── models/        # TypeScript interfaces and models
+│   ├── constants/     # Application constants
+│   ├── utils/         # Utility functions
+│   └── directives/    # Core directives
+├── shared/            # Shared components, directives, pipes
+│   ├── components/    # Reusable UI components
+│   ├── pipes/         # Shared pipes
+│   ├── directives/    # Shared directives
+│   └── validators/    # Form validators
+├── features/          # Feature modules (lazy-loaded)
+│   ├── auth/          # Authentication
+│   ├── home/          # Dashboard/Home
+│   ├── empview/       # Employee view
+│   ├── ta/            # Time attendance
+│   ├── personal/      # Personal information
+│   ├── payroll/       # Payroll
+│   ├── training/      # Training
+│   ├── appraisal/     # Appraisal
+│   ├── recruit/       # Recruitment
+│   ├── welfare/       # Welfare
+│   ├── workflow/      # Workflow
+│   ├── company/       # Company management
+│   ├── setting/       # Settings
+│   └── demo/          # Demo components
+└── layout/            # Layout components (header, footer, sidebar, main-layout)
+```
+
+### Component Architecture
+- **Hybrid Approach**: Support both NgModule-based and Standalone components
+- **Standalone Components**: Use for new components, especially Glass Morphism design components
+- **Module Components**: Legacy components in SharedModule, still supported
+- **Feature Modules**: Each feature has its own module with routing module
+
+## Naming Conventions
+
+### Files & Directories
+- **Components**: `kebab-case.component.ts` (e.g., `home.component.ts`, `employee-profile.component.ts`)
+- **Services**: `kebab-case.service.ts` (e.g., `auth.service.ts`, `api.service.ts`)
+- **Models/Interfaces**: `kebab-case.model.ts` (e.g., `employee.model.ts`, `workflow.model.ts`)
+- **Guards**: `kebab-case.guard.ts` (e.g., `auth.guard.ts`, `role.guard.ts`)
+- **Interceptors**: `kebab-case.interceptor.ts` (e.g., `auth.interceptor.ts`, `error.interceptor.ts`)
+- **Pipes**: `kebab-case.pipe.ts` (e.g., `custom-round.pipe.ts`, `safe-html.pipe.ts`)
+- **Directives**: `kebab-case.directive.ts` (e.g., `has-permission.directive.ts`)
+- **Modules**: `kebab-case.module.ts` (e.g., `home.module.ts`, `shared.module.ts`)
+- **Routing Modules**: `kebab-case-routing.module.ts` (e.g., `home-routing.module.ts`)
+- **Constants**: `kebab-case.constant.ts` (e.g., `routes.constant.ts`, `app-config.constant.ts`)
+- **Utilities**: `kebab-case.util.ts` (e.g., `date.util.ts`, `string.util.ts`)
+- **Directories**: `kebab-case` (e.g., `employee-profile/`, `time-attendance/`)
+
+### TypeScript Code
+- **Classes**: `PascalCase` (e.g., `HomeComponent`, `AuthService`, `EmployeeModel`)
+- **Interfaces**: `PascalCase` (e.g., `User`, `ApiResponse<T>`, `LoginRequest`)
+- **Enums**: `PascalCase` with `PascalCase` members (e.g., `enum Status { Active, Inactive }`)
+- **Variables & Properties**: `camelCase` (e.g., `currentUser`, `isLoading`, `menuCategories`)
+- **Constants**: `UPPER_SNAKE_CASE` (e.g., `API_BASE_URL`, `TOKEN_KEY`, `MAX_RETRIES`)
+- **Methods/Functions**: `camelCase` (e.g., `getCurrentUser()`, `loadMenuCategories()`, `formatDate()`)
+- **Private Members**: `camelCase` with leading underscore for private methods (e.g., `_privateMethod()`)
+- **Observables**: Suffix with `$` (e.g., `currentUser$`, `loading$`, `data$`)
+- **Boolean Properties**: Prefix with `is`, `has`, `should`, `can` (e.g., `isLoading`, `hasPermission`, `canEdit`)
+
+### Angular Selectors
+- **Component Selectors**: `app-kebab-case` (e.g., `app-home`, `app-employee-profile`)
+- **Directive Selectors**: `[appCamelCase]` (e.g., `[appHasPermission]`, `[appHasRole]`)
+
+### HTML/CSS
+- **CSS Classes**: `kebab-case` (e.g., `glass-card`, `loading-spinner`, `status-badge`)
+- **SCSS Variables**: `kebab-case` with `$` prefix (e.g., `$primary-color`, `$spacing-md`)
+- **BEM-like Naming**: Use for component-specific styles (e.g., `.glass-card__header`, `.glass-card__body`)
+
+## TypeScript Standards
+
+### Type Safety
+- **Strict Mode**: Always enabled (`strict: true` in tsconfig.json)
+- **No `any` Types**: Avoid `any`, use `unknown` or proper types. Use `any` only when absolutely necessary (warned by ESLint)
+- **Explicit Return Types**: Define return types for public methods
+- **Interface over Type**: Prefer `interface` for object shapes, use `type` for unions/intersections
+- **Generic Types**: Use generics for reusable components/services (e.g., `ApiResponse<T>`, `Observable<T>`)
+
+### Code Style
+- **Single Quotes**: Use single quotes for strings
+- **Semicolons**: Always use semicolons
+- **Trailing Commas**: Use trailing commas in multi-line objects/arrays
+- **Line Length**: Max 100 characters (Prettier configured)
+- **Indentation**: 2 spaces (no tabs)
+
+### Imports
+- **Order**:
+  1. Angular core imports (`@angular/core`, `@angular/common`, etc.)
+  2. Angular feature imports (`@angular/router`, `@angular/forms`, etc.)
+  3. Angular CDK imports (`@angular/cdk/layout`, etc.)
+  4. Third-party library imports (RxJS, Syncfusion, etc.)
+  5. Application imports (relative paths: `../../core/`, `../../shared/`, etc.)
+- **Grouping**: Group imports with blank lines between groups
+- **Path Aliases**: Currently NOT configured in tsconfig.json. Use relative paths:
+  - From features: `../../core/`, `../../shared/`
+  - From shared: `../core/`
+  - From core: `./` (same directory)
+- **Relative Paths**: Prefer relative paths over absolute paths for better portability
+
+### Example Component Structure (Module-based)
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService, User } from '../../core/services/auth.service';
+import { ApiService, ApiResponse } from '../../core/services/api.service';
+
+@Component({
+  selector: 'app-feature-name',
+  templateUrl: './feature-name.component.html',
+  styleUrls: ['./feature-name.component.scss'],
+  standalone: false
+})
+export class FeatureNameComponent implements OnInit {
+  // Public properties
+  currentUser: User | null = null;
+  isLoading = false;
+  data$: Observable<ApiResponse<any>>;
+
+  // Private properties
+  private readonly MAX_ITEMS = 10;
+
+  constructor(
+    private authService: AuthService,
+    private apiService: ApiService,
+    private router: Router
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  // Public methods
+  handleAction(): void {
+    // Implementation
+  }
+
+  // Private methods
+  private loadData(): void {
+    this.isLoading = true;
+    // Implementation
+  }
+}
+```
+
+### Example Standalone Component Structure
+```typescript
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService, User } from '../../../core/services/auth.service';
+import { GlassCardComponent } from '../../components/glass-card/glass-card.component';
+
+@Component({
+  selector: 'app-standalone-component',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    GlassCardComponent
+  ],
+  templateUrl: './standalone-component.component.html',
+  styleUrls: ['./standalone-component.component.scss']
+})
+export class StandaloneComponentComponent implements OnInit {
+  @Input() title: string = '';
+  @Input() data: any[] = [];
+  @Output() action = new EventEmitter<any>();
+
+  currentUser: User | null = null;
+  isLoading = false;
+
+  constructor(private authService: AuthService) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  private loadData(): void {
+    this.isLoading = true;
+    // Implementation
+  }
+
+  handleAction(item: any): void {
+    this.action.emit(item);
+  }
+}
+```
+
+### Example Service Structure
+```typescript
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { ApiService, ApiResponse } from './api.service';
+
+export interface ModelName {
+  id: string;
+  name: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ModelNameService {
+  private readonly baseUrl = `${environment.jbossUrl}${environment.apiEndpoints.core}`;
+
+  constructor(
+    private apiService: ApiService
+  ) {}
+
+  getItems(): Observable<ApiResponse<ModelName[]>> {
+    return this.apiService.get<ModelName[]>(`${this.baseUrl}/items`);
+  }
+
+  getItemById(id: string): Observable<ApiResponse<ModelName>> {
+    return this.apiService.get<ModelName>(`${this.baseUrl}/items/${id}`);
+  }
+
+  createItem(item: ModelName): Observable<ApiResponse<ModelName>> {
+    return this.apiService.post<ModelName>(`${this.baseUrl}/items`, item);
+  }
+
+  updateItem(id: string, item: ModelName): Observable<ApiResponse<ModelName>> {
+    return this.apiService.put<ModelName>(`${this.baseUrl}/items/${id}`, item);
+  }
+
+  deleteItem(id: string): Observable<ApiResponse<void>> {
+    return this.apiService.delete<void>(`${this.baseUrl}/items/${id}`);
+  }
+}
+```
+
+## Angular Patterns
+
+### Services
+- **Singleton Services**: Use `providedIn: 'root'` for app-wide services
+- **Feature Services**: Can be provided in feature modules if scope-limited
+- **HTTP Calls**: Always use `ApiService` wrapper, not `HttpClient` directly
+- **Observables**: Prefer Observables over Promises for async operations
+- **Error Handling**: Use RxJS operators (`catchError`, `retry`) for error handling
+- **Caching**: Use `CacheService` for cacheable API responses
+
+### Components
+- **Lifecycle Hooks**: Implement `OnInit` for initialization, `OnDestroy` for cleanup
+- **Change Detection**: Use `OnPush` strategy when possible for performance
+- **Input/Output**: Use `@Input()` and `@Output()` with proper typing
+  - Always provide default values for optional `@Input()` properties
+  - Use `EventEmitter<T>` for `@Output()` with proper generic types
+- **ViewChild/ContentChild**: Use with proper typing and `{ static: false }` when needed
+  - Use `!` (non-null assertion) when ViewChild is guaranteed to exist after `ngAfterViewInit`
+  - Example: `@ViewChild('sidebar') sidebar!: EjsSidebar;`
+- **Animations**: Use Angular animations API for transitions
+- **Standalone Components**:
+  - Always import `CommonModule` (or specific modules like `NgIf`, `NgFor`)
+  - Import all dependencies explicitly in `imports` array
+  - Import other standalone components directly
+  - Import module-based components via their module (e.g., `SharedModule`)
+
+### Forms
+- **Reactive Forms**: Prefer Reactive Forms over Template-driven forms
+- **Form Validation**: Use custom validators from `@shared/validators`
+- **Error Messages**: Use `FormValidationMessagesComponent` for consistent error display
+
+### Routing
+- **Lazy Loading**: All feature modules should be lazy-loaded
+  - Use `loadChildren: () => import('./features/feature-name/feature-name.module').then(m => m.FeatureNameModule)`
+- **Route Guards**: Use `AuthGuard` for protected routes, `RoleGuard` for role-based access
+  - `AuthGuard`: Checks authentication status
+  - `RoleGuard`: Checks user roles/permissions
+  - `TokenAuthGuard`: Handles token-based authentication via URL parameters
+- **Route Constants**: Use `ROUTES` constant from `src/app/core/constants/routes.constant`
+  - Example: `this.router.navigate([ROUTES.HOME]);`
+  - Use nested route constants: `ROUTES.TA.LEAVE_REQUEST`
+- **Route Data**: Use route data for passing static configuration
+- **Wildcard Route**: Always include `{ path: '**', redirectTo: ROUTES.HOME }` at the end
+
+### HTTP & API
+- **Base URL**: Use `environment.jbossUrl` for `/hr` endpoints, `environment.baseUrl` for `/plus` endpoints
+- **API Endpoints**: Use `environment.apiEndpoints` for endpoint paths
+- **Response Type**: Always use `ApiResponse<T>` wrapper
+- **Service Pattern**: Always use `ApiService` wrapper, NOT `HttpClient` directly
+  - `ApiService` provides automatic retry, error handling, and caching
+- **Error Handling**: Handle errors in interceptors and components
+  - Use RxJS operators: `catchError`, `retry`, `retryWhen`
+  - Use `NotificationService` for user-friendly error messages
+- **Retry Logic**: Automatic retry for 5xx errors (max 3 retries) via `ApiService`
+- **Caching**: Use `useCache: true` parameter in `ApiService.get()` for cacheable responses
+
+## Styling Standards
+
+### SCSS
+- **File Structure**: One SCSS file per component (`component-name.component.scss`)
+- **Global Styles**: Use `src/styles.scss` for global styles
+- **Design Tokens**: Use variables from `src/styles/_design-tokens.scss`
+- **Mixins**: Use mixins from `src/styles/_mixins.scss`
+- **Nesting**: Maximum 3 levels deep
+- **BEM-like Naming**: Use for component-specific styles
+
+### Tailwind CSS
+- **Utility Classes**: Prefer Tailwind utility classes over custom CSS
+- **Custom Classes**: Use `@layer components` for custom component classes
+- **Dark Mode**: Use `dark:` prefix for dark mode styles
+- **Responsive**: Use responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`)
+- **Glassmorphism**: Use `.glass-card`, `.glass-button`, `.glass-input` classes
+
+### Design System
+- **Colors**: Use Tailwind color palette (primary, slate, etc.)
+- **Typography**: Use font families from design tokens (Noto Sans, Poppins, Inter, Sarabun, Kanit)
+- **Spacing**: Use Tailwind spacing scale (0.25rem increments)
+- **Breakpoints**: Use standard breakpoints (xs: 0px, sm: 640px, md: 768px, lg: 1024px, xl: 1280px, 2xl: 1536px)
+- **Glassmorphism**: Follow glassmorphism design patterns with backdrop-filter and transparency
+
+## Libraries & Dependencies
+
+### Core Libraries
+- **Angular**: 17.0.0+
+- **TypeScript**: 5.2.2+
+- **RxJS**: 7.8.0+
+- **Tailwind CSS**: 3.4.13+
+- **Syncfusion**: 29.2.x (ej2-angular packages)
+
+### Key Libraries
+- **@ngx-translate/core**: Internationalization
+  - Use `TranslateService` for translations
+  - Translation files in `src/assets/i18n/` and `src/locale/`
+- **jwt-decode**: JWT token decoding
+  - Import: `import jwt_decode from 'jwt-decode';`
+  - Usage: `const payload = jwt_decode<any>(token);`
+- **moment**: Date manipulation (consider migrating to date-fns)
+  - Legacy support, prefer `date-fns` for new code
+- **date-fns**: Modern date utilities
+  - Preferred for new date manipulation code
+- **xlsx**: Excel file handling
+  - Use for Excel import/export functionality
+- **file-saver**: File download
+  - Use for file download functionality
+- **sha1**: Password hashing
+  - Use for password hashing (dynamic import recommended)
+- **rxjs**: Reactive programming
+  - Use operators: `map`, `catchError`, `retry`, `retryWhen`, `shareReplay`, `switchMap`, `concatMap`
+  - Use `BehaviorSubject` for state management
+  - Use `Observable` for async operations
+
+### UI Components
+- **Syncfusion**: Primary UI component library (Grids, Charts, Calendars, etc.)
+  - Import `SyncfusionModule` in feature modules to use Syncfusion components
+  - Use Syncfusion components with `ejs-` prefix (e.g., `ejs-sidebar`, `ejs-grid`)
+  - Example: `<ejs-sidebar #sidebar>...</ejs-sidebar>`
+  - ViewChild example: `@ViewChild('sidebar') sidebar!: SidebarComponent;`
+- **Angular CDK**: Material Design components foundation
+  - Use `BreakpointObserver` for responsive design
+  - Use `@angular/cdk/layout` for layout utilities
+- **Custom Components**: Glassmorphism components in `src/app/shared/components`
+  - Standalone components: Import directly (e.g., `GlassCardComponent`)
+  - Module components: Import via `SharedModule`
+
+## Code Quality
+
+### ESLint Rules
+- **Component Selector**: `app-kebab-case` (kebab-case)
+- **Directive Selector**: `[appCamelCase]` (camelCase)
+- **No Explicit Any**: Warning (use proper types)
+- **No Unused Vars**: Warning (prefix unused with `_`)
+- **No Console**: Warning (allow only `console.warn` and `console.error`)
+
+### Prettier Configuration
+- **Print Width**: 100 characters
+- **Single Quotes**: true
+- **Trailing Commas**: es5
+- **Tab Width**: 2 spaces
+
+### Testing
+- **Test Files**: `*.spec.ts` alongside source files
+- **Test Framework**: Jasmine + Karma
+- **Coverage**: Aim for 80%+ coverage on critical paths
+
+## Internationalization (i18n)
+
+### Translation Files
+- **Location**: `src/assets/i18n/` and `src/locale/`
+- **Languages**: en, th, lo, my, vi, zh
+- **Format**: JSON files with nested keys
+- **Usage**: Use `@ngx-translate/core` TranslateService
+
+### Translation Keys
+- **Naming**: `feature.component.key` (e.g., `home.welcome.message`)
+- **Nested Objects**: Use dot notation for nested translations
+
+## Security
+
+### Authentication
+- **JWT Tokens**: Store in localStorage via `StorageService`
+- **Token Refresh**: Automatic token refresh before expiry
+- **Session Management**: Use `AuthService` for session handling
+- **Guards**: Use `AuthGuard` and `RoleGuard` for route protection
+
+### Data Protection
+- **Field Masking**: Use `FieldMaskingService` for sensitive data (PDPA/GDPR compliance)
+- **Encryption**: Use `EncryptionService` for sensitive data encryption
+- **HTTPS**: Always use HTTPS in production
+
+## Performance
+
+### Optimization
+- **Lazy Loading**: All feature modules lazy-loaded
+- **OnPush Strategy**: Use for components when possible
+- **TrackBy Functions**: Always use `trackBy` in `*ngFor`
+- **Virtual Scrolling**: Use for large lists
+- **Image Optimization**: Use `ImageQualityUtils` for image uploads
+- **Caching**: Use `CacheService` for API response caching
+
+### Bundle Size
+- **Tree Shaking**: Ensure proper imports (avoid barrel imports in production)
+- **Code Splitting**: Use dynamic imports for heavy libraries
+- **Bundle Analysis**: Use webpack-bundle-analyzer
+
+## Error Handling
+
+### HTTP Errors
+- **Interceptors**: Use `ErrorInterceptor` for global error handling
+- **Retry Logic**: Automatic retry for 5xx errors (max 3 retries)
+- **User Feedback**: Show user-friendly error messages via `NotificationService`
+
+### Error Logging
+- **Log History**: Use `LogHistoryService` for action logging
+- **Error Service**: Use `ErrorService` for error tracking
+
+## Accessibility
+
+### WCAG Compliance
+- **ARIA Labels**: Use proper ARIA attributes
+- **Keyboard Navigation**: Ensure keyboard accessibility
+- **Screen Readers**: Test with screen readers
+- **Color Contrast**: Follow WCAG contrast ratios
+- **Focus Management**: Proper focus management in modals/dialogs
+
+### Accessibility Styles
+- **Location**: `src/styles/accessibility.scss`
+- **Focus Indicators**: Visible focus indicators
+- **Skip Links**: Skip to main content links
+
+## Documentation
+
+### Code Comments
+- **JSDoc**: Use JSDoc for public APIs
+- **Complex Logic**: Comment complex business logic
+- **TODO Comments**: Use `// TODO:` for future improvements
+
+### README Files
+- **Module READMEs**: Include README.md for complex modules
+- **API Documentation**: Document API endpoints and models
+
+## Demo System
+
+### Demo Components
+- **Location**: `src/app/features/demo/components/`
+- **Purpose**: Showcase all shared components with live examples
+- **Structure**: Each component has a demo component (e.g., `glass-card-demo.component.ts`)
+- **Access**: Route `/demo` (no AuthGuard required)
+- **Pattern**:
+  - Demo components are standalone
+  - Include code examples, props tables, and live demos
+  - Use `CodeViewerComponent` and `PropsTableComponent` for documentation
+
+### Creating Demo Components
+```typescript
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
+import { CodeViewerComponent } from '../../shared/code-viewer/code-viewer.component';
+import { PropsTableComponent, PropDefinition } from '../../shared/props-table/props-table.component';
+
+@Component({
+  selector: 'app-component-name-demo',
+  standalone: true,
+  imports: [CommonModule, GlassCardComponent, CodeViewerComponent, PropsTableComponent],
+  templateUrl: './component-name-demo.component.html',
+  styleUrls: ['./component-name-demo.component.scss']
+})
+export class ComponentNameDemoComponent {
+  props: PropDefinition[] = [
+    {
+      name: 'propName',
+      type: 'string',
+      default: "'default'",
+      description: 'Property description',
+      required: false
+    }
+  ];
+
+  basicExample = `<app-component-name>Content</app-component-name>`;
+}
+```
+
+## Migration Notes
+
+### From hrplus-std-rd
+- **Legacy Code**: Some components still use module-based architecture
+- **Backward Compatibility**: Support both sessionStorage and localStorage for tokens
+- **API Compatibility**: Maintain compatibility with existing API structure
+- **Gradual Migration**: Migrate to standalone components gradually
+
+### Best Practices
+- **New Components**: Create as standalone components
+- **Legacy Components**: Keep in SharedModule until migrated
+- **Services**: Migrate to new architecture with proper typing
+- **Models**: Use migrated models from `src/app/core/models`
+
+## Environment Configuration
+
+### Environment Files
+- **Development**: `src/environments/environment.ts`
+- **Production**: `src/environments/environment.prod.ts`
+- **API URLs**: Configure `jbossUrl` and `baseUrl` per environment
+- **Endpoints**: Use `apiEndpoints` object for endpoint paths
+
+## Git & Version Control
+
+### Commit Messages
+- **Format**: `type(scope): description`
+- **Types**: feat, fix, docs, style, refactor, test, chore
+- **Examples**:
+  - `feat(auth): add token refresh functionality`
+  - `fix(api): resolve retry logic issue`
+  - `refactor(components): migrate to standalone components`
+
+### Branch Naming
+- **Feature**: `feature/feature-name`
+- **Bugfix**: `bugfix/issue-description`
+- **Hotfix**: `hotfix/critical-fix`
+
+## Additional Guidelines
+
+### When Creating New Code
+1. **Check Existing Patterns**: Look for similar implementations first
+2. **Follow Architecture**: Place code in appropriate directory (core/shared/features)
+3. **Use TypeScript**: Avoid `any`, use proper types
+4. **Add Tests**: Write unit tests for new services/components
+5. **Update Documentation**: Update relevant README files
+6. **Follow Naming**: Use established naming conventions
+7. **Style Consistently**: Follow SCSS and Tailwind patterns
+8. **Handle Errors**: Implement proper error handling
+9. **Consider Performance**: Optimize for performance
+10. **Accessibility**: Ensure WCAG compliance
+
+### Standalone vs Module Components Decision
+- **Use Standalone**:
+  - New components (especially Glass Morphism components)
+  - Components that will be reused across multiple features
+  - Components with minimal dependencies
+- **Use Module**:
+  - Legacy components (keep in SharedModule)
+  - Components tightly coupled to a specific feature
+  - Components that need many module dependencies
+
+### RxJS Best Practices
+- **Observables**: Prefer Observables over Promises
+- **Operators**: Use RxJS operators for transformations
+  - `map`: Transform data
+  - `catchError`: Handle errors
+  - `retry`/`retryWhen`: Retry failed requests
+  - `shareReplay`: Share and replay observable
+  - `switchMap`: Switch to new observable (cancels previous)
+  - `concatMap`: Concatenate observables (waits for previous)
+- **Subjects**: Use `BehaviorSubject` for state that needs initial value
+- **Unsubscribe**: Use `takeUntil` pattern or `async` pipe to avoid memory leaks
+
+### Code Review Checklist
+- [ ] Follows naming conventions
+- [ ] Proper TypeScript types (no `any`)
+- [ ] Error handling implemented
+- [ ] Unit tests added/updated
+- [ ] Documentation updated
+- [ ] No console.log (use console.warn/error if needed)
+- [ ] Accessibility considered
+- [ ] Performance optimized
+- [ ] Security considered (PDPA/GDPR)
+- [ ] Follows project architecture
+- [ ] Uses `ApiService` instead of `HttpClient` directly
+- [ ] Standalone components have all dependencies in `imports` array
+- [ ] Relative imports used (not path aliases)
+- [ ] RxJS operators used correctly
+- [ ] Syncfusion components imported via `SyncfusionModule`
+
+---
+
+**Last Updated**: Based on project analysis as of current date
+**Angular Version**: 17.0.0+
+**TypeScript Version**: 5.2.2+
+
