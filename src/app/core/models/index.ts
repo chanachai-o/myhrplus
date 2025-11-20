@@ -100,3 +100,131 @@ export * from './eventgrp-wf.model';
 export * from './statistic-wf.model';
 export * from './statistic-wf2.model';
 
+// Training models
+export * from './training.model';
+export * from './training-content.model';
+export * from './training-history.model';
+export * from './training-stat.model';
+export * from './training-type.model';
+export * from './academy.model';
+export * from './locations.model';
+export * from './room.model';
+export * from './course.model';
+export * from './crs-category.model';
+export * from './crs-group.model';
+export * from './crs-type.model';
+export * from './train-cost.model';
+export * from './train-trner.model';
+export * from './responsible.model';
+export * from './expense.model';
+export * from './expgrp.model';
+
+// Welfare models
+export * from './welfare.model';
+export * from './welfare-check.model';
+export * from './welfare-view.model';
+export * from './welfare-dialog.model';
+export * from './welfare-history.model';
+export * from './welfare-group.model';
+export * from './welgrp.model';
+export * from './complain.model';
+export * from './disease.model';
+export * from './sitewel.model';
+
+// Shift & Working Time models
+export * from './shift-model.model';
+export * from './shift-list.model';
+export * from './shift-list-time.model';
+export * from './shift-time-list.model';
+export * from './vshift.model';
+export * from './vshift1.model';
+export * from './shift-workarea.model';
+export * from './emp-shift.model';
+export * from './working-time-plan.model';
+export * from './emp-working-plan.model';
+export * from './status-working-time.model';
+export * from './workarea-model.model';
+export * from './working-time.model';
+export * from './work-plan.model';
+export * from './working-plan.model';
+
+// Employee Profile & Related models
+export * from './address.model';
+export * from './family.model';
+export * from './educate.model';
+export * from './working.model';
+export * from './movement.model';
+export * from './emp-bank.model';
+export * from './emp-card.model';
+export * from './emp-leave-sum.model';
+export * from './swipe-card.model';
+export * from './forget-card.model';
+export * from './forget-time.model';
+export * from './time-warning.model';
+export * from './warning.model';
+
+// Location & Address models
+export * from './province.model';
+export * from './district.model';
+export * from './zipcode.model';
+export * from './zipcode-object.model';
+export * from './country.model';
+export * from './national.model';
+export * from './nationality.model';
+export * from './religion.model';
+
+// Education models
+export * from './degree.model';
+export * from './institute.model';
+export * from './faculty.model';
+export * from './major.model';
+export * from './background.model';
+
+// Bank & Financial models
+export * from './bank.model';
+export * from './bank-branch.model';
+export * from './currency.model';
+export * from './tax.model';
+export * from './pvf.model';
+export * from './fund.model';
+
+// Employee Related models
+export * from './relation.model';
+export * from './occupation.model';
+export * from './card-type.model';
+export * from './content-forget-card.model';
+export * from './grade.model';
+export * from './old-job.model';
+export * from './old-emp-position.model';
+export * from './adj-type.model';
+export * from './adj-reason.model';
+export * from './employee-type.model';
+export * from './emp-group.model';
+export * from './sala-type.model';
+export * from './handicapped-type.model';
+export * from './contract-party.model';
+export * from './emp-position.model';
+export * from './emp-type.model';
+export * from './emp-status.model';
+export * from './workarea-rgm1.model';
+
+// Employee Profile models
+export * from './employee-profile.model';
+export * from './employee-profile-all.model';
+export * from './employee-approve.model';
+export * from './employee-roster.model';
+export * from './employee-process.model';
+export * from './employee-subordinates-page.model';
+export * from './employee-model.model';
+export * from './personal-model.model';
+export * from './file-model.model';
+export * from './name-model.model';
+export * from './pageable-model.model';
+export * from './sort-model.model';
+export * from './workarea-model.model';
+
+// Other models
+export * from './message.model';
+export * from './pdpa.model';
+export * from './certificate-template.model';
+
