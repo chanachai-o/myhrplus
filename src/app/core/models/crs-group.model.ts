@@ -1,31 +1,39 @@
-import { BaseModel, TranslateService } from './base.model';
+import { BaseModel, TranslateService, baseGetName, checkData } from './base.model';
 
 /**
  * Course group model
+ * Note: Uses courseGroupId instead of codeId, so extends BaseModel directly
  */
 export interface CrsGroup {
   courseGroupId?: string;
   tdesc?: string;
   edesc?: string;
-  getCrsGroupDesc?(): string;
 }
 
-export class MyCrsGroup extends BaseModel implements CrsGroup {
-  tdesc: string | undefined;
-  edesc: string | undefined;
+export class CrsGroup extends BaseModel implements CrsGroup {
   courseGroupId?: string;
+  tdesc?: string;
+  edesc?: string;
 
-  constructor(data: Partial<any>, translateService: TranslateService) {
+  constructor(data?: Partial<CrsGroup>, translateService?: TranslateService) {
     super(data, translateService);
-    this.courseGroupId = data.courseGroupId;
-    this.tdesc = data.tdesc;
-    this.edesc = data.edesc;
+    this.courseGroupId = checkData(data?.courseGroupId) ?? undefined;
+    this.tdesc = checkData(data?.tdesc) ?? undefined;
+    this.edesc = checkData(data?.edesc) ?? undefined;
   }
 
+  /**
+   * Get name/description based on current language
+   */
+  getName(): string | null {
+    return baseGetName(this.tdesc, this.edesc, this.translateService?.currentLang);
+  }
+
+  /**
+   * @deprecated Use getName() instead for consistency
+   */
   getCrsGroupDesc(): string {
-    return this.translateService?.currentLang === 'th'
-      ? (this.tdesc || '')
-      : (this.edesc || '');
+    return this.getName() ?? '';
   }
 }
 

@@ -2,7 +2,7 @@ import { BaseModel, TranslateService } from './base.model';
 import { Academy, MyAcademy } from './academy.model';
 import { Locations, MyLocations } from './locations.model';
 import { Room, MyRoom } from './room.model';
-import { Course, MyCourse } from './course.model';
+import { Course } from './course.model';
 import { Responsible } from './responsible.model';
 import { TrainTrner } from './train-trner.model';
 import { TrainingType, MyTrainingType } from './training-type.model';
@@ -93,7 +93,7 @@ export class MyTraining extends BaseModel implements Training {
       ? new MyRoom(data.room, this.translateService!)
       : undefined;
     this.course = data.course
-      ? new MyCourse(data.course, this.translateService!)
+      ? new Course(data.course, this.translateService!)
       : undefined;
     this.trainingType = data.trainingType
       ? new MyTrainingType(data.trainingType, this.translateService!)

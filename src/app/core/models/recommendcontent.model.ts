@@ -1,6 +1,6 @@
 import { TranslateService } from "@ngx-translate/core";
 import { BaseModel } from "./base.model";
-import { Course, MyCourse } from "./course.model";
+import { Course } from "./course.model";
 
 export interface RecommendContent {
   course?: Course ;
@@ -18,7 +18,7 @@ export interface RecommendContent {
 
   constructor(data: Partial<any>, translateService: TranslateService) {
     super(data, translateService);
-     this.course = new MyCourse(this.course! , this.translateService);
+     this.course = data.course ? new Course(data.course, this.translateService) : undefined;
 
     // this.training.course = new MyCourse(this.training.course , this.translateService);
 

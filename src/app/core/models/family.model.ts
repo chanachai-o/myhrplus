@@ -2,8 +2,8 @@ import { BaseModel, TranslateService } from './base.model';
 import { Prefix } from './prefix.model';
 import { Zipcode } from './zipcode.model';
 import { District } from './district.model';
-import { Relation, MyRelation } from './relation.model';
-import { Occupation, MyOccupation } from './occupation.model';
+import { Relation } from './relation.model';
+import { Occupation } from './occupation.model';
 
 /**
  * Family model

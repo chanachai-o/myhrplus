@@ -1,9 +1,9 @@
 import { TranslateService } from "@ngx-translate/core";
 import { BaseModel } from "./base.model";
 import { District, MyDistrict } from "./district.model";
-import { MyOccupation, Occupation } from "./occupation.model";
+import { Occupation } from "./occupation.model";
 import { Prefix } from './prefix.model';
-import { MyRelation, Relation } from "./relation.model";
+import { Relation } from "./relation.model";
 import { MyZipcode, Zipcode } from "./zipcode.model";
 
 export interface FamilyLists {
@@ -100,10 +100,10 @@ export class MyFamilyLists extends BaseModel implements FamilyLists {
   constructor(data: Partial<FamilyLists>, translateService: TranslateService) {
     super(data, translateService);
     this.prefix = data.prefix ? new Prefix(data.prefix, this.translateService) : data.prefix;
-    this.relation = data.relation ? new MyRelation(this.relation!, this.translateService) : data.relation;
+    this.relation = data.relation ? new Relation(data.relation, this.translateService) : data.relation;
     this.zipcode = data.zipcode ? new MyZipcode(this.zipcode!, this.translateService) : data.zipcode;
     this.district = data.district ? new MyDistrict(this.district!, this.translateService) : data.district;
-    this.occupation = data.occupation ? new MyOccupation(this.occupation!, this.translateService) : data.occupation;
+    this.occupation = data.occupation ? new Occupation(data.occupation, this.translateService) : data.occupation;
   }
 
   getFullNameDesc(): string {

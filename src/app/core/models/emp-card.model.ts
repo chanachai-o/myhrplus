@@ -1,5 +1,5 @@
 import { BaseModel, TranslateService } from './base.model';
-import { CardType, MyCardType } from './card-type.model';
+import { CardType } from './card-type.model';
 
 /**
  * Employee card model
@@ -29,7 +29,7 @@ export class MyEmpCard extends BaseModel implements EmpCard {
     super(data, tranSer);
     this.employeeId = data.employeeId;
     this.cardType = data.cardType
-      ? new MyCardType(data.cardType, this.translateService!)
+      ? new CardType(data.cardType, this.translateService!)
       : undefined;
     this.activeDate = data.activeDate;
     this.expireDate = data.expireDate;

@@ -1,6 +1,6 @@
-import { BaseModel, TranslateService } from './base.model';
+import { BaseModel, TranslateService, baseGetName, checkData } from './base.model';
 import { CrsCategory } from './crs-category.model';
-import { CrsGroup, MyCrsGroup } from './crs-group.model';
+import { CrsGroup } from './crs-group.model';
 import { CrsType } from './crs-type.model';
 
 /**
@@ -20,13 +20,12 @@ export interface Course {
   crsCategory?: CrsCategory;
   crsGroup?: CrsGroup;
   crsType?: CrsType;
-  getCourseDesc(): string;
 }
 
-export class MyCourse extends BaseModel implements Course {
-  tdesc: string | undefined;
-  edesc: string | undefined;
+export class Course extends BaseModel implements Course {
   courseId?: string;
+  tdesc?: string;
+  edesc?: string;
   detail?: string;
   objective?: string;
   editorial?: string;
@@ -38,33 +37,41 @@ export class MyCourse extends BaseModel implements Course {
   crsGroup?: CrsGroup;
   crsType?: CrsType;
 
-  constructor(data: Partial<any>, translateService: TranslateService) {
+  constructor(data?: Partial<Course>, translateService?: TranslateService) {
     super(data, translateService);
-    this.courseId = data.courseId;
-    this.tdesc = data.tdesc;
-    this.edesc = data.edesc;
-    this.detail = data.detail;
-    this.objective = data.objective;
-    this.editorial = data.editorial;
-    this.crsKind = data.crsKind;
-    this.preCrs = data.preCrs;
-    this.every = data.every;
-    this.frequencyEvery = data.frequencyEvery;
-    this.crsCategory = data.crsCategory
+    this.courseId = checkData(data?.courseId) ?? undefined;
+    this.tdesc = checkData(data?.tdesc) ?? undefined;
+    this.edesc = checkData(data?.edesc) ?? undefined;
+    this.detail = checkData(data?.detail) ?? undefined;
+    this.objective = checkData(data?.objective) ?? undefined;
+    this.editorial = checkData(data?.editorial) ?? undefined;
+    this.crsKind = checkData(data?.crsKind) ?? undefined;
+    this.preCrs = checkData(data?.preCrs) ?? undefined;
+    this.every = checkData(data?.every) ?? undefined;
+    this.frequencyEvery = checkData(data?.frequencyEvery) ?? undefined;
+    this.crsCategory = data?.crsCategory
       ? new CrsCategory(data.crsCategory, this.translateService!)
       : undefined;
-    this.crsGroup = data.crsGroup
-      ? new MyCrsGroup(data.crsGroup, this.translateService!)
+    this.crsGroup = data?.crsGroup
+      ? new CrsGroup(data.crsGroup, this.translateService!)
       : undefined;
-    this.crsType = data.crsType
+    this.crsType = data?.crsType
       ? new CrsType(data.crsType, this.translateService!)
       : undefined;
   }
 
+  /**
+   * Get name/description based on current language
+   */
+  getName(): string | null {
+    return baseGetName(this.tdesc, this.edesc, this.translateService?.currentLang);
+  }
+
+  /**
+   * @deprecated Use getName() instead for consistency
+   */
   getCourseDesc(): string {
-    return this.translateService?.currentLang === 'th'
-      ? (this.tdesc || '')
-      : (this.edesc || '');
+    return this.getName() ?? '';
   }
 }
 

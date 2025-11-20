@@ -1,31 +1,39 @@
-import { BaseModel, TranslateService } from './base.model';
+import { BaseModel, TranslateService, baseGetName, checkData } from './base.model';
 
 /**
  * Occupation model
+ * Note: Uses occId instead of codeId, so extends BaseModel directly
  */
 export interface Occupation {
   occId?: string;
   tdesc: string;
   edesc: string;
-  getDesc?(): string;
 }
 
-export class MyOccupation extends BaseModel implements Occupation {
-  tdesc: string = '';
-  edesc: string = '';
+export class Occupation extends BaseModel implements Occupation {
   occId?: string;
+  tdesc: string;
+  edesc: string;
 
-  constructor(data: Partial<any>, translateService: TranslateService) {
+  constructor(data?: Partial<Occupation>, translateService?: TranslateService) {
     super(data, translateService);
-    this.occId = data.occId;
-    this.tdesc = data.tdesc || '';
-    this.edesc = data.edesc || '';
+    this.occId = checkData(data?.occId) ?? undefined;
+    this.tdesc = checkData(data?.tdesc) ?? '';
+    this.edesc = checkData(data?.edesc) ?? '';
   }
 
+  /**
+   * Get name/description based on current language
+   */
+  getName(): string | null {
+    return baseGetName(this.tdesc, this.edesc, this.translateService?.currentLang);
+  }
+
+  /**
+   * @deprecated Use getName() instead for consistency
+   */
   getDesc(): string {
-    return this.translateService?.currentLang === 'th'
-      ? this.tdesc
-      : this.edesc;
+    return this.getName() ?? '';
   }
 }
 

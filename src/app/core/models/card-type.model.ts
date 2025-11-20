@@ -1,31 +1,39 @@
-import { BaseModel, TranslateService } from './base.model';
+import { BaseModel, TranslateService, baseGetName, checkData } from './base.model';
 
 /**
  * Card type model
+ * Note: Uses cardTypeId instead of codeId, so extends BaseModel directly
  */
 export interface CardType {
   cardTypeId?: string;
   tdesc?: string;
   edesc?: string;
-  getDesc?(): string;
 }
 
-export class MyCardType extends BaseModel implements CardType {
+export class CardType extends BaseModel implements CardType {
+  cardTypeId?: string;
   tdesc?: string;
   edesc?: string;
-  cardTypeId?: string;
 
-  constructor(data: Partial<CardType>, tranSer: TranslateService) {
-    super(data, tranSer);
-    this.cardTypeId = data.cardTypeId;
-    this.tdesc = data.tdesc;
-    this.edesc = data.edesc;
+  constructor(data?: Partial<CardType>, translateService?: TranslateService) {
+    super(data, translateService);
+    this.cardTypeId = checkData(data?.cardTypeId) ?? undefined;
+    this.tdesc = checkData(data?.tdesc) ?? undefined;
+    this.edesc = checkData(data?.edesc) ?? undefined;
   }
 
+  /**
+   * Get name/description based on current language
+   */
+  getName(): string | null {
+    return baseGetName(this.tdesc, this.edesc, this.translateService?.currentLang);
+  }
+
+  /**
+   * @deprecated Use getName() instead for consistency
+   */
   getDesc(): string {
-    return this.translateService?.currentLang === 'th'
-      ? (this.tdesc || '')
-      : (this.edesc || '');
+    return this.getName() ?? '';
   }
 }
 
