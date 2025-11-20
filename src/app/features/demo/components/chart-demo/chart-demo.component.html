@@ -1,0 +1,123 @@
+<div class="chart-demo-container">
+  <app-glass-card padding="p-6" customClass="mb-6">
+    <h2 class="text-2xl font-bold mb-4 thai-text">Chart Component Demo</h2>
+    <p class="text-slate-600 dark:text-slate-400 mb-6 thai-text">
+      Component สำหรับแสดงกราฟและข้อมูลจาก Syncfusion พร้อม Glass Morphism styling และ features ครบถ้วน
+    </p>
+
+    <!-- Column Chart Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่าง Column Chart</h3>
+      <app-chart
+        [dataSource]="salesData"
+        [series]="columnSeries"
+        [primaryXAxis]="primaryXAxis"
+        [primaryYAxis]="primaryYAxis"
+        title="ยอดขายรายเดือน"
+        [legendSettings]="{ visible: true, position: 'Top' }"
+        [tooltip]="{ enable: true }"
+        [height]="'400px'"
+        [width]="'100%'"
+        (pointClick)="onPointClick($event)"
+        (loaded)="onLoaded($event)">
+      </app-chart>
+    </div>
+
+    <!-- Line Chart Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่าง Line Chart</h3>
+      <app-chart
+        [dataSource]="revenueData"
+        [series]="lineSeries"
+        [primaryXAxis]="{ valueType: 'Category', title: 'ปี' }"
+        [primaryYAxis]="{ valueType: 'Double', title: 'รายได้ (บาท)' }"
+        title="รายได้รายปี"
+        [legendSettings]="{ visible: true, position: 'Top' }"
+        [tooltip]="{ enable: true }"
+        [height]="'400px'"
+        [width]="'100%'">
+      </app-chart>
+    </div>
+
+    <!-- Pie Chart Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่าง Pie Chart</h3>
+      <app-chart
+        [dataSource]="departmentData"
+        [series]="pieSeries"
+        title="จำนวนพนักงานตามแผนก"
+        [legendSettings]="{ visible: true, position: 'Right' }"
+        [tooltip]="{ enable: true }"
+        [height]="'400px'"
+        [width]="'100%'">
+      </app-chart>
+    </div>
+
+    <!-- Area Chart Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่าง Area Chart</h3>
+      <app-chart
+        [dataSource]="salesData"
+        [series]="areaSeries"
+        [primaryXAxis]="primaryXAxis"
+        [primaryYAxis]="primaryYAxis"
+        title="ยอดขายรายเดือน (Area)"
+        [legendSettings]="{ visible: true, position: 'Top' }"
+        [tooltip]="{ enable: true }"
+        [height]="'400px'"
+        [width]="'100%'">
+      </app-chart>
+    </div>
+
+    <!-- Multiple Series Example -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่าง Multiple Series</h3>
+      <app-chart
+        [dataSource]="salesData"
+        [series]="multipleSeries"
+        [primaryXAxis]="primaryXAxis"
+        [primaryYAxis]="primaryYAxis"
+        title="ยอดขายและเป้าหมาย"
+        [legendSettings]="{ visible: true, position: 'Top' }"
+        [tooltip]="{ enable: true }"
+        [height]="'400px'"
+        [width]="'100%'">
+      </app-chart>
+    </div>
+
+    <!-- Usage Example -->
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-4 thai-text">ตัวอย่างการใช้งาน</h3>
+      <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto"><code class="text-sm">// TypeScript
+import {{ '{' }} ChartSeries {{ '}' }} from '../../shared/components/chart/chart.component';
+
+salesData: any[] = [
+  {{ '{' }} month: 'มกราคม', sales: 35000 {{ '}' }},
+  {{ '{' }} month: 'กุมภาพันธ์', sales: 28000 {{ '}' }}
+];
+
+columnSeries: ChartSeries[] = [
+  {{ '{' }}
+    type: 'Column',
+    dataSource: this.salesData,
+    xName: 'month',
+    yName: 'sales',
+    name: 'ยอดขาย',
+    fill: '#1e40af'
+  {{ '}' }}
+];
+
+// HTML
+&lt;app-chart
+  [dataSource]="salesData"
+  [series]="columnSeries"
+  [primaryXAxis]="{{ '{' }} valueType: 'Category' {{ '}' }}"
+  [primaryYAxis]="{{ '{' }} valueType: 'Double' {{ '}' }}"
+  title="ยอดขายรายเดือน"
+  [height]="'400px'"
+  (pointClick)="onPointClick($event)"&gt;
+&lt;/app-chart&gt;</code></pre>
+    </div>
+  </app-glass-card>
+</div>
+

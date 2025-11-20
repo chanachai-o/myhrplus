@@ -38,6 +38,7 @@ import { CalendarDemoComponent } from './components/calendar-demo/calendar-demo.
 import { PivotTableDemoComponent } from './components/pivot-table-demo/pivot-table-demo.component';
 import { DataGridDemoComponent } from './components/data-grid-demo/data-grid-demo.component';
 import { SchedulerDemoComponent } from './components/scheduler-demo/scheduler-demo.component';
+import { ChartDemoComponent } from './components/chart-demo/chart-demo.component';
 
 const routes: Routes = [
   {
@@ -191,6 +192,10 @@ const routes: Routes = [
       {
         path: 'scheduler',
         component: SchedulerDemoComponent
+      },
+      {
+        path: 'chart',
+        component: ChartDemoComponent
       }
     ]
   }

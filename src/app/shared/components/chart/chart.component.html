@@ -1,0 +1,29 @@
+<div class="chart-container" [ngClass]="customClass">
+  <ejs-chart
+    #chart
+    [dataSource]="dataSource"
+    [series]="series"
+    [primaryXAxis]="primaryXAxis"
+    [primaryYAxis]="primaryYAxis"
+    [title]="title"
+    [titleStyle]="titleStyle"
+    [legendSettings]="legendSettings"
+    [tooltip]="tooltip"
+    [chartArea]="chartArea"
+    [margin]="margin"
+    [height]="height"
+    [width]="width"
+    [theme]="theme"
+    [enableAnimation]="enableAnimation"
+    [enableRtl]="enableRtl"
+    (loaded)="onLoaded($event)"
+    (pointClick)="onPointClick($event)"
+    (pointMove)="onPointMove($event)"
+    (animationComplete)="onAnimationComplete($event)"
+    (textRender)="onTextRender($event)"
+    (axisLabelRender)="onAxisLabelRender($event)"
+    (tooltipRender)="onTooltipRender($event)"
+    (legendRender)="onLegendRender($event)">
+  </ejs-chart>
+</div>
+
