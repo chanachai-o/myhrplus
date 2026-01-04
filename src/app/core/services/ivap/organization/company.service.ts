@@ -102,5 +102,12 @@ export class IvapCompanyService extends BaseApiService {
   suspend(companyId: string, reason: string): Observable<any> {
     return this.post(`/${companyId}/suspend`, { reason });
   }
+
+  /**
+   * Export companies as CSV
+   */
+  export(params?: QueryParams): Observable<Blob> {
+    return this.downloadFile('/export', params);
+  }
 }
 

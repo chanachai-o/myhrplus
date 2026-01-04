@@ -1,5 +1,7 @@
 /**
  * Shift Service สำหรับ IVAP Service API
+ * 
+ * All endpoints require company_id in path: /shifts/company/{company_id}/shifts
  */
 
 import { Injectable } from '@angular/core';
@@ -22,59 +24,84 @@ export class IvapShiftService extends BaseApiService {
   }
 
   /**
-   * Get all shifts (paginated)
+   * Get all shifts for a company
+   * Endpoint: GET /api/v1/shifts/company/{company_id}/shifts
+   * @param companyIdOrParams - Company ID (string) or QueryParams (for backward compatibility)
+   * @param params - Query parameters (if first param is companyId)
    */
-  getAll(params?: QueryParams): Observable<PaginatedResponse<Shift>> {
-    return this.getPaginated<Shift>('', params);
+  getAll(companyIdOrParams?: string | QueryParams, params?: QueryParams): Observable<PaginatedResponse<Shift>> {
+    let companyId: string | undefined;
+    let queryParams: QueryParams | undefined;
+
+    if (typeof companyIdOrParams === 'string') {
+      companyId = companyIdOrParams;
+      queryParams = params;
+    } else {
+      queryParams = companyIdOrParams;
+      companyId = queryParams?.['company_id'] as string;
+    }
+
+    if (!companyId) {
+      companyId = localStorage.getItem('current_company_id') || 'default';
+    }
+
+    return this.getPaginated<Shift>(`/company/${companyId}/shifts`, queryParams);
   }
 
   /**
    * Get shift by ID
+   * Endpoint: GET /api/v1/shifts/company/{company_id}/shifts/{shift_id}
    */
-  getById(shiftId: string): Observable<Shift> {
-    return this.get<Shift>(`/${shiftId}`);
+  getById(companyId: string, shiftId: string): Observable<Shift> {
+    return this.get<Shift>(`/company/${companyId}/shifts/${shiftId}`);
   }
 
   /**
    * Create shift
+   * Endpoint: POST /api/v1/shifts/company/{company_id}/shifts
    */
-  create(data: Partial<Shift>): Observable<Shift> {
-    return this.post<Shift>('', data);
+  create(companyId: string, data: Partial<Shift>): Observable<Shift> {
+    return this.post<Shift>(`/company/${companyId}/shifts`, data);
   }
 
   /**
    * Update shift
+   * Endpoint: PUT /api/v1/shifts/company/{company_id}/shifts/{shift_id}
    */
-  update(shiftId: string, data: Partial<Shift>): Observable<Shift> {
-    return this.put<Shift>(`/${shiftId}`, data);
+  update(companyId: string, shiftId: string, data: Partial<Shift>): Observable<Shift> {
+    return this.put<Shift>(`/company/${companyId}/shifts/${shiftId}`, data);
   }
 
   /**
    * Delete shift
+   * Endpoint: DELETE /api/v1/shifts/company/{company_id}/shifts/{shift_id}
    */
-  override delete(shiftId: string): Observable<void> {
-    return super.delete(`/${shiftId}`);
+  deleteShift(companyId: string, shiftId: string): Observable<void> {
+    return super.delete(`/company/${companyId}/shifts/${shiftId}`);
   }
 
   /**
    * Assign shift to employee
+   * Endpoint: POST /api/v1/shifts/company/{company_id}/shifts/user-shifts
    */
-  assign(shiftId: string, data: any): Observable<any> {
-    return this.post(`/${shiftId}/assign`, data);
+  assign(companyId: string, data: { company_employeeId: string; shiftId: string }): Observable<any> {
+    return this.post(`/company/${companyId}/shifts/user-shifts`, data);
   }
 
   /**
    * Unassign shift from employee
+   * Note: This endpoint may not exist in API, keeping for backward compatibility
    */
-  unassign(shiftId: string, data: any): Observable<any> {
-    return this.post(`/${shiftId}/unassign`, data);
+  unassign(companyId: string, data: any): Observable<any> {
+    return this.post(`/company/${companyId}/shifts/user-shifts/unassign`, data);
   }
 
   /**
    * Get shift assignments
+   * Note: This endpoint may not exist in API, keeping for backward compatibility
    */
-  getAssignments(shiftId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
-    return this.getPaginated(`/${shiftId}/assignments`, params);
+  getAssignments(companyId: string, shiftId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/company/${companyId}/shifts/${shiftId}/assignments`, params);
   }
 }
 
