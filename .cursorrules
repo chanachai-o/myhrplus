@@ -9,6 +9,7 @@ This is an Angular 17+ HR Management System with a feature-based architecture, s
 ```
 src/app/
 ├── core/              # Core services, guards, interceptors, models, utilities
+│   ├── base/          # Base component for subscription management
 │   ├── services/      # Singleton services (providedIn: 'root')
 │   ├── guards/        # Route guards
 │   ├── interceptors/  # HTTP interceptors
@@ -23,6 +24,7 @@ src/app/
 │   └── validators/    # Form validators
 ├── features/          # Feature modules (lazy-loaded)
 │   ├── auth/          # Authentication
+│   ├── landing/       # Landing page (public, no AuthGuard)
 │   ├── home/          # Dashboard/Home
 │   ├── empview/       # Employee view
 │   ├── ta/            # Time attendance
@@ -300,8 +302,13 @@ export class ModelNameService {
 - **Route Constants**: Use `ROUTES` constant from `src/app/core/constants/routes.constant`
   - Example: `this.router.navigate([ROUTES.LEGACY.HOME]);`
   - Use nested route constants: `ROUTES.LEGACY.TA.LEAVE_REQUEST`
-  - **Current Route Structure** (as of 2024-12-30):
-    - `/home` - Home module
+  - **Current Route Structure** (as of 2025-01-02):
+    - `/` - Landing page (public, no AuthGuard)
+    - `/home` - Landing page (public, no AuthGuard)
+    - `/auth/login` - Login page
+    - `/ivap` - Main layout with AuthGuard (protected routes)
+      - `/ivap/dashboard` - IVAP Dashboard
+      - `/ivap/*` - Other IVAP feature modules
     - `/personal` - Personal module
     - `/ta` - Time Attendance module
     - `/payroll` - Payroll module
@@ -1323,7 +1330,28 @@ export class ComponentNameDemoComponent {
   - Better performance and maintainability
   - Zero linter errors
 
-**Last Updated**: 2025-01-01 (Layout Components Class Duplication Fix)
-**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete
+---
+
+### Landing Page Migration Complete (2025-01-02)
+- ✅ **Landing Page Migration**: Migrated landing page from `frontend/` to current project
+  - **BaseComponent**: Migrated from `frontend/src/app/core/base/base.component.ts`
+  - **LandingService**: Migrated and adapted from `frontend/src/app/core/services/landing.service.ts`
+  - **LandingModel**: Migrated from `frontend/src/app/core/models/landing.model.ts`
+  - **Image Placeholders**: Migrated from `frontend/src/app/core/utils/image-placeholders.ts`
+  - **LandingComponent**: Created and adapted (standalone component)
+  - **Routing**: Landing page is now the first page (`path: ''`) - no AuthGuard
+  - **Theme & Language**: Uses `ThemeToggleComponent` and standard language switcher (like login component)
+  - **Logo Integration**: Uses `ivap.jpg` logo in both landing and login pages
+  - **UX/UI**: Adjusted to match IVAP logo (blue-purple-teal gradient)
+- ✅ **Translation Keys**: Added landing page translation keys in th.json and en.json
+- ✅ **Documentation**: `LANDING_PAGE_MIGRATION_COMPLETE.md` created
+- ✅ **Impact**:
+  - Landing page is now the entry point of the application
+  - Consistent theme and language switching across landing and login pages
+  - IVAP logo integrated throughout the application
+  - UX/UI aligned with IVAP brand identity
+
+**Last Updated**: 2025-01-02 (Landing Page Migration Complete)
+**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + Landing Page Migration Complete
 **Angular Version**: 17.0.0+
 **TypeScript Version**: 5.2.2+

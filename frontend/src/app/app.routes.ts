@@ -5,16 +5,6 @@ import { getDemoRoutes } from './demo.routes';
 
 export const routes: Routes = [
   // Landing Page
-  {
-    path: '',
-    loadComponent: () => import('./features/landing/landing.component')
-      .then(m => m.LandingComponent)
-  },
-  {
-    path: 'home',
-    loadComponent: () => import('./features/landing/landing.component')
-      .then(m => m.LandingComponent)
-  },
 
   // Register Route
   {
