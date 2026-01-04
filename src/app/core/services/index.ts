@@ -26,6 +26,7 @@ export type { CalendarEventMeta } from './calendar.service';
 export { FieldMaskingService } from './field-masking.service';
 export { ApiService } from './api.service';
 export type { ApiResponse } from './api.service';
+export { LandingService } from './landing.service';
 
 // IVAP Services
 export * from './ivap';

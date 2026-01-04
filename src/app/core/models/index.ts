@@ -11,6 +11,9 @@ export * from './ivap';
 // Menu models
 export * from './menu.model';
 
+// Landing models
+export * from './landing.model';
+
 // Legacy models (kept for backward compatibility)
 export * from './database.model';
 

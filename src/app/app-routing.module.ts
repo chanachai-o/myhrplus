@@ -5,6 +5,16 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { ROUTES } from './core/constants/routes.constant';
 
 const routes: Routes = [
+  // Landing Page (Public - No AuthGuard)
+  {
+    path: '',
+    loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent)
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent)
+  },
+
   // Auth Routes
   {
     path: 'auth',
@@ -15,21 +25,16 @@ const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
 
-  // Main Layout with AuthGuard
+  // Main Layout with AuthGuard (Protected routes)
   {
-    path: '',
+    path: 'ivap',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       // Default redirect to IVAP dashboard
       {
         path: '',
-        redirectTo: ROUTES.IVAP.BASE.substring(1), // Remove leading '/'
-        pathMatch: 'full'
-      },
-      {
-        path: 'home',
-        redirectTo: ROUTES.IVAP.BASE.substring(1), // Remove leading '/'
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
 
@@ -37,7 +42,7 @@ const routes: Routes = [
       // IVAP Feature Modules
       // ============================================
       {
-        path: ROUTES.IVAP.BASE.substring(1), // Remove leading '/'
+        path: '',
         loadChildren: () => import('./features/ivap/ivap.module').then(m => m.IvapModule)
       },
 
@@ -45,7 +50,7 @@ const routes: Routes = [
       // Admin Feature Modules (Super Admin)
       // ============================================
       {
-        path: ROUTES.ADMIN.BASE.substring(1), // Remove leading '/'
+        path: 'admin',
         loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule)
       },
 
@@ -54,12 +59,12 @@ const routes: Routes = [
       // ============================================
       // 404 Not Found Page
       {
-        path: ROUTES.NOT_FOUND.substring(1), // Remove leading '/'
+        path: 'not-found',
         loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
       },
       // 500 Error Page
       {
-        path: ROUTES.ERROR.substring(1), // Remove leading '/'
+        path: 'error',
         loadComponent: () => import('./features/error/error.component').then(m => m.ErrorComponent)
       }
     ]
