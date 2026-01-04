@@ -149,35 +149,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Load navigation items - Auto-load Admin Level 2 items directly
-   * No Level 1 selection needed - show Admin Level 2 items immediately
+   * Load navigation items - Load all navigation items and select based on current route
    * This is synchronous and fast, so no loading state needed
    */
   private loadNavigationItems(): void {
-    // Always load all navigation items - admin by default
-    // No role filtering - everyone sees admin menu
+    // Load all navigation items based on user roles
     // This is synchronous and fast - no need for loading state
-    this.navigationItems = getNavigationItemsByRoles([]);
+    const userRoles = this.currentUser?.roles || [];
+    this.navigationItems = getNavigationItemsByRoles(userRoles);
 
-    // Auto-select Admin and load Level 2 items directly
-    const adminItem = this.navigationItems.find(item => item.id === 'admin');
-    if (adminItem) {
-      this.selectedNavigationItem = adminItem;
-      this.selectedModule = 'admin';
-
-      // Load Level 2 items directly
-      if (adminItem.children && adminItem.children.length > 0) {
-        this.level2Items = [...adminItem.children];
-        console.log('[Sidebar] Auto-loaded Admin Level 2 items:', this.level2Items.map(item => ({
-          label: item.label,
-          icon: item.icon,
-          route: item.route,
-          childrenCount: item.children?.length || 0
-        })));
-      }
-    }
-
-    console.log('[Sidebar] Loaded navigation items - Admin Level 2 shown directly');
+    // Don't auto-select - let updateSelectedModuleFromRoute() handle selection based on current route
+    // This ensures correct menu is shown based on current route (/admin/* vs /ivap/*)
+    console.log('[Sidebar] Loaded navigation items - Selection will be based on current route');
 
     // Navigation items loaded immediately - clear loading state
     this.isLoadingNavigation = false;
@@ -997,13 +980,25 @@ export class SidebarComponent implements OnInit, OnDestroy {
     } else if (this.selectedNavigationItem?.id === 'ivap') {
       // Check if current route still belongs to IVAP module
       if (this.activeRoute.startsWith('/ivap') || this.activeRoute === '/') {
-        // Still in home module
-        console.log('[Sidebar] Still in home module, only updating Level 3-4');
+        // Still in IVAP module
+        console.log('[Sidebar] Still in IVAP module, only updating Level 3-4');
         this.updateSelectedItemsFromRoute(this.activeRoute);
         return;
       } else {
         // Route changed to different module, need to reset and reselect
-        console.log('[Sidebar] Route changed from home to different module, resetting selections');
+        console.log('[Sidebar] Route changed from IVAP to different module, resetting selections');
+        needsModuleChange = true;
+      }
+    } else if (this.selectedNavigationItem?.id === 'admin') {
+      // Check if current route still belongs to Admin module
+      if (this.activeRoute.startsWith('/admin')) {
+        // Still in Admin module
+        console.log('[Sidebar] Still in Admin module, only updating Level 3-4');
+        this.updateSelectedItemsFromRoute(this.activeRoute);
+        return;
+      } else {
+        // Route changed to different module, need to reset and reselect
+        console.log('[Sidebar] Route changed from Admin to different module, resetting selections');
         needsModuleChange = true;
       }
     }
@@ -1029,6 +1024,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
       // Check if route matches Level 1 item directly (for IVAP Dashboard)
       if (navItem.id === 'ivap' && (this.activeRoute.startsWith('/ivap') || this.activeRoute === '/')) {
+        // Always select if not already selected (or if we just reset)
+        if (!this.selectedNavigationItem || this.selectedNavigationItem.id !== navItem.id) {
+          this.selectNavigationItem(navItem.id);
+        }
+        this.updateSelectedItemsFromRoute(this.activeRoute);
+        return;
+      }
+
+      // Check if route matches Level 1 item directly (for Admin)
+      if (navItem.id === 'admin' && this.activeRoute.startsWith('/admin')) {
         // Always select if not already selected (or if we just reset)
         if (!this.selectedNavigationItem || this.selectedNavigationItem.id !== navItem.id) {
           this.selectNavigationItem(navItem.id);

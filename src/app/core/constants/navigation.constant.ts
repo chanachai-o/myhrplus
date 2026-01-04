@@ -212,6 +212,95 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
         ]
       }
     ]
+  },
+
+  // Admin (Super Admin) Navigation - สำหรับผู้ดูแลระบบระดับสูง
+  {
+    id: 'admin',
+    label: 'Admin',
+    icon: 'admin_panel_settings', // icon หลักใน Rail ซ้ายสุด
+    roles: ['super_admin', 'admin'], // เฉพาะ super admin และ admin
+    route: '/admin/companies', // Dashboard route - หน้าแรกของโมดูล
+    children: [
+      // Companies Management
+      {
+        label: 'Companies',
+        route: '/admin/companies',
+        icon: 'business',
+        roles: ['super_admin']
+      },
+      // Access Control
+      {
+        label: 'Access Control',
+        icon: 'lock',
+        children: [
+          {
+            label: 'User Management',
+            route: '/admin/users',
+            icon: 'people',
+            roles: ['super_admin']
+          },
+          {
+            label: 'RBAC',
+            route: '/admin/rbac',
+            icon: 'security',
+            roles: ['super_admin']
+          }
+        ]
+      },
+      // System Management
+      {
+        label: 'System Management',
+        icon: 'settings',
+        children: [
+          {
+            label: 'System Settings',
+            route: '/admin/settings',
+            icon: 'settings',
+            roles: ['super_admin']
+          },
+          {
+            label: 'Maintenance',
+            route: '/admin/maintenance',
+            icon: 'build',
+            roles: ['super_admin']
+          }
+        ]
+      },
+      // Data & Security
+      {
+        label: 'Data & Security',
+        icon: 'security',
+        children: [
+          {
+            label: 'Audit Logs',
+            route: '/admin/audit-logs',
+            icon: 'description',
+            roles: ['super_admin']
+          },
+          {
+            label: 'Backup & Restore',
+            route: '/admin/backup-restore',
+            icon: 'backup',
+            roles: ['super_admin']
+          }
+        ]
+      },
+      // License Management
+      {
+        label: 'License Management',
+        route: '/admin/license',
+        icon: 'vpn_key',
+        roles: ['super_admin']
+      },
+      // Module Subscription
+      {
+        label: 'Module Subscription',
+        route: '/admin/module-subscription',
+        icon: 'subscriptions',
+        roles: ['super_admin']
+      }
+    ]
   }
 ];
 

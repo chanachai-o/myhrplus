@@ -42,6 +42,14 @@ const routes: Routes = [
       },
 
       // ============================================
+      // Admin Feature Modules (Super Admin)
+      // ============================================
+      {
+        path: ROUTES.ADMIN.BASE.substring(1), // Remove leading '/'
+        loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule)
+      },
+
+      // ============================================
       // Error Pages (inside main layout)
       // ============================================
       // 404 Not Found Page

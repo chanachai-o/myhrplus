@@ -166,6 +166,20 @@ export const ROUTES = {
     }
   },
 
+  // Admin Routes (Super Admin)
+  ADMIN: {
+    BASE: '/admin',
+    COMPANIES: '/admin/companies',
+    USERS: '/admin/users',
+    RBAC: '/admin/rbac',
+    SETTINGS: '/admin/settings',
+    AUDIT_LOGS: '/admin/audit-logs',
+    BACKUP_RESTORE: '/admin/backup-restore',
+    LICENSE: '/admin/license',
+    MAINTENANCE: '/admin/maintenance',
+    MODULE_SUBSCRIPTION: '/admin/module-subscription'
+  },
+
   // Error Pages
   NOT_FOUND: '/not-found',
   ERROR: '/error'
