@@ -1,13 +1,29 @@
-import { Component, OnInit, inject } from '@angular/core';
+/**
+ * Forgot Password Component
+ *
+ * Component for requesting password reset via email.
+ * Uses split layout design consistent with login component.
+ * Handles form validation and displays success/error messages.
+ *
+ * @example
+ * ```html
+ * <app-forgot-password></app-forgot-password>
+ * ```
+ */
+
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AuthService, NotificationService, DatabaseModel } from '@core/services';
-import { StorageService } from '@core/services';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationService, StorageService } from '@core/services';
+import { IvapAuthService } from '@core/services/ivap';
+import { ForgotPasswordRequest } from '@core/models/ivap';
+import { Language, isSupportedLanguage, DEFAULT_LANGUAGE, getFlagPath } from '@core/types/language.type';
+import { STORAGE_KEYS } from '@core/constants/storage-keys.constant';
+import { ROUTES } from '@core/constants/routes.constant';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
-import { GlassSelectComponent } from '@shared/components/glass-select/glass-select.component';
 import { GlassButtonComponent } from '@shared/components/glass-button/glass-button.component';
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { AlertComponent } from '@shared/components/alert/alert.component';
@@ -15,8 +31,6 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { ThemeToggleComponent } from '@shared/components/theme-toggle/theme-toggle.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
-import { Language, isSupportedLanguage, DEFAULT_LANGUAGE, getFlagPath } from '@core/types/language.type';
-import { STORAGE_KEYS } from '@core/constants/storage-keys.constant';
 
 @Component({
   selector: 'app-forgot-password',
@@ -25,9 +39,9 @@ import { STORAGE_KEYS } from '@core/constants/storage-keys.constant';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    RouterModule,
     TranslateModule,
     GlassInputComponent,
-    GlassSelectComponent,
     GlassButtonComponent,
     GlassCardComponent,
     AlertComponent,
@@ -40,22 +54,13 @@ import { STORAGE_KEYS } from '@core/constants/storage-keys.constant';
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
-  private translate = inject(TranslateService);
-
   forgotPasswordForm: FormGroup;
-  loading = false;
-  dbList: DatabaseModel[] = [];
-  dbSelected: string = '';
-  errorMessage: string = '';
-  successMessage: string = '';
-
-  // For reusable components
-  username: string = '';
-  email: string = '';
-  dbSelectOptions: Array<{ value: string; label: string; disabled?: boolean }> = [];
+  loading = signal(false);
+  errorMessage = signal('');
+  successMessage = signal('');
 
   // Language
-  currentLang: Language = 'th';
+  currentLang: Language = DEFAULT_LANGUAGE;
   showLanguageMenu = false;
   availableLanguages = [
     { code: 'th' as Language, name: 'ไทย', flagPath: getFlagPath('th') },
@@ -72,25 +77,23 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: IvapAuthService,
     private router: Router,
     private notificationService: NotificationService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private translate: TranslateService
   ) {
     this.forgotPasswordForm = this.fb.group({
-      username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      dbName: ['']
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
   ngOnInit(): void {
-    // Load database list
-    this.loadDatabases();
-
     // Initialize language from storage
     const savedLang = this.storageService.getItem<Language>(STORAGE_KEYS.LANGUAGE);
-    this.currentLang = (savedLang && isSupportedLanguage(savedLang)) ? savedLang : (this.translate.currentLang as Language) || DEFAULT_LANGUAGE;
+    this.currentLang = (savedLang && isSupportedLanguage(savedLang))
+      ? savedLang
+      : (this.translate.currentLang as Language) || DEFAULT_LANGUAGE;
 
     // Subscribe to language changes
     this.translate.onLangChange.subscribe(event => {
@@ -129,49 +132,8 @@ export class ForgotPasswordComponent implements OnInit {
     this.showLanguageMenu = false;
   }
 
-  loadDatabases(): void {
-    this.authService.getDatabase().subscribe({
-      next: (result) => {
-        this.dbList = result;
-        // Prepare data for Glass Select
-        this.dbSelectOptions = result.map(db => ({
-          value: db.db,
-          label: db.dbDisplay || db.dbName || db.db,
-          disabled: false
-        }));
-
-        if (result && result.length > 0) {
-          this.dbSelected = result[0].db;
-          this.forgotPasswordForm.patchValue({ dbName: result[0].db });
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        console.warn('Failed to load databases:', error);
-        this.errorMessage = error.message || 'Failed to load database list';
-        this.notificationService.showError(this.errorMessage);
-      }
-    });
-  }
-
-  onDbChangeSelect(value: string): void {
-    if (value) {
-      this.dbSelected = value;
-      this.forgotPasswordForm.patchValue({ dbName: value });
-    }
-  }
-
-  onUsernameChange(value: string): void {
-    this.username = value;
-    // Form control will be updated automatically via formControlName
-  }
-
-  onEmailChange(value: string): void {
-    this.email = value;
-    // Form control will be updated automatically via formControlName
-  }
-
   onBackToLogin(): void {
-    this.router.navigate(['/auth/login']);
+    this.router.navigate([ROUTES.AUTH.LOGIN]);
   }
 
   formatErrorMessage(message: string): string {
@@ -183,73 +145,56 @@ export class ForgotPasswordComponent implements OnInit {
     // Mark all fields as touched to show validation errors
     this.forgotPasswordForm.markAllAsTouched();
 
-    // Update form values
-    this.forgotPasswordForm.patchValue({
-      dbName: this.dbSelected
-    });
-
-    // Get values from form controls
-    const username = this.forgotPasswordForm.get('username')?.value || '';
-    const email = this.forgotPasswordForm.get('email')?.value || '';
-
-    // Update component properties for consistency
-    this.username = username;
-    this.email = email;
-
     if (this.forgotPasswordForm.valid) {
-      this.loading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
+      this.loading.set(true);
+      this.errorMessage.set('');
+      this.successMessage.set('');
 
-      this.authService.setMailForgetPassword(
-        username,
-        email,
-        this.dbSelected || this.forgotPasswordForm.value.dbName
-      )
-        .then((result: any) => {
-          console.log('Forgot password result:', result);
+      const email = this.forgotPasswordForm.get('email')?.value || '';
+      const request: ForgotPasswordRequest = { email };
 
-          if (result.status) {
-            this.successMessage = this.translate.instant('auth.forgotPassword.successMessage');
-            this.notificationService.showSuccess(this.successMessage);
-            // Clear form after success
-            this.forgotPasswordForm.reset();
-            this.username = '';
-            this.email = '';
+      this.authService.forgotPassword(request).subscribe({
+        next: (response) => {
+          this.loading.set(false);
+          this.successMessage.set(
+            this.translate.instant('features.auth.forgotPassword.successMessage')
+          );
+          this.notificationService.showSuccess(
+            this.translate.instant('features.auth.forgotPassword.successMessage')
+          );
 
-            // Auto redirect to login after 3 seconds
-            setTimeout(() => {
-              this.router.navigate(['/auth/login']);
-            }, 3000);
+          // Clear form after success
+          this.forgotPasswordForm.reset();
+
+          // Auto redirect to login after 3 seconds
+          setTimeout(() => {
+            this.router.navigate([ROUTES.AUTH.LOGIN]);
+          }, 3000);
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Forgot password failed:', error);
+          this.loading.set(false);
+
+          // Don't reveal if email exists for security
+          // Always show success message to prevent email enumeration
+          const errorMessage = error.status === 404
+            ? this.translate.instant('features.auth.forgotPassword.successMessage')
+            : this.translate.instant('features.auth.forgotPassword.error.sendFailed');
+
+          if (error.status === 404) {
+            // Show info message (not error) to prevent email enumeration
+            this.successMessage.set(errorMessage);
+            this.notificationService.showInfo(errorMessage);
           } else {
-            // Handle error messages from API
-            const errorMessages = [];
-            if (result.msgEmail) errorMessages.push(result.msgEmail);
-            if (result.msgEmployeeid) errorMessages.push(result.msgEmployeeid);
-            if (result.msgUsername) errorMessages.push(result.msgUsername);
-
-            this.errorMessage = errorMessages.length > 0
-              ? errorMessages.join('\n')
-              : this.translate.instant('auth.forgotPassword.error.sendFailed');
-            this.notificationService.showError(this.errorMessage);
+            this.errorMessage.set(errorMessage);
+            this.notificationService.showError(errorMessage);
           }
-
-          this.loading = false;
-        })
-        .catch((error: HttpErrorResponse) => {
-          console.error('Forgot password failed. Reason:', error);
-          this.loading = false;
-
-          if (error.status === 401) {
-            this.errorMessage = this.translate.instant('auth.forgotPassword.error.invalidCredentials');
-            this.notificationService.showError(this.errorMessage);
-          } else {
-            this.errorMessage = error.message || this.translate.instant('auth.forgotPassword.error.sendFailed');
-            this.notificationService.showError(this.errorMessage);
-          }
-        });
+        }
+      });
     } else {
-      this.notificationService.showWarning(this.translate.instant('auth.forgotPassword.error.incompleteData'));
+      this.notificationService.showWarning(
+        this.translate.instant('features.auth.forgotPassword.error.incompleteData')
+      );
     }
   }
 }
