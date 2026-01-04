@@ -23,7 +23,7 @@ export class GuestGuard implements CanActivate {
     // If user is authenticated, redirect to home
     if (this.authService.isAuthenticated()) {
       // Get returnUrl from query params or default to home
-      const returnUrl = route.queryParams['returnUrl'] || '/home';
+      const returnUrl = route.queryParams['returnUrl'] || '/ivap/dashboard';
       this.router.navigate([returnUrl]);
       return false;
     }

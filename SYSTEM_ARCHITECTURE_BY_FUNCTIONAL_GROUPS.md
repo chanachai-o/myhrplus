@@ -31,32 +31,39 @@
 ```
 frontend/src/app/features/
 ├── auth/
-│   └── register/
-│       ├── register.component.ts
-│       ├── register.component.html
-│       └── register.component.scss
-├── portal/
 │   ├── login/
 │   │   ├── login.component.ts
 │   │   ├── login.component.html
 │   │   └── login.component.scss
-│   ├── mfa-setup/
-│   │   ├── mfa-setup.component.ts
-│   │   ├── mfa-setup.component.html
-│   │   └── mfa-setup.component.scss
+│   ├── register/
+│   │   ├── register.component.ts
+│   │   ├── register.component.html
+│   │   └── register.component.scss
 │   ├── forgot-password/
 │   │   ├── forgot-password.component.ts
 │   │   ├── forgot-password.component.html
 │   │   └── forgot-password.component.scss
-│   └── reset-password/
-│       ├── reset-password.component.ts
-│       ├── reset-password.component.html
-│       └── reset-password.component.scss
-└── super-admin/
-    └── rbac/
-        ├── rbac.component.ts
-        ├── rbac.component.html
-        └── rbac.component.scss
+│   └── unauthorized/
+│       ├── unauthorized.component.ts
+│       ├── unauthorized.component.html
+│       └── unauthorized.component.scss
+└── ivap/
+    ├── dashboard/
+    ├── visitors/
+    ├── guests/
+    ├── events/
+    ├── vehicles/
+    ├── parking/
+    ├── devices/
+    ├── access-control/
+    ├── organization/
+    ├── time-attendance/
+    ├── verification/
+    ├── biometric/
+    ├── qr-rfid/
+    ├── notifications/
+    ├── analytics/
+    └── system/
 ```
 
 #### Components:

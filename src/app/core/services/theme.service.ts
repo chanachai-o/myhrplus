@@ -21,7 +21,7 @@ export interface ThemeConfig {
   providedIn: 'root'
 })
 export class ThemeService {
-  private readonly THEME_STORAGE_KEY = 'hr-theme-config';
+  private readonly THEME_STORAGE_KEY = 'ivap-theme-config';
   private readonly DEFAULT_THEME: ThemeConfig = {
     mode: 'light',
     color: 'myhr',

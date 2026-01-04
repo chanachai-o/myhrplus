@@ -965,7 +965,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
 
   navigateToHome(): void {
-    this.router.navigate(['/home']).catch(() => {
+    this.router.navigate(['/ivap/dashboard']).catch(() => {
       this.router.navigate(['/']).catch(() => {});
     });
   }
@@ -994,9 +994,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
         console.log('[Sidebar] Route changed to different module, resetting selections');
         needsModuleChange = true;
       }
-    } else if (this.selectedNavigationItem?.id === 'home') {
-      // Check if current route still belongs to home module
-      if (this.activeRoute.startsWith('/home') || this.activeRoute === '/') {
+    } else if (this.selectedNavigationItem?.id === 'ivap') {
+      // Check if current route still belongs to IVAP module
+      if (this.activeRoute.startsWith('/ivap') || this.activeRoute === '/') {
         // Still in home module
         console.log('[Sidebar] Still in home module, only updating Level 3-4');
         this.updateSelectedItemsFromRoute(this.activeRoute);
@@ -1027,8 +1027,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     for (const navItem of this.navigationItems) {
       if (!navItem.children) continue;
 
-      // Check if route matches Level 1 item directly (for Home)
-      if (navItem.id === 'home' && (this.activeRoute.startsWith('/home') || this.activeRoute === '/')) {
+      // Check if route matches Level 1 item directly (for IVAP Dashboard)
+      if (navItem.id === 'ivap' && (this.activeRoute.startsWith('/ivap') || this.activeRoute === '/')) {
         // Always select if not already selected (or if we just reset)
         if (!this.selectedNavigationItem || this.selectedNavigationItem.id !== navItem.id) {
           this.selectNavigationItem(navItem.id);
@@ -1178,30 +1178,30 @@ export class SidebarComponent implements OnInit, OnDestroy {
    */
   private mapLegacyRoute(route: string): string {
     const routeMap: { [key: string]: string } = {
-      '/portal': '/home',
-      '/portal/self-service': '/ta',
-      '/portal/self-service/time': '/ta',
-      '/portal/self-service/profile': '/home',
-      '/portal/admin/company': '/company',
-      '/portal/admin/employees': '/personal',
-      '/portal/admin/time': '/ta',
-      '/portal/admin/payroll': '/payroll',
-      '/portal/admin/training': '/training',
-      '/portal/admin/welfare': '/welfare',
-      '/portal/admin/recruit': '/recruit',
-      '/portal/admin/appraisal': '/appraisal',
-      '/portal/admin/settings': '/setting',
-      '/company/manage': '/company',
-      '/company/home': '/company',
-      '/personal/home': '/personal',
-      '/ta/home': '/ta',
-      '/payroll/home': '/payroll',
-      '/training/home': '/training',
-      '/welfare/home': '/welfare',
-      '/recruit/home': '/recruit',
-      '/appraisal/home': '/appraisal',
-      '/setting/home': '/setting',
-      '/settings/home': '/setting'
+      '/portal': '/ivap/dashboard',
+      '/portal/self-service': '/ivap/dashboard',
+      '/portal/self-service/time': '/ivap/time-attendance',
+      '/portal/self-service/profile': '/ivap/dashboard',
+      '/portal/admin/company': '/ivap/organization',
+      '/portal/admin/employees': '/ivap/organization',
+      '/portal/admin/time': '/ivap/time-attendance',
+      '/portal/admin/payroll': '/ivap/dashboard',
+      '/portal/admin/training': '/ivap/dashboard',
+      '/portal/admin/welfare': '/ivap/dashboard',
+      '/portal/admin/recruit': '/ivap/dashboard',
+      '/portal/admin/appraisal': '/ivap/dashboard',
+      '/portal/admin/settings': '/ivap/system',
+      '/company/manage': '/ivap/organization',
+      '/company/home': '/ivap/organization',
+      '/personal/home': '/ivap/organization',
+      '/ta/home': '/ivap/time-attendance',
+      '/payroll/home': '/ivap/dashboard',
+      '/training/home': '/ivap/dashboard',
+      '/welfare/home': '/ivap/dashboard',
+      '/recruit/home': '/ivap/dashboard',
+      '/appraisal/home': '/ivap/dashboard',
+      '/setting/home': '/ivap/system',
+      '/settings/home': '/ivap/system'
     };
 
     return routeMap[route] || route;
@@ -1248,12 +1248,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
         console.error('Navigation error:', error);
         // Try alternative routes
         if (route === '/home' || route === '/dashboard' || route === '/portal') {
-          this.router.navigate(['/home']).catch(() => {
+          this.router.navigate(['/ivap/dashboard']).catch(() => {
             this.router.navigate(['/']).catch(() => {});
           });
         } else if (route === '/company/manage') {
-          this.router.navigate(['/company']).catch(() => {
-            this.router.navigate(['/home']).catch(() => {});
+          this.router.navigate(['/ivap/organization']).catch(() => {
+            this.router.navigate(['/ivap/dashboard']).catch(() => {});
           });
         }
       }
@@ -1308,7 +1308,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
    * Check if current route is home route
    */
   isHomeRoute(): boolean {
-    return this.activeRoute === '/home' || this.activeRoute === '/' || this.activeRoute.startsWith('/home');
+    return this.activeRoute === '/ivap/dashboard' || this.activeRoute === '/' || this.activeRoute.startsWith('/ivap/dashboard');
   }
 
   /**
@@ -1318,8 +1318,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // Get Level 2 items from admin navigation item
     const adminItem = this.navigationItems.find(item => item.id === 'admin');
     if (adminItem && adminItem.children && adminItem.children.length > 0) {
-      // Filter out Home module itself and return other modules
-      return adminItem.children.filter(item => item.route !== '/home' && item.route);
+      // Filter out IVAP dashboard and return other modules
+      return adminItem.children.filter(item => item.route !== '/ivap/dashboard' && item.route);
     }
     return [];
   }

@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onProfile(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/ivap/dashboard']);
     this.showUserMenu = false;
   }
 

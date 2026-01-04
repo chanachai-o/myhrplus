@@ -1,69 +1,8 @@
 {
-  "/capi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/wapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/taapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/trapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/emvapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/apsapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/prapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/welapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/reapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/usapi": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/restauthen": {
-    "target": "https://demo.myhr.co.th/hr",
-    "secure": true,
+  "/api": {
+    "target": "http://localhost:8000",
+    "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   }
 }
-

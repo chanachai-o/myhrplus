@@ -21,7 +21,8 @@ import { environment } from '@env/environment';
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  // Zeeme token for specific endpoints
+  // Legacy: Zeeme token for specific endpoints (deprecated - kept for backward compatibility)
+  // TODO: Remove if not needed for IVAP
   private readonly tokenZeeme = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBdXRoIiwiaXNzIjoiQ29tcHV0ZXIgU2NpZW5jZSBDb3Jwb3JhdGlvbiBMaW1pdGVkIiwiZnVsbE5hbWUiOiLguJjguLXguKPguYDguJTguIog4LiE4Li54Lir4LiY4LiZ4LmA4Liq4LiW4Li14Lii4LijIiwibWVtYmVySWQiOiJjN2QwZTBmMC0wMzBlLTExZTctODE3NS1kMWRiNjFiYjU1ZjgifQ.MCvsIoImQ4BPWh1lQeas2mcqqksx45BBhgMZpmx7hA0';
 
   // Cache TTL for HTTP responses (5 minutes)
@@ -113,8 +114,13 @@ export class AuthInterceptor implements HttpInterceptor {
   private transformUrl(url: string): string {
     // Already full URL or asset path
     if (url.startsWith('http') || 
-        url.startsWith('/assets/configAppMyhr/') || 
         url.startsWith('/assets/template')) {
+      return url;
+    }
+    
+    // Legacy: configAppMyhr path (deprecated - kept for backward compatibility)
+    // TODO: Remove if not needed for IVAP
+    if (url.startsWith('/assets/configAppMyhr/')) {
       return url;
     }
 
@@ -129,7 +135,8 @@ export class AuthInterceptor implements HttpInterceptor {
    * @returns Token string or empty string
    */
   private getToken(originalUrl: string, transformedUrl: string): string {
-    // Use Zeeme token for Zeeme API endpoints
+    // Legacy: Use Zeeme token for Zeeme API endpoints (deprecated - kept for backward compatibility)
+    // TODO: Remove if not needed for IVAP
     if (transformedUrl.includes('zeeme.myhr.co.th/ZeemeApi/rest/company-config') ||
         originalUrl.includes('zeeme.myhr.co.th/ZeemeApi/rest/company-config')) {
       return this.tokenZeeme;
