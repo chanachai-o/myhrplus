@@ -22,8 +22,11 @@
 - ✅ **LandingModel** - Migrated
 - ✅ **Image Placeholders** - Migrated
 
-### Phase 2: Auth Components (In Progress 🚧)
+### Phase 2: Auth Components (Completed ✅)
 - ✅ **Forgot Password Component** - Migrated (centered card design, email-only)
+- ✅ **Reset Password Component** - Migrated (centered card design, password match validation)
+- ✅ **MFA Setup Component** - Migrated (centered card design, multi-step setup)
+- ✅ **MultiFactorVerificationService** - Migrated (TOTP secret generation, verification)
 
 ---
 
@@ -46,27 +49,36 @@
   - ใช้ standard components และ language/theme switcher
 - **Translation Keys**: เพิ่ม `emailPlaceholder`, `sendResetLink`, `formAriaLabel`
 
-#### 2.2 Reset Password Component
-- **Source**: `frontend/src/app/features/portal/reset-password/`
-- **Target**: `src/app/features/auth/reset-password/` (ต้องสร้างใหม่)
+#### 2.2 Reset Password Component ✅
+- **Source**: `frontend/src/app/features/portal/reset-password/` (ลบแล้ว)
+- **Target**: `src/app/features/auth/reset-password/` (migrated)
 - **Priority**: 🔴 **High** - ต่อเนื่องจาก forgot password
-- **Dependencies**:
-  - `AuthService` → `IvapAuthService.resetPassword()`
-  - `I18nService` → `TranslateService`
-  - `ThemeService` → ใช้ `ThemeToggleComponent`
-- **Estimated Time**: 2-3 hours
+- **Status**: ✅ **Completed** (2025-01-02)
+- **Changes**:
+  - ใช้ `IvapAuthService.resetPassword()` โดยตรง
+  - ใช้ signals สำหรับ `loading`, `errorMessage`, `successMessage`
+  - ใช้ design แบบ centered card เหมือน login/forgot-password components
+  - ใช้ form-level validator สำหรับ password match validation
+  - รองรับ token จาก URL parameter และ query parameter
+  - ใช้ standard components และ language/theme switcher
+- **Translation Keys**: เพิ่ม keys ครบถ้วน (title, subtitle, newPassword, confirmPassword, resetPassword, errors, etc.)
 
-#### 2.3 MFA Setup Component
-- **Source**: `frontend/src/app/features/portal/mfa-setup/`
-- **Target**: `src/app/features/auth/mfa-setup/` (ต้องสร้างใหม่)
+#### 2.3 MFA Setup Component ✅
+- **Source**: `frontend/src/app/features/portal/mfa-setup/` (ลบแล้ว)
+- **Target**: `src/app/features/auth/mfa-setup/` (migrated)
 - **Priority**: 🟡 **Medium** - สำหรับ multi-factor authentication
-- **Dependencies**:
-  - `AuthService` → `IvapAuthService.verifyMFA()`
-  - `I18nService` → `TranslateService`
-  - `ThemeService` → ใช้ `ThemeToggleComponent`
-- **Estimated Time**: 3-4 hours
+- **Status**: ✅ **Completed** (2025-01-02)
+- **Changes**:
+  - Migrate `MultiFactorVerificationService` จาก frontend/ (TOTP secret generation, verification)
+  - ใช้ `MultiFactorVerificationService.generateTOTPSecret()` และ `verifyTOTPCode()`
+  - ใช้ signals สำหรับ `loading`, `verifying`, `errorMessage`, `step`, `mfaSetup`
+  - ใช้ design แบบ centered card เหมือน login/forgot-password/reset-password components
+  - Multi-step setup (setup → verify → complete)
+  - QR code display, secret key manual entry, backup codes generation
+  - ใช้ standard components และ language/theme switcher
+- **Translation Keys**: เพิ่ม keys ครบถ้วน (title, subtitle, steps, verify, complete, errors, etc.)
 
-**Phase 2 Total**: ~7-10 hours
+**Phase 2 Total**: ✅ **Completed** (~7-10 hours)
 
 ---
 

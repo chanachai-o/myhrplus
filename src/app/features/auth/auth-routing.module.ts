@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { MfaSetupComponent } from './mfa-setup/mfa-setup.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { GuestGuard } from '@core/guards/guest.guard';
 
@@ -25,6 +27,16 @@ const routes: Routes = [
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
+    canActivate: [GuestGuard]
+  },
+  {
+    path: 'reset-password/:token',
+    component: ResetPasswordComponent,
+    canActivate: [GuestGuard]
+  },
+  {
+    path: 'mfa-setup',
+    component: MfaSetupComponent,
     canActivate: [GuestGuard]
   },
   {

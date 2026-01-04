@@ -1,0 +1,308 @@
+<div class="login-container min-h-screen flex items-center justify-center p-4 relative">
+  <!-- Background Graphics -->
+  <div class="login-bg-graphics">
+    <div class="bg-gradient-overlay"></div>
+    <div class="bg-grid-pattern"></div>
+  </div>
+
+  <!-- Header with Back to Landing Button and Language/Theme Controls -->
+  <div class="login-header fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/10 p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button
+          type="button"
+          (click)="skipMFA()"
+          class="back-to-home glass-card px-3 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
+          [attr.aria-label]="'features.auth.mfaSetup.skipForNow' | translate">
+          <app-icon name="arrow-left" size="sm"></app-icon>
+          <span class="hidden md:inline font-medium">{{ 'features.auth.mfaSetup.skipForNow' | translate }}</span>
+        </button>
+        <div class="text-3xl">🎥</div>
+        <h1 class="text-xl font-bold gradient-text">IVAP Platform</h1>
+      </div>
+      <div class="flex items-center space-x-3">
+        <!-- Language Switcher -->
+        <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
+          <app-glass-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            (clicked)="toggleLanguageMenu()"
+            [ariaLabel]="'layout.header.changeLanguage' | translate"
+            [title]="'layout.header.changeLanguage' | translate"
+            [attr.aria-expanded]="showLanguageMenu"
+            [attr.aria-controls]="'language-menu'"
+            customClass="control-button language-button">
+            <img [src]="currentLanguage.flagPath" [alt]="currentLanguage.name" class="control-icon w-5 h-5 rounded-sm object-cover" />
+          </app-glass-button>
+
+          <!-- Language Dropdown -->
+          <app-glass-card
+            *ngIf="showLanguageMenu"
+            variant="strong"
+            padding="p-0"
+            customClass="language-dropdown absolute right-0 top-full mt-2 w-48
+                         rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
+                         z-50 overflow-hidden
+                         backdrop-blur-xl
+                         animate-scale-in
+                         [animation-duration:200ms]
+                         origin-top-right">
+            <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
+              <button
+                *ngFor="let lang of availableLanguages; let i = index"
+                type="button"
+                role="menuitem"
+                (click)="changeLanguage(lang.code)"
+                [class.active]="currentLang === lang.code"
+                [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.name"
+                [attr.aria-current]="currentLang === lang.code ? 'true' : 'false'"
+                [style.--animation-delay]="(i * 50) + 'ms'"
+                class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3
+                       hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
+                       hover:translate-x-1 hover:scale-[1.02]
+                       active:scale-[0.98]
+                       transition-all duration-200 ease-out
+                       animate-fade-in">
+                <img [src]="lang.flagPath" [alt]="lang.name" class="w-5 h-5 rounded-sm object-cover" />
+                <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ lang.name }}</span>
+                <app-icon *ngIf="currentLang === lang.code" name="check" size="sm" color="text-primary theme-myhr:text-primary"></app-icon>
+              </button>
+            </div>
+          </app-glass-card>
+        </div>
+
+        <!-- Theme Toggle -->
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full max-w-2xl relative z-10 mt-20">
+    <!-- Loading State -->
+    <div *ngIf="loading()" class="text-center">
+      <app-skeleton-loader></app-skeleton-loader>
+      <p class="text-gray-600 dark:text-gray-400 mt-4">{{ 'features.auth.mfaSetup.settingUp' | translate }}</p>
+    </div>
+
+    <!-- Setup Step -->
+    <div *ngIf="!loading() && step() === 'setup'">
+      <app-glass-card padding="p-6">
+        <div class="space-y-6">
+          <!-- Header -->
+          <div class="text-center">
+            <div class="text-6xl mb-4">🔐</div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent mb-2">
+              {{ 'features.auth.mfaSetup.title' | translate }}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">
+              {{ 'features.auth.mfaSetup.subtitle' | translate }}
+            </p>
+          </div>
+
+          <!-- Step 1: Install Authenticator App -->
+          <div class="text-center">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              {{ 'features.auth.mfaSetup.step1.title' | translate }}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">
+              {{ 'features.auth.mfaSetup.step1.description' | translate }}
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <app-glass-card padding="p-4" customClass="text-center">
+                <div class="text-2xl mb-2">🔐</div>
+                <h3 class="font-semibold">{{ 'features.auth.mfaSetup.step1.googleAuthenticator' | translate }}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">iOS & Android</p>
+              </app-glass-card>
+              <app-glass-card padding="p-4" customClass="text-center">
+                <div class="text-2xl mb-2">🔑</div>
+                <h3 class="font-semibold">{{ 'features.auth.mfaSetup.step1.microsoftAuthenticator' | translate }}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">iOS & Android</p>
+              </app-glass-card>
+            </div>
+          </div>
+
+          <!-- Step 2: Scan QR Code -->
+          <div class="text-center">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              {{ 'features.auth.mfaSetup.step2.title' | translate }}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+              {{ 'features.auth.mfaSetup.step2.description' | translate }}
+            </p>
+            <div class="flex justify-center mb-4">
+              <app-glass-card padding="p-4" customClass="inline-block">
+                <img 
+                  *ngIf="mfaSetup()?.qrCode && !isBase64Image(mfaSetup()!.qrCode)"
+                  [src]="mfaSetup()!.qrCode" 
+                  alt="MFA QR Code" 
+                  class="w-48 h-48"
+                  loading="lazy" />
+                <img 
+                  *ngIf="mfaSetup()?.qrCode && isBase64Image(mfaSetup()!.qrCode)"
+                  [src]="mfaSetup()!.qrCode" 
+                  alt="MFA QR Code" 
+                  class="w-48 h-48"
+                  loading="lazy" />
+              </app-glass-card>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              {{ 'features.auth.mfaSetup.step2.manualEntry' | translate }}: 
+              <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{{ mfaSetup()?.secretKey }}</code>
+            </p>
+          </div>
+
+          <!-- Step 3: Backup Codes -->
+          <div class="text-center">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              {{ 'features.auth.mfaSetup.step3.title' | translate }}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+              {{ 'features.auth.mfaSetup.step3.description' | translate }}
+            </p>
+            <app-glass-card padding="p-4" customClass="mb-4">
+              <div class="grid grid-cols-2 gap-2 text-sm font-mono">
+                <div *ngFor="let code of mfaSetup()?.backupCodes" class="text-center py-1">
+                  {{ code }}
+                </div>
+              </div>
+            </app-glass-card>
+            <app-glass-button
+              type="button"
+              variant="secondary"
+              (clicked)="downloadBackupCodes()"
+              [ariaLabel]="'features.auth.mfaSetup.step3.downloadCodes' | translate">
+              <app-icon name="download" size="sm"></app-icon>
+              <span>{{ 'features.auth.mfaSetup.step3.downloadCodes' | translate }}</span>
+            </app-glass-button>
+          </div>
+
+          <!-- Error Message -->
+          <app-alert
+            *ngIf="errorMessage()"
+            variant="error"
+            [dismissible]="false"
+            [title]="'features.auth.mfaSetup.error.title' | translate"
+            [message]="errorMessage()">
+          </app-alert>
+
+          <!-- Actions -->
+          <div class="flex space-x-4">
+            <app-glass-button
+              type="button"
+              variant="primary"
+              (clicked)="step.set('verify')"
+              [fullWidth]="true"
+              [ariaLabel]="'features.auth.mfaSetup.setupComplete' | translate">
+              {{ 'features.auth.mfaSetup.setupComplete' | translate }}
+            </app-glass-button>
+            <app-glass-button
+              type="button"
+              variant="secondary"
+              (clicked)="skipMFA()"
+              [ariaLabel]="'features.auth.mfaSetup.skipForNow' | translate">
+              {{ 'features.auth.mfaSetup.skipForNow' | translate }}
+            </app-glass-button>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Verification Step -->
+    <div *ngIf="step() === 'verify'">
+      <app-glass-card padding="p-6">
+        <div class="space-y-6">
+          <div class="text-center">
+            <div class="text-6xl mb-4">🔍</div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              {{ 'features.auth.mfaSetup.verify.title' | translate }}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">
+              {{ 'features.auth.mfaSetup.verify.description' | translate }}
+            </p>
+          </div>
+
+          <form [formGroup]="verificationForm" (ngSubmit)="verifyCode()" class="space-y-6">
+            <div>
+              <app-glass-input
+                [label]="'features.auth.mfaSetup.verify.codeLabel' | translate"
+                [placeholder]="'features.auth.mfaSetup.verify.codePlaceholder' | translate"
+                type="text"
+                formControlName="code"
+                maxlength="6"
+                [required]="true"
+                [useFormValidationMessages]="true"
+                customClass="text-center text-2xl tracking-widest"
+                [ariaLabel]="'features.auth.mfaSetup.verify.codeLabel' | translate">
+                <app-form-validation-messages [control]="verificationForm.get('code')"></app-form-validation-messages>
+              </app-glass-input>
+            </div>
+
+            <!-- Error Message -->
+            <app-alert
+              *ngIf="errorMessage()"
+              variant="error"
+              [dismissible]="false"
+              [title]="'features.auth.mfaSetup.error.title' | translate"
+              [message]="errorMessage()">
+            </app-alert>
+
+            <div class="flex space-x-4">
+              <app-glass-button
+                type="submit"
+                variant="primary"
+                [disabled]="verificationForm.invalid || verifying()"
+                [loading]="verifying()"
+                [fullWidth]="true"
+                [ariaLabel]="'features.auth.mfaSetup.verify.verifyButton' | translate"
+                [attr.aria-busy]="verifying()">
+                {{ verifying() ? ('features.auth.mfaSetup.verify.verifying' | translate) : ('features.auth.mfaSetup.verify.verifyButton' | translate) }}
+              </app-glass-button>
+              <app-glass-button
+                type="button"
+                variant="secondary"
+                (clicked)="step.set('setup')"
+                [disabled]="verifying()"
+                [ariaLabel]="'features.auth.mfaSetup.verify.back' | translate">
+                <app-icon name="arrow_back" size="sm"></app-icon>
+                <span>{{ 'features.auth.mfaSetup.verify.back' | translate }}</span>
+              </app-glass-button>
+            </div>
+          </form>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Complete Step -->
+    <div *ngIf="step() === 'complete'">
+      <app-glass-card padding="p-6">
+        <div class="text-center space-y-6">
+          <div class="text-6xl mb-4">🎉</div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            {{ 'features.auth.mfaSetup.complete.title' | translate }}
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            {{ 'features.auth.mfaSetup.complete.description' | translate }}
+          </p>
+          <div class="flex justify-center">
+            <app-glass-button
+              type="button"
+              variant="primary"
+              (clicked)="router.navigate([ROUTES.IVAP.DASHBOARD])"
+              [ariaLabel]="'features.auth.mfaSetup.complete.goToDashboard' | translate">
+              {{ 'features.auth.mfaSetup.complete.goToDashboard' | translate }}
+            </app-glass-button>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Security Notice -->
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        🔒 {{ 'features.auth.mfaSetup.securityNotice' | translate }}
+      </p>
+    </div>
+  </div>
+</div>
+

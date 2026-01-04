@@ -1378,7 +1378,51 @@ export class ComponentNameDemoComponent {
   - Better UX with centered card design
   - All functionality preserved from previous login component
 
-**Last Updated**: 2025-01-02 (Register & Login Components Migration Complete)
+### Phase 2: Auth Components Migration Complete (2025-01-02)
+- ✅ **Forgot Password Component Migration**: Migrated forgot-password component from `frontend/src/app/features/portal/forgot-password/`
+  - **ForgotPasswordComponent**: Migrated และ adapted (standalone component)
+  - **Design**: Centered card design เหมือน login component (consistent design)
+  - **API Integration**: ใช้ `IvapAuthService.forgotPassword()` โดยตรง (ไม่ใช้ legacy `AuthService.setMailForgetPassword()`)
+  - **Form Fields**: Email field only (consistent with `ForgotPasswordRequest` interface)
+  - **Removed**: Database selection, username field (ไม่จำเป็นสำหรับ IVAP API)
+  - **Security**: Email enumeration prevention (แสดง success message เสมอเมื่อส่ง request)
+  - **Theme & Language**: Uses `ThemeToggleComponent` and standard language switcher
+  - **Components**: Uses standard components (GlassInput, GlassButton, GlassCard, Alert, Icon, ThemeToggle)
+- ✅ **Reset Password Component Migration**: Migrated reset-password component from `frontend/src/app/features/portal/reset-password/`
+  - **ResetPasswordComponent**: Migrated และ adapted (standalone component)
+  - **Design**: Centered card design เหมือน login/forgot-password components (consistent design)
+  - **API Integration**: ใช้ `IvapAuthService.resetPassword()` โดยตรง
+  - **Form Fields**: Password และ confirm password fields (consistent with `ResetPasswordRequest` interface)
+  - **Validation**: Form-level password match validation
+  - **Token Handling**: รองรับทั้ง URL parameter และ query parameter
+  - **Theme & Language**: Uses `ThemeToggleComponent` and standard language switcher
+  - **Components**: Uses standard components (GlassInput, GlassButton, GlassCard, Alert, Icon, ThemeToggle)
+- ✅ **MFA Setup Component Migration**: Migrated mfa-setup component และ MultiFactorVerificationService from `frontend/src/app/features/portal/mfa-setup/`
+  - **MfaSetupComponent**: Migrated และ adapted (standalone component)
+  - **MultiFactorVerificationService**: Migrated และ adapted (TOTP secret generation, verification)
+  - **Design**: Centered card design เหมือน login/forgot-password/reset-password components (consistent design)
+  - **Multi-step Flow**: Setup → Verify → Complete
+  - **Features**: QR code display, secret key manual entry, backup codes generation, download backup codes
+  - **API Integration**: ใช้ `MultiFactorVerificationService.generateTOTPSecret()` และ `verifyTOTPCode()`
+  - **Theme & Language**: Uses `ThemeToggleComponent` and standard language switcher
+  - **Components**: Uses standard components (GlassInput, GlassButton, GlassCard, Alert, Icon, ThemeToggle, SkeletonLoader)
+- ✅ **Files Cleanup**: Deleted migrated files from `frontend/`
+  - `frontend/src/app/features/portal/forgot-password/` (3 files)
+  - `frontend/src/app/features/portal/reset-password/` (3 files)
+  - `frontend/src/app/features/portal/mfa-setup/` (3 files)
+- ✅ **Translation Keys**: Added complete translation keys for all auth components
+- ✅ **Documentation**:
+  - `FORGOT_PASSWORD_MIGRATION_COMPLETE.md` created
+  - `RESET_PASSWORD_MIGRATION_COMPLETE.md` created
+  - `MFA_SETUP_MIGRATION_COMPLETE.md` created
+- ✅ **Impact**:
+  - Consistent design across all auth pages (landing, login, register, forgot-password, reset-password, mfa-setup)
+  - Better security (email enumeration prevention, password match validation, MFA support)
+  - Simplified forms (email-only for forgot-password, no database selection)
+  - Complete auth flow (login → register → forgot-password → reset-password → mfa-setup)
+  - All functionality preserved from previous components
+
+**Last Updated**: 2025-01-02 (Phase 2: Auth Components Migration Complete)
 **Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + Landing Page Migration Complete + Register & Login Components Migration Complete
 **Angular Version**: 17.0.0+
 **TypeScript Version**: 5.2.2+

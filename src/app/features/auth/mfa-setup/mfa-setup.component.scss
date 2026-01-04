@@ -1,0 +1,213 @@
+// MFA Setup Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (theme variants, gradients, animations, complex selectors)
+
+.login-container {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  
+  // Background - Support theme
+  html.dark &,
+  body.dark & {
+    background-color: #000000;
+    background: linear-gradient(180deg, 
+      #000000 0%, 
+      #000000 15%, 
+      #0a0a0f 35%, 
+      #0f172a 55%, 
+      #1e293b 75%, 
+      #1e293b 100%
+    );
+  }
+  
+  html.light &,
+  body.light & {
+    background-color: #f5f1e8;
+    background: linear-gradient(180deg, 
+      #faf8f3 0%, 
+      #f5f1e8 50%, 
+      #ede8d8 100%
+    );
+  }
+}
+
+// Background Graphics
+.login-bg-graphics {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(var(--color-info-rgb-value), 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(var(--color-secondary-rgb-value), 0.04) 0%, transparent 40%);
+  opacity: 0.6;
+}
+
+.bg-grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--primary-rgb), 0.02) 1px,
+      rgba(var(--primary-rgb), 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(var(--color-info-rgb-value), 0.02) 1px,
+      rgba(var(--color-info-rgb-value), 0.02) 2px
+    );
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+// Header
+.login-header {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  
+  html.dark &,
+  body.dark & {
+    background: rgba(26, 26, 46, 0.7);
+    border-bottom-color: rgba(var(--primary-rgb), 0.3);
+  }
+  
+  html.light &,
+  body.light & {
+    background: rgba(255, 255, 255, 0.5);
+    border-bottom-color: rgba(var(--color-warning-rgb-value), 0.2);
+  }
+}
+
+// Gradient Text - using CSS variables
+.gradient-text {
+  background: linear-gradient(135deg, 
+    rgb(var(--primary-rgb)) 0%, 
+    rgb(var(--color-info-rgb-value)) 50%, 
+    rgb(var(--color-secondary-rgb-value)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Back to Home Button
+.back-to-home {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-normal, 300ms);
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+  }
+  
+  html.dark &,
+  body.dark & {
+    background: rgba(26, 26, 46, 0.6);
+    color: #ffffff;
+    border-color: rgba(var(--primary-rgb), 0.3);
+  }
+  
+  html.light &,
+  body.light & {
+    background: rgba(255, 255, 255, 0.5);
+    color: rgb(15 23 42);
+  }
+}
+
+// Language & Theme Controls
+.login-controls {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+.login-controls-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.control-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: var(--glass-bg-strong, rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--glass-border, rgba(0, 0, 0, 0.1));
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #374151);
+  box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.05));
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: var(--glass-bg-strong, rgba(255, 255, 255, 1));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md, 0 4px 8px rgba(0, 0, 0, 0.1));
+    border-color: rgba(var(--primary-rgb), 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.05));
+  }
+}
+
+.dark .control-button {
+  background: var(--glass-bg-strong, rgba(31, 41, 55, 0.95));
+  border-color: var(--glass-border, rgba(255, 255, 255, 0.1));
+  color: var(--text-primary, #e5e7eb);
+  box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.3));
+  
+  &:hover {
+    background: var(--glass-bg-strong, rgba(31, 41, 55, 1));
+    border-color: rgba(var(--primary-rgb), 0.3);
+    box-shadow: var(--shadow-md, 0 4px 8px rgba(0, 0, 0, 0.4));
+  }
+}
+
+.control-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.language-button {
+  min-width: 70px;
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+

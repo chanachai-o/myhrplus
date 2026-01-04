@@ -27,6 +27,8 @@ export { FieldMaskingService } from './field-masking.service';
 export { ApiService } from './api.service';
 export type { ApiResponse } from './api.service';
 export { LandingService } from './landing.service';
+export { MultiFactorVerificationService } from './multi-factor-verification.service';
+export type { VerificationMethod, VerificationSession, BiometricData, HardwareToken, PushNotification } from './multi-factor-verification.service';
 
 // IVAP Services
 export * from './ivap';
