@@ -41,5 +41,19 @@ export class IvapTimestampService extends BaseApiService {
   create(data: Partial<EmployeeTimestamp>): Observable<EmployeeTimestamp> {
     return this.post<EmployeeTimestamp>('', data);
   }
+
+  /**
+   * Approve timestamp
+   */
+  approve(timestampId: string): Observable<EmployeeTimestamp> {
+    return this.post<EmployeeTimestamp>(`/${timestampId}/approve`, {});
+  }
+
+  /**
+   * Reject timestamp
+   */
+  reject(timestampId: string, reason?: string): Observable<EmployeeTimestamp> {
+    return this.post<EmployeeTimestamp>(`/${timestampId}/reject`, { reason });
+  }
 }
 

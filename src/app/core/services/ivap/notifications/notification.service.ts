@@ -48,5 +48,26 @@ export class IvapNotificationService extends BaseApiService {
   markAllAsRead(): Observable<any> {
     return this.post('/read-all', {});
   }
+
+  /**
+   * Create notification
+   */
+  create(data: Partial<Notification>): Observable<Notification> {
+    return this.post<Notification>('', data);
+  }
+
+  /**
+   * Update notification
+   */
+  update(notificationId: string, data: Partial<Notification>): Observable<Notification> {
+    return this.put<Notification>(`/${notificationId}`, data);
+  }
+
+  /**
+   * Delete notification
+   */
+  override delete(notificationId: string): Observable<void> {
+    return super.delete(`/${notificationId}`);
+  }
 }
 

@@ -62,5 +62,19 @@ export class IvapGuestService extends BaseApiService {
   checkOut(guestId: string): Observable<Guest> {
     return this.post<Guest>(`/${guestId}/check-out`, {});
   }
+
+  /**
+   * Register guest for event
+   */
+  register(data: Partial<Guest>): Observable<Guest> {
+    return this.post<Guest>('/register', data);
+  }
+
+  /**
+   * Get guest registrations
+   */
+  getRegistrations(guestId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/${guestId}/registrations`, params);
+  }
 }
 

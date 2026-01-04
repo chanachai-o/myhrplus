@@ -55,5 +55,40 @@ export class IvapEventService extends BaseApiService {
   override delete(eventId: string): Observable<void> {
     return super.delete(`/${eventId}`);
   }
+
+  /**
+   * Register for event
+   */
+  register(eventId: string, data: any): Observable<any> {
+    return this.post(`/${eventId}/register`, data);
+  }
+
+  /**
+   * Get event registrations
+   */
+  getRegistrations(eventId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/${eventId}/registrations`, params);
+  }
+
+  /**
+   * Get event participants
+   */
+  getParticipants(eventId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/${eventId}/participants`, params);
+  }
+
+  /**
+   * Publish event
+   */
+  publish(eventId: string): Observable<Event> {
+    return this.post<Event>(`/${eventId}/publish`, {});
+  }
+
+  /**
+   * Cancel event
+   */
+  cancel(eventId: string, reason?: string): Observable<Event> {
+    return this.post<Event>(`/${eventId}/cancel`, { reason });
+  }
 }
 

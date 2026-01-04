@@ -90,5 +90,33 @@ export class IvapAuthService extends BaseApiService {
   getCurrentToken(): string | null {
     return this.getToken();
   }
+
+  /**
+   * Verify MFA code
+   */
+  verifyMFA(code: string): Observable<any> {
+    return this.post('/mfa/verify', { code });
+  }
+
+  /**
+   * Refresh access token
+   */
+  refreshToken(): Observable<Token> {
+    return this.post<Token>('/refresh', {});
+  }
+
+  /**
+   * Change password
+   */
+  changePassword(data: { current_password: string; new_password: string }): Observable<any> {
+    return this.post('/change-password', data);
+  }
+
+  /**
+   * Verify email
+   */
+  verifyEmail(token: string): Observable<any> {
+    return this.post('/verify-email', { token });
+  }
 }
 

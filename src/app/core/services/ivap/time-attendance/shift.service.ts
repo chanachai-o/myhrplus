@@ -55,5 +55,26 @@ export class IvapShiftService extends BaseApiService {
   override delete(shiftId: string): Observable<void> {
     return super.delete(`/${shiftId}`);
   }
+
+  /**
+   * Assign shift to employee
+   */
+  assign(shiftId: string, data: any): Observable<any> {
+    return this.post(`/${shiftId}/assign`, data);
+  }
+
+  /**
+   * Unassign shift from employee
+   */
+  unassign(shiftId: string, data: any): Observable<any> {
+    return this.post(`/${shiftId}/unassign`, data);
+  }
+
+  /**
+   * Get shift assignments
+   */
+  getAssignments(shiftId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/${shiftId}/assignments`, params);
+  }
 }
 

@@ -55,5 +55,26 @@ export class IvapVehicleService extends BaseApiService {
   override delete(vehicleId: string): Observable<void> {
     return super.delete(`/${vehicleId}`);
   }
+
+  /**
+   * Check in vehicle
+   */
+  checkIn(vehicleId: string): Observable<Vehicle> {
+    return this.post<Vehicle>(`/${vehicleId}/check-in`, {});
+  }
+
+  /**
+   * Check out vehicle
+   */
+  checkOut(vehicleId: string): Observable<Vehicle> {
+    return this.post<Vehicle>(`/${vehicleId}/check-out`, {});
+  }
+
+  /**
+   * Get vehicle access logs
+   */
+  getAccessLogs(vehicleId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/${vehicleId}/access-logs`, params);
+  }
 }
 

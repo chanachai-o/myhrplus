@@ -234,6 +234,10 @@ ivap-frontend/
 - **[doc-backend/API_DOCUMENTATION.md](./doc-backend/API_DOCUMENTATION.md)** - IVAP API Documentation
 - **[doc-backend/ANGULAR_INTEGRATION_GUIDE.md](./doc-backend/ANGULAR_INTEGRATION_GUIDE.md)** - Angular Integration Guide
 
+### AI Assistant & Developer Reference
+- **[AI_ASSISTANT_REFERENCE.md](./AI_ASSISTANT_REFERENCE.md)** ⭐ - AI Assistant Reference (Quick guide for AI coding assistants)
+- **[OPENAI_JSON_SERVICES_DOCUMENTATION.md](./OPENAI_JSON_SERVICES_DOCUMENTATION.md)** - Complete Services & Models Documentation
+
 ### UX/UI Improvement Plans
 - **[UX_UI_COMPONENTS_IMPROVEMENT_PLAN.md](./UX_UI_COMPONENTS_IMPROVEMENT_PLAN.md)** ⭐ - แผนการปรับปรุง UX/UI Components
 - **[UX_UI_COMPONENTS_CHECKLIST.md](./UX_UI_COMPONENTS_CHECKLIST.md)** - Checklist สำหรับการปรับปรุง

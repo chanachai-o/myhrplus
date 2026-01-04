@@ -7,7 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseApiService } from '../../base-api.service';
 import {
-  FaceEnrollment
+  FaceEnrollment,
+  PaginatedResponse,
+  QueryParams
 } from '@core/models';
 
 @Injectable({
@@ -16,7 +18,21 @@ import {
 export class IvapFaceService extends BaseApiService {
   constructor(http: HttpClient) {
     super(http);
-    this.endpoint = '/verification/face';
+    this.endpoint = '/face';
+  }
+
+  /**
+   * Get all face enrollments (paginated)
+   */
+  getAll(params?: QueryParams): Observable<PaginatedResponse<FaceEnrollment>> {
+    return this.getPaginated<FaceEnrollment>('', params);
+  }
+
+  /**
+   * Get face enrollment by ID
+   */
+  getById(faceId: string): Observable<FaceEnrollment> {
+    return this.get<FaceEnrollment>(`/${faceId}`);
   }
 
   /**
@@ -24,6 +40,20 @@ export class IvapFaceService extends BaseApiService {
    */
   enroll(formData: FormData): Observable<FaceEnrollment> {
     return this.postFormData<FaceEnrollment>('/enroll', formData);
+  }
+
+  /**
+   * Verify face (upload image for verification)
+   */
+  verify(formData: FormData): Observable<any> {
+    return this.postFormData<any>('/verify', formData);
+  }
+
+  /**
+   * Delete face enrollment
+   */
+  override delete(faceId: string): Observable<void> {
+    return super.delete(`/${faceId}`);
   }
 
   /**

@@ -55,5 +55,33 @@ export class IvapParkingService extends BaseApiService {
   exit(parkingId: string): Observable<ParkingRecord> {
     return this.post<ParkingRecord>(`/${parkingId}/exit`, {});
   }
+
+  /**
+   * Parking entry (LPR - License Plate Recognition)
+   */
+  entry(data: any): Observable<ParkingRecord> {
+    return this.post<ParkingRecord>('/entry', data);
+  }
+
+  /**
+   * Parking exit (LPR)
+   */
+  exitLpr(data: any): Observable<ParkingRecord> {
+    return this.post<ParkingRecord>('/exit', data);
+  }
+
+  /**
+   * Get parking spaces
+   */
+  getSpaces(params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated('/spaces', params);
+  }
+
+  /**
+   * Get parking statistics
+   */
+  getStatistics(params?: QueryParams): Observable<any> {
+    return this.get('/statistics', params);
+  }
 }
 

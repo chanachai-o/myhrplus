@@ -62,5 +62,26 @@ export class IvapVisitorService extends BaseApiService {
   checkOut(visitorId: string): Observable<Visitor> {
     return this.post<Visitor>(`/${visitorId}/check-out`, {});
   }
+
+  /**
+   * Get visitor visits
+   */
+  getVisits(visitorId: string, params?: QueryParams): Observable<PaginatedResponse<any>> {
+    return this.getPaginated(`/${visitorId}/visits`, params);
+  }
+
+  /**
+   * Create visitor invitation
+   */
+  createInvitation(visitorId: string, data: any): Observable<any> {
+    return this.post(`/${visitorId}/invitations`, data);
+  }
+
+  /**
+   * Get visitor badges
+   */
+  getBadges(visitorId: string): Observable<any> {
+    return this.get(`/${visitorId}/badges`);
+  }
 }
 

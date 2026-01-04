@@ -18,7 +18,7 @@ import {
 export class IvapVerificationService extends BaseApiService {
   constructor(http: HttpClient) {
     super(http);
-    this.endpoint = '/verification';
+    this.endpoint = '/verifications';
   }
 
   /**
