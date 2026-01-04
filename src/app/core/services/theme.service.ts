@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { StorageService } from './storage.service';
 
 export type ThemeMode = 'light' | 'dark' | 'auto';
-export type ThemeColor = 'blue' | 'indigo' | 'purple' | 'green' | 'orange' | 'red' | 'teal' | 'pink' | 'myhr';
+export type ThemeColor = 'blue' | 'indigo' | 'purple' | 'green' | 'orange' | 'red' | 'teal' | 'pink' | 'ivap';
 export type SidebarStyle = 'white' | 'dark' | 'primary' | 'primary-gradient';
 export type HeaderStyle = 'white' | 'dark' | 'primary' | 'primary-gradient';
 export type MainLayoutStyle = 'white' | 'dark' | 'primary' | 'primary-gradient';
@@ -24,8 +24,8 @@ export class ThemeService {
   private readonly THEME_STORAGE_KEY = 'ivap-theme-config';
   private readonly DEFAULT_THEME: ThemeConfig = {
     mode: 'light',
-    color: 'myhr',
-    primaryColor: '7, 57, 156', // MyHR Brand Color #07399C
+    color: 'ivap',
+    primaryColor: '7, 57, 156', // IVAP Brand Color (based on MyHR Blue)
     sidebarStyle: 'white', // Default: primary color
     headerStyle: 'primary', // Default: primary color
     mainLayoutStyle: 'primary' // Default: primary color
@@ -45,7 +45,7 @@ export class ThemeService {
    * Validate theme color
    */
   private isValidThemeColor(color: string): color is ThemeColor {
-    const validColors: ThemeColor[] = ['blue', 'indigo', 'purple', 'green', 'orange', 'red', 'teal', 'pink', 'myhr'];
+    const validColors: ThemeColor[] = ['blue', 'indigo', 'purple', 'green', 'orange', 'red', 'teal', 'pink', 'ivap'];
     return validColors.includes(color as ThemeColor);
   }
 
@@ -107,8 +107,8 @@ export class ThemeService {
    */
   setColor(color: ThemeColor): void {
     const colorMap: Record<ThemeColor, string> = {
-      // MyHR - สีน้ำเงิน MyHR Brand Color (default)
-      myhr: '7, 57, 156', // #07399C
+      // IVAP - Intelligent Visitor Access Platform (Primary)
+      ivap: '7, 57, 156', // #07399C
       // Blue - สีน้ำเงินสดใส
       blue: '59, 130, 246', // #3b82f6
       // Indigo - สีครามเข้ม
@@ -209,19 +209,19 @@ export class ThemeService {
     body.removeAttribute('data-theme');
 
     // Remove all theme color classes
-    const themeColors: ThemeColor[] = ['blue', 'indigo', 'purple', 'green', 'orange', 'red', 'teal', 'pink', 'myhr'];
+    const themeColors: ThemeColor[] = ['blue', 'indigo', 'purple', 'green', 'orange', 'red', 'teal', 'pink', 'ivap'];
     themeColors.forEach(color => {
       body.classList.remove(`theme-${color}`);
     });
 
     // Apply theme using data-theme attribute (preferred method)
     // Also keep class-based for backward compatibility
-    if (theme.color === 'myhr') {
-      html.setAttribute('data-theme', 'myhr');
-      body.setAttribute('data-theme', 'myhr');
-      body.classList.add('theme-myhr');
+    if (theme.color === 'ivap') {
+      html.setAttribute('data-theme', 'ivap');
+      body.setAttribute('data-theme', 'ivap');
+      body.classList.add('theme-ivap');
     } else {
-      // For non-myhr themes, use mode-based data-theme
+      // For other themes, use mode-based data-theme
       html.setAttribute('data-theme', isDark ? 'dark' : 'light');
       body.setAttribute('data-theme', isDark ? 'dark' : 'light');
       body.classList.add(`theme-${theme.color}`);
@@ -424,8 +424,8 @@ export class ThemeService {
       }
     } else if (mainLayoutStyle === 'primary' || mainLayoutStyle === 'primary-gradient') {
       // Primary color background - use theme color gradient
-      if (color === 'myhr') {
-        // MyHR theme uses specific gradients from styles.scss
+      if (color === 'ivap') {
+        // IVAP theme uses similar gradients
         if (isDark) {
           gradient = 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #2563eb 70%, #07399C 100%)';
         } else {
@@ -451,7 +451,8 @@ export class ThemeService {
       }
     } else {
       // Fallback to primary color gradient
-      if (color === 'myhr') {
+      if (color === 'ivap') {
+        // IVAP theme uses similar gradients
         if (isDark) {
           gradient = 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #2563eb 70%, #07399C 100%)';
         } else {

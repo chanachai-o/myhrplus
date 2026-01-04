@@ -36,7 +36,8 @@
             ],
             "fileReplacements": [],
             "preserveSymlinks": false,
-            "progress": true
+            "progress": true,
+            "poll": 3000
           },
           "configurations": {
             "production": {
@@ -74,7 +75,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "poll": 3000
             }
           },
           "defaultConfiguration": "production"
@@ -83,14 +85,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "host": "localhost",
-            "port": 4200
+            "port": 4200,
+            "poll": 3000
           },
           "configurations": {
             "production": {
               "buildTarget": "ivap-frontend:build:production"
             },
             "development": {
-              "buildTarget": "ivap-frontend:build:development"
+              "buildTarget": "ivap-frontend:build:development",
+              "poll": 3000
             }
           },
           "defaultConfiguration": "development"

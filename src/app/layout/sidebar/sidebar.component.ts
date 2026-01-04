@@ -203,13 +203,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     // Get Level 2 items from selected Level 1 item
     if (this.selectedNavigationItem.children && this.selectedNavigationItem.children.length > 0) {
-    this.level2Items = [...this.selectedNavigationItem.children];
-    console.log('[Sidebar] Loaded Level 2 items for', this.selectedNavigationItem.id + ':', this.level2Items.map(item => ({
-      label: item.label,
-      icon: item.icon,
-      route: item.route,
-      childrenCount: item.children?.length || 0
-    })));
+      this.level2Items = [...this.selectedNavigationItem.children];
+      console.log('[Sidebar] Loaded Level 2 items for', this.selectedNavigationItem.id + ':', this.level2Items.map(item => ({
+        label: item.label,
+        icon: item.icon,
+        route: item.route,
+        childrenCount: item.children?.length || 0
+      })));
     } else {
       this.level2Items = [];
       console.log('[Sidebar] No Level 2 items available for:', this.selectedNavigationItem.id);
@@ -438,11 +438,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
       const originalLabelMatch = originalLabel.includes(query);
       const translatedLabelMatch = translatedLabel3.includes(query) ||
-                                   translatedLabel4.includes(query) ||
-                                   translatedLabel5.includes(query) ||
-                                   translatedLabelNoLevel.includes(query) ||
-                                   directTranslation.includes(query) ||
-                                   directTranslationWithNav.includes(query);
+        translatedLabel4.includes(query) ||
+        translatedLabel5.includes(query) ||
+        translatedLabelNoLevel.includes(query) ||
+        directTranslation.includes(query) ||
+        directTranslationWithNav.includes(query);
       const routeMatch = routePath.includes(query);
 
       // Recursively filter children
@@ -820,12 +820,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
       console.log('[Sidebar] No Admin match found for route:', route);
     }
 
-      // For Home: Search in Level 2 items
+    // For Home: Search in Level 2 items
     if (this.selectedNavigationItem?.id === 'home' && this.selectedNavigationItem.children) {
       for (const level2Item of this.selectedNavigationItem.children) {
-          // Map portal routes to actual routes
-          const mappedRoute = this.mapPortalRoute(level2Item.route || '');
-          if (mappedRoute && route.startsWith(mappedRoute)) {
+        // Map portal routes to actual routes
+        const mappedRoute = this.mapPortalRoute(level2Item.route || '');
+        if (mappedRoute && route.startsWith(mappedRoute)) {
           console.log('[Sidebar] Found Home Level 2 match:', level2Item.label);
           this.selectedLevel3Item = null;
           this.selectedLevel4Item = null;
@@ -881,7 +881,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private navigateToModuleHome(moduleId: string): void {
     const homeRoute = this.getModuleHomeRoute(moduleId);
     if (homeRoute) {
-      this.router.navigate([homeRoute]).catch(() => {});
+      this.router.navigate([homeRoute]).catch(() => { });
     }
   }
 
@@ -966,7 +966,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   navigateToHome(): void {
     this.router.navigate(['/ivap/dashboard']).catch(() => {
-      this.router.navigate(['/']).catch(() => {});
+      this.router.navigate(['/']).catch(() => { });
     });
   }
 
@@ -1234,12 +1234,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
           // Try redirecting to home if route doesn't exist
           if (route === '/home' || route === '/portal') {
             this.router.navigate(['/home']).catch(() => {
-              this.router.navigate(['/']).catch(() => {});
+              this.router.navigate(['/']).catch(() => { });
             });
           } else if (route === '/company/manage') {
             // Redirect to company
             this.router.navigate(['/company']).catch(() => {
-              this.router.navigate(['/home']).catch(() => {});
+              this.router.navigate(['/home']).catch(() => { });
             });
           }
         }
@@ -1249,11 +1249,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
         // Try alternative routes
         if (route === '/home' || route === '/dashboard' || route === '/portal') {
           this.router.navigate(['/ivap/dashboard']).catch(() => {
-            this.router.navigate(['/']).catch(() => {});
+            this.router.navigate(['/']).catch(() => { });
           });
         } else if (route === '/company/manage') {
           this.router.navigate(['/ivap/organization']).catch(() => {
-            this.router.navigate(['/ivap/dashboard']).catch(() => {});
+            this.router.navigate(['/ivap/dashboard']).catch(() => { });
           });
         }
       }
@@ -1275,10 +1275,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
    * Get logo path based on current theme
    */
   getLogoPath(): string {
-    if (!this.isDarkMode) {
-      return 'assets/images/logo/logo-myhr-dark.png';
-    }
-    return 'assets/images/logo/logo-myhr-light.png';
+    // Using ivap.jpg for both modes as requested
+    return 'assets/images/logo/ivap.jpg';
   }
 
   /**

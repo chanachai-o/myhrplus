@@ -286,10 +286,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   getLogoPath(): string {
     // Check if dark mode is active
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    if (isDarkMode) {
-      return 'assets/images/logo/logo-myhr-dark.png';
-    }
-    return 'assets/images/logo/logo-myhr-light.png';
+    // Using ivap.jpg for both modes as requested
+    return 'assets/images/logo/ivap.jpg';
   }
 }

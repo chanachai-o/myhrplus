@@ -40,37 +40,7 @@
   @apply dark:bg-primary/20 dark:text-primary;
 }
 
-/* Myhr Theme */
-/* Note: Simple styles moved to HTML using Tailwind theme-myhr: variant */
-/* This section kept for complex styles that cannot be handled by Tailwind */
-
-[data-theme='myhr'],
-body.theme-myhr {
-  /* Complex styles only - simple styles use Tailwind variant in HTML */
-  .active {
-    /* Gradient text effect - requires CSS */
-    background: linear-gradient(135deg,
-      rgba(var(--primary-rgb), 0.2),
-      rgba(var(--primary-rgb), 0.2)
-    ) !important;
-    color: rgb(var(--primary-rgb));
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-
-  .w-10 {
-    border-color: rgba(var(--primary-rgb), 0.3);
-
-    &:hover {
-      filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.6));
-    }
-  }
-
-  .border-indigo-500 {
-    border-color: var(--primary-color);
-    filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.6));
-  }
-}
+/* Note: Removed MyHR theme styles */
 
 /* Theme Color Button */
 .theme-color-btn {

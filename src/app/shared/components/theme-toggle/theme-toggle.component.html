@@ -8,7 +8,7 @@
     [attr.aria-haspopup]="true"
     role="button"
     tabindex="0"
-    class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200 flex items-center gap-2 theme-myhr:glass-myhr-weak theme-myhr:hover:drop-shadow-[0_0_4px_rgba(var(--primary-rgb),0.4)]"
+    class="p-2 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/30 rounded-lg transition-all duration-200 flex items-center gap-2"
   >
     <app-icon
       name="palette"
@@ -23,7 +23,7 @@
     *ngIf="showThemeMenu && !showColorPicker"
     role="menu"
     [attr.aria-label]="'เมนูเลือกธีมและสี'"
-    class="theme-menu absolute right-0 mt-2 w-72 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[85vh] overflow-y-auto animate-fade-in theme-myhr:glass-myhr theme-myhr:shadow-myhr theme-myhr:border-primary/30"
+    class="theme-menu absolute right-0 mt-2 w-72 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[85vh] overflow-y-auto animate-fade-in"
   >
     <!-- Theme Mode Section -->
     <div class="p-3 border-b border-gray-200 dark:border-gray-700">
@@ -38,7 +38,7 @@
           [attr.aria-checked]="currentMode === 'light'"
           (click)="setMode('light')"
           [class.active]="currentMode === 'light'"
-          class="theme-mode-btn relative px-3 py-2 text-xs text-slate-700 dark:text-slate-200 rounded-lg flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 border-2 border-transparent [&.active]:border-primary [&.active]:ring-2 [&.active]:ring-primary/50 [&.active]:bg-primary/10 [&.active]:shadow-primary theme-myhr:[&.active]:glass-myhr theme-myhr:[&.active]:bg-gradient-to-br theme-myhr:[&.active]:from-primary/20 theme-myhr:[&.active]:to-primary/20 theme-myhr:[&.active]:text-primary"
+          class="theme-mode-btn relative px-3 py-2 text-xs text-slate-700 dark:text-slate-200 rounded-lg flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 border-2 border-transparent [&.active]:border-primary [&.active]:ring-2 [&.active]:ring-primary/50 [&.active]:bg-primary/10 [&.active]:shadow-primary"
           [attr.aria-label]="'โหมดสว่าง'"
         >
           <!-- Preview thumbnail -->
@@ -59,7 +59,7 @@
           [attr.aria-checked]="currentMode === 'dark'"
           (click)="setMode('dark')"
           [class.active]="currentMode === 'dark'"
-          class="theme-mode-btn relative px-3 py-2 text-xs text-slate-700 dark:text-slate-200 rounded-lg flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 border-2 border-transparent [&.active]:border-primary [&.active]:ring-2 [&.active]:ring-primary/50 [&.active]:bg-primary/10 [&.active]:shadow-primary theme-myhr:[&.active]:glass-myhr theme-myhr:[&.active]:bg-gradient-to-br theme-myhr:[&.active]:from-primary/20 theme-myhr:[&.active]:to-primary/20 theme-myhr:[&.active]:text-primary"
+          class="theme-mode-btn relative px-3 py-2 text-xs text-slate-700 dark:text-slate-200 rounded-lg flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 border-2 border-transparent [&.active]:border-primary [&.active]:ring-2 [&.active]:ring-primary/50 [&.active]:bg-primary/10 [&.active]:shadow-primary"
           [attr.aria-label]="'โหมดมืด'"
         >
           <!-- Preview thumbnail -->
@@ -80,7 +80,7 @@
           [attr.aria-checked]="currentMode === 'auto'"
           (click)="setMode('auto')"
           [class.active]="currentMode === 'auto'"
-          class="theme-mode-btn relative px-3 py-2 text-xs text-slate-700 dark:text-slate-200 rounded-lg flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 border-2 border-transparent [&.active]:border-primary [&.active]:ring-2 [&.active]:ring-primary/50 [&.active]:bg-primary/10 [&.active]:shadow-primary theme-myhr:[&.active]:glass-myhr theme-myhr:[&.active]:bg-gradient-to-br theme-myhr:[&.active]:from-primary/20 theme-myhr:[&.active]:to-primary/20 theme-myhr:[&.active]:text-primary"
+          class="theme-mode-btn relative px-3 py-2 text-xs text-slate-700 dark:text-slate-200 rounded-lg flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 border-2 border-transparent [&.active]:border-primary [&.active]:ring-2 [&.active]:ring-primary/50 [&.active]:bg-primary/10 [&.active]:shadow-primary"
           [attr.aria-label]="'อัตโนมัติ'"
         >
           <!-- Preview thumbnail -->

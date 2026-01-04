@@ -55,7 +55,7 @@ export class ThemeToggleComponent implements OnInit {
 
   themeColors = [
     {
-      value: 'myhr' as ThemeColor,
+      value: 'ivap' as ThemeColor,
       name: 'ค่าเริ่มต้น',
       gradient: 'linear-gradient(135deg, #07399C 0%, #052d7a 100%)',
       preview: '#07399C'

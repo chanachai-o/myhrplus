@@ -38,11 +38,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.themeService.theme$.subscribe(theme => {
       const body = document.body;
       // Remove all theme classes
-      body.classList.remove('theme-blue', 'theme-indigo', 'theme-purple', 'theme-green', 'theme-orange', 'theme-red', 'theme-teal', 'theme-pink', 'theme-myhr');
-      // Ensure myhr theme is applied when color is 'myhr'
-      if (theme.color === 'myhr') {
-        body.classList.add('theme-myhr');
-      }
+      body.classList.remove('theme-blue', 'theme-indigo', 'theme-purple', 'theme-green', 'theme-orange', 'theme-red', 'theme-teal', 'theme-pink');
       // Add current theme class
       body.classList.add(`theme-${theme.color}`);
     });
