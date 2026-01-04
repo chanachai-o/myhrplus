@@ -22,7 +22,7 @@ export class UnauthorizedComponent {
   constructor(private router: Router) {}
 
   goHome(): void {
-    this.router.navigate([ROUTES.LEGACY.HOME]);
+    this.router.navigate([ROUTES.IVAP.DASHBOARD]);
   }
 
   goBack(): void {

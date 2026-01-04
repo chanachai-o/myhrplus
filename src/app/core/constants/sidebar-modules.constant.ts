@@ -15,152 +15,125 @@ export interface MainModule {
   menuItems: NestedMenuItem[];
 }
 
+/**
+ * Sidebar Modules Configuration
+ * IVAP Frontend - Intelligent Video Analytics Platform
+ */
 export const PREDEFINED_MODULES: MainModule[] = [
   {
-    id: 'home',
-    name: 'Home',
-    iconCss: 'e-icons e-home',
+    id: 'ivap',
+    name: 'IVAP',
+    iconCss: 'e-icons e-dashboard',
     menuItems: [
       {
-        text: 'หน้าแรก',
-        id: 'home-dashboard',
-        iconCss: 'e-icons e-home',
-        route: '/home'
-      }
-    ]
-  },
-  {
-    id: 'company',
-    name: 'Company Management',
-    iconCss: 'e-icons e-briefcase',
-    menuItems: [
+        text: 'Dashboard',
+        id: 'ivap-dashboard',
+        iconCss: 'e-icons e-dashboard',
+        route: '/ivap/dashboard'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'company-home',
-        iconCss: 'e-icons e-home',
-        route: '/company/home'
-      }
-    ]
-  },
-  {
-    id: 'personal',
-    name: 'Personal Management',
-    iconCss: 'e-icons e-user',
-    menuItems: [
+        text: 'Organization',
+        id: 'ivap-organization',
+        iconCss: 'e-icons e-briefcase',
+        route: '/ivap/organization'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'personal-home',
-        iconCss: 'e-icons e-home',
-        route: '/personal/home'
-      }
-    ]
-  },
-  {
-    id: 'ta',
-    name: 'Time Management',
-    iconCss: 'e-icons e-clock',
-    menuItems: [
+        text: 'Time & Attendance',
+        id: 'ivap-time-attendance',
+        iconCss: 'e-icons e-clock',
+        route: '/ivap/time-attendance'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'ta-home',
-        iconCss: 'e-icons e-home',
-        route: '/ta/home'
-      }
-    ]
-  },
-  {
-    id: 'payroll',
-    name: 'Payroll Management',
-    iconCss: 'e-icons e-money',
-    menuItems: [
+        text: 'Visitors',
+        id: 'ivap-visitors',
+        iconCss: 'e-icons e-user',
+        route: '/ivap/visitors'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'payroll-home',
-        iconCss: 'e-icons e-home',
-        route: '/payroll/home'
-      }
-    ]
-  },
-  {
-    id: 'welfare',
-    name: 'Welfare Management',
-    iconCss: 'e-icons e-favorite',
-    menuItems: [
+        text: 'Guests',
+        id: 'ivap-guests',
+        iconCss: 'e-icons e-people',
+        route: '/ivap/guests'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'welfare-home',
-        iconCss: 'e-icons e-home',
-        route: '/welfare/home'
-      }
-    ]
-  },
-  {
-    id: 'training',
-    name: 'Training Management',
-    iconCss: 'e-icons e-book',
-    menuItems: [
+        text: 'Events',
+        id: 'ivap-events',
+        iconCss: 'e-icons e-calendar',
+        route: '/ivap/events'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'training-home',
-        iconCss: 'e-icons e-home',
-        route: '/training/home'
-      }
-    ]
-  },
-  {
-    id: 'recruit',
-    name: 'Recruit Management',
-    iconCss: 'e-icons e-people',
-    menuItems: [
+        text: 'Access Control',
+        id: 'ivap-access-control',
+        iconCss: 'e-icons e-lock',
+        route: '/ivap/access-control'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'recruit-home',
-        iconCss: 'e-icons e-home',
-        route: '/recruit/home'
-      }
-    ]
-  },
-  {
-    id: 'appraisal',
-    name: 'Appraisal Management',
-    iconCss: 'e-icons e-chart',
-    menuItems: [
+        text: 'Devices',
+        id: 'ivap-devices',
+        iconCss: 'e-icons e-devices',
+        route: '/ivap/devices'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'appraisal-home',
-        iconCss: 'e-icons e-home',
-        route: '/appraisal/home'
-      }
-    ]
-  },
-  {
-    id: 'setting',
-    name: 'Setting Management',
-    iconCss: 'e-icons e-settings',
-    menuItems: [
+        text: 'Verification',
+        id: 'ivap-verification',
+        iconCss: 'e-icons e-verified',
+        route: '/ivap/verification'
+      },
       {
-        text: 'หน้าแรก',
-        id: 'setting-home',
-        iconCss: 'e-icons e-home',
-        route: '/setting/home'
+        text: 'Biometric',
+        id: 'ivap-biometric',
+        iconCss: 'e-icons e-face',
+        route: '/ivap/biometric'
+      },
+      {
+        text: 'Vehicles',
+        id: 'ivap-vehicles',
+        iconCss: 'e-icons e-car',
+        route: '/ivap/vehicles'
+      },
+      {
+        text: 'Parking',
+        id: 'ivap-parking',
+        iconCss: 'e-icons e-parking',
+        route: '/ivap/parking'
+      },
+      {
+        text: 'QR & RFID',
+        id: 'ivap-qr-rfid',
+        iconCss: 'e-icons e-qr-code',
+        route: '/ivap/qr-rfid'
+      },
+      {
+        text: 'Notifications',
+        id: 'ivap-notifications',
+        iconCss: 'e-icons e-notifications',
+        route: '/ivap/notifications'
+      },
+      {
+        text: 'Analytics',
+        id: 'ivap-analytics',
+        iconCss: 'e-icons e-chart',
+        route: '/ivap/analytics'
+      },
+      {
+        text: 'Video & AI',
+        id: 'ivap-video-ai',
+        iconCss: 'e-icons e-video',
+        route: '/ivap/video-ai'
+      },
+      {
+        text: 'System',
+        id: 'ivap-system',
+        iconCss: 'e-icons e-settings',
+        route: '/ivap/system'
       }
     ]
   }
 ];
 
 export const MODULE_ROUTE_MAP: { [key: string]: string } = {
-  'home': 'home',
-  'workflow': 'workflow',
-  'company': 'company',
-  'personal': 'personal',
-  'ta': 'ta',
-  'time': 'ta',
-  'payroll': 'payroll',
-  'welfare': 'welfare',
-  'training': 'training',
-  'recruit': 'recruit',
-  'appraisal': 'appraisal',
-  'setting': 'setting',
-  'settings': 'setting'
+  'ivap': 'ivap',
+  'dashboard': 'ivap',
+  'home': 'ivap'
 };
 

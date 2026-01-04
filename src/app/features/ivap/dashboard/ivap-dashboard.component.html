@@ -9,18 +9,18 @@
   <!-- Statistics Cards -->
   <section class="mb-8">
     @if (loading) {
-      <app-skeleton-loader [count]="4" [type]="'card'"></app-skeleton-loader>
+      <app-skeleton-loader [rows]="4" [type]="'card'"></app-skeleton-loader>
     } @else {
       <app-statistics-grid>
         @for (card of statisticsCards; track card.title; let i = $index) {
           <app-statistics-card
             [appStagger]="i"
             [staggerDelay]="0.1"
-            [title]="card.title"
+            [label]="card.title"
             [value]="card.value"
             [icon]="card.icon"
-            [color]="card.color"
-            [trend]="card.trend">
+            [iconBgClass]="getIconBgClass(card.color)"
+            [change]="card.trend ?? undefined">
           </app-statistics-card>
         }
       </app-statistics-grid>

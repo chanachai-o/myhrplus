@@ -6,7 +6,7 @@
       [subtitle]="visitor ? (visitor.first_name + ' ' + visitor.last_name) : ''"
       [showBreadcrumbs]="true">
       <ng-container actions>
-        <app-glass-button type="button" variant="outline" (click)="onBack()">
+        <app-glass-button type="button" variant="secondary" (click)="onBack()">
           <app-icon name="arrow_back" class="mr-2"></app-icon>
           Back
         </app-glass-button>
@@ -14,7 +14,7 @@
     </app-page-header>
 
     @if (loading) {
-      <app-skeleton-loader type="card" [count]="3"></app-skeleton-loader>
+      <app-skeleton-loader type="card" [rows]="3"></app-skeleton-loader>
     } @else if (visitor) {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Visitor Information -->
@@ -74,7 +74,7 @@
               @if (visitor.status === 'CHECKED_IN') {
                 <app-glass-button
                   type="button"
-                  variant="outline"
+                  variant="secondary"
                   [fullWidth]="true"
                   (click)="onCheckOut()">
                   <app-icon name="logout" class="mr-2"></app-icon>

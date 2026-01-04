@@ -11,7 +11,7 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { IvapDoorService, NotificationService } from '@core/services';
 import { Door, PaginatedResponse, QueryParams } from '@core/models/ivap';
@@ -27,7 +27,7 @@ import { Door, PaginatedResponse, QueryParams } from '@core/models/ivap';
     GlassCardComponent,
     GlassInputComponent,
     DataGridComponent,
-    SkeletonLoaderComponent,
+    SharedModule,
     IconComponent
   ],
   templateUrl: './door-list.component.html',
@@ -94,7 +94,7 @@ export class DoorListComponent implements OnInit, OnDestroy {
       page_size: this.pageSize,
       ...params
     };
-    return this.doorService.getAllPaginated(queryParams);
+    return this.doorService.getAll(queryParams);
   }
 
   private refreshData(): void {

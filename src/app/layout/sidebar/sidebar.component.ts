@@ -853,37 +853,29 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
 
   private mapRouteToModuleId(moduleCode: string): string {
-    return MODULE_ROUTE_MAP[moduleCode.toLowerCase()] || 'home';
+    return MODULE_ROUTE_MAP[moduleCode.toLowerCase()] || 'ivap';
   }
 
   private getModuleCodeFromRoute(route: string): string {
-    if (!route) return 'other';
+    if (!route) return 'ivap';
 
     // Extract module code from route
-    // Examples: /dashboard -> dashboard, /ta/leave -> ta, /personal/profile -> personal
+    // Examples: /ivap/dashboard -> ivap, /ivap/visitors -> ivap, /ivap/events -> ivap
+    if (route.startsWith('/ivap')) {
+      return 'ivap';
+    }
     const match = route.match(/\/([^\/]+)/);
-    return match ? match[1] : 'other';
+    return match ? match[1] : 'ivap';
   }
-
-
 
   getModuleHomeRoute(moduleId: string): string {
     const moduleHomeRoutes: { [key: string]: string } = {
-      'home': '/home',
-      'admin': '/personal',
-      // 'workflow': '/workflow/home', // Workflow module removed
-      'company': '/company',
-      'personal': '/personal',
-      'ta': '/ta',
-      'payroll': '/payroll',
-      'welfare': '/welfare',
-      'training': '/training',
-      'recruit': '/recruit',
-      'appraisal': '/appraisal',
-      'setting': '/setting'
+      'ivap': '/ivap/dashboard',
+      'home': '/ivap/dashboard',
+      'dashboard': '/ivap/dashboard'
     };
 
-    return moduleHomeRoutes[moduleId] || '/home';
+    return moduleHomeRoutes[moduleId] || '/ivap/dashboard';
   }
 
   private navigateToModuleHome(moduleId: string): void {

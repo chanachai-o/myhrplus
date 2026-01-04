@@ -10,7 +10,7 @@ import { GlassCardComponent } from '@shared/components/glass-card/glass-card.com
 import { GlassButtonComponent } from '@shared/components/glass-button/glass-button.component';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IvapVisitorService } from '@core/services';
 import { Visitor } from '@core/models/ivap';
 import { NotificationService } from '@core/services';
@@ -24,7 +24,7 @@ import { NotificationService } from '@core/services';
     GlassButtonComponent,
     PageHeaderComponent,
     IconComponent,
-    SkeletonLoaderComponent
+    SharedModule
   ],
   templateUrl: './visitor-detail.component.html',
   styleUrls: ['./visitor-detail.component.scss']

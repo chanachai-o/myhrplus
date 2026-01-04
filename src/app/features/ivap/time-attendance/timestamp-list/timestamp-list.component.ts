@@ -10,7 +10,7 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { IvapTimestampService, NotificationService } from '@core/services';
 import { EmployeeTimestamp, PaginatedResponse, QueryParams } from '@core/models/ivap';
@@ -25,7 +25,7 @@ import { EmployeeTimestamp, PaginatedResponse, QueryParams } from '@core/models/
     GlassCardComponent,
     GlassInputComponent,
     DataGridComponent,
-    SkeletonLoaderComponent,
+    SharedModule,
     IconComponent
   ],
   templateUrl: './timestamp-list.component.html',
@@ -91,7 +91,7 @@ export class TimestampListComponent implements OnInit, OnDestroy {
       page_size: this.pageSize,
       ...params
     };
-    return this.timestampService.getAllPaginated(queryParams);
+    return this.timestampService.getAll(queryParams);
   }
 
   private refreshData(): void {

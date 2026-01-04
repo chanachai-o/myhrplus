@@ -11,7 +11,7 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { IvapEmployeeService, NotificationService } from '@core/services';
 import { CompanyEmployee, PaginatedResponse, QueryParams } from '@core/models/ivap';
@@ -27,7 +27,7 @@ import { CompanyEmployee, PaginatedResponse, QueryParams } from '@core/models/iv
     GlassCardComponent,
     GlassInputComponent,
     DataGridComponent,
-    SkeletonLoaderComponent,
+    SharedModule,
     IconComponent
   ],
   templateUrl: './employee-list.component.html',
@@ -96,7 +96,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       page_size: this.pageSize,
       ...params
     };
-    return this.employeeService.getAllPaginated(queryParams);
+    return this.employeeService.getAll(queryParams);
   }
 
   private refreshData(): void {

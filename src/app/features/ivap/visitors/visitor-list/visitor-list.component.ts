@@ -13,7 +13,7 @@ import { GlassCardComponent } from '@shared/components/glass-card/glass-card.com
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { GlassButtonComponent } from '@shared/components/glass-button/glass-button.component';
 import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { IvapVisitorService } from '@core/services';
 import { Visitor, PaginatedResponse, QueryParams } from '@core/models/ivap';
@@ -31,7 +31,7 @@ import { NotificationService } from '@core/services';
     GlassInputComponent,
     GlassButtonComponent,
     DataGridComponent,
-    SkeletonLoaderComponent,
+    SharedModule,
     IconComponent
   ],
   templateUrl: './visitor-list.component.html',
@@ -96,7 +96,7 @@ export class VisitorListComponent implements OnInit, OnDestroy {
       ...params
     };
 
-    return this.visitorService.getAllPaginated(queryParams);
+    return this.visitorService.getAll(queryParams);
   }
 
   private refreshData(): void {

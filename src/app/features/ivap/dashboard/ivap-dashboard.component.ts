@@ -9,7 +9,7 @@ import { GlassCardComponent } from '@shared/components/glass-card/glass-card.com
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { StatisticsCardComponent } from '@shared/components/statistics-card/statistics-card.component';
 import { StatisticsGridComponent } from '@shared/components/statistics-grid/statistics-grid.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { StaggerDirective } from '@shared/directives/stagger.directive';
 import { IvapCompanyService } from '@core/services';
@@ -24,7 +24,7 @@ import { DashboardStatistics } from '@core/models/ivap';
     PageHeaderComponent,
     StatisticsCardComponent,
     StatisticsGridComponent,
-    SkeletonLoaderComponent,
+    SharedModule,
     IconComponent,
     StaggerDirective
   ],
@@ -95,6 +95,17 @@ export class IvapDashboardComponent implements OnInit {
       this.statisticsCards[2].value = this.statistics.total_devices;
       this.statisticsCards[3].value = this.statistics.active_verifications;
     }
+  }
+
+  getIconBgClass(color: string): string {
+    const colorMap: { [key: string]: string } = {
+      'primary': 'bg-primary/10 dark:bg-primary/20',
+      'info': 'bg-blue-100 dark:bg-blue-900/30',
+      'success': 'bg-green-100 dark:bg-green-900/30',
+      'warning': 'bg-yellow-100 dark:bg-yellow-900/30',
+      'danger': 'bg-red-100 dark:bg-red-900/30'
+    };
+    return colorMap[color] || 'bg-primary/10 dark:bg-primary/20';
   }
 }
 

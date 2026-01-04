@@ -21,22 +21,35 @@ const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      // Default redirect to home
+      // Default redirect to IVAP dashboard
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'ivap',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        redirectTo: 'ivap',
         pathMatch: 'full'
       },
 
       // ============================================
-      // Feature Modules (Backend Management System)
-      // ===========================================
-      // 404 Not Found Page (inside main layout)
+      // IVAP Feature Modules
+      // ============================================
+      {
+        path: 'ivap',
+        loadChildren: () => import('./features/ivap/ivap.module').then(m => m.IvapModule)
+      },
+
+      // ============================================
+      // Error Pages (inside main layout)
+      // ============================================
+      // 404 Not Found Page
       {
         path: 'not-found',
         loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
       },
-      // 500 Error Page (inside main layout)
+      // 500 Error Page
       {
         path: 'error',
         loadComponent: () => import('./features/error/error.component').then(m => m.ErrorComponent)

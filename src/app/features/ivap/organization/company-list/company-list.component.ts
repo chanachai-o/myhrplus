@@ -12,7 +12,7 @@ import { GlassCardComponent } from '@shared/components/glass-card/glass-card.com
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { GlassButtonComponent } from '@shared/components/glass-button/glass-button.component';
 import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
-import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { IvapCompanyService, NotificationService } from '@core/services';
 import { Company, PaginatedResponse, QueryParams } from '@core/models/ivap';
@@ -29,7 +29,7 @@ import { Company, PaginatedResponse, QueryParams } from '@core/models/ivap';
     GlassInputComponent,
     GlassButtonComponent,
     DataGridComponent,
-    SkeletonLoaderComponent,
+    SharedModule,
     IconComponent
   ],
   templateUrl: './company-list.component.html',
@@ -96,7 +96,7 @@ export class CompanyListComponent implements OnInit, OnDestroy {
       page_size: this.pageSize,
       ...params
     };
-    return this.companyService.getAllPaginated(queryParams);
+    return this.companyService.getAll(queryParams);
   }
 
   private refreshData(): void {
