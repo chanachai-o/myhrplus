@@ -12,8 +12,9 @@ import { StatisticsGridComponent } from '@shared/components/statistics-grid/stat
 import { SharedModule } from '@shared/shared.module';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { StaggerDirective } from '@shared/directives/stagger.directive';
-import { IvapCompanyService } from '@core/services';
+import { IvapDashboardService } from '@core/services';
 import { DashboardStatistics } from '@core/models/ivap';
+import { NotificationService } from '@core/services';
 
 @Component({
   selector: 'app-ivap-dashboard',
@@ -66,7 +67,10 @@ export class IvapDashboardComponent implements OnInit {
     }
   ];
 
-  constructor(private companyService: IvapCompanyService) {}
+  constructor(
+    private dashboardService: IvapDashboardService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.loadStatistics();
@@ -74,18 +78,27 @@ export class IvapDashboardComponent implements OnInit {
 
   private loadStatistics(): void {
     this.loading = true;
-    // TODO: Implement dashboard statistics API call
-    // For now, use placeholder data
-    setTimeout(() => {
-      this.statistics = {
-        total_employees: 150,
-        total_visitors: 45,
-        total_devices: 12,
-        active_verifications: 8
-      };
-      this.updateStatisticsCards();
-      this.loading = false;
-    }, 1000);
+    this.dashboardService.getDashboard().subscribe({
+      next: (response) => {
+        if (response.statistics) {
+          this.statistics = response.statistics;
+          this.updateStatisticsCards();
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        this.notificationService.showError('Failed to load dashboard statistics');
+        // Fallback to placeholder data on error
+        this.statistics = {
+          total_employees: 0,
+          total_visitors: 0,
+          total_devices: 0,
+          active_verifications: 0
+        };
+        this.updateStatisticsCards();
+        this.loading = false;
+      }
+    });
   }
 
   private updateStatisticsCards(): void {

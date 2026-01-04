@@ -1,7 +1,7 @@
 {
-  "name": "hr-angular-app",
+  "name": "ivap-frontend",
   "version": "1.0.0",
-  "description": "HR System Angular Migration",
+  "description": "IVAP Frontend - Intelligent Video Analytics Platform",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -44,19 +44,21 @@ The app will be available at `http://localhost:4200`
 
 ## 🎨 Design System
 
-### Gemini 1.5 Theme
+### MyHR Theme
 
-ระบบรองรับธีม **Gemini 1.5** ที่มีลักษณะ:
+ระบบรองรับธีม **MyHR** ที่มีลักษณะ:
 - พื้นหลังสีเข้มเกือบดำ (#000000)
 - Gradient สีฟ้าอ่อนไปฟ้าเข้ม (Light blue → Darker blue)
 - Vector effects และ animated particles
 - Text gradient effects
 - Animated border glows
+- Dynamic primary color support
 
 **วิธีใช้งาน:**
 ```typescript
 // เปิดใช้งานผ่าน ThemeService
 this.themeService.setTheme({ color: 'myhr', mode: 'dark' });
+this.themeService.setPrimaryColor('59, 130, 246'); // RGB values
 ```
 
 ### Glass Morphism Components
@@ -141,6 +143,38 @@ ivap-frontend/
 └── tsconfig.json
 ```
 
+## 🎯 IVAP Features
+
+### Core Modules (16 Modules)
+
+1. **Dashboard** - IVAP Dashboard with statistics and analytics
+2. **Organization** - Company, Employee, Department, Position, Member management
+3. **Time & Attendance** - Timestamps, Shifts, Leaves management
+4. **Visitors** - Visitor registration and management
+5. **Guests** - Guest registration and management
+6. **Events** - Event creation and management
+7. **Access Control** - Door access control and rules
+8. **Devices** - Device management (cameras, sensors, etc.)
+9. **Verification** - Verification sessions, templates, and configuration
+10. **Biometric** - Face enrollment and biometric data management
+11. **Vehicles** - Vehicle registration and management
+12. **Parking** - Parking management with LPR (License Plate Recognition)
+13. **QR Code & RFID** - QR code and RFID card management
+14. **Notifications** - Alerts and notifications system
+15. **Analytics** - Reports and monitoring dashboards
+16. **Video & AI** - Video analytics and AI model management
+17. **System** - System settings, logs, and safety dashboard
+
+### API Integration
+
+- **Base URL**: `http://localhost:8000` (development)
+- **API Version**: `/api/v1`
+- **Services**: 27 IVAP services extending `BaseApiService`
+- **Authentication**: JWT token-based authentication
+- **Models**: Complete TypeScript models matching backend API
+
+ดูรายละเอียด: [IVAP_MIGRATION_SUMMARY.md](./IVAP_MIGRATION_SUMMARY.md)
+
 ## 🛠️ Technology Stack
 
 - **Angular**: 17+
@@ -194,7 +228,8 @@ ivap-frontend/
 - **[SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md)** - Setup Guide
 
 ### IVAP Features Documentation
-- **[IVAP_MIGRATION_PLAN.md](./IVAP_MIGRATION_PLAN.md)** - IVAP Migration Plan
+- **[IVAP_MIGRATION_PLAN.md](./IVAP_MIGRATION_PLAN.md)** - IVAP Migration Plan (Complete)
+- **[IVAP_MIGRATION_SUMMARY.md](./IVAP_MIGRATION_SUMMARY.md)** ⭐ - IVAP Migration Summary (Complete)
 - **[doc-backend/SYSTEM_ARCHITECTURE_ANALYSIS.md](./doc-backend/SYSTEM_ARCHITECTURE_ANALYSIS.md)** - IVAP Backend Architecture
 - **[doc-backend/API_DOCUMENTATION.md](./doc-backend/API_DOCUMENTATION.md)** - IVAP API Documentation
 - **[doc-backend/ANGULAR_INTEGRATION_GUIDE.md](./doc-backend/ANGULAR_INTEGRATION_GUIDE.md)** - Angular Integration Guide
