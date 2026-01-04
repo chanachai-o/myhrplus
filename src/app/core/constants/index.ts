@@ -31,13 +31,5 @@ export * from './navigation.constant';
 export * from './sidebar-modules.constant';
 export * from './translation-keys.constant';
 
-// Screen Constants
-// Note: These files contain duplicate function names (getAllScreens, getScreenByMenuCode, etc.)
-// Import them directly if you need specific screen functions to avoid conflicts:
-// import { getAllScreens as getCompanyScreens } from '@core/constants/company-screens.constant';
-//
-// We only export types/interfaces here, not functions to avoid conflicts;
-
-// Re-export screen constants types only (not functions)
-// Users should import screen constants directly when needed
+// Screen Constants - Removed (HR-specific, not needed for IVAP)
 

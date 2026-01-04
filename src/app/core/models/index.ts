@@ -5,8 +5,8 @@
  * Recreated from doc-backend/angular-models.ts
  */
 
-// Export all models from ivap-models.ts
-export * from './ivap/ivap-models';
+// Export all IVAP models (organized by domain)
+export * from './ivap';
 
 // Menu models
 export * from './menu.model';

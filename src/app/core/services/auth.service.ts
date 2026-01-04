@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { IvapAuthService } from './ivap/auth.service';
+import { IvapAuthService } from './ivap';
 import { UserContextService } from './user-context.service';
 import { DatabaseModel } from '@core/models/database.model';
 import { Member } from '@core/models';
@@ -111,13 +111,13 @@ export class AuthService {
       this.ivapAuthService.forgotPassword({
         email
       }).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           resolve({
             status: true,
             message: 'Password reset email sent successfully'
           });
         },
-        error: (error) => {
+        error: (error: any) => {
           reject(error);
         }
       });

@@ -1,7 +1,7 @@
 import { Injectable, ViewContainerRef, ComponentRef } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NotificationComponent, NotificationType } from '@shared/components/notification/notification.component';
-import { IvapNotificationService } from './ivap/notification.service';
+import { IvapNotificationService } from './ivap';
 import { Notification } from '@core/models';
 
 /**
@@ -118,9 +118,9 @@ export class NotificationService {
    */
   loadNotifications(): void {
     this.ivapNotificationService.getAll({ page: 1, page_size: 50 }).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         // Map API response to include legacy compatibility properties
-        const notifications = response.items.map(n => ({
+        const notifications = response.items.map((n: any) => ({
           ...n,
           id: n.notification_id,
           type: n.notification_type,
@@ -129,7 +129,7 @@ export class NotificationService {
         }));
         this.apiNotificationsSubject.next(notifications);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading notifications:', error);
       }
     });
@@ -142,7 +142,7 @@ export class NotificationService {
     // Support both notification_id and id
     const id = notificationId.startsWith('notif_') ? notificationId : `notif_${notificationId}`;
     this.ivapNotificationService.markAsRead(id).subscribe({
-      next: (notification) => {
+      next: (notification: any) => {
         // Update local state with legacy compatibility
         const current = this.apiNotificationsSubject.value;
         const updated = current.map(n => {
@@ -159,7 +159,7 @@ export class NotificationService {
         });
         this.apiNotificationsSubject.next(updated);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error marking notification as read:', error);
       }
     });
@@ -180,7 +180,7 @@ export class NotificationService {
         }));
         this.apiNotificationsSubject.next(updated);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error marking all notifications as read:', error);
       }
     });
