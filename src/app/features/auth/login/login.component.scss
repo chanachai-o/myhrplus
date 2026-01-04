@@ -193,11 +193,12 @@
   right: 0;
   bottom: 0;
   z-index: 1;
-  /* Use primary color for pattern - supports all theme colors */
+  /* IVAP Logo inspired pattern (blue-purple-teal) */
   background-image: 
-    radial-gradient(circle at 20% 30%, rgba(var(--primary-rgb), 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(var(--primary-rgb), 0.2) 0%, transparent 50%);
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 60% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 50%);
   opacity: 1;
   animation: patternPulse 8s ease-in-out infinite;
   pointer-events: none;
@@ -316,8 +317,12 @@
 .login-left-logo-img {
   max-width: 200px;
   height: auto;
-  filter: brightness(0) invert(1);
-  transition: transform 0.3s ease;
+  width: auto;
+  max-height: 200px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: contain;
 }
 
 .animated-logo {
@@ -570,21 +575,26 @@
 .login-logo-img {
   max-width: 180px;
   height: auto;
+  width: auto;
+  max-height: 180px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  object-fit: contain;
+  background: transparent;
 }
 
 .dark .login-logo-img {
-  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .login-logo-section:hover .login-logo-img {
   transform: scale(1.05);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.3);
 }
 
 .dark .login-logo-section:hover .login-logo-img {
-  filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.15));
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.4);
 }
 
 // Login Title Section
@@ -1214,6 +1224,12 @@
   
   .login-logo-img {
     max-width: 140px;
+    max-height: 140px;
+  }
+  
+  .login-left-logo-img {
+    max-width: 150px;
+    max-height: 150px;
   }
   
   .form-field {
