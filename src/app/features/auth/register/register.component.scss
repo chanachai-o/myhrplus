@@ -1,4 +1,4 @@
-// Register Component Styles - Gemini 2.0 Flash Style
+// Register Component Styles
 // Most styles migrated to Tailwind classes in HTML template
 // Keeping only complex styles that require SCSS (theme variants, gradients, animations, complex selectors)
 
@@ -53,9 +53,9 @@
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 0% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 40%);
+    radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(var(--color-info-rgb-value), 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(var(--color-secondary-rgb-value), 0.04) 0%, transparent 40%);
   opacity: 0.6;
 }
 
@@ -70,15 +70,15 @@
       0deg,
       transparent,
       transparent 1px,
-      rgba(59, 130, 246, 0.02) 1px,
-      rgba(59, 130, 246, 0.02) 2px
+      rgba(var(--primary-rgb), 0.02) 1px,
+      rgba(var(--primary-rgb), 0.02) 2px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 1px,
-      rgba(6, 182, 212, 0.02) 1px,
-      rgba(6, 182, 212, 0.02) 2px
+      rgba(var(--color-info-rgb-value), 0.02) 1px,
+      rgba(var(--color-info-rgb-value), 0.02) 2px
     );
   background-size: 40px 40px;
   opacity: 0.3;
@@ -92,19 +92,23 @@
   html.dark &,
   body.dark & {
     background: rgba(26, 26, 46, 0.7);
-    border-bottom-color: rgba(59, 130, 246, 0.3);
+    border-bottom-color: rgba(var(--primary-rgb), 0.3);
   }
 
   html.light &,
   body.light & {
     background: rgba(255, 255, 255, 0.5);
-    border-bottom-color: rgba(245, 158, 11, 0.2);
+    border-bottom-color: rgba(var(--color-warning-rgb-value), 0.2);
   }
 }
 
-// Gradient Text - using design tokens
+// Gradient Text - using CSS variables
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-primary-500, #3b82f6) 0%, var(--color-info-500, #06b6d4) 50%, var(--color-secondary-500, #8b5cf6) 100%);
+  background: linear-gradient(135deg, 
+    rgb(var(--primary-rgb)) 0%, 
+    rgb(var(--color-info-rgb-value)) 50%, 
+    rgb(var(--color-secondary-rgb-value)) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -121,14 +125,14 @@
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
   }
 
   html.dark &,
   body.dark & {
     background: rgba(26, 26, 46, 0.6);
     color: #ffffff;
-    border-color: rgba(59, 130, 246, 0.3);
+    border-color: rgba(var(--primary-rgb), 0.3);
   }
 
   html.light &,
@@ -150,14 +154,14 @@
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
   }
 
   html.dark &,
   body.dark & {
     background: rgba(26, 26, 46, 0.6);
     color: #ffffff;
-    border-color: rgba(59, 130, 246, 0.3);
+    border-color: rgba(var(--primary-rgb), 0.3);
   }
 
   html.light &,
@@ -179,8 +183,8 @@
   html.dark &,
   body.dark & {
     background: rgba(26, 26, 46, 0.6);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(var(--primary-rgb), 0.2);
   }
 
   html.light &,
@@ -217,13 +221,13 @@
     html.dark &,
     body.dark & {
       background: rgba(26, 26, 46, 0.5);
-      border: 2px solid rgba(59, 130, 246, 0.3);
+      border: 2px solid rgba(var(--primary-rgb), 0.3);
       color: #ffffff;
 
       &:focus {
         outline: none;
-        border-color: rgba(59, 130, 246, 0.6);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        border-color: rgba(var(--primary-rgb), 0.6);
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
         background: rgba(26, 26, 46, 0.7);
       }
 
@@ -240,8 +244,8 @@
 
       &:focus {
         outline: none;
-        border-color: rgb(245, 158, 11);
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        border-color: rgb(var(--color-warning-rgb-value));
+        box-shadow: 0 0 0 3px rgba(var(--color-warning-rgb-value), 0.15);
         background: rgba(255, 255, 255, 0.85);
       }
 
@@ -255,50 +259,16 @@
   .password-strength {
     .strength-bar {
       &.weak .strength-fill {
-        background: var(--color-error-500, #f56565);
+        background: rgb(var(--color-danger-rgb-value));
       }
 
       &.medium .strength-fill {
-        background: var(--color-warning-500, #ed8936);
+        background: rgb(var(--color-warning-rgb-value));
       }
 
       &.strong .strength-fill {
-        background: var(--color-success-500, #48bb78);
+        background: rgb(var(--color-success-rgb-value));
       }
-    }
-  }
-}
-
-// Button - keeping theme-specific gradients
-.btn {
-  &.btn-primary {
-    html.dark &,
-    body.dark & {
-      background: linear-gradient(135deg, var(--color-primary-500, #3b82f6) 0%, var(--color-primary-600, #2563eb) 100%);
-      color: white;
-
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, var(--color-primary-600, #2563eb) 0%, var(--color-primary-700, #1d4ed8) 100%);
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
-      }
-    }
-
-    html.light &,
-    body.light & {
-      background: linear-gradient(135deg, var(--color-warning-500, rgb(245, 158, 11)) 0%, var(--color-warning-600, rgb(217, 119, 6)) 100%);
-      color: white;
-
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, var(--color-warning-600, rgb(217, 119, 6)) 0%, var(--color-warning-700, rgb(180, 83, 9)) 100%);
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 16px rgba(245, 158, 11, 0.4);
-      }
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
   }
 }
@@ -306,7 +276,7 @@
 // Success content animation - keeping animation
 .success-content {
   .success-icon {
-    color: var(--color-success-500, #48bb78);
+    color: rgb(var(--color-success-rgb-value));
     animation: scaleIn 0.5s ease;
   }
 
@@ -324,3 +294,4 @@
 
 // Responsive styles migrated to Tailwind responsive classes in HTML template
 // Using md: breakpoint for mobile-first responsive design
+

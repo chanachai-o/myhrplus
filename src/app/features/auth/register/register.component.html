@@ -1,0 +1,313 @@
+<section class="register-container min-h-screen flex items-center justify-center p-4 relative">
+  <!-- Background Graphics -->
+  <div class="register-bg-graphics">
+    <div class="bg-gradient-overlay"></div>
+    <div class="bg-grid-pattern"></div>
+  </div>
+
+  <!-- Header with Theme/Language Switcher -->
+  <div class="register-header fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/10 p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button
+          type="button"
+          (click)="navigateToLanding()"
+          class="back-to-home glass-card px-3 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
+          [attr.aria-label]="'features.auth.register.backToHome' | translate">
+          <app-icon name="arrow-left" size="sm"></app-icon>
+          <span class="hidden md:inline font-medium">{{ 'features.auth.register.home' | translate }}</span>
+        </button>
+        <div class="text-3xl">🎥</div>
+        <h1 class="text-xl font-bold gradient-text">IVAP Platform</h1>
+      </div>
+      <div class="flex items-center space-x-3">
+        <!-- Language Switcher -->
+        <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
+          <app-glass-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            (clicked)="toggleLanguageMenu()"
+            [ariaLabel]="'layout.header.changeLanguage' | translate"
+            [title]="'layout.header.changeLanguage' | translate"
+            [attr.aria-expanded]="showLanguageMenu"
+            [attr.aria-controls]="'language-menu'"
+            customClass="control-button language-button">
+            <img [src]="currentLanguage.flagPath" [alt]="currentLanguage.name" class="control-icon w-5 h-5 rounded-sm object-cover" />
+          </app-glass-button>
+
+          <!-- Language Dropdown -->
+          <app-glass-card
+            *ngIf="showLanguageMenu"
+            variant="strong"
+            padding="p-0"
+            customClass="language-dropdown absolute right-0 top-full mt-2 w-48
+                         rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
+                         z-50 overflow-hidden
+                         backdrop-blur-xl
+                         animate-scale-in
+                         [animation-duration:200ms]
+                         origin-top-right">
+            <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
+              <button
+                *ngFor="let lang of availableLanguages; let i = index"
+                type="button"
+                role="menuitem"
+                (click)="changeLanguage(lang.code)"
+                [class.active]="currentLang === lang.code"
+                [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.name"
+                [attr.aria-current]="currentLang === lang.code ? 'true' : 'false'"
+                [style.--animation-delay]="(i * 50) + 'ms'"
+                class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3
+                       hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
+                       hover:translate-x-1 hover:scale-[1.02]
+                       active:scale-[0.98]
+                       transition-all duration-200 ease-out
+                       animate-fade-in">
+                <img [src]="lang.flagPath" [alt]="lang.name" class="w-5 h-5 rounded-sm object-cover" />
+                <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ lang.name }}</span>
+                <app-icon *ngIf="currentLang === lang.code" name="check" size="sm" color="text-primary theme-myhr:text-primary"></app-icon>
+              </button>
+            </div>
+          </app-glass-card>
+        </div>
+
+        <!-- Theme Toggle -->
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+    </div>
+  </div>
+
+  <div class="register-card glass-card max-w-md w-full relative z-10 mt-20">
+    <!-- Step 1: Information -->
+    <div *ngIf="currentStep() === 'info'" class="step-content">
+      <!-- Header -->
+      <div class="header text-center mb-8">
+        <div class="logo text-primary mb-4 inline-block">
+          <app-icon name="user-plus" size="xl" color="text-primary"></app-icon>
+        </div>
+        <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.createAccount' | translate }}</h1>
+        <p class="subtitle m-0 text-white/80 dark:text-gray-600">{{ 'features.auth.register.signUpToGetStarted' | translate }}</p>
+      </div>
+
+      <!-- Form -->
+      <form (ngSubmit)="onSubmit()" class="form">
+        <div class="form-row grid grid-cols-2 gap-4 mb-6">
+          <div class="form-group">
+            <label for="firstName" class="block font-semibold mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.firstName' | translate }}</label>
+            <input
+              id="firstName"
+              type="text"
+              [(ngModel)]="formData.firstName"
+              name="firstName"
+              placeholder="John"
+              class="form-input w-full px-4 py-3 rounded-lg text-base transition-all backdrop-blur-sm"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="lastName" class="block font-semibold mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.lastName' | translate }}</label>
+            <input
+              id="lastName"
+              type="text"
+              [(ngModel)]="formData.lastName"
+              name="lastName"
+              placeholder="Doe"
+              class="form-input w-full px-4 py-3 rounded-lg text-base transition-all backdrop-blur-sm"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group mb-6">
+          <label for="email" class="block font-semibold mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.email' | translate }}</label>
+          <input
+            id="email"
+            type="email"
+            [(ngModel)]="formData.email"
+            name="email"
+            placeholder="john.doe&#64;example.com"
+            class="form-input w-full px-4 py-3 rounded-lg text-base transition-all backdrop-blur-sm"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-6">
+          <label for="password" class="block font-semibold mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.password' | translate }}</label>
+          <div class="password-input-wrapper relative">
+            <input
+              id="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              [(ngModel)]="formData.password"
+              (input)="checkPasswordStrength(formData.password)"
+              name="password"
+              [placeholder]="'features.auth.register.enterPassword' | translate"
+              class="form-input w-full px-4 py-3 pr-12 rounded-lg text-base transition-all backdrop-blur-sm"
+              required
+            />
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary"
+              [attr.aria-label]="showPassword() ? ('features.auth.register.hidePassword' | translate) : ('features.auth.register.showPassword' | translate)">
+              <app-icon [name]="showPassword() ? 'eye-off' : 'eye'" size="sm"></app-icon>
+            </button>
+          </div>
+          <div class="password-strength flex items-center gap-2 mt-2" *ngIf="formData.password">
+            <div class="strength-bar flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden" [class]="getPasswordStrengthColor()">
+              <div class="strength-fill h-full transition-all" [style.width.%]="passwordStrength()"></div>
+            </div>
+            <span class="strength-text text-sm font-semibold text-gray-500">{{ getPasswordStrengthText() }}</span>
+          </div>
+          <div class="password-requirements mt-3 text-sm" *ngIf="formData.password">
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1" [class.met]="passwordRequirements().minLength" [class.text-success-500]="passwordRequirements().minLength">
+              <span class="font-semibold">{{ passwordRequirements().minLength ? '✓' : '○' }}</span>
+              {{ 'features.auth.register.atLeast8Characters' | translate }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1" [class.met]="passwordRequirements().hasUppercase" [class.text-success-500]="passwordRequirements().hasUppercase">
+              <span class="font-semibold">{{ passwordRequirements().hasUppercase ? '✓' : '○' }}</span>
+              {{ 'features.auth.register.containsUppercase' | translate }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1" [class.met]="passwordRequirements().hasLowercase" [class.text-success-500]="passwordRequirements().hasLowercase">
+              <span class="font-semibold">{{ passwordRequirements().hasLowercase ? '✓' : '○' }}</span>
+              {{ 'features.auth.register.containsLowercase' | translate }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1" [class.met]="passwordRequirements().hasNumber" [class.text-success-500]="passwordRequirements().hasNumber">
+              <span class="font-semibold">{{ passwordRequirements().hasNumber ? '✓' : '○' }}</span>
+              {{ 'features.auth.register.containsNumber' | translate }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1" [class.met]="passwordRequirements().hasSpecial" [class.text-success-500]="passwordRequirements().hasSpecial">
+              <span class="font-semibold">{{ passwordRequirements().hasSpecial ? '✓' : '○' }}</span>
+              {{ 'features.auth.register.containsSpecial' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mb-6">
+          <label for="confirmPassword" class="block font-semibold mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.confirmPassword' | translate }}</label>
+          <div class="password-input-wrapper relative">
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword() ? 'text' : 'password'"
+              [(ngModel)]="formData.confirmPassword"
+              name="confirmPassword"
+              [placeholder]="'features.auth.register.confirmYourPassword' | translate"
+              class="form-input w-full px-4 py-3 pr-12 rounded-lg text-base transition-all backdrop-blur-sm"
+              required
+            />
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary"
+              [attr.aria-label]="showConfirmPassword() ? ('features.auth.register.hidePassword' | translate) : ('features.auth.register.showPassword' | translate)">
+              <app-icon [name]="showConfirmPassword() ? 'eye-off' : 'eye'" size="sm"></app-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group mb-6">
+          <label class="checkbox-label flex items-start gap-3 cursor-pointer text-sm leading-relaxed text-white/90 dark:text-gray-700">
+            <input
+              type="checkbox"
+              [(ngModel)]="formData.acceptTerms"
+              name="acceptTerms"
+              class="checkbox mt-1 cursor-pointer"
+            />
+            <span>
+              {{ 'features.auth.register.acceptTerms' | translate }}
+              <a href="/terms" target="_blank" class="link text-primary hover:underline">{{ 'features.auth.register.termsAndConditions' | translate }}</a>
+              {{ 'features.auth.register.and' | translate }}
+              <a href="/privacy" target="_blank" class="link text-primary hover:underline">{{ 'features.auth.register.privacyPolicy' | translate }}</a>
+            </span>
+          </label>
+        </div>
+
+        <app-glass-button
+          type="submit"
+          variant="primary"
+          size="lg"
+          [loading]="loading()"
+          [disabled]="loading()"
+          [fullWidth]="true"
+          [ariaLabel]="'features.auth.register.createAccount' | translate">
+          {{ loading() ? ('features.auth.register.creating' | translate) : ('features.auth.register.createAccount' | translate) }}
+        </app-glass-button>
+      </form>
+
+      <!-- Footer -->
+      <div class="footer text-center mt-6">
+        <p class="m-0 text-white/80 dark:text-gray-600">{{ 'features.auth.register.alreadyHaveAccount' | translate }} <a [routerLink]="['/auth/login']" class="link text-primary hover:underline">{{ 'features.auth.register.signIn' | translate }}</a></p>
+      </div>
+    </div>
+
+    <!-- Step 2: Verification -->
+    <div *ngIf="currentStep() === 'verification'" class="step-content">
+      <div class="header text-center mb-8">
+        <button type="button" (click)="goBack()" class="back-button absolute top-0 left-0 w-10 h-10 flex items-center justify-center bg-white/10 rounded-lg border border-white/20 text-white cursor-pointer transition-all hover:bg-white/20" [attr.aria-label]="'features.auth.register.goBack' | translate">
+          <app-icon name="arrow-left" size="sm"></app-icon>
+        </button>
+        <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.verifyEmail' | translate }}</h1>
+        <p class="subtitle m-0 text-white/80 dark:text-gray-600">{{ 'features.auth.register.verificationCodeSent' | translate }} {{ formData.email }}</p>
+      </div>
+
+      <form (ngSubmit)="onVerificationSubmit()" class="form">
+        <div class="form-group mb-6">
+          <label for="verificationCode" class="block font-semibold mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.verificationCode' | translate }}</label>
+          <input
+            id="verificationCode"
+            type="text"
+            [(ngModel)]="verificationCode"
+            name="verificationCode"
+            [placeholder]="'features.auth.register.enter6DigitCode' | translate"
+            maxlength="6"
+            class="form-input verification-input w-full px-4 py-3 rounded-lg text-2xl text-center tracking-[0.5rem] font-bold transition-all backdrop-blur-sm"
+            required
+          />
+          <div class="resend-section text-center mt-4">
+            <p class="resend-text m-0 mb-2 text-gray-500">{{ 'features.auth.register.didntReceiveCode' | translate }}</p>
+            <button
+              type="button"
+              (click)="resendCode()"
+              [disabled]="!canResend() || loading()"
+              class="resend-button bg-transparent border-none text-primary cursor-pointer font-semibold px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:underline"
+              [attr.aria-label]="'features.auth.register.resendCode' | translate">
+              <span *ngIf="!canResend() && !loading()">{{ 'features.auth.register.resendIn' | translate }} {{ resendCountdown() }}s</span>
+              <span *ngIf="canResend() && !loading()">{{ 'features.auth.register.resendCode' | translate }}</span>
+              <span *ngIf="loading()">{{ 'features.auth.register.sending' | translate }}</span>
+            </button>
+          </div>
+        </div>
+
+        <app-glass-button
+          type="submit"
+          variant="primary"
+          size="lg"
+          [loading]="loading()"
+          [disabled]="loading()"
+          [fullWidth]="true"
+          [ariaLabel]="'features.auth.register.verifyEmail' | translate">
+          {{ loading() ? ('features.auth.register.verifying' | translate) : ('features.auth.register.verifyEmail' | translate) }}
+        </app-glass-button>
+      </form>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div *ngIf="currentStep() === 'success'" class="step-content success-content text-center">
+      <div class="success-icon text-success-500 mb-6">
+        <app-icon name="check-circle" size="xl" color="text-success-500"></app-icon>
+      </div>
+      <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ 'features.auth.register.accountCreated' | translate }}</h1>
+      <p class="subtitle m-0 mb-6 text-white/80 dark:text-gray-600">{{ 'features.auth.register.accountCreatedSuccess' | translate }}</p>
+      <app-glass-button
+        type="button"
+        variant="primary"
+        size="lg"
+        (clicked)="goToLogin()"
+        [fullWidth]="true"
+        [ariaLabel]="'features.auth.register.goToLogin' | translate">
+        {{ 'features.auth.register.goToLogin' | translate }}
+      </app-glass-button>
+    </div>
+  </div>
+</section>
+
