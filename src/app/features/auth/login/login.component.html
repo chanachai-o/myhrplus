@@ -1,213 +1,186 @@
-<section class="login-container">
-  <!-- Language and Theme Toggle Controls -->
-  <div class="login-controls">
-    <div class="login-controls-group">
-      <!-- Language Switcher -->
-      <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
-        <app-glass-button
+<div class="login-container min-h-screen flex items-center justify-center p-4 relative">
+  <!-- Background Graphics -->
+  <div class="login-bg-graphics">
+    <div class="bg-gradient-overlay"></div>
+    <div class="bg-grid-pattern"></div>
+  </div>
+
+  <!-- Header with Back to Landing Button and Language/Theme Controls -->
+  <div class="login-header fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/10 p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button
           type="button"
-          variant="secondary"
-          size="sm"
-          (clicked)="toggleLanguageMenu()"
-          [ariaLabel]="'layout.header.changeLanguage' | translate"
-          [title]="'layout.header.changeLanguage' | translate"
-          [attr.aria-expanded]="showLanguageMenu"
-          [attr.aria-controls]="'language-menu'"
-          customClass="control-button language-button">
-          <img [src]="currentLanguage.flagPath" [alt]="currentLanguage.name" class="control-icon w-5 h-5 rounded-sm object-cover" />
-        </app-glass-button>
-
-        <!-- Language Dropdown -->
-        <app-glass-card
-          *ngIf="showLanguageMenu"
-          variant="strong"
-          padding="p-0"
-          customClass="language-dropdown absolute right-0 top-full mt-2 w-48
-                       rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
-                       z-50 overflow-hidden
-                       backdrop-blur-xl
-                       animate-scale-in
-                       [animation-duration:200ms]
-                       origin-top-right">
-          <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
-            <button
-              *ngFor="let lang of availableLanguages; let i = index"
-              type="button"
-              role="menuitem"
-              (click)="changeLanguage(lang.code)"
-              [class.active]="currentLang === lang.code"
-              [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.name"
-              [attr.aria-current]="currentLang === lang.code ? 'true' : 'false'"
-              [style.--animation-delay]="(i * 50) + 'ms'"
-              class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3
-                     hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
-                     hover:translate-x-1 hover:scale-[1.02]
-                     active:scale-[0.98]
-                     transition-all duration-200 ease-out
-                     animate-fade-in">
-              <img [src]="lang.flagPath" [alt]="lang.name" class="w-5 h-5 rounded-sm object-cover" />
-              <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ lang.name }}</span>
-              <app-icon *ngIf="currentLang === lang.code" name="check" size="sm" color="text-primary theme-myhr:text-primary"></app-icon>
-            </button>
-          </div>
-        </app-glass-card>
+          (click)="navigateToLanding()"
+          class="back-to-home glass-card px-3 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
+          [attr.aria-label]="'features.auth.login.backToHome' | translate">
+          <app-icon name="arrow-left" size="sm"></app-icon>
+          <span class="hidden md:inline font-medium">{{ 'features.auth.login.home' | translate }}</span>
+        </button>
+        <div class="text-3xl">🎥</div>
+        <h1 class="text-xl font-bold gradient-text">IVAP Platform</h1>
       </div>
+      <div class="flex items-center space-x-3">
+        <!-- Language Switcher -->
+        <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
+          <app-glass-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            (clicked)="toggleLanguageMenu()"
+            [ariaLabel]="'layout.header.changeLanguage' | translate"
+            [title]="'layout.header.changeLanguage' | translate"
+            [attr.aria-expanded]="showLanguageMenu"
+            [attr.aria-controls]="'language-menu'"
+            customClass="control-button language-button">
+            <img [src]="currentLanguage.flagPath" [alt]="currentLanguage.name" class="control-icon w-5 h-5 rounded-sm object-cover" />
+          </app-glass-button>
 
-      <!-- Theme Toggle -->
-      <app-theme-toggle></app-theme-toggle>
+          <!-- Language Dropdown -->
+          <app-glass-card
+            *ngIf="showLanguageMenu"
+            variant="strong"
+            padding="p-0"
+            customClass="language-dropdown absolute right-0 top-full mt-2 w-48
+                         rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
+                         z-50 overflow-hidden
+                         backdrop-blur-xl
+                         animate-scale-in
+                         [animation-duration:200ms]
+                         origin-top-right">
+            <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
+              <button
+                *ngFor="let lang of availableLanguages; let i = index"
+                type="button"
+                role="menuitem"
+                (click)="changeLanguage(lang.code)"
+                [class.active]="currentLang === lang.code"
+                [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.name"
+                [attr.aria-current]="currentLang === lang.code ? 'true' : 'false'"
+                [style.--animation-delay]="(i * 50) + 'ms'"
+                class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3
+                       hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
+                       hover:translate-x-1 hover:scale-[1.02]
+                       active:scale-[0.98]
+                       transition-all duration-200 ease-out
+                       animate-fade-in">
+                <img [src]="lang.flagPath" [alt]="lang.name" class="w-5 h-5 rounded-sm object-cover" />
+                <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ lang.name }}</span>
+                <app-icon *ngIf="currentLang === lang.code" name="check" size="sm" color="text-primary theme-myhr:text-primary"></app-icon>
+              </button>
+            </div>
+          </app-glass-card>
+        </div>
+
+        <!-- Theme Toggle -->
+        <app-theme-toggle></app-theme-toggle>
+      </div>
     </div>
   </div>
 
-  <div class="login-layout">
-    <!-- Left Section - Promotional (40%) -->
-    <div class="login-left-section">
-      <!-- Animated Background Vectors -->
-      <div class="login-vector-bg">
-        <svg class="vector-shape vector-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50,50 Q100,0 150,50 T250,50" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"/>
-          <circle cx="100" cy="100" r="30" fill="rgba(255,255,255,0.05)"/>
-          <path d="M30,170 Q100,120 170,170" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
-        </svg>
-        <svg class="vector-shape vector-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="100,20 180,80 140,180 60,180 20,80" fill="rgba(255,255,255,0.03)"/>
-          <circle cx="100" cy="100" r="40" fill="rgba(255,255,255,0.04)"/>
-        </svg>
-        <svg class="vector-shape vector-3" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20,100 Q50,50 100,50 T180,100" stroke="rgba(255,255,255,0.06)" stroke-width="2" fill="none"/>
-          <circle cx="50" cy="150" r="25" fill="rgba(255,255,255,0.04)"/>
-          <circle cx="150" cy="50" r="20" fill="rgba(255,255,255,0.05)"/>
-        </svg>
-      </div>
-
-      <!-- Floating Particles -->
-      <div class="particles">
-        <div class="particle particle-1"></div>
-        <div class="particle particle-2"></div>
-        <div class="particle particle-3"></div>
-        <div class="particle particle-4"></div>
-        <div class="particle particle-5"></div>
-      </div>
-
-      <div class="login-left-content">
-        <div class="login-left-pattern"></div>
-        <div class="login-left-logo animated-logo">
-          <img src="assets/images/logo/ivap.jpg" alt="IVAP Logo" class="login-left-logo-img" />
-        </div>
-        <div class="login-left-text animated-text">
-          <h1 class="login-left-title">{{ 'features.auth.login.welcome' | translate }}</h1>
-          <p class="login-left-subtitle">{{ 'features.auth.login.subtitle' | translate }}</p>
-        </div>
-      </div>
+  <app-glass-card customClass="max-w-md w-full relative z-10 mt-20">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent mb-2">
+        {{ 'features.auth.login.title' | translate }}
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        {{ 'features.auth.login.subtitle' | translate }}
+      </p>
     </div>
 
-    <!-- Right Section - Login Form (60%) -->
-    <div class="login-right-section">
-      <div class="login-right-content">
-        <!-- Logo Section -->
-        <div class="login-logo-section animated-logo-right">
-          <div class="login-logo">
-            <img
-              src="assets/images/logo/ivap.jpg"
-              alt="IVAP Logo"
-              class="login-logo-img"
-              [attr.aria-label]="'IVAP Logo'" />
-          </div>
-        </div>
-
-        <!-- Login Title -->
-        <div class="login-title-section animated-title">
-          <h2 class="login-title thai-text">{{ 'features.auth.login.title' | translate }}</h2>
-          <p class="login-subtitle thai-text">{{ 'features.auth.login.subtitle' | translate }}</p>
-        </div>
-
-        <!-- Login Form -->
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" [attr.aria-label]="'features.auth.login.formAriaLabel' | translate">
-          <!-- Username Field -->
-          <div class="form-field">
-            <app-glass-input
-              [label]="'features.auth.login.username' | translate"
-              [placeholder]="'features.auth.login.username' | translate"
-              type="text"
-              formControlName="username"
-              [required]="true"
-              [useFormValidationMessages]="true"
-              [ariaLabel]="'features.auth.login.username' | translate">
-              <app-form-validation-messages [control]="loginForm.get('username')"></app-form-validation-messages>
-            </app-glass-input>
-          </div>
-
-          <!-- Password Field -->
-          <div class="form-field">
-            <app-glass-input
-              [label]="'features.auth.login.password' | translate"
-              [placeholder]="'features.auth.login.password' | translate"
-              type="password"
-              formControlName="password"
-              (keyup)="onPasswordKeyUp($event)"
-              [required]="true"
-              [useFormValidationMessages]="true"
-              [ariaLabel]="'features.auth.login.password' | translate">
-              <app-form-validation-messages [control]="loginForm.get('password')"></app-form-validation-messages>
-            </app-glass-input>
-          </div>
-
-          <!-- Database Selection Field -->
-          <div class="form-field" *ngIf="dbList.length > 0">
-            <app-glass-select
-              [label]="'features.auth.login.selectDatabase' | translate"
-              [placeholder]="'features.auth.login.selectDatabase' | translate"
-              [options]="dbSelectOptions"
-              [(ngModel)]="dbSelected"
-              [ngModelOptions]="{standalone: true}"
-              (ngModelChange)="onDbChangeSelect($event)"
-              [ariaLabel]="'features.auth.login.selectDatabase' | translate">
-            </app-glass-select>
-
-
-          </div>
-
-          <!-- Remember Me & Forgot Password -->
-          <div class="form-options">
-            <app-glass-checkbox
-              [label]="'features.auth.login.rememberMe' | translate"
-              [(ngModel)]="rememberMe"
-              [ngModelOptions]="{standalone: true}"
-              [ariaLabel]="'features.auth.login.rememberMe' | translate">
-            </app-glass-checkbox>
-            <button
-              type="button"
-              (click)="onForgotPassword()"
-              class="forgot-password-link thai-text"
-              [attr.aria-label]="'features.auth.login.forgotPassword' | translate">
-              {{ 'features.auth.login.forgotPassword' | translate }}
-            </button>
-          </div>
-
-          <!-- Error Message -->
-          <app-alert
-            *ngIf="errorMessage"
-            variant="error"
-            [dismissible]="false"
-            [title]="'features.auth.login.error.title' | translate"
-            [message]="errorMessage">
-          </app-alert>
-
-          <!-- Submit Button -->
-          <div class="form-submit">
-            <app-glass-button
-              type="submit"
-              variant="primary"
-              size="lg"
-              [loading]="loading"
-              [disabled]="loading || !loginForm.get('username')?.value || !loginForm.get('password')?.value"
-              [fullWidth]="true"
-              [ariaLabel]="'features.auth.login.signIn' | translate">
-              {{ loading ? ('features.auth.login.signingIn' | translate) : ('features.auth.login.signIn' | translate) }}
-            </app-glass-button>
-          </div>
-        </form>
-
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Username -->
+      <div>
+        <app-glass-input
+          [label]="'features.auth.login.username' | translate"
+          [placeholder]="'features.auth.login.username' | translate"
+          type="text"
+          formControlName="username"
+          [required]="true"
+          [useFormValidationMessages]="true"
+          [ariaLabel]="'features.auth.login.username' | translate">
+          <app-form-validation-messages [control]="loginForm.get('username')"></app-form-validation-messages>
+        </app-glass-input>
       </div>
+
+      <!-- Password -->
+      <div>
+        <app-glass-input
+          [label]="'features.auth.login.password' | translate"
+          [placeholder]="'features.auth.login.password' | translate"
+          type="password"
+          formControlName="password"
+          [required]="true"
+          [useFormValidationMessages]="true"
+          [ariaLabel]="'features.auth.login.password' | translate">
+          <app-form-validation-messages [control]="loginForm.get('password')"></app-form-validation-messages>
+        </app-glass-input>
+      </div>
+
+      <!-- Database Selection (if available) -->
+      <div *ngIf="dbList.length > 0">
+        <app-glass-select
+          [label]="'features.auth.login.selectDatabase' | translate"
+          [placeholder]="'features.auth.login.selectDatabase' | translate"
+          [options]="dbSelectOptions"
+          [(ngModel)]="dbSelected"
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="onDbChangeSelect($event)"
+          [ariaLabel]="'features.auth.login.selectDatabase' | translate">
+        </app-glass-select>
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="flex items-center justify-between">
+        <app-glass-checkbox
+          [label]="'features.auth.login.rememberMe' | translate"
+          [(ngModel)]="rememberMe"
+          [ngModelOptions]="{standalone: true}"
+          [ariaLabel]="'features.auth.login.rememberMe' | translate">
+        </app-glass-checkbox>
+        <button
+          type="button"
+          (click)="onForgotPassword()"
+          class="text-sm text-primary hover:underline thai-text"
+          [attr.aria-label]="'features.auth.login.forgotPassword' | translate">
+          {{ 'features.auth.login.forgotPassword' | translate }}
+        </button>
+      </div>
+
+      <!-- Error Message -->
+      <app-alert
+        *ngIf="errorMessage()"
+        variant="error"
+        [dismissible]="false"
+        [title]="'features.auth.login.error.title' | translate"
+        [message]="errorMessage()">
+      </app-alert>
+
+      <!-- Submit Button -->
+      <app-glass-button
+        type="submit"
+        variant="primary"
+        [fullWidth]="true"
+        [loading]="loading()"
+        [disabled]="loginForm.invalid || loading()"
+        [attr.aria-label]="'features.auth.login.signIn' | translate"
+        [attr.aria-busy]="loading()">
+        {{ loading() ? ('features.auth.login.signingIn' | translate) : ('features.auth.login.signIn' | translate) }}
+      </app-glass-button>
+    </form>
+
+    <!-- Register Button -->
+    <div class="mt-6">
+      <app-glass-button
+        type="button"
+        (clicked)="navigateToRegister()"
+        variant="secondary"
+        [fullWidth]="true"
+        [attr.aria-label]="'features.auth.login.createAccount' | translate">
+        {{ 'features.auth.login.createAccount' | translate }}
+      </app-glass-button>
     </div>
-  </div>
-</section>
+  </app-glass-card>
+</div>

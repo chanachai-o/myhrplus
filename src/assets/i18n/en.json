@@ -2051,7 +2051,10 @@
         "subtitle": "Intelligent Video Analytics Platform - Complete visitor management, access control, and video analytics system",
         "title": "Sign In",
         "username": "Username or Email",
-        "welcome": "Welcome to IVAP"
+        "welcome": "Welcome to IVAP",
+        "createAccount": "Create Account",
+        "home": "Home",
+        "backToHome": "Back to Home"
       }
     }
   },
