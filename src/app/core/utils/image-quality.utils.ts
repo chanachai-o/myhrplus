@@ -1,13 +1,57 @@
 /**
  * Image Quality Assessment Utilities
  *
- * ฟังก์ชันสำหรับประเมินคุณภาพของภาพก่อนส่งไปยัง API
+ * ฟังก์ชันสำหรับประเมินคุณภาพของภาพก่อนส่งไปยัง AI
+ * - createImageData: สร้าง ImageData จาก File object
  * - calculateBrightness: คำนวณความสว่างของภาพ
  * - calculateLaplacian: คำนวณความชัดของภาพ (Blur Detection)
  *
  * @author Intelligent Video Analytics Platform
  * @version 1.0.0
  */
+
+/**
+ * สร้าง ImageData จาก File object
+ * @param file - ไฟล์ภาพ
+ * @returns Promise<ImageData> - ข้อมูลภาพจาก Canvas ImageData
+ */
+export async function createImageData(file: File): Promise<ImageData> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        resolve(imageData);
+      };
+
+      img.onerror = () => {
+        reject(new Error('Failed to load image'));
+      };
+
+      img.src = result;
+    };
+
+    reader.onerror = () => {
+      reject(new Error('Failed to read file'));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 
 /**
  * คำนวณความสว่างเฉลี่ยของภาพ
@@ -132,7 +176,7 @@ export function assessImageQuality(imageData: ImageData): ImageQualityAssessment
 }
 
 /**
- * ตรวจสอบว่าภาพมีคุณภาพเพียงพอสำหรับการใช้งานทั่วไปหรือไม่
+ * ตรวจสอบว่าภาพมีคุณภาพเพียงพอสำหรับ Face Recognition หรือไม่
  * @param imageData - ข้อมูลภาพจาก Canvas ImageData
  * @returns true ถ้าภาพมีคุณภาพเพียงพอ
  */
@@ -142,53 +186,11 @@ export function isImageQualitySufficient(imageData: ImageData): boolean {
 }
 
 /**
- * ตรวจสอบว่าภาพมีคุณภาพเพียงพอสำหรับการใช้งานที่ต้องการคุณภาพสูงหรือไม่
+ * ตรวจสอบว่าภาพมีคุณภาพเพียงพอสำหรับ Group Recognition หรือไม่
  * @param imageData - ข้อมูลภาพจาก Canvas ImageData
  * @returns true ถ้าภาพมีคุณภาพเพียงพอ
  */
-export function isImageQualitySufficientForHighQuality(imageData: ImageData): boolean {
+export function isImageQualitySufficientForGroup(imageData: ImageData): boolean {
   const assessment = assessImageQuality(imageData);
   return assessment.quality === 'excellent';
 }
-
-/**
- * สร้าง ImageData จาก File หรือ Image element
- * @param source - File หรือ HTMLImageElement
- * @returns Promise<ImageData>
- */
-export async function createImageData(source: File | HTMLImageElement): Promise<ImageData> {
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-      reject(new Error('Cannot get canvas context'));
-      return;
-    }
-
-    if (source instanceof File) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          resolve(imageData);
-        };
-        img.onerror = () => reject(new Error('Failed to load image'));
-        img.src = e.target?.result as string;
-      };
-      reader.onerror = () => reject(new Error('Failed to read file'));
-      reader.readAsDataURL(source);
-    } else {
-      canvas.width = source.width;
-      canvas.height = source.height;
-      ctx.drawImage(source, 0, 0);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      resolve(imageData);
-    }
-  });
-}
-
