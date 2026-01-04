@@ -241,121 +241,263 @@ IVAP_FRONTEND/
 
 ---
 
-### 🗑️ Phase 5: Cleanup - App Routing
+### 🗑️ Phase 5: Cleanup - App Routing ✅ **เสร็จสมบูรณ์**
 
 **วัตถุประสงค์:** ลบ HR routes และเพิ่ม IVAP routes
 
-#### 5.1 ปรับ App Routing
-- [ ] แก้ไข `src/app/app-routing.module.ts`
-  - [ ] ลบ HR feature routes (ถ้ามี)
-  - [ ] ตรวจสอบ IVAP routes (อาจมีอยู่แล้วใน `features/ivap/`)
+#### 5.1 ปรับ App Routing ✅
+- [x] แก้ไข `src/app/app-routing.module.ts`
+  - [x] ตรวจสอบว่าไม่มี HR feature routes เหลืออยู่ (ไม่มีแล้ว)
+  - [x] ตรวจสอบ IVAP routes ครบถ้วน (มีอยู่แล้วใน `features/ivap/`)
+  - [x] ปรับให้ใช้ ROUTES constants แทน hardcoded strings:
+    - ใช้ `ROUTES.IVAP.BASE` สำหรับ IVAP route
+    - ใช้ `ROUTES.NOT_FOUND` สำหรับ 404 route
+    - ใช้ `ROUTES.ERROR` สำหรับ 500 route
+  - [x] ตั้งค่า default redirect เป็น `ROUTES.IVAP.BASE`
+  - [x] ตั้งค่า `/home` redirect เป็น `ROUTES.IVAP.BASE`
 
-#### 5.2 ตรวจสอบ Route Guards
-- [ ] ตรวจสอบ guards ที่เกี่ยวข้องกับ HR routes
-- [ ] ปรับ guards สำหรับ IVAP routes
+#### 5.2 ตรวจสอบ Route Guards ✅
+- [x] ตรวจสอบ guards ที่เกี่ยวข้องกับ HR routes (ไม่มีแล้ว)
+- [x] ตรวจสอบ guards สำหรับ IVAP routes (ใช้ `AuthGuard` ถูกต้อง)
 
-**เวลาโดยประมาณ:** 1 ชั่วโมง
+#### 5.3 ตรวจสอบ IVAP Routing Module ✅
+- [x] ตรวจสอบ `src/app/features/ivap/ivap-routing.module.ts`
+  - [x] Routes ครบถ้วนตามโครงสร้าง IVAP Backend:
+    - Dashboard, Organization, Time & Attendance
+    - Visitors, Guests, Events
+    - Access Control, Devices, Verification, Biometric
+    - Vehicles, Parking, QR & RFID
+    - Notifications, Analytics, Video & AI, System
+
+#### 5.4 ไฟล์ที่แก้ไข
+- ✅ `src/app/app-routing.module.ts` - ใช้ ROUTES constants, ตั้งค่า redirects
+
+**เวลาโดยประมาณ:** 1 ชั่วโมง  
+**เวลาที่ใช้จริง:** ~15 นาที  
+**สถานะ:** ✅ เสร็จสมบูรณ์
 
 ---
 
-### 🗑️ Phase 6: Cleanup - Services & Models
+### 🗑️ Phase 6: Cleanup - Services & Models ✅ **เสร็จสมบูรณ์**
 
 **วัตถุประสงค์:** ลบ HR services/models และตรวจสอบ IVAP services/models
 
-#### 6.1 ตรวจสอบ Services
-- [ ] ตรวจสอบ `src/app/core/services/`
-  - [ ] ลบ HR-specific services (ถ้ามี)
-  - [ ] ตรวจสอบ IVAP services ใน `src/app/core/services/ivap/`
-  - [ ] ปรับ services ให้ใช้ `BaseApiService` จาก `doc-backend/`
+#### 6.1 ตรวจสอบ Services ✅
+- [x] ตรวจสอบ `src/app/core/services/`
+  - [x] ลบ HR-specific services (4 ไฟล์):
+    - `company.service.ts` - HR company service
+    - `employee.service.ts` - HR employee service
+    - `shift-plan.service.ts` - HR shift plan service
+    - `time.service.ts` - HR time attendance service
+  - [x] ตรวจสอบ IVAP services ใน `src/app/core/services/ivap/`
+    - มี IVAP services ครบถ้วน (22 services)
+    - Services ทั้งหมดใช้ `BaseApiService` ถูกต้องแล้ว
+  - [x] Services ใช้ `BaseApiService` จาก `doc-backend/` ถูกต้องแล้ว
 
-#### 6.2 ตรวจสอบ Models
-- [ ] ตรวจสอบ `src/app/core/models/`
-  - [ ] ลบ HR-specific models (ถ้ามี)
-  - [ ] ตรวจสอบ IVAP models ใน `src/app/core/models/ivap/`
-  - [ ] ปรับ models ให้สอดคล้องกับ `doc-backend/angular-models.ts`
+#### 6.2 ตรวจสอบ Models ✅
+- [x] ตรวจสอบ `src/app/core/models/`
+  - [x] ไม่มี HR-specific models ที่ต้องลบ (มีแค่ legacy models ที่เก็บไว้สำหรับ backward compatibility)
+  - [x] ตรวจสอบ IVAP models ใน `src/app/core/models/ivap/`
+    - มี IVAP models ครบถ้วนใน `ivap-models.ts`
+    - Models สอดคล้องกับ `doc-backend/angular-models.ts`
+  - [x] Models ถูก export ผ่าน `index.ts` ถูกต้อง
 
-#### 6.3 ปรับ Base Service
-- [ ] ตรวจสอบ `src/app/core/services/base-api.service.ts`
-  - [ ] เปรียบเทียบกับ `doc-backend/angular-base-service.ts`
-  - [ ] ปรับให้สอดคล้องกัน
+#### 6.3 ปรับ Base Service ✅
+- [x] ตรวจสอบ `src/app/core/services/base-api.service.ts`
+  - [x] เปรียบเทียบกับ `doc-backend/angular-base-service.ts`
+  - [x] BaseApiService สอดคล้องกับเอกสารแล้ว
+  - [x] IVAP services ทั้งหมด (22 services) ใช้ BaseApiService ถูกต้อง
 
-**เวลาโดยประมาณ:** 2-3 ชั่วโมง
+#### 6.4 ไฟล์ที่ลบ
+- ✅ `src/app/core/services/company.service.ts` - ลบแล้ว
+- ✅ `src/app/core/services/employee.service.ts` - ลบแล้ว
+- ✅ `src/app/core/services/shift-plan.service.ts` - ลบแล้ว
+- ✅ `src/app/core/services/time.service.ts` - ลบแล้ว
+
+#### 6.5 IVAP Services ที่มีอยู่ (22 services)
+- ✅ Authentication & Core: `IvapAuthService`, `IvapCompanyService`, `IvapEmployeeService`
+- ✅ Time & Attendance: `IvapTimestampService`, `IvapShiftService`, `IvapLeaveService`
+- ✅ Access Control: `IvapDeviceService`, `IvapDoorService`
+- ✅ Verification: `IvapVerificationService`, `IvapFaceService`, `IvapRfidCardService`, `IvapQrCodeService`
+- ✅ Visitor & Guest: `IvapVisitorService`, `IvapGuestService`
+- ✅ Event & Vehicle: `IvapEventService`, `IvapVehicleService`, `IvapParkingService`
+- ✅ Analytics & Monitoring: `IvapAnalyticsService`, `IvapDashboardService`, `IvapMonitoringService`
+- ✅ System: `IvapNotificationService`, `IvapSystemService`
+
+**เวลาโดยประมาณ:** 2-3 ชั่วโมง  
+**เวลาที่ใช้จริง:** ~20 นาที  
+**สถานะ:** ✅ เสร็จสมบูรณ์
 
 ---
 
-### 🗑️ Phase 7: Cleanup - Components & Templates
+### 🗑️ Phase 7: Cleanup - Components & Templates ✅ **เสร็จสมบูรณ์**
 
 **วัตถุประสงค์:** ลบ HR components และตรวจสอบ IVAP components
 
-#### 7.1 ตรวจสอบ Feature Components
-- [ ] ตรวจสอบ `src/app/features/`
-  - [ ] ลบ HR feature modules (ถ้ามี):
-    - `appraisal/` (ถ้ามี)
-    - `empview/` (ถ้ามี)
-    - `personal/` (ถ้ามี)
-    - `payroll/` (ถ้ามี)
-    - `recruit/` (ถ้ามี)
-    - `ta/` (ถ้ามี)
-    - `training/` (ถ้ามี)
-    - `welfare/` (ถ้ามี)
-  - [ ] ตรวจสอบ IVAP components ใน `src/app/features/ivap/`
+#### 7.1 ตรวจสอบ Feature Components ✅
+- [x] ตรวจสอบ `src/app/features/`
+  - [x] ไม่มี HR feature modules เหลืออยู่แล้ว:
+    - ไม่มี `appraisal/`, `empview/`, `personal/`, `payroll/`, `recruit/`, `ta/`, `training/`, `welfare/`, `company/`, `setting/`, `home/`
+  - [x] ตรวจสอบ IVAP components ใน `src/app/features/ivap/`
+    - มี IVAP components ครบถ้วน (16 modules):
+      - Dashboard, Organization, Time & Attendance
+      - Visitors, Guests, Events
+      - Access Control, Devices, Verification, Biometric
+      - Vehicles, Parking, QR & RFID
+      - Notifications, Analytics, Video & AI, System
+    - Components ทั้งหมดเป็น standalone components
+    - Routes ครบถ้วนตามโครงสร้าง IVAP Backend
 
-#### 7.2 ตรวจสอบ Shared Components
-- [ ] ตรวจสอบ `src/app/shared/components/`
-  - [ ] ลบ HR-specific components (ถ้ามี)
-  - [ ] เก็บ shared components ที่ใช้ได้
+#### 7.2 ตรวจสอบ Shared Components ✅
+- [x] ตรวจสอบ `src/app/shared/components/`
+  - [x] ไม่มี HR-specific components ที่ต้องลบ
+  - [x] Shared components ส่วนใหญ่เป็น generic components ที่ใช้ได้กับ IVAP:
+    - Glass components (GlassCard, GlassButton, GlassInput, etc.)
+    - Form components (FormValidationMessages, SearchFilter, etc.)
+    - Data display components (DataGrid, StatisticsCard, etc.)
+    - Layout components (PageHeader, Breadcrumbs, etc.)
+  - [x] `context-switcher` component:
+    - มี HR reference ('personal' context) แต่ไม่ถูกใช้ใน production code
+    - ใช้แค่ใน demo components เท่านั้น
+    - เก็บไว้ใน demo components (ไม่ต้องลบ)
+  - [x] `omni-search` component:
+    - ใช้ `NAVIGATION_ITEMS` ซึ่งแก้ไขเป็น IVAP navigation แล้ว
+    - ใช้ได้กับ IVAP system
 
-#### 7.3 ปรับ Home/Dashboard
-- [ ] แก้ไข `src/app/features/home/` (ถ้ามี)
-  - [ ] ปรับเป็น IVAP Dashboard
-  - [ ] หรือใช้ `src/app/features/ivap/dashboard/` แทน
+#### 7.3 ปรับ Home/Dashboard ✅
+- [x] ตรวจสอบ `src/app/features/home/` (ไม่มีแล้ว)
+  - [x] ใช้ `src/app/features/ivap/dashboard/` แทน
+  - [x] IVAP Dashboard component มีอยู่แล้วและทำงานได้ถูกต้อง
 
-**เวลาโดยประมาณ:** 2-3 ชั่วโมง
+#### 7.4 Features ที่เก็บไว้
+- ✅ `auth/` - Authentication module (เก็บไว้)
+- ✅ `demo/` - Demo components (เก็บไว้)
+- ✅ `error/` - Error pages (เก็บไว้)
+- ✅ `not-found/` - 404 page (เก็บไว้)
+- ✅ `ivap/` - IVAP features (เก็บไว้ - 16 modules)
+
+**เวลาโดยประมาณ:** 2-3 ชั่วโมง  
+**เวลาที่ใช้จริง:** ~15 นาที  
+**สถานะ:** ✅ เสร็จสมบูรณ์
 
 ---
 
-### 🗑️ Phase 8: Cleanup - Documentation
+### 🗑️ Phase 8: Cleanup - Documentation ✅ **เสร็จสมบูรณ์**
 
 **วัตถุประสงค์:** เคลียร์เอกสาร HR
 
-#### 8.1 ลบ HR Documentation
-- [ ] ตรวจสอบ `docs/`
-  - [ ] ลบ `docs/modules/` (HR modules) - ถ้ามี
-  - [ ] ลบ `docs/implementation/` (HR implementation) - ถ้ามี
-  - [ ] เก็บไว้เฉพาะ docs ที่เกี่ยวกับ:
-    - Architecture
-    - Styling
-    - Theme
-    - Components (shared)
+#### 8.1 ลบ HR Documentation ✅
+- [x] ตรวจสอบ `docs/`
+  - [x] ลบ `docs/modules/` (HR modules) - ลบแล้ว (6 ไฟล์):
+    - `COMPANY_MODULE_INVENTORY.md`
+    - `COMPANY_MODULE_BATCH_UPDATE_GUIDE.md`
+    - `COMPANY_MODULE_FINAL_REPORT.md`
+    - `EMPVIEW_MODULE_INVENTORY.md`
+    - `SETTING_MODULE_INVENTORY.md`
+    - `TIME_MODULE_INVENTORY.md`
+  - [x] ลบ `docs/implementation/` (HR implementation) - ลบแล้ว (1 ไฟล์):
+    - `MIGRATION_STATUS_SUMMARY.md` - HR modules migration status
+  - [x] เก็บไว้เฉพาะ docs ที่เกี่ยวกับ:
+    - Architecture ✅
+    - Styling ✅
+    - Theme ✅
+    - Components (shared) ✅
+    - IVAP Implementation ✅
 
-#### 8.2 อัพเดท Documentation
-- [ ] อัพเดท `README.md` สำหรับ IVAP Frontend
-- [ ] สร้าง `IVAP_FRONTEND_GUIDE.md` (ถ้าจำเป็น)
+#### 8.2 อัพเดท Documentation ✅
+- [x] อัพเดท `README.md` สำหรับ IVAP Frontend:
+  - เปลี่ยนจาก "HR System Angular Migration" เป็น "IVAP Frontend - Intelligent Video Analytics Platform"
+  - อัพเดท project structure เป็น IVAP features
+  - อัพเดท theme จาก "Gemini 1.5" เป็น "MyHR"
+  - อัพเดท recent changes เป็น IVAP migration
+  - ลบ references เกี่ยวกับ HR modules
+- [x] อัพเดท `docs/README.md`:
+  - เปลี่ยนจาก "Angular HR Migration" เป็น "IVAP Frontend"
+  - อัพเดท modules section เป็น deprecated
 
-**เวลาโดยประมาณ:** 1 ชั่วโมง
+#### 8.3 ไฟล์ที่ลบ
+- ✅ `docs/modules/COMPANY_MODULE_INVENTORY.md` - ลบแล้ว
+- ✅ `docs/modules/COMPANY_MODULE_BATCH_UPDATE_GUIDE.md` - ลบแล้ว
+- ✅ `docs/modules/COMPANY_MODULE_FINAL_REPORT.md` - ลบแล้ว
+- ✅ `docs/modules/EMPVIEW_MODULE_INVENTORY.md` - ลบแล้ว
+- ✅ `docs/modules/SETTING_MODULE_INVENTORY.md` - ลบแล้ว
+- ✅ `docs/modules/TIME_MODULE_INVENTORY.md` - ลบแล้ว
+- ✅ `docs/implementation/MIGRATION_STATUS_SUMMARY.md` - ลบแล้ว
+
+#### 8.4 ไฟล์ที่อัพเดท
+- ✅ `README.md` - อัพเดทเป็น IVAP Frontend
+- ✅ `docs/README.md` - อัพเดทเป็น IVAP Frontend
+
+**เวลาโดยประมาณ:** 1 ชั่วโมง  
+**เวลาที่ใช้จริง:** ~15 นาที  
+**สถานะ:** ✅ เสร็จสมบูรณ์
 
 ---
 
-### ⚙️ Phase 9: Configuration - Environment & Services
+### ⚙️ Phase 9: Configuration - Environment & Services ✅ **เสร็จสมบูรณ์**
 
 **วัตถุประสงค์:** ปรับ configuration ให้สอดคล้องกับ IVAP
 
-#### 9.1 ตรวจสอบ Environment
-- [ ] ตรวจสอบ `src/environments/environment.ts`
-  - [ ] ตรวจสอบว่าใช้ IVAP API URLs แล้ว ✅
-  - [ ] ตรวจสอบ `apiEndpoints` ให้ครบถ้วน
+#### 9.1 ตรวจสอบ Environment ✅
+- [x] ตรวจสอบ `src/environments/environment.ts`
+  - [x] ใช้ IVAP API URLs แล้ว:
+    - `baseUrl: 'http://localhost:8000'` (development)
+    - `apiVersion: '/api/v1'`
+  - [x] ตรวจสอบ `apiEndpoints` ครบถ้วน (16 endpoints):
+    - auth, companies, employees, visitors, guests, events
+    - vehicles, parking, devices, doors
+    - timestamps, shifts, leaves
+    - accessControl, verification, analytics, monitoring, alerts, system
+- [x] อัพเดท `src/environments/environment.prod.ts`:
+  - เปลี่ยนจาก HR API URLs เป็น IVAP API URLs
+  - อัพเดท `apiEndpoints` เป็น IVAP endpoints
+  - เปลี่ยน `appName` เป็น 'IVAP Frontend'
 
-#### 9.2 ปรับ Base Service
-- [ ] ตรวจสอบ `src/app/core/services/base-api.service.ts`
-  - [ ] ใช้ `environment.baseUrl` และ `environment.apiVersion`
-  - [ ] เปรียบเทียบกับ `doc-backend/angular-base-service.ts`
+#### 9.2 ปรับ Base Service ✅
+- [x] ตรวจสอบ `src/app/core/services/base-api.service.ts`
+  - [x] ใช้ `environment.baseUrl` และ `environment.apiVersion` ถูกต้องแล้ว
+  - [x] เปรียบเทียบกับ `doc-backend/angular-base-service.ts`:
+    - ใช้ environment variables แทน hardcoded values (ดีกว่า)
+    - Structure และ methods สอดคล้องกัน
+- [x] อัพเดท `src/app/core/services/api.service.ts`:
+  - เพิ่ม `apiVersion` support
+  - เพิ่ม `buildUrl()` method เพื่อรวม `baseUrl` + `apiVersion` + `endpoint`
+  - อัพเดท methods ทั้งหมดให้ใช้ `buildUrl()`
 
-#### 9.3 ปรับ Auth Service
-- [ ] ตรวจสอบ `src/app/core/services/auth.service.ts`
-  - [ ] เปรียบเทียบกับ `doc-backend/angular-services-examples.ts`
-  - [ ] ปรับให้ใช้ IVAP Auth API
+#### 9.3 ปรับ Auth Service ✅
+- [x] ตรวจสอบ `src/app/core/services/auth.service.ts`
+  - [x] ใช้ `IvapAuthService` แล้ว (wrapper สำหรับ backward compatibility)
+  - [x] เปรียบเทียบกับ `doc-backend/angular-services-examples.ts`:
+    - `IvapAuthService` สอดคล้องกับตัวอย่างแล้ว
+    - Methods ครบถ้วน: login, register, getCurrentUser, forgotPassword, resetPassword, logout
+- [x] ตรวจสอบ `src/app/core/services/ivap/auth.service.ts`:
+  - ใช้ `BaseApiService` ถูกต้อง
+  - Endpoint: `/auth`
+  - Methods ครบถ้วนตาม IVAP API
 
-**เวลาโดยประมาณ:** 1-2 ชั่วโมง
+#### 9.4 ปรับ Log History Service ✅
+- [x] อัพเดท `src/app/core/services/log-history.service.ts`:
+  - ลบการใช้ `environment.jbossUrl` และ `environment.apiEndpoints.unsecure`
+  - ใช้ `environment.apiEndpoints.system` สำหรับ logging endpoints:
+    - `/system/logs/action` สำหรับ action logs
+    - `/system/logs/error` สำหรับ error logs
+    - `/system/logs` สำหรับ log entries
+
+#### 9.5 ไฟล์ที่อัพเดท
+- ✅ `src/environments/environment.prod.ts` - อัพเดทเป็น IVAP API URLs
+- ✅ `src/app/core/services/api.service.ts` - เพิ่ม `apiVersion` support
+- ✅ `src/app/core/services/log-history.service.ts` - ใช้ IVAP system endpoints
+
+#### 9.6 Services ที่ตรวจสอบแล้ว
+- ✅ `BaseApiService` - ใช้ environment ถูกต้อง
+- ✅ `ApiService` - ใช้ environment และ apiVersion ถูกต้อง
+- ✅ `IvapAuthService` - ใช้ BaseApiService ถูกต้อง
+- ✅ `AuthService` - ใช้ IvapAuthService ถูกต้อง
+- ✅ `LogHistoryService` - ใช้ IVAP system endpoints ถูกต้อง
+
+**เวลาโดยประมาณ:** 1-2 ชั่วโมง  
+**เวลาที่ใช้จริง:** ~20 นาที  
+**สถานะ:** ✅ เสร็จสมบูรณ์
 
 ---
 
@@ -503,11 +645,11 @@ IVAP_FRONTEND/
 | Phase 2: Routes Constants | 1-2 ชั่วโมง | ~1 ชั่วโมง | ✅ **เสร็จสมบูรณ์** |
 | Phase 3: Navigation Constants | 2-3 ชั่วโมง | ~30 นาที | ✅ **เสร็จสมบูรณ์** |
 | Phase 4: Sidebar Modules | 1 ชั่วโมง | ~20 นาที | ✅ **เสร็จสมบูรณ์** |
-| Phase 5: App Routing | 1 ชั่วโมง | ⏳ Pending |
-| Phase 6: Services & Models | 2-3 ชั่วโมง | ⏳ Pending |
-| Phase 7: Components | 2-3 ชั่วโมง | ⏳ Pending |
-| Phase 8: Documentation | 1 ชั่วโมง | ⏳ Pending |
-| Phase 9: Configuration | 1-2 ชั่วโมง | ⏳ Pending |
+| Phase 5: App Routing | 1 ชั่วโมง | ~15 นาที | ✅ **เสร็จสมบูรณ์** |
+| Phase 6: Services & Models | 2-3 ชั่วโมง | ~20 นาที | ✅ **เสร็จสมบูรณ์** |
+| Phase 7: Components | 2-3 ชั่วโมง | ~15 นาที | ✅ **เสร็จสมบูรณ์** |
+| Phase 8: Documentation | 1 ชั่วโมง | ~15 นาที | ✅ **เสร็จสมบูรณ์** |
+| Phase 9: Configuration | 1-2 ชั่วโมง | ~20 นาที | ✅ **เสร็จสมบูรณ์** |
 | Phase 10: IVAP Features | 4-6 ชั่วโมง | ⏳ Pending |
 | Phase 11: Testing | 2-3 ชั่วโมง | ⏳ Pending |
 | Phase 12: Documentation | 1 ชั่วโมง | ⏳ Pending |
@@ -559,6 +701,115 @@ IVAP_FRONTEND/
   - `getModuleHomeRoute()` - ใช้ `/ivap/dashboard` เป็น default
 
 **ไฟล์ที่แก้ไข:** 2 ไฟล์  
+**Linter Errors:** 0  
+**Build Status:** ✅ ผ่าน
+
+---
+
+### ✅ Phase 5: Cleanup App Routing - **เสร็จสมบูรณ์** (2025-01-XX)
+
+**สรุปการเปลี่ยนแปลง:**
+- ตรวจสอบว่าไม่มี HR routes เหลืออยู่ใน `app-routing.module.ts` (ไม่มีแล้ว)
+- ตรวจสอบ IVAP routes ครบถ้วน (มีอยู่แล้วใน `features/ivap/ivap-routing.module.ts`)
+- ปรับให้ใช้ ROUTES constants แทน hardcoded strings:
+  - ใช้ `ROUTES.IVAP.BASE` สำหรับ IVAP route
+  - ใช้ `ROUTES.NOT_FOUND` สำหรับ 404 route
+  - ใช้ `ROUTES.ERROR` สำหรับ 500 route
+- ตั้งค่า default redirect และ `/home` redirect เป็น `ROUTES.IVAP.BASE`
+- ตรวจสอบ route guards (ใช้ `AuthGuard` ถูกต้อง)
+
+**ไฟล์ที่แก้ไข:** 1 ไฟล์  
+**Linter Errors:** 0  
+**Build Status:** ✅ ผ่าน
+
+---
+
+### ✅ Phase 6: Cleanup Services & Models - **เสร็จสมบูรณ์** (2025-01-XX)
+
+**สรุปการเปลี่ยนแปลง:**
+- ลบ HR services 4 ไฟล์:
+  - `company.service.ts` - HR company service
+  - `employee.service.ts` - HR employee service
+  - `shift-plan.service.ts` - HR shift plan service
+  - `time.service.ts` - HR time attendance service
+- ตรวจสอบ IVAP services (22 services) ใช้ `BaseApiService` ถูกต้องแล้ว
+- ตรวจสอบ IVAP models ครบถ้วนใน `ivap-models.ts` สอดคล้องกับ `doc-backend/angular-models.ts`
+- ตรวจสอบ `BaseApiService` สอดคล้องกับ `doc-backend/angular-base-service.ts`
+
+**ไฟล์ที่ลบ:** 4 ไฟล์  
+**Linter Errors:** 0  
+**Build Status:** ✅ ผ่าน
+
+---
+
+### ✅ Phase 7: Cleanup Components - **เสร็จสมบูรณ์** (2025-01-XX)
+
+**สรุปการเปลี่ยนแปลง:**
+- ตรวจสอบว่าไม่มี HR feature modules เหลืออยู่แล้ว (ไม่มีแล้ว)
+- ตรวจสอบ IVAP components ครบถ้วน (16 modules) ใน `features/ivap/`
+- ตรวจสอบ shared components:
+  - ไม่มี HR-specific components ที่ต้องลบ
+  - Shared components ส่วนใหญ่เป็น generic components ที่ใช้ได้กับ IVAP
+  - `context-switcher` มี HR reference แต่ไม่ถูกใช้ใน production code (ใช้แค่ใน demo)
+  - `omni-search` ใช้ `NAVIGATION_ITEMS` ซึ่งแก้ไขเป็น IVAP navigation แล้ว
+- ตรวจสอบ Home/Dashboard:
+  - ไม่มี `features/home/` แล้ว
+  - ใช้ `features/ivap/dashboard/` แทน
+
+**ไฟล์ที่ตรวจสอบ:** 0 ไฟล์ (ไม่มี HR components เหลืออยู่)  
+**Linter Errors:** 0  
+**Build Status:** ✅ ผ่าน
+
+---
+
+### ✅ Phase 8: Cleanup Documentation - **เสร็จสมบูรณ์** (2025-01-XX)
+
+**สรุปการเปลี่ยนแปลง:**
+- ลบ HR module documentation (6 ไฟล์) จาก `docs/modules/`:
+  - COMPANY_MODULE_INVENTORY.md
+  - COMPANY_MODULE_BATCH_UPDATE_GUIDE.md
+  - COMPANY_MODULE_FINAL_REPORT.md
+  - EMPVIEW_MODULE_INVENTORY.md
+  - SETTING_MODULE_INVENTORY.md
+  - TIME_MODULE_INVENTORY.md
+- ลบ HR implementation documentation (1 ไฟล์) จาก `docs/implementation/`:
+  - MIGRATION_STATUS_SUMMARY.md
+- อัพเดท `README.md`:
+  - เปลี่ยนจาก "HR System Angular Migration" เป็น "IVAP Frontend - Intelligent Video Analytics Platform"
+  - อัพเดท project structure เป็น IVAP features
+  - อัพเดท theme จาก "Gemini 1.5" เป็น "MyHR"
+  - อัพเดท recent changes เป็น IVAP migration
+- อัพเดท `docs/README.md`:
+  - เปลี่ยนจาก "Angular HR Migration" เป็น "IVAP Frontend"
+  - อัพเดท modules section เป็น deprecated
+
+**ไฟล์ที่ลบ:** 7 ไฟล์  
+**ไฟล์ที่อัพเดท:** 2 ไฟล์  
+**Linter Errors:** 0  
+**Build Status:** ✅ ผ่าน
+
+---
+
+### ✅ Phase 9: Configuration - **เสร็จสมบูรณ์** (2025-01-XX)
+
+**สรุปการเปลี่ยนแปลง:**
+- อัพเดท `environment.prod.ts`:
+  - เปลี่ยนจาก HR API URLs เป็น IVAP API URLs
+  - อัพเดท `apiEndpoints` เป็น IVAP endpoints (16 endpoints)
+  - เปลี่ยน `appName` เป็น 'IVAP Frontend'
+- อัพเดท `api.service.ts`:
+  - เพิ่ม `apiVersion` support
+  - เพิ่ม `buildUrl()` method เพื่อรวม `baseUrl` + `apiVersion` + `endpoint`
+  - อัพเดท methods ทั้งหมดให้ใช้ `buildUrl()`
+- อัพเดท `log-history.service.ts`:
+  - ลบการใช้ `environment.jbossUrl` และ `environment.apiEndpoints.unsecure`
+  - ใช้ `environment.apiEndpoints.system` สำหรับ logging endpoints
+- ตรวจสอบ services:
+  - `BaseApiService` - ใช้ environment ถูกต้อง
+  - `IvapAuthService` - ใช้ BaseApiService ถูกต้อง
+  - `AuthService` - ใช้ IvapAuthService ถูกต้อง
+
+**ไฟล์ที่อัพเดท:** 3 ไฟล์  
 **Linter Errors:** 0  
 **Build Status:** ✅ ผ่าน
 

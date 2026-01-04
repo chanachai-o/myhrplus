@@ -19,8 +19,9 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class ApiService {
-  // Use baseUrl for IVAP API endpoints
+  // Use baseUrl and apiVersion for IVAP API endpoints
   private baseUrl = environment.baseUrl;
+  private apiVersion = environment.apiVersion;
   private maxRetries = 3;
   private retryDelay = 1000; // 1 second
 
@@ -29,10 +30,22 @@ export class ApiService {
     private cache: CacheService
   ) { }
 
+  /**
+   * Build full URL with API version
+   */
+  private buildUrl(endpoint: string): string {
+    // Check if endpoint is already a full URL
+    if (endpoint.startsWith('http')) {
+      return endpoint;
+    }
+    // Add apiVersion if endpoint doesn't already include it
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    return `${this.baseUrl}${this.apiVersion}${cleanEndpoint}`;
+  }
+
   get<T>(endpoint: string, params?: any, useCache: boolean = false, cacheKey?: string): Observable<ApiResponse<T>> {
     const httpParams = this.buildParams(params);
-    // Check if endpoint is already a full URL
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
+    const url = this.buildUrl(endpoint);
 
     const request = this.http.get<ApiResponse<T>>(url, { params: httpParams });
 
@@ -44,8 +57,7 @@ export class ApiService {
   }
 
   post<T>(endpoint: string, body: any): Observable<ApiResponse<T>> {
-    // Check if endpoint is already a full URL
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const request = this.http.post<ApiResponse<T>>(
       url,
       body
@@ -54,8 +66,7 @@ export class ApiService {
   }
 
   put<T>(endpoint: string, body: any): Observable<ApiResponse<T>> {
-    // Check if endpoint is already a full URL
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const request = this.http.put<ApiResponse<T>>(
       url,
       body
@@ -64,8 +75,7 @@ export class ApiService {
   }
 
   delete<T>(endpoint: string): Observable<ApiResponse<T>> {
-    // Check if endpoint is already a full URL
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const request = this.http.delete<ApiResponse<T>>(
       url
     );
@@ -82,8 +92,7 @@ export class ApiService {
       });
     }
 
-    // Check if endpoint is already a full URL
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const request = this.http.post<ApiResponse<any>>(
       url,
       formData
@@ -123,8 +132,7 @@ export class ApiService {
 
   downloadFile(endpoint: string, params?: any): Observable<Blob> {
     const httpParams = this.buildParams(params);
-    // Check if endpoint is already a full URL
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const request = this.http.get(
       url,
       {

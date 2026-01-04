@@ -1,15 +1,15 @@
-# HR System Angular Migration
+# IVAP Frontend - Intelligent Video Analytics Platform
 
-**เวอร์ชัน**: 2.3.0  
-**อัปเดตล่าสุด**: 2024-12-29
+**เวอร์ชัน**: 1.0.0  
+**อัปเดตล่าสุด**: 2025-01-XX
 
 ## 📋 ภาพรวม
 
-ระบบบริหารทรัพยากรบุคคล (HR System) ที่พัฒนาโดยใช้ Angular 17+ พร้อม Design System ที่ทันสมัย
+ระบบ Intelligent Video Analytics Platform (IVAP) Frontend ที่พัฒนาโดยใช้ Angular 17+ พร้อม Design System ที่ทันสมัย สำหรับจัดการ Visitor Access, Access Control, และ Video Analytics
 
 ## ✨ Features
 
-- 🎨 **Gemini 1.5 Theme** - ธีมสีฟ้าเข้มพร้อม gradient effects และ animations
+- 🎨 **MyHR Theme** - ธีมสีฟ้าเข้มพร้อม gradient effects และ animations
 - 🌓 **Dark/Light Mode** - รองรับทั้งโหมดมืดและสว่าง
 - 📱 **Responsive Design** - Mobile-first approach
 - 🎭 **Glass Morphism** - Modern UI design system
@@ -56,7 +56,7 @@ The app will be available at `http://localhost:4200`
 **วิธีใช้งาน:**
 ```typescript
 // เปิดใช้งานผ่าน ThemeService
-this.themeService.setTheme({ color: 'gemini', mode: 'dark' });
+this.themeService.setTheme({ color: 'myhr', mode: 'dark' });
 ```
 
 ### Glass Morphism Components
@@ -98,20 +98,35 @@ this.themeService.setTheme({ color: 'gemini', mode: 'dark' });
 ## 📁 Project Structure
 
 ```
-angular-hr-migration/
+ivap-frontend/
 ├── src/
 │   ├── app/
-│   │   ├── core/              # Core services, guards, interceptors
+│   │   ├── core/              # Core services, guards, interceptors, models
 │   │   ├── shared/            # Shared components, directives, pipes
-│   │   │   └── components/     # 30+ reusable components
+│   │   │   └── components/    # 30+ reusable components
 │   │   ├── features/          # Feature modules
 │   │   │   ├── auth/          # Authentication
-│   │   │   ├── home/          # Dashboard/Home
-│   │   │   ├── empview/       # Employee view
-│   │   │   ├── ta/            # Time attendance
-│   │   │   ├── personal/      # Personal information
-│   │   │   ├── payroll/       # Payroll
-│   │   │   └── ...            # Other modules
+│   │   │   ├── ivap/          # IVAP features
+│   │   │   │   ├── dashboard/ # IVAP Dashboard
+│   │   │   │   ├── visitors/  # Visitor Management
+│   │   │   │   ├── guests/    # Guest Management
+│   │   │   │   ├── events/    # Event Management
+│   │   │   │   ├── organization/ # Organization Management
+│   │   │   │   ├── time-attendance/ # Time & Attendance
+│   │   │   │   ├── access-control/ # Access Control
+│   │   │   │   ├── devices/   # Device Management
+│   │   │   │   ├── verification/ # Verification
+│   │   │   │   ├── biometric/ # Biometric & Face Recognition
+│   │   │   │   ├── vehicles/  # Vehicle Management
+│   │   │   │   ├── parking/   # Parking Management
+│   │   │   │   ├── qr-rfid/   # QR Code & RFID
+│   │   │   │   ├── notifications/ # Notifications
+│   │   │   │   ├── analytics/ # Analytics & Reporting
+│   │   │   │   ├── video-ai/  # Video Analytics & AI
+│   │   │   │   └── system/    # System Administration
+│   │   │   ├── demo/          # Demo components
+│   │   │   ├── error/         # Error pages
+│   │   │   └── not-found/     # 404 page
 │   │   └── layout/            # Layout components
 │   │       ├── main-layout/   # Main layout
 │   │       ├── header/        # Header component
@@ -119,7 +134,7 @@ angular-hr-migration/
 │   │       └── footer/        # Footer component
 │   ├── assets/                # Static assets
 │   ├── environments/          # Environment configurations
-│   └── styles.scss            # Global styles (Gemini theme)
+│   └── styles.scss            # Global styles (MyHR theme)
 ├── angular.json
 ├── package.json
 ├── tailwind.config.js         # Tailwind + Gemini config
@@ -178,11 +193,11 @@ angular-hr-migration/
 - **[API_DOCUMENTATION.md](./API_DOCUMENTATION.md)** - API Documentation
 - **[SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md)** - Setup Guide
 
-### Module Inventories
-- **[EMPVIEW_MODULE_INVENTORY.md](./EMPVIEW_MODULE_INVENTORY.md)** - Employee View Module
-- **[PAYROLL_MODULE_INVENTORY.md](./PAYROLL_MODULE_INVENTORY.md)** - Payroll Module
-- **[TIME_MODULE_INVENTORY.md](./TIME_MODULE_INVENTORY.md)** - Time Attendance Module
-- และอื่นๆ...
+### IVAP Features Documentation
+- **[IVAP_MIGRATION_PLAN.md](./IVAP_MIGRATION_PLAN.md)** - IVAP Migration Plan
+- **[doc-backend/SYSTEM_ARCHITECTURE_ANALYSIS.md](./doc-backend/SYSTEM_ARCHITECTURE_ANALYSIS.md)** - IVAP Backend Architecture
+- **[doc-backend/API_DOCUMENTATION.md](./doc-backend/API_DOCUMENTATION.md)** - IVAP API Documentation
+- **[doc-backend/ANGULAR_INTEGRATION_GUIDE.md](./doc-backend/ANGULAR_INTEGRATION_GUIDE.md)** - Angular Integration Guide
 
 ### UX/UI Improvement Plans
 - **[UX_UI_COMPONENTS_IMPROVEMENT_PLAN.md](./UX_UI_COMPONENTS_IMPROVEMENT_PLAN.md)** ⭐ - แผนการปรับปรุง UX/UI Components
@@ -220,7 +235,7 @@ API calls are proxied to the backend server. See `proxy.conf.json`
 ### Theme Configuration
 Themes are managed through `ThemeService`. Available themes:
 - `blue`, `indigo`, `purple`, `green`, `orange`, `red`, `teal`, `pink`
-- **`gemini`** - Gemini 1.5 theme (new)
+- **`myhr`** - MyHR theme (default)
 
 ## 🧪 Testing
 
@@ -270,12 +285,18 @@ Proprietary - Enterprise PT
 
 ---
 
-## 🔄 Recent Changes (2024-12-29)
+## 🔄 Recent Changes (2025-01-XX)
 
-### Routes Restructure ✅
-- ✅ **Removed `/portal` routes** - All `/portal` routes have been removed from the application
-- ✅ **Direct module routes** - Now using direct routes: `/home`, `/personal`, `/ta`, `/payroll`, `/training`, `/appraisal`, `/recruit`, `/welfare`, `/company`, `/setting`
-- ✅ **Updated navigation** - Sidebar and header updated to use new routes
-- ✅ **Backward compatibility** - Legacy route mapping still supported via `mapLegacyRoute()` function
+### IVAP Migration ✅
+- ✅ **HR System → IVAP Frontend** - Migrated from HR System to IVAP Frontend
+- ✅ **IVAP Features** - 16 IVAP modules implemented:
+  - Dashboard, Organization, Time & Attendance
+  - Visitors, Guests, Events
+  - Access Control, Devices, Verification, Biometric
+  - Vehicles, Parking, QR & RFID
+  - Notifications, Analytics, Video & AI, System
+- ✅ **Routes** - All routes updated to `/ivap/*` structure
+- ✅ **Services & Models** - IVAP services and models implemented (22 services)
+- ✅ **Components** - IVAP components created (16 modules)
 
-**See**: [ROUTES_RESTRUCTURE_COMPLETE.md](./ROUTES_RESTRUCTURE_COMPLETE.md) for complete details.
+**See**: [IVAP_MIGRATION_PLAN.md](./IVAP_MIGRATION_PLAN.md) for complete migration details.

@@ -24,12 +24,12 @@ const routes: Routes = [
       // Default redirect to IVAP dashboard
       {
         path: '',
-        redirectTo: 'ivap',
+        redirectTo: ROUTES.IVAP.BASE.substring(1), // Remove leading '/'
         pathMatch: 'full'
       },
       {
         path: 'home',
-        redirectTo: 'ivap',
+        redirectTo: ROUTES.IVAP.BASE.substring(1), // Remove leading '/'
         pathMatch: 'full'
       },
 
@@ -37,7 +37,7 @@ const routes: Routes = [
       // IVAP Feature Modules
       // ============================================
       {
-        path: 'ivap',
+        path: ROUTES.IVAP.BASE.substring(1), // Remove leading '/'
         loadChildren: () => import('./features/ivap/ivap.module').then(m => m.IvapModule)
       },
 
@@ -46,12 +46,12 @@ const routes: Routes = [
       // ============================================
       // 404 Not Found Page
       {
-        path: 'not-found',
+        path: ROUTES.NOT_FOUND.substring(1), // Remove leading '/'
         loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
       },
       // 500 Error Page
       {
-        path: 'error',
+        path: ROUTES.ERROR.substring(1), // Remove leading '/'
         loadComponent: () => import('./features/error/error.component').then(m => m.ErrorComponent)
       }
     ]
@@ -64,7 +64,7 @@ const routes: Routes = [
   // Wildcard route - redirect to 404
   {
     path: '**',
-    redirectTo: '/not-found'
+    redirectTo: ROUTES.NOT_FOUND
   }
 ];
 

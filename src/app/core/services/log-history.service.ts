@@ -49,7 +49,8 @@ export interface ErrorLogRequest {
   providedIn: 'root'
 })
 export class LogHistoryService {
-  private readonly baseUrl = `${environment.jbossUrl}${environment.apiEndpoints.unsecure}`;
+  // Note: LogHistoryService uses ApiService which already handles baseUrl
+  // We only need to provide endpoint paths relative to baseUrl
 
   // In-memory log buffer
   private logBuffer: LogEntry[] = [];
@@ -74,9 +75,9 @@ export class LogHistoryService {
    * @returns Observable of the response
    */
   postActionLog(body: ActionLogRequest): Observable<ApiResponse<unknown>> {
-    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    // Use IVAP system endpoint for action logging
     return this.apiService.post<unknown>(
-      `${environment.apiEndpoints.unsecure}/action-log`,
+      `${environment.apiEndpoints.system}/logs/action`,
       body
     );
   }
@@ -269,9 +270,9 @@ export class LogHistoryService {
    * @returns Observable of the response
    */
   private postErrorLog(body: ErrorLogRequest): Observable<ApiResponse<unknown>> {
-    // ApiService already handles baseUrl (environment.jbossUrl), so only pass the endpoint path
+    // Use IVAP system endpoint for error logging
     return this.apiService.post<unknown>(
-      `${environment.apiEndpoints.unsecure}/error-log`,
+      `${environment.apiEndpoints.system}/logs/error`,
       body
     );
   }
@@ -349,8 +350,9 @@ export class LogHistoryService {
    * Send log entry to server
    */
   private sendLogToServer(entry: LogEntry): Observable<ApiResponse<unknown>> {
+    // Use IVAP system endpoint for log entries
     return this.apiService.post<unknown>(
-      `${environment.apiEndpoints.unsecure}/log`,
+      `${environment.apiEndpoints.system}/logs`,
       {
         level: entry.level,
         message: entry.message,

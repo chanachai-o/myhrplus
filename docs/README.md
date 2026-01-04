@@ -1,6 +1,6 @@
 # Documentation
 
-เอกสารทั้งหมดของโปรเจค Angular HR Migration
+เอกสารทั้งหมดของโปรเจค IVAP Frontend - Intelligent Video Analytics Platform
 
 ## 📁 โครงสร้างโฟลเดอร์
 
@@ -30,7 +30,7 @@
 เอกสารเกี่ยวกับ component usage และ guides
 
 ### 8. [modules/](./modules/)
-เอกสารเกี่ยวกับ module inventories
+เอกสารเกี่ยวกับ module inventories (deprecated - IVAP modules use feature-based structure)
 
 ### 9. [implementation/](./implementation/)
 เอกสารสรุปการ implement ต่างๆ
