@@ -2041,7 +2041,7 @@
         "username": "用户名"
       },
       "login": {
-        "description": "请登录以访问 HR 系统",
+        "description": "请登录以访问 IVAP",
         "error": {
           "passwordRequired": "请输入密码",
           "title": "เกิดข้อผิดพลาด",
@@ -2051,12 +2051,12 @@
         "password": "密码",
         "rememberMe": "记住我",
         "selectDatabase": "选择数据库",
-        "signIn": "使用 HR 系统登录",
+        "signIn": "登录",
         "signingIn": "正在登录...",
-        "subtitle": "全面的人力资源管理系统，以提高您的工作效率",
+        "subtitle": "Intelligent Video Analytics Platform - 完整的访客管理、访问控制和视频分析系统",
         "title": "登录",
         "username": "用户名或电子邮件",
-        "welcome": "欢迎使用 myHR"
+        "welcome": "欢迎来到 IVAP"
       },
       "unauthorized": {
         "goBack": "返回",

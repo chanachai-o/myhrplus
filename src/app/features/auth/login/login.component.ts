@@ -98,8 +98,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Get return url from route parameters or default to '/home' (Home)
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+    // Get return url from route parameters or default to '/ivap/dashboard' (IVAP Dashboard)
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/ivap/dashboard';
 
     // If already logged in, redirect
     if (this.authService.isAuthenticated()) {

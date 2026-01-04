@@ -2041,7 +2041,7 @@
         "username": "Tên người dùng"
       },
       "login": {
-        "description": "Vui lòng đăng nhập để truy cập hệ thống HR",
+        "description": "Vui lòng đăng nhập để truy cập IVAP",
         "error": {
           "passwordRequired": "Vui lòng nhập mật khẩu",
           "title": "เกิดข้อผิดพลาด",
@@ -2051,12 +2051,12 @@
         "password": "Mật khẩu",
         "rememberMe": "Ghi nhớ tôi",
         "selectDatabase": "Chọn cơ sở dữ liệu",
-        "signIn": "Đăng nhập bằng hệ thống HR",
+        "signIn": "Đăng nhập",
         "signingIn": "Đang đăng nhập...",
-        "subtitle": "Hệ thống quản lý nguồn nhân lực toàn diện để nâng cao hiệu quả công việc của bạn",
+        "subtitle": "Intelligent Video Analytics Platform - Hệ thống quản lý khách thăm, kiểm soát truy cập và phân tích video toàn diện",
         "title": "Đăng nhập",
         "username": "Tên người dùng hoặc Email",
-        "welcome": "Chào mừng đến với myHR"
+        "welcome": "Chào mừng đến với IVAP"
       },
       "unauthorized": {
         "goBack": "Quay lại",

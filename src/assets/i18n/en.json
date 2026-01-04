@@ -2036,7 +2036,7 @@
         "success": "สำเร็จ"
       },
       "login": {
-        "description": "Please sign in to access the HR system",
+        "description": "Please sign in to access IVAP",
         "error": {
           "passwordRequired": "Please enter your password",
           "title": "An error occurred",
@@ -2046,12 +2046,12 @@
         "password": "Password",
         "rememberMe": "Remember Me",
         "selectDatabase": "Select Database",
-        "signIn": "Sign In with HR System",
+        "signIn": "Sign In",
         "signingIn": "Signing in...",
-        "subtitle": "Comprehensive Human Resources Management System to enhance your work efficiency",
+        "subtitle": "Intelligent Video Analytics Platform - Complete visitor management, access control, and video analytics system",
         "title": "Sign In",
         "username": "Username or Email",
-        "welcome": "Welcome to myHR"
+        "welcome": "Welcome to IVAP"
       }
     }
   },
