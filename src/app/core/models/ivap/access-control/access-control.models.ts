@@ -57,3 +57,47 @@ export interface Verification {
   created_at: string;
 }
 
+export interface DoorPermission {
+  permission_id: string;
+  company_id: string;
+  company_employee_id: string;
+  door_id: string;
+  access_type: string;
+  valid_from?: string;
+  valid_until?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AccessLog {
+  access_log_id: string;
+  company_id: string;
+  door_id: string;
+  member_id?: string;
+  visitor_id?: string;
+  guest_id?: string;
+  access_type: string;
+  access_result: 'GRANTED' | 'DENIED';
+  verification_method?: string;
+  timestamp: string;
+  device_id?: string;
+  metadata?: Record<string, any>;
+  created_at: string;
+}
+
+export interface DeviceStatusInfo {
+  device_id: string;
+  device_name: string;
+  status: DeviceStatus;
+  is_online: boolean;
+  last_seen?: string;
+  uptime?: number; // seconds
+  cpu_usage?: number; // percentage
+  memory_usage?: number; // percentage
+  disk_usage?: number; // percentage
+  network_status?: 'connected' | 'disconnected';
+  firmware_version?: string;
+  last_heartbeat?: string;
+}
+

@@ -72,3 +72,51 @@ export interface SystemHealth {
   timestamp: string;
 }
 
+export interface AnalyticsReport {
+  report_id: string;
+  report_type: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
+  report_name: string;
+  start_date: string;
+  end_date: string;
+  generated_at: string;
+  generated_by: string;
+  data: Record<string, any>;
+  summary: {
+    total_visitors: number;
+    total_employees: number;
+    total_verifications: number;
+    total_events: number;
+    [key: string]: any;
+  };
+}
+
+export interface AnalyticsReportRequest {
+  report_type: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
+  report_name: string;
+  start_date: string;
+  end_date: string;
+  filters?: Record<string, any>;
+  include_charts?: boolean;
+}
+
+export interface AnalyticsMetrics {
+  total_visitors: number;
+  total_employees: number;
+  total_verifications: number;
+  total_events: number;
+  active_devices: number;
+  verification_success_rate: number; // percentage
+  average_visit_duration: number; // minutes
+  peak_hours: Array<{
+    hour: number;
+    count: number;
+  }>;
+  by_verification_type: Record<string, number>;
+  by_event_type: Record<string, number>;
+  trends: {
+    visitors: Array<{ date: string; count: number }>;
+    verifications: Array<{ date: string; count: number }>;
+    events: Array<{ date: string; count: number }>;
+  };
+}
+

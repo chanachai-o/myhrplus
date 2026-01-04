@@ -36,5 +36,8 @@ export * from './time-attendance';
 // Analytics Models
 export * from './analytics';
 
+// Monitoring Models
+export * from './monitoring';
+
 // Notifications Models
 export * from './notifications';
