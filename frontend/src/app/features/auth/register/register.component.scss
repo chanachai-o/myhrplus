@@ -1,0 +1,326 @@
+// Register Component Styles - Gemini 2.0 Flash Style
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (theme variants, gradients, animations, complex selectors)
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-x: hidden;
+
+  // Background - Theme-specific gradients (keeping complex theme variants)
+  html.dark &,
+  body.dark & {
+    background-color: #000000;
+    background: linear-gradient(180deg,
+      #000000 0%,
+      #000000 15%,
+      #0a0a0f 35%,
+      #0f172a 55%,
+      #1e293b 75%,
+      #1e293b 100%
+    );
+  }
+
+  html.light &,
+  body.light & {
+    background-color: #f5f1e8;
+    background: linear-gradient(180deg,
+      #faf8f3 0%,
+      #f5f1e8 50%,
+      #ede8d8 100%
+    );
+  }
+}
+
+// Background Graphics - keeping complex gradients and patterns
+.register-bg-graphics {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 40%);
+  opacity: 0.6;
+}
+
+.bg-grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(59, 130, 246, 0.02) 1px,
+      rgba(59, 130, 246, 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(6, 182, 212, 0.02) 1px,
+      rgba(6, 182, 212, 0.02) 2px
+    );
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+// Header - keeping theme-specific backdrop blur and colors
+.register-header {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  html.dark &,
+  body.dark & {
+    background: rgba(26, 26, 46, 0.7);
+    border-bottom-color: rgba(59, 130, 246, 0.3);
+  }
+
+  html.light &,
+  body.light & {
+    background: rgba(255, 255, 255, 0.5);
+    border-bottom-color: rgba(245, 158, 11, 0.2);
+  }
+}
+
+// Gradient Text - using design tokens
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary-500, #3b82f6) 0%, var(--color-info-500, #06b6d4) 50%, var(--color-secondary-500, #8b5cf6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Back to Home Button - keeping theme variants
+.back-to-home {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-normal, 300ms);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+
+  html.dark &,
+  body.dark & {
+    background: rgba(26, 26, 46, 0.6);
+    color: #ffffff;
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  html.light &,
+  body.light & {
+    background: rgba(255, 255, 255, 0.5);
+    color: rgb(15 23 42);
+  }
+}
+
+// Language & Theme Switcher - keeping theme variants
+.language-switcher,
+.theme-switcher {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-normal, 300ms);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+
+  html.dark &,
+  body.dark & {
+    background: rgba(26, 26, 46, 0.6);
+    color: #ffffff;
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  html.light &,
+  body.light & {
+    background: rgba(255, 255, 255, 0.5);
+    color: rgb(15 23 42);
+  }
+}
+
+// Register Card - keeping theme-specific backdrop and borders
+.register-card {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 100%;
+
+  html.dark &,
+  body.dark & {
+    background: rgba(26, 26, 46, 0.6);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.2);
+  }
+
+  html.light &,
+  body.light & {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Step content animation - keeping animation
+.step-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Form input - keeping theme-specific styles
+.form {
+  .form-input {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all var(--transition-normal, 300ms);
+
+    html.dark &,
+    body.dark & {
+      background: rgba(26, 26, 46, 0.5);
+      border: 2px solid rgba(59, 130, 246, 0.3);
+      color: #ffffff;
+
+      &:focus {
+        outline: none;
+        border-color: rgba(59, 130, 246, 0.6);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        background: rgba(26, 26, 46, 0.7);
+      }
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    html.light &,
+    body.light & {
+      background: rgba(255, 255, 255, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      color: rgb(15 23 42);
+
+      &:focus {
+        outline: none;
+        border-color: rgb(245, 158, 11);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      &::placeholder {
+        color: rgb(100 116 139);
+      }
+    }
+  }
+
+  // Password strength bar - keeping color variants
+  .password-strength {
+    .strength-bar {
+      &.weak .strength-fill {
+        background: var(--color-error-500, #f56565);
+      }
+
+      &.medium .strength-fill {
+        background: var(--color-warning-500, #ed8936);
+      }
+
+      &.strong .strength-fill {
+        background: var(--color-success-500, #48bb78);
+      }
+    }
+  }
+}
+
+// Button - keeping theme-specific gradients
+.btn {
+  &.btn-primary {
+    html.dark &,
+    body.dark & {
+      background: linear-gradient(135deg, var(--color-primary-500, #3b82f6) 0%, var(--color-primary-600, #2563eb) 100%);
+      color: white;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, var(--color-primary-600, #2563eb) 0%, var(--color-primary-700, #1d4ed8) 100%);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+      }
+    }
+
+    html.light &,
+    body.light & {
+      background: linear-gradient(135deg, var(--color-warning-500, rgb(245, 158, 11)) 0%, var(--color-warning-600, rgb(217, 119, 6)) 100%);
+      color: white;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, var(--color-warning-600, rgb(217, 119, 6)) 0%, var(--color-warning-700, rgb(180, 83, 9)) 100%);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(245, 158, 11, 0.4);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Success content animation - keeping animation
+.success-content {
+  .success-icon {
+    color: var(--color-success-500, #48bb78);
+    animation: scaleIn 0.5s ease;
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design

@@ -1,0 +1,179 @@
+// Sidebar Component Styles - Gemini AI Style
+
+.sidebar-gemini {
+  border-right: 1px solid transparent;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: translateX(0);
+  transition: transform var(--transition-normal), visibility var(--transition-normal); /* 300ms */
+  isolation: isolate; // Create new stacking context
+
+  // Mobile specific styles
+  @media (max-width: 1023px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 40; // Lower than header (60) and dropdown (9999)
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  // Desktop: backdrop filter always
+  @media (min-width: 1024px) {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  // Desktop: always visible and static
+  @media (min-width: 1024px) {
+    position: static !important;
+    transform: translateX(0) !important;
+    height: auto;
+  }
+
+  // Hide sidebar on mobile when closed
+  @media (max-width: 1023px) {
+    &.sidebar-hidden {
+      transform: translateX(-100%) !important;
+      pointer-events: none !important; // Don't block clicks when hidden
+      visibility: hidden; // Completely hide from interaction
+    }
+
+    &.sidebar-visible {
+      transform: translateX(0) !important;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    // Fallback for Tailwind classes
+    &[class*="-translate-x-full"] {
+      transform: translateX(-100%) !important;
+      pointer-events: none !important;
+      visibility: hidden;
+    }
+
+    &[class*="translate-x-0"]:not([class*="-translate-x-full"]) {
+      transform: translateX(0) !important;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
+}
+
+/* Light Mode Sidebar */
+:host-context(.light) .sidebar-gemini,
+:host-context(.light) .sidebar-gemini {
+  background: rgba(255, 255, 255, 0.4);
+  border-right-color: rgba(245, 158, 11, 0.2); /* Using warning-500 */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Mode Sidebar - Gemini Style */
+:host-context(.dark) .sidebar-gemini,
+:host-context(.dark) .sidebar-gemini {
+  background: rgba(26, 26, 46, 0.6);
+  border-right-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+/* Animated Particles */
+.sidebar-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+:host-context(.light) .particle {
+  background: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+:host-context(.dark) .particle {
+  background: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+}
+
+.particle-1 {
+  top: 20%;
+  left: 10%;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+.particle-2 {
+  top: 50%;
+  left: 80%;
+  animation: particle-float 8s ease-in-out infinite 2s;
+}
+
+.particle-3 {
+  top: 80%;
+  left: 30%;
+  animation: particle-float 7s ease-in-out infinite 4s;
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-15px, -50px) scale(0.8);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(30px, -20px) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* Menu Item Styles */
+:host-context(.dark) nav a,
+:host-context(.dark) nav button {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+:host-context(.dark) nav a:hover,
+:host-context(.dark) nav button:hover {
+  background: rgba(59, 130, 246, 0.15); /* Using primary-500 */
+  border-color: rgba(59, 130, 246, 0.3); /* Using primary-500 */
+}
+
+:host-context(.dark) nav a.router-link-active,
+:host-context(.dark) nav a.router-link-active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+
+:host-context(.light) nav a:hover,
+:host-context(.light) nav button:hover {
+  background: rgba(245, 158, 11, 0.1); /* Using warning-500 */
+  border-color: rgba(245, 158, 11, 0.2); /* Using warning-500 */
+}
+
+:host-context(.light) nav a.router-link-active,
+:host-context(.light) nav a.router-link-active {
+  background: rgba(245, 158, 11, 0.15); /* Using warning-500 */
+  border-color: rgba(245, 158, 11, 0.4); /* Using warning-500 */
+}
+

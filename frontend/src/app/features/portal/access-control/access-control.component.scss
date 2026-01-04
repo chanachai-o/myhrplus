@@ -1,0 +1,137 @@
+/* Access Control Component Styles */
+
+.active {
+  @apply text-primary-500 border-b-2 border-primary-500;
+}
+
+/* Tab Styles */
+button {
+  @apply text-gray-600 dark:text-gray-400;
+
+  &:hover {
+    @apply text-primary-500;
+  }
+
+  &.active {
+    @apply text-primary-500 border-b-2 border-primary-500;
+  }
+}
+
+/* Filter Styles */
+.filter-select {
+  @apply w-full;
+  /* ใช้ class glass-input โดยตรงใน HTML แทน @apply */
+  /* หรือใช้ styles ตรงนี้ */
+  @apply rounded-lg p-3 focus:outline-none transition-colors;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid transparent;
+  color: rgb(15 23 42);
+  transition: all 0.3s ease;
+  
+  &::placeholder {
+    color: rgb(100 116 139);
+  }
+  
+  &:focus {
+    border-color: rgb(37 99 235);
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+}
+
+/* Status Badges */
+.status-badge {
+  @apply px-2 py-1 rounded-full text-xs font-semibold;
+
+  &.active {
+    @apply bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300;
+  }
+
+  &.inactive {
+    @apply bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300;
+  }
+
+  &.maintenance {
+    @apply bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300;
+  }
+
+  &.offline {
+    @apply bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300;
+  }
+}
+
+/* Severity Badges */
+.severity-badge {
+  @apply px-2 py-1 rounded-full text-xs font-semibold;
+
+  &.low {
+    @apply bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300;
+  }
+
+  &.medium {
+    @apply bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300;
+  }
+
+  &.high {
+    @apply bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300;
+  }
+
+  &.critical {
+    @apply bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300;
+  }
+}
+
+/* Metrics Cards */
+.metric-card {
+  @apply p-6 transition-transform hover:scale-105;
+  /* ใช้ class glass-card โดยตรงใน HTML แทน @apply */
+  /* หรือใช้ styles ตรงนี้ */
+  @apply rounded-2xl shadow-lg;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  .metric-icon {
+    @apply text-4xl opacity-50;
+  }
+
+  .metric-value {
+    @apply text-3xl font-bold text-gray-900 dark:text-gray-100;
+  }
+
+  .metric-label {
+    @apply text-sm font-medium text-gray-600 dark:text-gray-400;
+  }
+}
+
+/* Event Details */
+.event-details {
+  .detail-item {
+    @apply flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700;
+
+    &:last-child {
+      @apply border-b-0;
+    }
+  }
+
+  .detail-label {
+    @apply text-sm font-medium text-gray-600 dark:text-gray-400;
+  }
+
+  .detail-value {
+    @apply text-base font-semibold text-gray-900 dark:text-gray-100;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

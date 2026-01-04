@@ -1,0 +1,313 @@
+/* performance-dashboard.component.scss */
+
+/* Performance score animation */
+@keyframes scoreUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.score-update {
+  animation: scoreUpdate 0.5s ease-in-out;
+}
+
+/* Progress bar animation */
+@keyframes progressFill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: var(--progress-width);
+  }
+}
+
+.progress-bar {
+  animation: progressFill 1s ease-out;
+}
+
+/* Metric card hover effects */
+.metric-card {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Status indicators */
+.status-indicator {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &.good::before {
+    background: #10b981;
+  }
+
+  &.needs-improvement::before {
+    background: #ef4444;
+  }
+}
+
+/* Optimization toggle */
+.optimization-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #374151;
+    transition: .4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #3b82f6;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+}
+
+/* Tab animations */
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading states */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Performance score colors */
+.score-excellent {
+  color: #10b981;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.score-good {
+  color: #f59e0b;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.score-poor {
+  color: #ef4444;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Metric status colors */
+.metric-good {
+  color: #10b981;
+}
+
+.metric-needs-improvement {
+  color: #ef4444;
+}
+
+/* Budget violation styles */
+.budget-violation {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+  border-left: 4px solid #ef4444;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Recommendation cards */
+.recommendation-card {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  }
+}
+
+/* Optimization button states */
+.optimization-button {
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .performance-score {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .optimization-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .metric-card {
+    background: rgba(17, 24, 39, 0.8);
+  }
+
+  .recommendation-card {
+    background: rgba(17, 24, 39, 0.8);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .metric-card,
+  .recommendation-card {
+    border: 2px solid currentColor;
+  }
+
+  .status-indicator::before {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .performance-dashboard {
+    .optimization-button,
+    .tab-button {
+      display: none;
+    }
+
+    .metric-card {
+      break-inside: avoid;
+    }
+  }
+}
+
+/* Accessibility improvements */
+.optimization-button:focus,
+.tab-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Performance metrics visualization */
+.metric-chart {
+  position: relative;
+  height: 100px;
+  background: linear-gradient(90deg,
+    rgba(16, 185, 129, 0.1) 0%,
+    rgba(245, 158, 11, 0.1) 50%,
+    rgba(239, 68, 68, 0.1) 100%
+  );
+  border-radius: 8px;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg,
+      #10b981 0%,
+      #f59e0b 50%,
+      #ef4444 100%
+    );
+    width: var(--metric-percentage, 0%);
+    transition: width 1s ease-out;
+  }
+}
+
+/* Real-time updates indicator */
+.real-time-indicator {
+  animation: pulse 2s infinite;
+
+  &.active {
+    background: #10b981;
+  }
+
+  &.inactive {
+    background: #6b7280;
+  }
+}
+
+

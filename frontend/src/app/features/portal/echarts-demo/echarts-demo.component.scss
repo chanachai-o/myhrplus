@@ -1,0 +1,314 @@
+// ECharts Demo Component Styles
+.echarts-demo {
+  .chart-type-button {
+    @apply transition-all duration-200;
+  }
+
+  .chart-type-button:hover {
+    @apply transform scale-105;
+  }
+
+  .selected-chart-type {
+    @apply bg-blue-900 border-blue-500;
+    @apply ring-2 ring-blue-500 ring-opacity-50;
+  }
+
+  .main-chart {
+    @apply rounded-lg overflow-hidden;
+  }
+
+  .example-chart {
+    @apply rounded-lg overflow-hidden;
+  }
+
+  .stats-grid {
+    @apply grid grid-cols-1 md:grid-cols-4 gap-4;
+  }
+
+  .stat-item {
+    @apply text-center;
+  }
+
+  .stat-value {
+    @apply text-3xl font-bold;
+  }
+
+  .stat-label {
+    @apply text-gray-400;
+  }
+
+  .chart-type-grid {
+    @apply grid grid-cols-2 md:grid-cols-5 gap-4;
+  }
+
+  .chart-type-button {
+    @apply p-4 rounded-lg transition-all duration-200;
+    @apply bg-gray-800 hover:bg-blue-900 border border-gray-700 hover:border-blue-500;
+  }
+
+  .chart-type-button:hover {
+    @apply transform scale-105;
+  }
+
+  .selected-chart-type {
+    @apply bg-blue-900 border-blue-500;
+    @apply ring-2 ring-blue-500 ring-opacity-50;
+  }
+
+  .chart-type-icon {
+    @apply text-2xl mb-2;
+  }
+
+  .chart-type-label {
+    @apply text-sm font-medium text-white;
+  }
+
+  .examples-grid {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+  }
+
+  .example-card {
+    @apply space-y-4;
+  }
+
+  .example-title {
+    @apply text-xl font-semibold text-white mb-4;
+  }
+
+  .chart-configuration {
+    @apply space-y-6;
+  }
+
+  .chart-config-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .chart-config-section {
+    @apply space-y-2;
+  }
+
+  .chart-config-title {
+    @apply font-medium text-white mb-2;
+  }
+
+  .chart-config-item {
+    @apply flex justify-between text-sm;
+  }
+
+  .chart-config-label {
+    @apply text-gray-500;
+  }
+
+  .chart-config-value {
+    @apply text-white;
+  }
+
+  .chart-actions {
+    @apply space-y-2;
+  }
+
+  .chart-data-preview {
+    @apply space-y-4;
+  }
+
+  .chart-data-section {
+    @apply space-y-2;
+  }
+
+  .chart-data-title {
+    @apply font-medium text-white mb-2;
+  }
+
+  .chart-data-json {
+    @apply bg-gray-800 p-4 rounded-lg text-sm text-gray-300 overflow-x-auto max-h-64;
+  }
+
+  .empty-state {
+    @apply text-center py-8;
+  }
+
+  .empty-state-icon {
+    @apply text-6xl mb-4;
+  }
+
+  .empty-state-title {
+    @apply text-xl font-medium text-gray-700 dark:text-gray-300 mb-2;
+  }
+
+  .empty-state-description {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  .chart-controls {
+    @apply flex justify-end space-x-2;
+  }
+
+  .chart-generate {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors;
+  }
+
+  .chart-custom {
+    @apply px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors;
+  }
+
+  .chart-reset {
+    @apply px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors;
+  }
+
+  .chart-export {
+    @apply px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors;
+  }
+
+  .chart-import {
+    @apply px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors;
+  }
+
+  .chart-download {
+    @apply px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors;
+  }
+
+  .chart-fullscreen {
+    @apply px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors;
+  }
+
+  .chart-refresh {
+    @apply px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors;
+  }
+
+  .chart-info {
+    @apply space-y-2;
+  }
+
+  .chart-info-item {
+    @apply flex justify-between text-sm;
+  }
+
+  .chart-info-label {
+    @apply text-gray-500;
+  }
+
+  .chart-info-value {
+    @apply text-white;
+  }
+
+  .chart-type-selector {
+    @apply space-y-4;
+  }
+
+  .chart-type-title {
+    @apply text-xl font-semibold text-white mb-4;
+  }
+
+  .chart-type-grid {
+    @apply grid grid-cols-2 md:grid-cols-5 gap-4;
+  }
+
+  .chart-type-button {
+    @apply p-4 rounded-lg transition-all duration-200;
+    @apply bg-gray-800 hover:bg-blue-900 border border-gray-700 hover:border-blue-500;
+  }
+
+  .chart-type-button:hover {
+    @apply transform scale-105;
+  }
+
+  .selected-chart-type {
+    @apply bg-blue-900 border-blue-500;
+    @apply ring-2 ring-blue-500 ring-opacity-50;
+  }
+
+  .chart-type-icon {
+    @apply text-2xl mb-2;
+  }
+
+  .chart-type-label {
+    @apply text-sm font-medium text-white;
+  }
+
+  .chart-examples {
+    @apply space-y-6;
+  }
+
+  .chart-examples-grid {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+  }
+
+  .chart-example-card {
+    @apply space-y-4;
+  }
+
+  .chart-example-title {
+    @apply text-xl font-semibold text-white mb-4;
+  }
+
+  .chart-example-chart {
+    @apply rounded-lg overflow-hidden;
+  }
+
+  .chart-configuration {
+    @apply space-y-6;
+  }
+
+  .chart-config-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .chart-config-section {
+    @apply space-y-2;
+  }
+
+  .chart-config-title {
+    @apply font-medium text-white mb-2;
+  }
+
+  .chart-config-item {
+    @apply flex justify-between text-sm;
+  }
+
+  .chart-config-label {
+    @apply text-gray-500;
+  }
+
+  .chart-config-value {
+    @apply text-white;
+  }
+
+  .chart-actions {
+    @apply space-y-2;
+  }
+
+  .chart-data-preview {
+    @apply space-y-4;
+  }
+
+  .chart-data-section {
+    @apply space-y-2;
+  }
+
+  .chart-data-title {
+    @apply font-medium text-white mb-2;
+  }
+
+  .chart-data-json {
+    @apply bg-gray-800 p-4 rounded-lg text-sm text-gray-300 overflow-x-auto max-h-64;
+  }
+
+  .empty-state {
+    @apply text-center py-8;
+  }
+
+  .empty-state-icon {
+    @apply text-6xl mb-4;
+  }
+
+  .empty-state-title {
+    @apply text-xl font-medium text-gray-700 dark:text-gray-300 mb-2;
+  }
+
+  .empty-state-description {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+}
+
+
+

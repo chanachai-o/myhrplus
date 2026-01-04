@@ -1,0 +1,33 @@
+// Styles for parking spots component
+.spot-card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.availability-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+
+  &.available {
+    background-color: #10b981;
+  }
+
+  &.occupied {
+    background-color: #ef4444;
+  }
+
+  &.reserved {
+    background-color: #f59e0b;
+  }
+
+  &.maintenance {
+    background-color: #6b7280;
+  }
+}

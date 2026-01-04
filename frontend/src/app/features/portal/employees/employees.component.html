@@ -1,0 +1,111 @@
+<app-page-layout
+  [title]="'navigation.employees' | translate"
+  [description]="'pages.employees.description' | translate"
+  icon="👥"
+  [actions]="pageActions()">
+  
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="1"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Employees Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="employees()"
+    [actions]="actions"
+    (sorted)="onSort($event)"
+  >
+  </app-data-table>
+
+  <!-- Pagination Controls -->
+  <div class="flex items-center justify-between mt-4 text-gray-600 dark:text-gray-400">
+    <div class="text-sm">
+      {{ 'pages.employees.showingRecords' | translate }} {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > totalRecords() ? totalRecords() : currentPage() * pageSize() }} {{ 'common.of' | translate }} {{ totalRecords() }} {{ 'pages.employees.records' | translate }}
+    </div>
+    <div class="flex items-center gap-2">
+      <app-glass-button [disabled]="currentPage() === 1" (clicked)="onPageChange(currentPage() - 1)">
+        &laquo; {{ 'common.previous' | translate }}
+      </app-glass-button>
+      <span class="font-semibold">{{ 'common.page' | translate }} {{ currentPage() }} {{ 'common.of' | translate }} {{ totalPages() }}</span>
+      <app-glass-button [disabled]="currentPage() === totalPages()" (clicked)="onPageChange(currentPage() + 1)">
+        {{ 'common.next' | translate }} &raquo;
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Add/Edit Modal Form -->
+  <app-modal-form
+    [isOpen]="showModal()"
+    [title]="(editingEmployee() ? ('pages.employees.editEmployee' | translate) : ('pages.employees.addEmployee' | translate))"
+    [fields]="employeeFormFields()"
+    [loading]="saving()"
+    [submitLabel]="'common.save' | translate"
+    [cancelLabel]="'common.cancel' | translate"
+    (closed)="closeModal()"
+    (submitted)="onFormSubmitted($event)"
+    (fieldChange)="onFormFieldChange($event)"
+  />
+
+  <!-- Error Message Display -->
+  @if (errorMessage() && showModal()) {
+    <div class="p-3 bg-red-50 border border-red-200 rounded-lg mt-4">
+      <p class="text-sm text-red-800">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Empty State for Employees -->
+  @if (employees().length === 0 && !loading()) {
+    <app-empty-state
+      icon="👥"
+      [title]="'common.emptyState.title' | translate"
+      [description]="'pages.employees.noEmployeesFound' | translate"
+      [action]="{
+        label: ('pages.employees.addEmployee' | translate),
+        icon: '➕',
+        variant: 'primary',
+        onClick: openAddModal.bind(this)
+      }"
+    />
+  }
+
+  <!-- Delete Confirmation Modal -->
+  <app-modal
+    [isOpen]="showDeleteModal()"
+    [title]="'pages.employees.confirmDelete' | translate"
+    [loading]="deleting()"
+    (closed)="closeDeleteModal()"
+  >
+    <div class="p-4">
+      <p class="text-gray-700 dark:text-gray-300 mb-4">
+        {{ 'pages.employees.deleteEmployeeConfirm' | translate }} <strong>{{ deletingEmployee()?.firstName }} {{ deletingEmployee()?.lastName }}</strong>?
+      </p>
+      <p class="text-red-600 dark:text-red-400 text-sm mb-4">
+        {{ 'pages.employees.actionCannotBeUndone' | translate }}
+      </p>
+      <div class="flex justify-end gap-2">
+        <app-glass-button
+          variant="danger"
+          [loading]="deleting()"
+          (clicked)="confirmDelete()">
+          {{ 'pages.employees.deleteEmployee' | translate }}
+        </app-glass-button>
+        <app-glass-button
+          variant="secondary"
+          [disabled]="deleting()"
+          (clicked)="closeDeleteModal()">
+          {{ 'common.cancel' | translate }}
+        </app-glass-button>
+      </div>
+    </div>
+  </app-modal>
+</app-page-layout>

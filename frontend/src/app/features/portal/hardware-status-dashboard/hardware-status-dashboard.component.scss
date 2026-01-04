@@ -1,0 +1,35 @@
+// Hardware Status Dashboard Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (gradients, animations, complex selectors)
+
+.hardware-status-dashboard {
+  // Background gradient - using design tokens
+  background: linear-gradient(135deg, var(--color-primary-500, #667eea) 0%, var(--color-secondary-500, #764ba2) 100%);
+  min-height: 100vh;
+
+  // Overview cards - using design tokens for gray colors
+  .overview-card {
+    background: linear-gradient(135deg, var(--color-gray-50, #f7fafc), var(--color-gray-100, #edf2f7));
+  }
+
+  // Device card selected state - using design tokens
+  .device-card {
+    &.selected {
+      border-color: var(--color-primary-500, #667eea);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); // Using primary-500 RGB: 59, 130, 246
+    }
+  }
+
+  // Monitoring section - styles migrated to Tailwind
+
+  // Alerts section - styles migrated to Tailwind
+
+  // Configuration section - styles migrated to Tailwind
+
+  // Button styles migrated to Tailwind classes in HTML template
+  // Keeping only complex gradient for btn-primary if needed elsewhere
+
+  // Responsive styles migrated to Tailwind responsive classes in HTML template
+  // Using md: breakpoint for mobile-first responsive design
+}
+

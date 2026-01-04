@@ -1,0 +1,332 @@
+/* calendar-demo.component.scss */
+
+.calendar-tab {
+  @apply w-full;
+}
+
+.events-tab {
+  @apply w-full;
+}
+
+.settings-tab {
+  @apply w-full;
+}
+
+.export-tab {
+  @apply w-full;
+}
+
+/* Event List Styles */
+.event-item {
+  @apply p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .event-icon {
+    @apply p-2 rounded-lg;
+
+    &.high {
+      @apply bg-red-500/10 text-red-400;
+    }
+
+    &.medium {
+      @apply bg-blue-500/10 text-blue-400;
+    }
+
+    &.low {
+      @apply bg-green-500/10 text-green-400;
+    }
+  }
+
+  .event-title {
+    @apply font-medium text-white;
+  }
+
+  .event-date {
+    @apply text-sm text-gray-400;
+  }
+
+  .event-description {
+    @apply text-sm text-gray-500 mt-1;
+  }
+
+  .event-tags {
+    @apply flex items-center space-x-2 mt-2;
+
+    .tag {
+      @apply text-xs px-2 py-1 rounded;
+
+      &.category {
+        @apply bg-blue-500/20 text-blue-400;
+      }
+
+      &.priority {
+        @apply bg-gray-500/20 text-gray-400;
+      }
+
+      &.status {
+        @apply bg-gray-500/20 text-gray-400;
+      }
+    }
+  }
+
+  .event-actions {
+    @apply flex items-center space-x-2;
+
+    .action-button {
+      @apply p-2 rounded hover:bg-gray-600 transition-colors;
+
+      &.edit {
+        @apply text-blue-400 hover:bg-blue-500/20;
+      }
+
+      &.delete {
+        @apply text-red-400 hover:bg-red-500/20;
+      }
+    }
+  }
+}
+
+/* Statistics Cards */
+.stat-card {
+  @apply p-4 bg-gray-800 rounded-lg;
+
+  .stat-icon {
+    @apply p-2 rounded-lg;
+
+    &.total {
+      @apply bg-blue-500/10 text-blue-400;
+    }
+
+    &.upcoming {
+      @apply bg-green-500/10 text-green-400;
+    }
+
+    &.completed {
+      @apply bg-purple-500/10 text-purple-400;
+    }
+
+    &.cancelled {
+      @apply bg-red-500/10 text-red-400;
+    }
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-400;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-white;
+  }
+}
+
+/* Event Form Styles */
+.event-form {
+  @apply space-y-4;
+
+  .form-group {
+    @apply space-y-1;
+
+    .form-label {
+      @apply block text-sm font-medium text-gray-300;
+    }
+
+    .form-input {
+      @apply w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+    }
+
+    .form-textarea {
+      @apply w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none;
+    }
+
+    .form-select {
+      @apply w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+    }
+
+    .form-checkbox {
+      @apply mr-2;
+    }
+  }
+
+  .form-actions {
+    @apply flex space-x-2 pt-4;
+  }
+}
+
+/* Search Styles */
+.search-input {
+  @apply px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+
+  &::placeholder {
+    @apply text-gray-400;
+  }
+}
+
+/* Empty State */
+.empty-state {
+  @apply text-center py-8;
+
+  .empty-icon {
+    @apply text-4xl text-gray-500 mb-4;
+  }
+
+  .empty-text {
+    @apply text-gray-400;
+  }
+
+  .empty-description {
+    @apply text-sm text-gray-500;
+  }
+}
+
+/* Export/Import Styles */
+.export-section {
+  @apply space-y-3;
+
+  .export-button {
+    @apply w-full p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors text-left;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .export-icon {
+      @apply mr-3 text-lg;
+    }
+
+    .export-text {
+      @apply font-medium text-white;
+    }
+  }
+}
+
+.import-section {
+  @apply space-y-3;
+
+  .file-input {
+    @apply w-full p-2 bg-gray-700 text-white rounded border border-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600;
+  }
+
+  .import-help {
+    @apply text-sm text-gray-400;
+  }
+}
+
+/* Settings Styles */
+.settings-section {
+  @apply space-y-6;
+
+  .settings-group {
+    @apply space-y-3;
+
+    .settings-title {
+      @apply text-lg font-medium text-white;
+    }
+
+    .settings-field {
+      @apply space-y-1;
+
+      .settings-label {
+        @apply block text-sm font-medium text-gray-300;
+      }
+
+      .settings-input {
+        @apply w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+      }
+
+      .settings-select {
+        @apply w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+      }
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .calendar-demo {
+    .statistics-grid {
+      @apply grid-cols-2;
+    }
+
+    .event-item {
+      .event-actions {
+        @apply flex-col space-y-2 space-x-0;
+      }
+    }
+
+    .event-form {
+      .form-actions {
+        @apply flex-col space-y-2 space-x-0;
+      }
+    }
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.hover-glow {
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Custom Scrollbar */
+.events-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.events-list::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.5);
+}
+
+.events-list::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 3px;
+}
+
+.events-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}

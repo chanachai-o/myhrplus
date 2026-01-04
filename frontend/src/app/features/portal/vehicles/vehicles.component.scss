@@ -1,0 +1,151 @@
+// Vehicle & Parking Management Component Styles
+.vehicle-management {
+  .tab-container {
+    @apply p-1;
+    /* glass-card styles applied via class in HTML */
+
+    .tab-buttons {
+      @apply flex space-x-1;
+
+      .tab-button {
+        @apply flex-1 py-2 px-4 rounded-lg font-medium transition-colors;
+
+        &.active {
+          @apply bg-primary-500 text-white;
+        }
+
+        &:not(.active) {
+          @apply text-gray-600 dark:text-gray-400;
+        }
+      }
+    }
+  }
+
+  .statistics-grid {
+    @apply grid grid-cols-1 md:grid-cols-4 gap-4;
+
+    .stat-card {
+      @apply p-4 text-center;
+      /* glass-card styles applied via class in HTML */
+
+      .stat-number {
+        @apply text-2xl font-bold;
+
+        &.parked {
+          @apply text-green-600 dark:text-green-400;
+        }
+
+        &.left {
+          @apply text-blue-600 dark:text-blue-400;
+        }
+
+        &.reserved {
+          @apply text-yellow-600 dark:text-yellow-400;
+        }
+
+        &.total {
+          @apply text-gray-900 dark:text-gray-100;
+        }
+      }
+
+      .stat-label {
+        @apply text-sm text-gray-600 dark:text-gray-400;
+      }
+    }
+  }
+
+  .parking-spots {
+    @apply p-6;
+    /* glass-card styles applied via class in HTML */
+
+    .spots-grid {
+      @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+
+      .spot-card {
+        @apply p-4 rounded-lg border;
+
+        &.occupied {
+          @apply bg-red-100 dark:bg-red-900/20 border-red-300 dark:border-red-700;
+        }
+
+        &.available {
+          @apply bg-green-100 dark:bg-green-900/20 border-green-300 dark:border-green-700;
+        }
+
+        .spot-info {
+          @apply flex items-center justify-between;
+
+          .spot-details {
+            h4 {
+              @apply font-semibold text-gray-900 dark:text-gray-100;
+            }
+
+            p {
+              @apply text-sm text-gray-600 dark:text-gray-400;
+            }
+          }
+
+          .spot-status {
+            @apply text-right;
+
+            .status-icon {
+              @apply text-2xl;
+
+              &.occupied {
+                @apply text-red-600;
+              }
+
+              &.available {
+                @apply text-green-600;
+              }
+            }
+
+            .status-text {
+              @apply text-xs text-gray-500 dark:text-gray-400;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .vehicle-form {
+    .form-grid {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+    }
+
+    .form-actions {
+      @apply flex justify-end space-x-2 pt-4;
+    }
+  }
+}
+
+// Status indicators
+.status-parked {
+  @apply text-green-600;
+}
+
+.status-left {
+  @apply text-blue-600;
+}
+
+.status-reserved {
+  @apply text-yellow-600;
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .vehicle-management {
+    .statistics-grid {
+      @apply grid-cols-2;
+    }
+
+    .parking-spots .spots-grid {
+      @apply grid-cols-1;
+    }
+
+    .vehicle-form .form-grid {
+      @apply grid-cols-1;
+    }
+  }
+}

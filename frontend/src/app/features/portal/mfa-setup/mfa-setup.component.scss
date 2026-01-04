@@ -1,0 +1,85 @@
+// MFA Setup Component Styles
+.mfa-setup {
+  .step-indicator {
+    @apply flex items-center justify-center space-x-4 mb-8;
+
+    .step {
+      @apply flex items-center space-x-2 px-4 py-2 rounded-lg;
+      @apply bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400;
+
+      &.active {
+        @apply bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300;
+      }
+
+      &.completed {
+        @apply bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300;
+      }
+    }
+  }
+
+  .qr-code-container {
+    @apply flex justify-center;
+
+    .qr-code {
+      @apply p-4 rounded-lg;
+      /* glass-card styles applied via class in HTML */
+
+      img {
+        @apply w-48 h-48;
+      }
+    }
+  }
+
+  .backup-codes {
+    @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg;
+
+    .code-grid {
+      @apply grid grid-cols-2 gap-2 text-sm font-mono;
+
+      .code {
+        @apply text-center py-1;
+      }
+    }
+  }
+
+  .verification-form {
+    .code-input {
+      @apply text-center text-2xl tracking-widest;
+    }
+  }
+
+  .error-message {
+    @apply p-4 rounded-lg border;
+    @apply bg-red-100 dark:bg-red-900/20 border-red-300 dark:border-red-700;
+
+    p {
+      @apply text-red-800 dark:text-red-200 text-sm;
+    }
+  }
+
+  .success-message {
+    @apply p-4 rounded-lg border;
+    @apply bg-green-100 dark:bg-green-900/20 border-green-300 dark:border-green-700;
+
+    p {
+      @apply text-green-800 dark:text-green-200 text-sm;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .mfa-setup {
+    .step-indicator {
+      @apply flex-col space-y-2 space-x-0;
+    }
+
+    .qr-code-container .qr-code img {
+      @apply w-40 h-40;
+    }
+
+    .backup-codes .code-grid {
+      @apply grid-cols-1;
+    }
+  }
+}

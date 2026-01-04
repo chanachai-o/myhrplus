@@ -1,0 +1,158 @@
+// Users Component Styles
+
+// Import form styles from companies component
+.modal-form-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem 1.25rem;
+  }
+}
+
+.form-section {
+  margin-bottom: 2rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 3rem;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.6), transparent);
+    border-radius: 2px;
+  }
+
+  :root.light &,
+  html.light & {
+    color: #1f2937;
+    border-bottom-color: rgba(59, 130, 246, 0.15);
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &.form-group-full {
+    grid-column: 1 / -1;
+  }
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+
+  :root.light &,
+  html.light & {
+    color: #374151;
+  }
+
+  .required-indicator {
+    color: #ef4444;
+    font-weight: 600;
+    margin-left: 0.125rem;
+  }
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #9ca3af);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+
+  :root.light &,
+  html.light & {
+    color: #6b7280;
+  }
+}
+
+.modal-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column-reverse;
+    width: 100%;
+
+    app-glass-button {
+      width: 100%;
+    }
+  }
+}
+
+// Form Input Focus States
+.glass-input {
+  transition: all 0.3s ease;
+
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  }
+}
+
+// Select Dropdown Styling
+select.glass-input {
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+}
+
+// Checkbox Styling
+.glass-checkbox {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: rgba(59, 130, 246, 0.8);
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
+  }
+}

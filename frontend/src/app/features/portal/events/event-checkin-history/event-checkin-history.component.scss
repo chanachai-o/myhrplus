@@ -1,0 +1,151 @@
+.event-checkin-history-container {
+  @apply w-full;
+
+  .filters-section {
+    @apply mb-6;
+  }
+
+  .checkin-history-content {
+    @apply w-full;
+  }
+
+  .stats-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 mb-6;
+  }
+
+  .stat-card {
+    @apply bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700;
+
+    .stat-label {
+      @apply text-sm font-medium text-gray-600 dark:text-gray-400 mb-2;
+    }
+
+    .stat-value {
+      @apply text-3xl font-bold text-gray-900 dark:text-gray-100;
+    }
+  }
+
+  .timeline-container {
+    @apply relative;
+  }
+
+  .timeline-date-group {
+    @apply mb-8;
+
+    .date-header {
+      @apply flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-700;
+
+      .date-title {
+        @apply text-xl font-semibold text-gray-900 dark:text-gray-100;
+      }
+
+      .date-count {
+        @apply text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full;
+      }
+    }
+
+    .timeline-items {
+      @apply relative pl-8;
+    }
+
+    .timeline-item {
+      @apply relative pb-6 last:pb-0;
+
+      .timeline-line {
+        @apply absolute left-0 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-gray-600;
+      }
+
+      .timeline-dot {
+        @apply absolute left-0 top-2 w-4 h-4 rounded-full bg-blue-600 dark:bg-blue-500 flex items-center justify-center transform -translate-x-1/2;
+
+        .dot-inner {
+          @apply w-2 h-2 rounded-full bg-white dark:bg-gray-900;
+        }
+      }
+
+      .timeline-content {
+        @apply ml-6 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow;
+
+        .content-header {
+          @apply flex items-start justify-between mb-3;
+
+          .user-info {
+            @apply flex-1;
+
+            .user-name {
+              @apply text-base font-semibold text-gray-900 dark:text-gray-100 mb-1;
+            }
+
+            .user-email {
+              @apply text-sm text-gray-600 dark:text-gray-400;
+            }
+          }
+
+          .checkin-time {
+            @apply flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400;
+
+            .time-icon {
+              @apply text-lg;
+            }
+
+            .time-text {
+              @apply font-medium;
+            }
+          }
+        }
+
+        .content-footer {
+          @apply flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700;
+
+          .status-badge {
+            @apply px-2 py-1 rounded text-xs font-medium;
+
+            &.checked-in {
+              @apply bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400;
+            }
+          }
+
+          .full-time {
+            @apply text-xs text-gray-500 dark:text-gray-400;
+          }
+        }
+      }
+    }
+  }
+
+  .pagination-container {
+    @apply flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700;
+
+    .pagination-info {
+      @apply text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    .pagination-controls {
+      @apply flex items-center gap-4;
+
+      .page-info {
+        @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .event-checkin-history-container {
+    .timeline-date-group {
+      .timeline-item {
+        .timeline-content {
+          .content-header {
+            @apply flex-col gap-2;
+
+            .checkin-time {
+              @apply self-start;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

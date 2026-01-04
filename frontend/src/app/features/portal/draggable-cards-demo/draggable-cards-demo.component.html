@@ -1,0 +1,238 @@
+<div class="draggable-cards-demo-container">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">
+      <i class="fas fa-th-large"></i>
+      Draggable Cards Demo
+    </h1>
+    <p class="demo-description">
+      ทดสอบ Draggable Cards Component ที่สามารถลากและปรับขนาดได้
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3>การตั้งค่า Cards</h3>
+
+        <div class="control-group">
+          <label>ขนาด Grid:</label>
+          <input
+            type="range"
+            min="10"
+            max="50"
+            [(ngModel)]="gridSize"
+            (change)="updateConfig()"
+            class="range-input">
+          <span class="range-value">{{ gridSize }}px</span>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="snapToGrid" (change)="updateConfig()">
+            Snap to Grid
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="allowOverlap" (change)="updateConfig()">
+            อนุญาตให้ทับซ้อน
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="animation" (change)="updateConfig()">
+            เปิดใช้แอนิเมชัน
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="autoSave" (change)="updateConfig()">
+            บันทึกอัตโนมัติ
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3>การจัดการ Cards</h3>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="addSampleCard()">
+            <i class="fas fa-plus"></i>
+            เพิ่ม Card
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="resetToSampleCards()">
+            <i class="fas fa-undo"></i>
+            รีเซ็ต
+          </app-glass-button>
+
+          <app-glass-button
+            variant="danger"
+            (click)="clearAllCards()">
+            <i class="fas fa-trash"></i>
+            ลบทั้งหมด
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="lockAllCards()">
+            <i class="fas fa-lock"></i>
+            ล็อคทั้งหมด
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="unlockAllCards()">
+            <i class="fas fa-unlock"></i>
+            ปลดล็อคทั้งหมด
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="exportCardsData()">
+            <i class="fas fa-download"></i>
+            ส่งออกข้อมูล
+          </app-glass-button>
+
+          <label class="import-btn">
+            <input
+              type="file"
+              accept=".json"
+              (change)="importCardsData($event)"
+              style="display: none;">
+            <app-glass-button variant="secondary">
+              <i class="fas fa-upload"></i>
+              นำเข้าข้อมูล
+            </app-glass-button>
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Draggable Cards Demo -->
+  <div class="cards-demo">
+    <app-glass-card>
+      <div class="cards-section">
+        <h3>Draggable Cards</h3>
+
+        <app-draggable-cards
+          [cards]="cards"
+          [config]="config"
+          (cardMove)="onCardMove($event)"
+          (cardResize)="onCardResize($event)"
+          (cardSelect)="onCardSelect($event)"
+          (cardDeselect)="onCardDeselect($event)"
+          (cardsChange)="onCardsChange($event)">
+        </app-draggable-cards>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3>สถิติ Cards</h3>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ getCardsStats().totalCards }}</div>
+            <div class="stat-label">Cards ทั้งหมด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getCardsStats().lockedCards }}</div>
+            <div class="stat-label">Cards ที่ล็อค</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getCardsStats().unlockedCards }}</div>
+            <div class="stat-label">Cards ที่ปลดล็อค</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getCardsStats().cardsWithIcons }}</div>
+            <div class="stat-label">Cards ที่มีไอคอน</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getCardsStats().cardsWithBadges }}</div>
+            <div class="stat-label">Cards ที่มี Badge</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getCardsStats().selectedCard }}</div>
+            <div class="stat-label">Card ที่เลือก</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3>ฟีเจอร์ Draggable Cards</h3>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Drag & Drop</h4>
+            <p>ลาก Cards ได้อย่างอิสระ</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Resize</h4>
+            <p>ปรับขนาด Cards ได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Grid Snap</h4>
+            <p>จัดเรียงตาม Grid</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Lock/Unlock</h4>
+            <p>ล็อค Cards ได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Icons & Badges</h4>
+            <p>รองรับไอคอนและ Badge</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Auto Save</h4>
+            <p>บันทึกอัตโนมัติ</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+

@@ -1,0 +1,88 @@
+// Guest Management Component Styles
+.guest-management {
+  .statistics-grid {
+    @apply grid grid-cols-1 md:grid-cols-4 gap-4;
+
+    .stat-card {
+      @apply p-4 text-center;
+      /* glass-card styles applied via class in HTML */
+
+      .stat-number {
+        @apply text-2xl font-bold;
+
+        &.pending {
+          @apply text-yellow-600 dark:text-yellow-400;
+        }
+
+        &.checked-in {
+          @apply text-green-600 dark:text-green-400;
+        }
+
+        &.checked-out {
+          @apply text-blue-600 dark:text-blue-400;
+        }
+
+        &.total {
+          @apply text-gray-900 dark:text-gray-100;
+        }
+      }
+
+      .stat-label {
+        @apply text-sm text-gray-600 dark:text-gray-400;
+      }
+    }
+  }
+
+  .filters-section {
+    @apply p-6;
+    /* glass-card styles applied via class in HTML */
+
+    .filter-grid {
+      @apply grid grid-cols-1 md:grid-cols-3 gap-4;
+    }
+  }
+
+  .guest-form {
+    .form-grid {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+    }
+
+    .form-actions {
+      @apply flex justify-end space-x-2 pt-4;
+    }
+  }
+}
+
+// Status indicators
+.status-pending {
+  @apply text-yellow-600;
+}
+
+.status-checked-in {
+  @apply text-green-600;
+}
+
+.status-checked-out {
+  @apply text-blue-600;
+}
+
+.status-expired {
+  @apply text-red-600;
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .guest-management {
+    .statistics-grid {
+      @apply grid-cols-2;
+    }
+
+    .filters-section .filter-grid {
+      @apply grid-cols-1;
+    }
+
+    .guest-form .form-grid {
+      @apply grid-cols-1;
+    }
+  }
+}

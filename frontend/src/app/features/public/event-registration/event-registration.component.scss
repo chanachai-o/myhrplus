@@ -1,0 +1,203 @@
+// Event Registration Page Styles - Gemini 2.0 Flash Style
+
+.event-registration-page {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  
+  // Theme support
+  html.dark &,
+  body.dark &,
+  :host-context(.dark) &,
+  :host-context(html.dark) &,
+  :host-context(body.dark) & {
+    color: #ffffff;
+    
+    ::ng-deep .text-white,
+    .text-white {
+      color: #ffffff !important;
+    }
+    
+    ::ng-deep .text-gray-300,
+    .text-gray-300 {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    ::ng-deep .text-gray-400,
+    .text-gray-400 {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+  
+  html.light &,
+  body.light &,
+  :host-context(.light) &,
+  :host-context(html.light) &,
+  :host-context(body.light) & {
+    color: rgb(15 23 42);
+    
+    ::ng-deep .text-white,
+    .text-white {
+      color: rgb(15 23 42) !important;
+    }
+    
+    ::ng-deep .text-gray-300,
+    .text-gray-300 {
+      color: rgb(51 65 85) !important;
+    }
+    
+    ::ng-deep .text-gray-400,
+    .text-gray-400 {
+      color: rgb(100 116 139) !important;
+    }
+  }
+}
+
+// Background Graphics
+.event-bg-graphics {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 40%);
+  opacity: 0.6;
+}
+
+.bg-grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(59, 130, 246, 0.02) 1px,
+      rgba(59, 130, 246, 0.02) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(6, 182, 212, 0.02) 1px,
+      rgba(6, 182, 212, 0.02) 2px
+    );
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+// Header
+.event-header {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+:host-context(.light) .event-header,
+:host-context(html.light) .event-header,
+:host-context(body.light) .event-header,
+html.light .event-header,
+body.light .event-header {
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom-color: rgba(245, 158, 11, 0.2);
+}
+
+:host-context(.dark) .event-header,
+:host-context(html.dark) .event-header,
+:host-context(body.dark) .event-header,
+html.dark .event-header,
+body.dark .event-header {
+  background: rgba(26, 26, 46, 0.7);
+  border-bottom-color: rgba(59, 130, 246, 0.3);
+}
+
+// Gradient Text
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Content Section
+.event-content {
+  position: relative;
+  z-index: 10;
+  padding-top: 6rem;
+  padding-bottom: 3rem;
+}
+
+// Animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+// Camera Modal
+.camera-modal {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.camera-modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.camera-preview-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); // Mirror for better UX
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .event-content {
+    padding-top: 5rem;
+  }
+  
+  .event-header {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  
+  .camera-modal-content {
+    padding: 1rem;
+  }
+}

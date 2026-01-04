@@ -1,0 +1,113 @@
+// Super Admin Layout Component Styles - Gemini AI Style
+
+.portal-layout {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Background Graphics */
+.layout-graphics {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.graphic-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  filter: blur(40px);
+}
+
+:host-context(.light) .graphic-circle {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 70%);
+}
+
+:host-context(.dark) .graphic-circle {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+}
+
+.graphic-circle-1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+  animation: graphic-pulse 8s ease-in-out infinite;
+}
+
+.graphic-circle-2 {
+  width: 300px;
+  height: 300px;
+  bottom: -50px;
+  left: -50px;
+  animation: graphic-pulse 10s ease-in-out infinite 2s;
+}
+
+.graphic-line {
+  position: absolute;
+  height: 2px;
+  opacity: 0.15;
+  filter: blur(1px);
+}
+
+:host-context(.light) .graphic-line {
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.4), transparent);
+}
+
+:host-context(.dark) .graphic-line {
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+}
+
+.graphic-line-1 {
+  width: 60%;
+  top: 30%;
+  left: 20%;
+  transform: rotate(-15deg);
+  animation: graphic-line-move 12s ease-in-out infinite;
+}
+
+.graphic-line-2 {
+  width: 50%;
+  bottom: 25%;
+  right: 15%;
+  transform: rotate(20deg);
+  animation: graphic-line-move 15s ease-in-out infinite 3s;
+}
+
+@keyframes graphic-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.2;
+  }
+}
+
+@keyframes graphic-line-move {
+  0%, 100% {
+    transform: translateX(0) rotate(-15deg);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateX(30px) rotate(-15deg);
+    opacity: 0.25;
+  }
+}
+
+:host-context(.dark) .graphic-line-1 {
+  transform: rotate(-15deg);
+  animation: graphic-line-move 12s ease-in-out infinite;
+}
+
+:host-context(.dark) .graphic-line-2 {
+  transform: rotate(20deg);
+  animation: graphic-line-move 15s ease-in-out infinite 3s;
+}
+

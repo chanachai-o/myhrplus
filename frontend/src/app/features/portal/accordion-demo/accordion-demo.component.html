@@ -1,0 +1,238 @@
+<div class="accordion-demo-container">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">
+      <i class="fas fa-list-alt"></i>
+      Accordion Component Demo
+    </h1>
+    <p class="demo-description">
+      ทดสอบ Accordion Component ที่มีฟีเจอร์ครบถ้วน
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3>การตั้งค่า Accordion</h3>
+
+        <div class="control-group">
+          <label>ประเภท:</label>
+          <select [(ngModel)]="selectedVariant" (change)="updateConfig()">
+            <option value="default">Default</option>
+            <option value="bordered">Bordered</option>
+            <option value="flush">Flush</option>
+            <option value="minimal">Minimal</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>ขนาด:</label>
+          <select [(ngModel)]="selectedSize" (change)="updateConfig()">
+            <option value="sm">Small</option>
+            <option value="md">Medium</option>
+            <option value="lg">Large</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="allowMultiple" (change)="updateConfig()">
+            อนุญาตให้เปิดหลายรายการ
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showIcons" (change)="updateConfig()">
+            แสดงไอคอน
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>ตำแหน่งไอคอน:</label>
+          <select [(ngModel)]="iconPosition" (change)="updateConfig()">
+            <option value="left">ซ้าย</option>
+            <option value="right">ขวา</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="animation" (change)="updateConfig()">
+            เปิดใช้แอนิเมชัน
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3>การจัดการข้อมูล</h3>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="loadFAQItems()">
+            <i class="fas fa-question-circle"></i>
+            FAQ Items
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadHelpItems()">
+            <i class="fas fa-question-circle"></i>
+            Help Items
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadFeatureItems()">
+            <i class="fas fa-star"></i>
+            Feature Items
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="toggleAllItems()">
+            <i class="fas fa-toggle-on"></i>
+            Toggle All
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="resetAllItems()">
+            <i class="fas fa-undo"></i>
+            Reset All
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="addNewItem()">
+            <i class="fas fa-plus"></i>
+            Add Item
+          </app-glass-button>
+
+          <app-glass-button
+            variant="danger"
+            (click)="removeLastItem()">
+            <i class="fas fa-trash"></i>
+            Remove Last
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Accordion Demo -->
+  <div class="accordion-demo">
+    <app-glass-card>
+      <div class="accordion-section">
+        <h3>Accordion Component</h3>
+
+        <app-accordion
+          [items]="accordionItems"
+          [config]="accordionConfig"
+          (itemToggle)="onItemToggle($event)"
+          (itemClick)="onItemClick($event)">
+        </app-accordion>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3>สถิติ Accordion</h3>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ getAccordionStats().totalItems }}</div>
+            <div class="stat-label">รายการทั้งหมด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getAccordionStats().openItems }}</div>
+            <div class="stat-label">รายการที่เปิด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getAccordionStats().closedItems }}</div>
+            <div class="stat-label">รายการที่ปิด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getAccordionStats().itemsWithBadges }}</div>
+            <div class="stat-label">รายการที่มี Badge</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getAccordionStats().itemsWithIcons }}</div>
+            <div class="stat-label">รายการที่มีไอคอน</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getAccordionStats().disabledItems }}</div>
+            <div class="stat-label">รายการที่ปิดการใช้งาน</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3>ฟีเจอร์ Accordion Component</h3>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Responsive Design</h4>
+            <p>รองรับการใช้งานบนอุปกรณ์ทุกขนาด</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Animation Support</h4>
+            <p>รองรับแอนิเมชันที่ลื่นไหล</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Multiple Variants</h4>
+            <p>มีหลายรูปแบบให้เลือกใช้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Icon Support</h4>
+            <p>รองรับไอคอนและ Badge</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Accessibility</h4>
+            <p>รองรับการใช้งานด้วยคีย์บอร์ด</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Customizable</h4>
+            <p>ปรับแต่งได้ตามต้องการ</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+
