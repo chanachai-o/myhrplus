@@ -17,24 +17,58 @@
         </div>
         <div class="flex items-center space-x-4" [@slideInRight]>
           <!-- Language Switcher -->
-          <button
-            type="button"
-            (click)="toggleLanguage()"
-            class="language-switcher glass-card px-4 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
-            [title]="currentLang() === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'">
-            <span class="text-lg">{{ currentLang() === 'th' ? '🇹🇭' : '🇬🇧' }}</span>
-            <span class="hidden md:inline font-medium">{{ currentLang() === 'th' ? 'ไทย' : 'EN' }}</span>
-          </button>
+          <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
+            <app-glass-button
+              type="button"
+              variant="secondary"
+              size="sm"
+              (clicked)="toggleLanguageMenu()"
+              [ariaLabel]="'layout.header.changeLanguage' | translate"
+              [title]="'layout.header.changeLanguage' | translate"
+              [attr.aria-expanded]="showLanguageMenu"
+              [attr.aria-controls]="'language-menu'"
+              customClass="control-button language-button">
+              <img [src]="currentLanguage.flagPath" [alt]="currentLanguage.name" class="control-icon w-5 h-5 rounded-sm object-cover" />
+            </app-glass-button>
 
-          <!-- Theme Switcher -->
-          <button
-            type="button"
-            (click)="toggleTheme()"
-            class="theme-switcher glass-card px-4 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
-            [title]="getThemeTooltip()">
-            <span class="text-lg">{{ getThemeIcon() }}</span>
-            <span class="hidden md:inline font-medium">{{ getThemeLabel() }}</span>
-          </button>
+            <!-- Language Dropdown -->
+            <app-glass-card
+              *ngIf="showLanguageMenu"
+              variant="strong"
+              padding="p-0"
+              customClass="language-dropdown absolute right-0 top-full mt-2 w-48
+                           rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
+                           z-50 overflow-hidden
+                           backdrop-blur-xl
+                           animate-scale-in
+                           [animation-duration:200ms]
+                           origin-top-right">
+              <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
+                <button
+                  *ngFor="let lang of availableLanguages; let i = index"
+                  type="button"
+                  role="menuitem"
+                  (click)="changeLanguage(lang.code)"
+                  [class.active]="currentLang === lang.code"
+                  [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.name"
+                  [attr.aria-current]="currentLang === lang.code ? 'true' : 'false'"
+                  [style.--animation-delay]="(i * 50) + 'ms'"
+                  class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3
+                         hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
+                         hover:translate-x-1 hover:scale-[1.02]
+                         active:scale-[0.98]
+                         transition-all duration-200 ease-out
+                         animate-fade-in">
+                  <img [src]="lang.flagPath" [alt]="lang.name" class="w-5 h-5 rounded-sm object-cover" />
+                  <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ lang.name }}</span>
+                  <app-icon *ngIf="currentLang === lang.code" name="check" size="sm" color="text-primary theme-myhr:text-primary"></app-icon>
+                </button>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Theme Toggle -->
+          <app-theme-toggle></app-theme-toggle>
 
           <!-- Login Button -->
           <app-glass-button (clicked)="navigateToDemo()" variant="primary" size="md">
@@ -376,7 +410,7 @@
             <h3 class="text-2xl font-bold gradient-text">IVAP Platform</h3>
           </div>
           <p class="text-gray-400 text-lg leading-relaxed">
-            {{ currentLang() === 'th' ? 'แพลตฟอร์มยืนยันตัวตนและวิเคราะห์วิดีโออัจฉริยะ' : 'Intelligent identity verification and video analytics platform' }}
+            {{ t('landing.footerDescription') }}
           </p>
         </div>
         <div [@fadeIn] [style.animation-delay]="'0.1s'">

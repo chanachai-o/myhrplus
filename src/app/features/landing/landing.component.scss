@@ -592,14 +592,17 @@ body.dark .landing-footer {
   animation: float 6s ease-in-out infinite;
 }
 
-// Language Switcher & Theme Switcher
-.language-switcher,
-.theme-switcher {
+// Language Switcher & Theme Toggle Controls
+.control-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.language-button {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
@@ -608,34 +611,33 @@ body.dark .landing-footer {
   }
 }
 
-// Language Switcher & Theme Switcher - Support both :host-context and global selectors
-:host-context(.light) .language-switcher,
-:host-context(html.light) .language-switcher,
-:host-context(body.light) .language-switcher,
-html.light .language-switcher,
-body.light .language-switcher,
-:host-context(.light) .theme-switcher,
-:host-context(html.light) .theme-switcher,
-:host-context(body.light) .theme-switcher,
-html.light .theme-switcher,
-body.light .theme-switcher {
-  background: rgba(255, 255, 255, 0.5);
-  color: rgb(15 23 42);
+.control-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 
-:host-context(.dark) .language-switcher,
-:host-context(html.dark) .language-switcher,
-:host-context(body.dark) .language-switcher,
-html.dark .language-switcher,
-body.dark .language-switcher,
-:host-context(.dark) .theme-switcher,
-:host-context(html.dark) .theme-switcher,
-:host-context(body.dark) .theme-switcher,
-html.dark .theme-switcher,
-body.dark .theme-switcher {
-  background: rgba(26, 26, 46, 0.6);
-  color: #ffffff;
-  border-color: rgba(var(--primary-rgb), 0.3);
+// Language Dropdown
+.language-dropdown {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.language-item {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+
+  &.active {
+    background: rgba(var(--primary-rgb), 0.1);
+  }
+
+  &:focus {
+    outline: none;
+    background: rgba(var(--primary-rgb), 0.15);
+  }
 }
 
 // Responsive

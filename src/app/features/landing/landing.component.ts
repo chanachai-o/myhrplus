@@ -10,17 +10,22 @@
  * ```
  */
 
-import { Component, OnInit, signal, computed, effect, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, signal, computed, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '@shared/components/glass-button/glass-button.component';
-import { ThemeService } from '@core/services/theme.service';
+import { ThemeToggleComponent } from '@shared/components/theme-toggle/theme-toggle.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
+import { ThemeService, StorageService, SwaplangCodeService } from '@core/services';
 import { LandingService } from '@core/services/landing.service';
 import { ContactForm } from '@core/models/landing.model';
 import { PLACEHOLDER_IMAGES } from '@core/utils/image-placeholders';
 import { BaseComponent } from '@core/base/base.component';
+import { Language, isSupportedLanguage, DEFAULT_LANGUAGE, getFlagPath } from '@core/types/language.type';
+import { STORAGE_KEYS } from '@core/constants/storage-keys.constant';
 import {
   fadeIn,
   slideInUp,
@@ -37,7 +42,11 @@ import {
   imports: [
     CommonModule,
     TranslateModule,
-    GlassButtonComponent
+    GlassButtonComponent,
+    GlassCardComponent,
+    ThemeToggleComponent,
+    IconComponent,
+    ClickOutsideDirective
   ],
   animations: [
     fadeIn,
@@ -53,13 +62,29 @@ import {
 })
 export class LandingComponent extends BaseComponent implements OnInit {
   private landingService = inject(LandingService);
-  public theme = inject(ThemeService);
-  public translateService = inject(TranslateService);
+  private themeService = inject(ThemeService);
+  private translateService = inject(TranslateService);
+  private storageService = inject(StorageService);
+  private swapLangService = inject(SwaplangCodeService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  currentTheme = signal('light');
-  currentLang = signal('th');
+  // Language
+  currentLang: Language = 'th';
+  showLanguageMenu = false;
+  availableLanguages = [
+    { code: 'th' as Language, name: 'ไทย', flagPath: getFlagPath('th') },
+    { code: 'en' as Language, name: 'English', flagPath: getFlagPath('en') },
+    { code: 'lo' as Language, name: 'ລາວ', flagPath: getFlagPath('lo') },
+    { code: 'my' as Language, name: 'မြန်မာ', flagPath: getFlagPath('my') },
+    { code: 'vi' as Language, name: 'Tiếng Việt', flagPath: getFlagPath('vi') },
+    { code: 'zh' as Language, name: '中文', flagPath: getFlagPath('zh') }
+  ];
+
+  get currentLanguage() {
+    return this.availableLanguages.find(lang => lang.code === this.currentLang) || this.availableLanguages[0];
+  }
+
   showContactModal = signal(false);
   contactForm: ContactForm = {
     name: '',
@@ -330,29 +355,23 @@ export class LandingComponent extends BaseComponent implements OnInit {
 
   constructor() {
     super();
-
-    // Watch theme changes
-    this.subscribe(
-      this.theme.isDarkMode$,
-      (isDark) => {
-        this.currentTheme.set(isDark ? 'dark' : 'light');
-        this.cdr.detectChanges();
-      }
-    );
-
-    // Watch language changes
-    this.subscribe(
-      this.translateService.onLangChange,
-      (event) => {
-        this.currentLang.set(event.lang as 'th' | 'en');
-      }
-    );
   }
 
   ngOnInit(): void {
-    // Initialize theme and language
-    this.currentTheme.set(this.theme.isDarkMode() ? 'dark' : 'light');
-    this.currentLang.set(this.translateService.currentLang as 'th' | 'en');
+    // Initialize language from storage
+    const savedLang = this.storageService.getItem<Language>(STORAGE_KEYS.LANGUAGE);
+    this.currentLang = (savedLang && isSupportedLanguage(savedLang)) ? savedLang : (this.translateService.currentLang as Language) || DEFAULT_LANGUAGE;
+
+    // Subscribe to language changes
+    this.subscribe(
+      this.translateService.onLangChange,
+      (event) => {
+        const lang = event.lang as Language;
+        if (isSupportedLanguage(lang)) {
+          this.currentLang = lang;
+        }
+      }
+    );
 
     // Start auto-rotating
     this.startAutoRotate();
@@ -445,42 +464,32 @@ export class LandingComponent extends BaseComponent implements OnInit {
     );
   }
 
-  toggleTheme(): void {
-    this.theme.toggleMode();
-    const isDark = this.theme.isDarkMode();
-    this.currentTheme.set(isDark ? 'dark' : 'light');
-
-    // Force change detection
-    this.cdr.detectChanges();
+  toggleLanguageMenu(): void {
+    this.showLanguageMenu = !this.showLanguageMenu;
   }
 
-  getThemeIcon(): string {
-    const currentTheme = this.theme.getCurrentTheme();
-    const mode = currentTheme?.mode || 'light';
-    const isDark = this.theme.isDarkMode();
+  closeLanguageMenu(): void {
+    this.showLanguageMenu = false;
+  }
 
-    if (mode === 'auto') {
-      return isDark ? '🌙' : '☀️';
+  changeLanguage(language: Language): void {
+    // Validate language
+    if (!isSupportedLanguage(language)) {
+      console.warn(`Language ${language} is not supported.`);
+      return;
     }
-    return mode === 'dark' ? '🌙' : '☀️';
-  }
 
-  getThemeLabel(): string {
-    // Get current theme mode from ThemeService
-    const currentTheme = this.theme.getCurrentTheme();
-    const mode = currentTheme?.mode || 'light';
-    return this.translateService.instant(`theme.${mode}`) || mode;
-  }
+    // Change language
+    this.translateService.use(language);
 
-  getThemeTooltip(): string {
-    return `${this.translateService.instant('common.theme') || 'Theme'}: ${this.getThemeLabel()}`;
-  }
+    // Save to storage
+    this.storageService.setItem(STORAGE_KEYS.LANGUAGE, language);
 
-  toggleLanguage(): void {
-    const currentLang = this.translateService.currentLang;
-    const newLang = currentLang === 'th' ? 'en' : 'th';
-    this.translateService.use(newLang);
-    this.currentLang.set(newLang);
+    // Update document language attribute
+    document.documentElement.setAttribute('lang', language);
+
+    this.currentLang = language;
+    this.showLanguageMenu = false;
   }
 
   t(key: string): string {
