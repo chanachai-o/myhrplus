@@ -1474,7 +1474,7 @@ samp {
   }
 
   .glass-nav {
-    @apply backdrop-blur-lg rounded-xl border shadow-glass;
+    @apply backdrop-blur-lg border shadow-glass;
     background: linear-gradient(to bottom,
         var(--header-bg-start, rgba(255, 255, 255, 0.2)),
         var(--header-bg-end, rgba(255, 255, 255, 0.15)));
