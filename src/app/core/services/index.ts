@@ -54,6 +54,5 @@ export * from './error.service';
 export * from './log-history.service';
 export * from './monitoring.service';
 export * from './idle-timeout.service';
-export * from './private-message.service';
 export * from './zeeme.service';
 
