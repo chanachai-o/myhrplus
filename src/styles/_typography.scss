@@ -8,58 +8,74 @@
 /* ============================================
    Heading Styles
    ============================================ */
-h1, .h1 {
+h1,
+.h1 {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   letter-spacing: -0.025em;
-  
+
   @media (max-width: 768px) {
     font-size: var(--font-size-3xl);
   }
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
   letter-spacing: -0.025em;
-  
+
   @media (max-width: 768px) {
     font-size: var(--font-size-2xl);
   }
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-snug);
-  
+
   @media (max-width: 768px) {
     font-size: var(--font-size-xl);
   }
 }
 
-h4, .h4 {
+h4,
+.h4 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-snug);
-  
+
   @media (max-width: 768px) {
     font-size: var(--font-size-lg);
   }
 }
 
-h5, .h5 {
+h5,
+.h5 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
 }
 
-h6, .h6 {
+h6,
+.h6 {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
+}
+
+/* ============================================
+   Display Styles (Hero/Metrics)
+   ============================================ */
+.font-display {
+  font-family: var(--font-english);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
 }
 
 /* ============================================
@@ -128,11 +144,25 @@ h6, .h6 {
 /* ============================================
    Font Weight Utilities
    ============================================ */
-.font-light { font-weight: var(--font-weight-light); }
-.font-normal { font-weight: var(--font-weight-normal); }
-.font-medium { font-weight: var(--font-weight-medium); }
-.font-semibold { font-weight: var(--font-weight-semibold); }
-.font-bold { font-weight: var(--font-weight-bold); }
+.font-light {
+  font-weight: var(--font-weight-light);
+}
+
+.font-normal {
+  font-weight: var(--font-weight-normal);
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
 
 /* ============================================
    Text Color Utilities
@@ -154,4 +184,3 @@ h6, .h6 {
 /* Note: Success, Danger, Warning, Info colors
    should use Tailwind utility classes or
    CSS variables from the theme system */
-

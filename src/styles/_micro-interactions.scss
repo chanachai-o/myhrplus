@@ -31,7 +31,7 @@
 }
 
 .micro-hover-glow {
-  box-shadow: var(--shadow-lg), 0 0 20px rgba(var(--primary-rgb, 7, 57, 156), 0.3);
+  box-shadow: var(--shadow-lg), 0 0 20px rgba(var(--primary-rgb, 99, 102, 241), 0.3);
 }
 
 /* ============================================
@@ -50,9 +50,9 @@
    Focus States
    ============================================ */
 .micro-focus {
-  outline: 2px solid var(--primary-color, rgb(var(--primary-rgb, 7, 57, 156)));
+  outline: 2px solid var(--primary-color, rgb(var(--primary-rgb, 99, 102, 241)));
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 7, 57, 156), 0.1);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 99, 102, 241), 0.1);
 }
 
 /* ============================================
@@ -62,7 +62,7 @@
   position: relative;
   overflow: hidden;
   transition: all var(--transition-base, 300ms ease-in-out);
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -75,17 +75,17 @@
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
   }
-  
+
   &:active::before {
     width: 300px;
     height: 300px;
   }
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
   }
-  
+
   &:active {
     transform: translateY(0) scale(0.98);
   }
@@ -97,12 +97,12 @@
 .card-micro {
   transition: all var(--transition-base, 300ms ease-in-out);
   cursor: pointer;
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-xl);
   }
-  
+
   &:active {
     transform: translateY(-2px) scale(0.98);
   }
@@ -113,14 +113,14 @@
    ============================================ */
 .input-micro {
   transition: all var(--transition-base, 300ms ease-in-out);
-  
+
   &:focus {
     transform: scale(1.02);
-    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 7, 57, 156), 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 99, 102, 241), 0.1);
   }
-  
+
   &:hover:not(:focus) {
-    border-color: var(--primary-color, rgb(var(--primary-rgb, 7, 57, 156)));
+    border-color: var(--primary-color, rgb(var(--primary-rgb, 99, 102, 241)));
   }
 }
 
@@ -130,7 +130,7 @@
 .link-micro {
   position: relative;
   transition: color var(--transition-base, 300ms ease-in-out);
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -138,13 +138,13 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--primary-color, rgb(var(--primary-rgb, 7, 57, 156)));
+    background-color: var(--primary-color, rgb(var(--primary-rgb, 99, 102, 241)));
     transition: width var(--transition-base, 300ms ease-in-out);
   }
-  
+
   &:hover {
-    color: var(--primary-color, rgb(var(--primary-rgb, 7, 57, 156)));
-    
+    color: var(--primary-color, rgb(var(--primary-rgb, 99, 102, 241)));
+
     &::after {
       width: 100%;
     }
@@ -159,11 +159,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  
+
   &:hover {
     transform: scale(1.1) rotate(5deg);
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
@@ -175,15 +175,15 @@
 .list-item-micro {
   transition: all var(--transition-base, 300ms ease-in-out);
   cursor: pointer;
-  
+
   &:hover {
-    background-color: rgba(var(--primary-rgb, 7, 57, 156), 0.05);
+    background-color: rgba(var(--primary-rgb, 99, 102, 241), 0.05);
     transform: translateX(4px);
     padding-left: calc(var(--spacing-md, 1rem) + 4px);
   }
-  
+
   &:active {
-    background-color: rgba(var(--primary-rgb, 7, 57, 156), 0.1);
+    background-color: rgba(var(--primary-rgb, 99, 102, 241), 0.1);
   }
 }
 
@@ -193,11 +193,11 @@
 .img-micro {
   transition: all var(--transition-base, 300ms ease-in-out);
   overflow: hidden;
-  
+
   img {
     transition: transform var(--transition-slow, 500ms ease-in-out);
   }
-  
+
   &:hover img {
     transform: scale(1.1);
   }
@@ -209,12 +209,12 @@
 .badge-micro {
   transition: all var(--transition-base, 300ms ease-in-out);
   cursor: pointer;
-  
+
   &:hover {
     transform: scale(1.1);
     box-shadow: var(--shadow-md);
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
@@ -224,6 +224,7 @@
    Reduced Motion Support
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
+
   .micro-interaction,
   .btn-micro,
   .card-micro,
@@ -234,20 +235,19 @@
   .img-micro,
   .badge-micro {
     transition: none;
-    
+
     &:hover,
     &:active,
     &:focus {
       transform: none;
     }
   }
-  
+
   .link-micro::after {
     transition: none;
   }
-  
+
   .img-micro img {
     transition: none;
   }
 }
-

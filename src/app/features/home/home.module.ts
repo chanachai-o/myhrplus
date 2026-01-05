@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { LayoutModule } from '../../layout/layout.module';
 import { HomeComponent } from './home.component';
-import { HomeHeaderComponent } from './home-header.component';
 import { HomeRoutingModule } from './home-routing.module';
 // Import standalone components
 import { PageLayoutComponent } from '@shared/components/page-layout/page-layout.component';
@@ -23,8 +22,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
-    HomeComponent,
-    HomeHeaderComponent
+    HomeComponent
   ],
   imports: [
     CommonModule,
@@ -50,8 +48,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NgxEchartsModule
   ],
   exports: [
-    HomeComponent,
-    HomeHeaderComponent
+    HomeComponent
   ]
 })
 export class HomeModule { }

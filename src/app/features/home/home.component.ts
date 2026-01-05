@@ -158,11 +158,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     return 'สวัสดีตอนเย็น';
   }
 
-  getUserInfo(): Array<{label: string, value: string, icon?: string, iconColor?: string}> {
+  getUserInfo(): Array<{ label: string, value: string, icon?: string, iconColor?: string }> {
     if (!this.currentUser) return [];
-    
-    const userInfo: Array<{label: string, value: string, icon?: string, iconColor?: string}> = [];
-    
+
+    const userInfo: Array<{ label: string, value: string, icon?: string, iconColor?: string }> = [];
+
     if (this.currentUser.employeeid || this.currentUser.uid) {
       userInfo.push({
         label: 'รหัส',
@@ -171,7 +171,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         iconColor: 'text-indigo-600 dark:text-indigo-400'
       });
     }
-    
+
     if (this.currentUser['emp_position']) {
       userInfo.push({
         label: '',
@@ -180,7 +180,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         iconColor: 'text-indigo-600 dark:text-indigo-400'
       });
     }
-    
+
     return userInfo;
   }
 
@@ -234,7 +234,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDateRangeChange(range: {start: Date | null, end: Date | null}): void {
+  onDateRangeChange(range: { start: Date | null, end: Date | null }): void {
     if (range.start && range.end) {
       this.dateRange.start = range.start;
       this.dateRange.end = range.end;
@@ -266,8 +266,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     // Check if dark mode is active via data-theme attribute or class
     const html = document.documentElement;
     this.isDarkMode = html.getAttribute('data-theme') === 'dark' ||
-                      html.classList.contains('dark') ||
-                      window.matchMedia('(prefers-color-scheme: dark)').matches;
+      html.classList.contains('dark') ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
   private getChartTextColor(): string {
@@ -353,9 +353,9 @@ export class HomeComponent implements OnInit, OnDestroy {
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: '#83bff6' },
-              { offset: 0.5, color: '#188df0' },
-              { offset: 1, color: '#188df0' }
+              { offset: 0, color: '#818cf8' }, // Indigo-400
+              { offset: 0.5, color: '#6366f1' }, // Indigo-500
+              { offset: 1, color: '#4f46e5' }  // Indigo-600
             ]
           }
         },
@@ -577,7 +577,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         data: payrollData,
         smooth: true,
         itemStyle: {
-          color: '#4facfe'
+          color: '#10b981' // Emerald-500
         },
         areaStyle: {
           color: {
@@ -587,8 +587,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: 'rgba(79, 172, 254, 0.3)' },
-              { offset: 1, color: 'rgba(79, 172, 254, 0.1)' }
+              { offset: 0, color: 'rgba(16, 185, 129, 0.3)' }, // Emerald-500 with opacity
+              { offset: 1, color: 'rgba(16, 185, 129, 0.05)' }
             ]
           }
         },

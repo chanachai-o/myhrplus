@@ -6,66 +6,66 @@
    ============================================ */
 
 /* ============================================
-   Colors - Primary
+   Colors - Primary (Premium Indigo)
    ============================================ */
-$primary-50: #f0f9ff;
-$primary-100: #e0f2fe;
-$primary-200: #bae6fd;
-$primary-300: #7dd3fc;
-$primary-400: #38bdf8;
-$primary-500: #0ea5e9; // Main primary color
-$primary-600: #0284c7;
-$primary-700: #0369a1;
-$primary-800: #075985;
-$primary-900: #0c4a6e;
-$primary-950: #082f49;
+$primary-50: #eef2ff;
+$primary-100: #e0e7ff;
+$primary-200: #c7d2fe;
+$primary-300: #a5b4fc;
+$primary-400: #818cf8;
+$primary-500: #6366f1; // Premium Indigo
+$primary-600: #4f46e5;
+$primary-700: #4338ca;
+$primary-800: #3730a3;
+$primary-900: #312e81;
+$primary-950: #1e1b4b;
 
 /* Primary Color Map */
 $primary-colors: (
-  50: $primary-50,
-  100: $primary-100,
-  200: $primary-200,
-  300: $primary-300,
-  400: $primary-400,
-  500: $primary-500,
-  600: $primary-600,
-  700: $primary-700,
-  800: $primary-800,
-  900: $primary-900,
-  950: $primary-950
+   50: $primary-50,
+   100: $primary-100,
+   200: $primary-200,
+   300: $primary-300,
+   400: $primary-400,
+   500: $primary-500,
+   600: $primary-600,
+   700: $primary-700,
+   800: $primary-800,
+   900: $primary-900,
+   950: $primary-950
 );
 
 /* ============================================
    Colors - Semantic
    ============================================ */
 
-/* Success Colors */
-$success-50: #f0fdf4;
-$success-100: #dcfce7;
-$success-200: #bbf7d0;
-$success-300: #86efac;
-$success-400: #4ade80;
-$success-500: #22c55e;
-$success-600: #16a34a;
-$success-700: #15803d;
-$success-800: #166534;
-$success-900: #14532d;
-$success-950: #052e16;
+/* Success Colors (Emerald) */
+$success-50: #ecfdf5;
+$success-100: #d1fae5;
+$success-200: #a7f3d0;
+$success-300: #6ee7b7;
+$success-400: #34d399;
+$success-500: #10b981;
+$success-600: #059669;
+$success-700: #047857;
+$success-800: #065f46;
+$success-900: #064e3b;
+$success-950: #022c22;
 
-/* Error Colors */
-$error-50: #fef2f2;
-$error-100: #fee2e2;
-$error-200: #fecaca;
-$error-300: #fca5a5;
-$error-400: #f87171;
-$error-500: #ef4444;
-$error-600: #dc2626;
-$error-700: #b91c1c;
-$error-800: #991b1b;
-$error-900: #7f1d1d;
-$error-950: #450a0a;
+/* Error Colors (Rose) */
+$error-50: #fff1f2;
+$error-100: #ffe4e6;
+$error-200: #fecdd3;
+$error-300: #fda4af;
+$error-400: #fb7185;
+$error-500: #f43f5e;
+$error-600: #e11d48;
+$error-700: #be123c;
+$error-800: #9f1239;
+$error-900: #881337;
+$error-950: #4c0519;
 
-/* Warning Colors */
+/* Warning Colors (Amber) */
 $warning-50: #fffbeb;
 $warning-100: #fef3c7;
 $warning-200: #fde68a;
@@ -78,56 +78,49 @@ $warning-800: #92400e;
 $warning-900: #78350f;
 $warning-950: #451a03;
 
-/* Info Colors */
-$info-50: #eff6ff;
-$info-100: #dbeafe;
-$info-200: #bfdbfe;
-$info-300: #93c5fd;
-$info-400: #60a5fa;
-$info-500: #07399C;
-$info-600: #2563eb;
-$info-700: #1d4ed8;
-$info-800: #1e40af;
-$info-900: #1e3a8a;
-$info-950: #172554;
+/* Info Colors (Sky) */
+$info-50: #f0f9ff;
+$info-100: #e0f2fe;
+$info-200: #bae6fd;
+$info-300: #7dd3fc;
+$info-400: #38bdf8;
+$info-500: #0ea5e9;
+$info-600: #0284c7;
+$info-700: #0369a1;
+$info-800: #075985;
+$info-900: #0c4a6e;
+$info-950: #082f49;
 
 /* ============================================
    Colors - Theme Gradients
    ============================================ */
-/* Default Theme (MyHR) - Blue gradient สวยงาม */
-$theme-gradient-myhr: linear-gradient(135deg, #93c5fd, #60a5fa, #07399C);
-/* Color Themes - Same style as default but different colors */
-/* Blue - สีน้ำเงินสดใส */
-$theme-gradient-blue: linear-gradient(135deg, #bfdbfe, #93c5fd, #3b82f6);
-/* Indigo - สีครามเข้ม */
-$theme-gradient-indigo: linear-gradient(135deg, #c7d2fe, #a5b4fc, #6366f1);
-/* Purple - สีม่วงสวยงาม */
-$theme-gradient-purple: linear-gradient(135deg, #e9d5ff, #d8b4fe, #a855f7);
-/* Green - สีเขียวสดใส */
-$theme-gradient-green: linear-gradient(135deg, #bbf7d0, #86efac, #22c55e);
-/* Orange - สีส้มอบอุ่น */
-$theme-gradient-orange: linear-gradient(135deg, #fed7aa, #fdba74, #f97316);
-/* Red - สีแดงเข้ม */
-$theme-gradient-red: linear-gradient(135deg, #fecaca, #fca5a5, #ef4444);
-/* Teal - สีเทาเขียวสวยงาม */
-$theme-gradient-teal: linear-gradient(135deg, #99f6e4, #5eead4, #14b8a6);
-/* Pink - สีชมพูนุ่มนวล */
-$theme-gradient-pink: linear-gradient(135deg, #fbcfe8, #f9a8d4, #ec4899);
+/* Premium Theme (MyHR) */
+$theme-gradient-myhr: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef); // Indigo -> Violet -> Fuchsia (Modern/Tech)
+
+/* Color Themes */
+$theme-gradient-blue: linear-gradient(135deg, #3b82f6, #0ea5e9);
+$theme-gradient-indigo: linear-gradient(135deg, #6366f1, #4f46e5);
+$theme-gradient-purple: linear-gradient(135deg, #a855f7, #9333ea);
+$theme-gradient-green: linear-gradient(135deg, #22c55e, #16a34a);
+$theme-gradient-orange: linear-gradient(135deg, #f97316, #ea580c);
+$theme-gradient-red: linear-gradient(135deg, #ef4444, #dc2626);
+$theme-gradient-teal: linear-gradient(135deg, #14b8a6, #0d9488);
+$theme-gradient-pink: linear-gradient(135deg, #ec4899, #db2777);
 
 /* ============================================
-   Colors - Neutral (Gray Scale)
+   Colors - Neutral (Slate - Premium Gray)
    ============================================ */
-$gray-50: #f9fafb;
-$gray-100: #f3f4f6;
-$gray-200: #e5e7eb;
-$gray-300: #d1d5db;
-$gray-400: #9ca3af;
-$gray-500: #6b7280;
-$gray-600: #4b5563;
-$gray-700: #374151;
-$gray-800: #1f2937;
-$gray-900: #111827;
-$gray-950: #030712;
+$gray-50: #f8fafc;
+$gray-100: #f1f5f9;
+$gray-200: #e2e8f0;
+$gray-300: #cbd5e1;
+$gray-400: #94a3b8;
+$gray-500: #64748b;
+$gray-600: #475569;
+$gray-700: #334155;
+$gray-800: #1e293b;
+$gray-900: #0f172a;
+$gray-950: #020617;
 
 /* Base Colors */
 $white: #ffffff;
@@ -138,82 +131,83 @@ $black: #000000;
    ============================================ */
 
 /* Light Mode Backgrounds */
-$bg-light-base: #f5f1e8;
-$bg-light-gradient-start: #faf8f3;
-$bg-light-gradient-mid: #f5f1e8;
-$bg-light-gradient-end: #ede8d8;
+$bg-light-base: #f8fafc; // Slate-50
+$bg-light-gradient-start: #f8fafc;
+$bg-light-gradient-mid: #eef2ff;
+$bg-light-gradient-end: #f3e8ff;
 
 /* Dark Mode Backgrounds */
-$bg-dark-base: #000000;
-$bg-dark-gradient-start: #000000;
-$bg-dark-gradient-mid: #0a0a0f;
-$bg-dark-gradient-end: #1e293b;
+$bg-dark-base: #0f172a; // Slate-900
+$bg-dark-gradient-start: #0f172a;
+$bg-dark-gradient-mid: #1e1b4b;
+$bg-dark-gradient-end: #312e81;
 
 /* Myhr Theme Backgrounds */
-$bg-myhr-base: #000000;
-$bg-myhr-gradient-start: #93c5fd;
-$bg-myhr-gradient-mid: #60a5fa;
-$bg-myhr-gradient-end: #07399C;
+$bg-myhr-base: #0f172a;
+$bg-myhr-gradient-start: #1e1b4b;
+$bg-myhr-gradient-mid: #312e81;
+$bg-myhr-gradient-end: #4c1d95;
 
 /* ============================================
    Colors - Glass Morphism
    ============================================ */
 
 /* Light Mode Glass */
-$glass-bg-light: rgba(255, 255, 255, 0.25);
-$glass-bg-light-strong: rgba(255, 255, 255, 0.4);
-$glass-bg-light-weak: rgba(255, 255, 255, 0.1);
-$glass-border-light: rgba(255, 255, 255, 0.3);
-$glass-border-light-strong: rgba(255, 255, 255, 0.4);
-$glass-border-light-weak: rgba(255, 255, 255, 0.2);
+$glass-bg-light: rgba(255, 255, 255, 0.7); // Increased opacity for better visibility
+$glass-bg-light-strong: rgba(255, 255, 255, 0.9);
+$glass-bg-light-weak: rgba(255, 255, 255, 0.5);
+$glass-border-light: rgba(255, 255, 255, 0.5);
+$glass-border-light-strong: rgba(255, 255, 255, 0.8);
+$glass-border-light-weak: rgba(255, 255, 255, 0.3);
 
 /* Dark Mode Glass */
-$glass-bg-dark: rgba(15, 23, 42, 0.25);
-$glass-bg-dark-strong: rgba(15, 23, 42, 0.4);
-$glass-bg-dark-weak: rgba(15, 23, 42, 0.1);
-$glass-border-dark: rgba(51, 65, 85, 0.3);
-$glass-border-dark-strong: rgba(51, 65, 85, 0.4);
-$glass-border-dark-weak: rgba(51, 65, 85, 0.2);
+$glass-bg-dark: rgba(15, 23, 42, 0.6); // Slate-900 with opacity
+$glass-bg-dark-strong: rgba(15, 23, 42, 0.8);
+$glass-bg-dark-weak: rgba(15, 23, 42, 0.4);
+$glass-border-dark: rgba(148, 163, 184, 0.1); // Slate-400
+$glass-border-dark-strong: rgba(148, 163, 184, 0.2);
+$glass-border-dark-weak: rgba(148, 163, 184, 0.05);
 
 /* MyHR Theme Glass */
-$glass-bg-myhr: rgba(15, 23, 42, 0.9);
-$glass-border-myhr: rgba(7, 57, 156, 0.3); // MyHR Brand Color #07399C
-$glass-glow-myhr: rgba(7, 57, 156, 0.2); // MyHR Brand Color #07399C
+$glass-bg-myhr: rgba(30, 27, 75, 0.7); // Indigo-950
+$glass-border-myhr: rgba(99, 102, 241, 0.3); // Primary-500
+$glass-glow-myhr: rgba(99, 102, 241, 0.2); // Primary-500
 
 /* ============================================
    Typography - Font Families
    ============================================ */
-$font-sans: 'Noto Sans Thai', 'Inter', 'Sarabun', system-ui, sans-serif;
+/* Prioritize Inter for English/Numbers, then Noto Sans Thai */
+$font-sans: 'Inter', 'Noto Sans Thai', 'Sarabun', system-ui, sans-serif;
 $font-english: 'Inter', system-ui, sans-serif;
 $font-thai: 'Noto Sans Thai', 'Sarabun', system-ui, sans-serif;
-$font-mono: monospace;
+$font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
 /* ============================================
    Typography - Font Sizes
    ============================================ */
-$text-xs: 0.75rem;    // 12px
-$text-sm: 0.875rem;   // 14px
-$text-base: 1rem;     // 16px
-$text-lg: 1.125rem;   // 18px
-$text-xl: 1.25rem;    // 20px
-$text-2xl: 1.5rem;     // 24px
-$text-3xl: 1.875rem;  // 30px
-$text-4xl: 2.25rem;   // 36px
-$text-5xl: 3rem;      // 48px
-$text-6xl: 3.75rem;   // 60px
+$text-xs: 0.75rem; // 12px
+$text-sm: 0.875rem; // 14px
+$text-base: 1rem; // 16px
+$text-lg: 1.125rem; // 18px
+$text-xl: 1.25rem; // 20px
+$text-2xl: 1.5rem; // 24px
+$text-3xl: 1.875rem; // 30px
+$text-4xl: 2.25rem; // 36px
+$text-5xl: 3rem; // 48px
+$text-6xl: 3.75rem; // 60px
 
 /* Typography Size Map */
 $font-sizes: (
-  xs: $text-xs,
-  sm: $text-sm,
-  base: $text-base,
-  lg: $text-lg,
-  xl: $text-xl,
-  '2xl': $text-2xl,
-  '3xl': $text-3xl,
-  '4xl': $text-4xl,
-  '5xl': $text-5xl,
-  '6xl': $text-6xl
+   xs: $text-xs,
+   sm: $text-sm,
+   base: $text-base,
+   lg: $text-lg,
+   xl: $text-xl,
+   '2xl': $text-2xl,
+   '3xl': $text-3xl,
+   '4xl': $text-4xl,
+   '5xl': $text-5xl,
+   '6xl': $text-6xl
 );
 
 /* ============================================
@@ -250,58 +244,58 @@ $letter-spacing-widest: 0.1em;
    Spacing Scale
    ============================================ */
 $spacing-0: 0;
-$spacing-1: 0.25rem;  // 4px
-$spacing-2: 0.5rem;   // 8px
-$spacing-3: 0.75rem;  // 12px
-$spacing-4: 1rem;     // 16px
-$spacing-5: 1.25rem;  // 20px
-$spacing-6: 1.5rem;   // 24px
-$spacing-8: 2rem;     // 32px
-$spacing-10: 2.5rem;  // 40px
-$spacing-12: 3rem;    // 48px
-$spacing-16: 4rem;    // 64px
-$spacing-20: 5rem;    // 80px
-$spacing-24: 6rem;    // 96px
+$spacing-1: 0.25rem; // 4px
+$spacing-2: 0.5rem; // 8px
+$spacing-3: 0.75rem; // 12px
+$spacing-4: 1rem; // 16px
+$spacing-5: 1.25rem; // 20px
+$spacing-6: 1.5rem; // 24px
+$spacing-8: 2rem; // 32px
+$spacing-10: 2.5rem; // 40px
+$spacing-12: 3rem; // 48px
+$spacing-16: 4rem; // 64px
+$spacing-20: 5rem; // 80px
+$spacing-24: 6rem; // 96px
 
 /* Spacing Map */
 $spacings: (
-  0: $spacing-0,
-  1: $spacing-1,
-  2: $spacing-2,
-  3: $spacing-3,
-  4: $spacing-4,
-  5: $spacing-5,
-  6: $spacing-6,
-  8: $spacing-8,
-  10: $spacing-10,
-  12: $spacing-12,
-  16: $spacing-16,
-  20: $spacing-20,
-  24: $spacing-24
+   0: $spacing-0,
+   1: $spacing-1,
+   2: $spacing-2,
+   3: $spacing-3,
+   4: $spacing-4,
+   5: $spacing-5,
+   6: $spacing-6,
+   8: $spacing-8,
+   10: $spacing-10,
+   12: $spacing-12,
+   16: $spacing-16,
+   20: $spacing-20,
+   24: $spacing-24
 );
 
 /* ============================================
    Border Radius
    ============================================ */
 $radius-none: 0;
-$radius-sm: 0.25rem;   // 4px
-$radius-md: 0.5rem;    // 8px
-$radius-lg: 0.75rem;   // 12px
-$radius-xl: 1rem;      // 16px
-$radius-2xl: 1.5rem;   // 24px
-$radius-3xl: 2rem;     // 32px
-$radius-full: 9999px;  // Full circle
+$radius-sm: 0.25rem; // 4px
+$radius-md: 0.5rem; // 8px
+$radius-lg: 0.75rem; // 12px
+$radius-xl: 1rem; // 16px
+$radius-2xl: 1.5rem; // 24px
+$radius-3xl: 2rem; // 32px
+$radius-full: 9999px; // Full circle
 
 /* Border Radius Map */
 $border-radius: (
-  none: $radius-none,
-  sm: $radius-sm,
-  md: $radius-md,
-  lg: $radius-lg,
-  xl: $radius-xl,
-  '2xl': $radius-2xl,
-  '3xl': $radius-3xl,
-  full: $radius-full
+   none: $radius-none,
+   sm: $radius-sm,
+   md: $radius-md,
+   lg: $radius-lg,
+   xl: $radius-xl,
+   '2xl': $radius-2xl,
+   '3xl': $radius-3xl,
+   full: $radius-full
 );
 
 /* ============================================
@@ -332,9 +326,10 @@ $shadow-glass-dark-sm: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
 $shadow-glass-dark-lg: 0 12px 48px 0 rgba(0, 0, 0, 0.7);
 
 /* MyHR Theme Shadows */
-$shadow-myhr: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(7, 57, 156, 0.2), 0 0 40px rgba(7, 57, 156, 0.1); // MyHR Brand Color #07399C
-$shadow-myhr-sm: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(7, 57, 156, 0.2), 0 0 30px rgba(7, 57, 156, 0.1); // MyHR Brand Color #07399C
-$shadow-myhr-lg: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(7, 57, 156, 0.4), 0 0 60px rgba(7, 57, 156, 0.2); // MyHR Brand Color #07399C
+/* MyHR Theme Shadows - Refined for Premium Indigo */
+$shadow-myhr: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99, 102, 241, 0.2), 0 0 40px rgba(99, 102, 241, 0.1); // Premium Indigo
+$shadow-myhr-sm: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.2), 0 0 30px rgba(99, 102, 241, 0.1);
+$shadow-myhr-lg: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(99, 102, 241, 0.4), 0 0 60px rgba(99, 102, 241, 0.2);
 
 /* ============================================
    Backdrop Blur
@@ -370,12 +365,12 @@ $breakpoint-2xl: 1536px;
 
 /* Breakpoint Map */
 $breakpoints: (
-  xs: $breakpoint-xs,
-  sm: $breakpoint-sm,
-  md: $breakpoint-md,
-  lg: $breakpoint-lg,
-  xl: $breakpoint-xl,
-  '2xl': $breakpoint-2xl
+   xs: $breakpoint-xs,
+   sm: $breakpoint-sm,
+   md: $breakpoint-md,
+   lg: $breakpoint-lg,
+   xl: $breakpoint-xl,
+   '2xl': $breakpoint-2xl
 );
 
 /* ============================================
@@ -392,14 +387,14 @@ $duration-1000: 1000ms;
 
 /* Animation Duration Map */
 $durations: (
-  75: $duration-75,
-  100: $duration-100,
-  150: $duration-150,
-  200: $duration-200,
-  300: $duration-300,
-  500: $duration-500,
-  700: $duration-700,
-  1000: $duration-1000
+   75: $duration-75,
+   100: $duration-100,
+   150: $duration-150,
+   200: $duration-200,
+   300: $duration-300,
+   500: $duration-500,
+   700: $duration-700,
+   1000: $duration-1000
 );
 
 /* ============================================
@@ -422,159 +417,45 @@ $transition-shadow: box-shadow $duration-200 $ease-in-out;
 /* ============================================
    MyHR Theme Specific
    ============================================ */
-$myhr-bg: #000000;
-$myhr-gradient-start: #93c5fd;
-$myhr-gradient-mid: #60a5fa;
-$myhr-gradient-end: #07399C; // MyHR Brand Color
-$myhr-glow: rgba(7, 57, 156, 0.3); // MyHR Brand Color #07399C
-$myhr-glow-strong: rgba(7, 57, 156, 0.5); // MyHR Brand Color #07399C
-$myhr-glow-weak: rgba(7, 57, 156, 0.2); // MyHR Brand Color #07399C
+$myhr-bg: #0f172a; // Slate 900
+$myhr-gradient-start: #818cf8; // Indigo 400
+$myhr-gradient-mid: #6366f1; // Indigo 500
+$myhr-gradient-end: #4f46e5; // Indigo 600
+$myhr-glow: rgba(99, 102, 241, 0.3); // Premium Indigo
+$myhr-glow-strong: rgba(99, 102, 241, 0.5);
+$myhr-glow-weak: rgba(99, 102, 241, 0.2);
 
 /* ============================================
    Helper Functions
    ============================================ */
-
 /* Get color from map */
 @function get-color($color-map, $shade) {
-  @return map-get($color-map, $shade);
+   @return map-get($color-map, $shade);
 }
 
 /* Get spacing */
 @function get-spacing($size) {
-  @return map-get($spacings, $size);
+   @return map-get($spacings, $size);
 }
 
 /* Get font size */
 @function get-font-size($size) {
-  @return map-get($font-sizes, $size);
+   @return map-get($font-sizes, $size);
 }
 
 /* Get border radius */
 @function get-radius($size) {
-  @return map-get($border-radius, $size);
+   @return map-get($border-radius, $size);
 }
 
 /* Get breakpoint */
 @function get-breakpoint($size) {
-  @return map-get($breakpoints, $size);
+   @return map-get($breakpoints, $size);
 }
 
 /* Get duration */
 @function get-duration($ms) {
-  @return map-get($durations, $ms);
+   @return map-get($durations, $ms);
 }
 
-/* ============================================
-   CSS Variables for Runtime Theming
-   ============================================
-   These CSS variables are available at runtime
-   and can be overridden dynamically via JavaScript
-   ============================================ */
-
-:root {
-  /* ============================================
-     Spacing Scale (CSS Variables)
-     ============================================ */
-  --spacing-xs: 0.25rem;    /* 4px */
-  --spacing-sm: 0.5rem;     /* 8px */
-  --spacing-md: 1rem;       /* 16px */
-  --spacing-lg: 1.5rem;     /* 24px */
-  --spacing-xl: 2rem;       /* 32px */
-  --spacing-2xl: 3rem;      /* 48px */
-  --spacing-3xl: 4rem;      /* 64px */
-
-  /* ============================================
-     Typography Scale (CSS Variables)
-     ============================================ */
-  --font-size-xs: 0.75rem;      /* 12px */
-  --font-size-sm: 0.875rem;    /* 14px */
-  --font-size-base: 1rem;      /* 16px */
-  --font-size-lg: 1.125rem;    /* 18px */
-  --font-size-xl: 1.25rem;     /* 20px */
-  --font-size-2xl: 1.5rem;     /* 24px */
-  --font-size-3xl: 1.875rem;   /* 30px */
-  --font-size-4xl: 2.25rem;     /* 36px */
-  --font-size-5xl: 3rem;       /* 48px */
-
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  --line-height-tight: 1.25;
-  --line-height-snug: 1.375;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.625;
-  --line-height-loose: 2;
-
-  /* ============================================
-     Border Radius (CSS Variables)
-     ============================================ */
-  --radius-none: 0;
-  --radius-sm: 0.25rem;     /* 4px */
-  --radius-md: 0.5rem;      /* 8px */
-  --radius-lg: 0.75rem;     /* 12px */
-  --radius-xl: 1rem;        /* 16px */
-  --radius-2xl: 1.5rem;     /* 24px */
-  --radius-full: 9999px;
-
-  /* ============================================
-     Shadows (CSS Variables)
-     ============================================ */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-
-  /* ============================================
-     Transitions & Animations (CSS Variables)
-     ============================================ */
-  --transition-fast: 150ms ease-in-out;
-  --transition-base: 300ms ease-in-out;
-  --transition-slow: 500ms ease-in-out;
-  --transition-slower: 700ms ease-in-out;
-
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* ============================================
-     Touch Targets (Mobile Accessibility)
-     ============================================ */
-  --touch-target-min: 44px;      /* Minimum touch target size */
-  --touch-target-comfortable: 48px;  /* Comfortable touch target */
-
-  /* ============================================
-     Z-Index Scale (CSS Variables)
-     ============================================ */
-  --z-base: 0;
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-fixed: 1030;
-  --z-modal-backdrop: 1040;
-  --z-modal: 1050;
-  --z-popover: 1060;
-  --z-tooltip: 1070;
-  --z-toast: 1080;
-}
-
-/* Dark Mode Overrides for CSS Variables */
-.dark {
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-}
-
-/* Reduced Motion Support for CSS Variables */
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --transition-fast: 0ms;
-    --transition-base: 0ms;
-    --transition-slow: 0ms;
-    --transition-slower: 0ms;
-  }
-}
+/* CSS Variables have been moved to _css-variables.scss to prevent duplication */
