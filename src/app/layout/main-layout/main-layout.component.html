@@ -42,7 +42,7 @@
           <!-- Route Content -->
           <div class="route-content-wrapper">
             <!-- Breadcrumbs (Centered above router-outlet) -->
-            <div class="flex items-center justify-center mb-6 md:mb-8 fade-in"
+            <div class="flex items-center justify-center fade-in"
                  [style.animation-delay.ms]="100">
               <app-breadcrumbs
                 [items]="breadcrumbs"
@@ -52,7 +52,7 @@
               </app-breadcrumbs>
             </div>
 
-            <div class="route-container relative px-4 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-8 pb-4 md:pb-6 lg:pb-8">
+            <div class="route-container relative px-4 md:px-6 lg:px-8 pb-4 md:pb-6 lg:pb-8">
               <div [@routeFade]="prepareRoute(outlet)">
                 <router-outlet #outlet="outlet"></router-outlet>
               </div>

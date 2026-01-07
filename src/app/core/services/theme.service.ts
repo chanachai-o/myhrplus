@@ -26,9 +26,9 @@ export class ThemeService {
     mode: 'light',
     color: 'myhr',
     primaryColor: '7, 57, 156', // MyHR Brand Color #07399C
-    sidebarStyle: 'white', // Default: primary color
-    headerStyle: 'primary', // Default: primary color
-    mainLayoutStyle: 'primary' // Default: primary color
+    sidebarStyle: 'primary', // Default: primary color
+    headerStyle: 'primary-gradient', // Default: primary color
+    mainLayoutStyle: 'primary-gradient' // Default: primary color
   };
 
   private themeSubject = new BehaviorSubject<ThemeConfig>(this.DEFAULT_THEME);

@@ -1,19 +1,25 @@
-<app-page-header 
-  [title]="'company.companyType.titleFull' | translate" 
+<app-page-header
+  [title]="'company.companyType.titleFull' | translate"
   [showBreadcrumbs]="true"
-  [actions]="headerActions">
+  [actions]="headerActions"
+  [useGlassCard]="false"
+  icon="domain"
+  iconGradient="from-blue-500 to-cyan-400"
+  titleGradient="from-blue-600 to-cyan-500">
 </app-page-header>
 
-<div class="-mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 transition-colors duration-300">
-  @if (service.loading()) {
-    <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
-  } @else {
-    <app-data-grid
-      [dataSource]="(data$ | async) || []"
-      [columns]="columns"
-      (rowSelected)="onEdit($event)">
-    </app-data-grid>
-  }
+<div class="w-full py-6">
+  <app-glass-card padding="p-6">
+    @if (service.loading()) {
+      <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
+    } @else {
+      <app-data-grid
+        [dataSource]="(data$ | async) || []"
+        [columns]="columns"
+        (rowSelected)="onEdit($event)">
+      </app-data-grid>
+    }
+  </app-glass-card>
 </div>
 
 <app-company-type-form

@@ -934,6 +934,7 @@
   "common.actions.edit": "Edit",
   "common.actions.export": "Export",
   "common.actions.import": "Import",
+  "common.actions.manual": "Manual",
   "common.actions.moreDetails": "More Details",
   "common.actions.next": "Next",
   "common.actions.no": "No",

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
+import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
 import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeService } from '../../services/company-type.service';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
@@ -16,7 +17,8 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
     ReactiveFormsModule,
     TranslateModule,
     ModalComponent,
-    GlassInputComponent
+    GlassInputComponent,
+    FormValidationMessagesComponent
   ],
   templateUrl: './company-type-form.component.html'
 })

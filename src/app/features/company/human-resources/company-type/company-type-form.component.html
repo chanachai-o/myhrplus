@@ -4,15 +4,19 @@
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
   
-  <form [formGroup]="form" class="space-y-4 p-2">
+  <form [formGroup]="form" class="space-y-6 p-1">
     <!-- Code (PK) - Disable on Edit -->
     <app-glass-input
       [label]="'company.companyType.codeId' | translate"
       formControlName="codeid"
       [required]="true"
       [readonly]="isEditMode"
-      [errorMessage]="'company.companyType.codeIdRequired' | translate"
+      [useFormValidationMessages]="true"
       maxLength="3">
+      <app-form-validation-messages
+        [control]="form.get('codeid')"
+        [customMessages]="{ required: 'company.companyType.codeIdRequired' | translate }">
+      </app-form-validation-messages>
     </app-glass-input>
 
     <!-- Thai Description -->
@@ -20,7 +24,11 @@
       [label]="'company.companyType.tdesc' | translate"
       formControlName="tdesc"
       [required]="true"
-      [errorMessage]="'company.companyType.tdescRequired' | translate">
+      [useFormValidationMessages]="true">
+      <app-form-validation-messages
+        [control]="form.get('tdesc')"
+        [customMessages]="{ required: 'company.companyType.tdescRequired' | translate }">
+      </app-form-validation-messages>
     </app-glass-input>
 
     <!-- English Description -->
@@ -31,5 +39,3 @@
   </form>
 
 </app-modal>
-
-

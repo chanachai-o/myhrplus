@@ -6,14 +6,15 @@
   [attr.aria-labelledby]="modalTitleId"
   [attr.aria-describedby]="modalDescriptionId"
   (click)="onBackdropClick()">
-  <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+  <div class="flex min-h-screen items-start justify-center px-4 pt-24 pb-20 text-center sm:p-0">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in motion-safe:animate-none" aria-hidden="true"></div>
 
     <!-- Modal Panel -->
+    <!-- Added mt-24 for desktop spacing, kept mx-auto -->
     <div
       #modalPanel
-      class="glass-strong rounded-2xl text-left overflow-hidden shadow-xl animate-scale-in motion-safe:animate-none dark:glass-dark-strong theme-myhr:glass-myhr-strong theme-myhr:shadow-myhr-lg inline-block align-bottom sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+      class="relative w-full transform overflow-hidden rounded-2xl text-left shadow-xl transition-all sm:my-8 sm:mt-24 sm:max-w-lg glass-strong animate-slide-down motion-safe:animate-none dark:glass-dark-strong theme-myhr:glass-myhr-strong theme-myhr:shadow-myhr-lg"
       [class]="sizeClass"
       role="document"
       (click)="$event.stopPropagation()">
@@ -60,5 +61,3 @@
     </div>
   </div>
 </div>
-
-

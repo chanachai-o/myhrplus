@@ -1323,7 +1323,19 @@ export class ComponentNameDemoComponent {
   - Better performance and maintainability
   - Zero linter errors
 
-**Last Updated**: 2025-01-01 (Layout Components Class Duplication Fix)
-**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete
+### UX/UI Improvements (2025-01-07)
+- ✅ **Sidebar Redesign**:
+  - Show module names in Layer 1 (icon + text stack)
+  - **Hide Layer 1 (icon bar) when on `/home` route** for a cleaner dashboard view
+  - Add playful App Logo section to Sidebar Menu Panel when on `/home`
+- ✅ **Header Minimalism & Standardization**:
+  - Removed App Logo and Name from Header (minimalist look)
+  - **Language Switcher**: Updated to use **Flag Images** (Rectangular) matching Login page style
+  - **Button Consistency**: All 3 header buttons (Language, Theme, Notification) use identical `app-glass-button` styling
+  - **Omni-Search**: Updated popup to use **Solid Background** (non-glass) for better readability
+- ✅ **Documentation**: `docs/layout/UX_UI_IMPROVEMENTS_20250107.md` created
+
+**Last Updated**: 2025-01-07 (UX/UI Improvements)
+**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + UX/UI Improvements (Sidebar/Header/Search)
 **Angular Version**: 17.0.0+
 **TypeScript Version**: 5.2.2+

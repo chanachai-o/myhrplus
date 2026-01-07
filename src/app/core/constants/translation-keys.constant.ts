@@ -37,6 +37,7 @@ export const TRANSLATION_KEYS = {
       RESET: 'common.actions.reset',
       EXPORT: 'common.actions.export',
       IMPORT: 'common.actions.import',
+      MANUAL: 'common.actions.manual',
       DOWNLOAD: 'common.actions.download',
       UPLOAD: 'common.actions.upload',
       SELECT: 'common.actions.select',

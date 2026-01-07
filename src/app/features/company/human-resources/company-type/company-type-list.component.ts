@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
+import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { CompanyTypeService } from '../../services/company-type.service';
 import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeFormComponent } from './company-type-form.component';
@@ -20,6 +21,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
     SharedModule,
     PageHeaderComponent,
     DataGridComponent,
+    GlassCardComponent,
     CompanyTypeFormComponent
   ],
   templateUrl: './company-type-list.component.html'
@@ -27,7 +29,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 export class CompanyTypeListComponent implements OnInit {
   public service = inject(CompanyTypeService);
   private translate = inject(TranslateService);
-  
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: CompanyType | null = null;
@@ -47,7 +49,20 @@ export class CompanyTypeListComponent implements OnInit {
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
         variant: 'primary' as const,
+        icon: 'add',
         onClick: () => this.onCreate()
+      },
+      {
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EXPORT),
+        variant: 'secondary' as const,
+        icon: 'download',
+        onClick: () => this.onExport()
+      },
+      {
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.MANUAL),
+        variant: 'secondary' as const,
+        icon: 'article',
+        onClick: () => this.onManual()
       }
     ];
 
@@ -74,6 +89,16 @@ export class CompanyTypeListComponent implements OnInit {
     // Refresh data
     this.data$ = this.service.getAll();
     this.showModal = false;
+  }
+
+  onExport() {
+    // TODO: Implement export functionality
+    console.log('Export clicked');
+  }
+
+  onManual() {
+    // TODO: Implement manual/guide functionality
+    console.log('Manual clicked');
   }
 }
 
