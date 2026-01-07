@@ -285,7 +285,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getLogoPath(): string {
     // Check if dark mode is active
     const isDarkMode = document.documentElement.classList.contains('dark');
-    if (isDarkMode) {
+    if (!isDarkMode) {
       return 'assets/images/logo/logo-myhr-dark.png';
     }
     return 'assets/images/logo/logo-myhr-light.png';

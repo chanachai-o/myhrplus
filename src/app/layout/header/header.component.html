@@ -13,7 +13,7 @@
                      hover:shadow-lg hover:-translate-y-0.5
                      group relative overflow-hidden"
         (clicked)="toggleSidenav.emit()">
-        <app-icon name="menu" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-white/90
+        <app-icon name="menu" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
                    icon-micro transition-transform duration-300"></app-icon>
       </app-glass-button>
 
@@ -22,9 +22,9 @@
         <a routerLink="/home"
            [attr.aria-label]="'layout.header.goToHome' | translate"
            class="inline-flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] md:w-10 md:h-10 rounded-lg
-                    bg-white/10 dark:bg-gray-900/20 theme-myhr:bg-gray-900/30
+                    bg-white/50 dark:bg-gray-900/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-900/40
                     backdrop-blur-sm
-                    border border-white/20 dark:border-gray-700/20 theme-myhr:border-primary/30
+                    border border-white/40 dark:border-gray-700/30 theme-myhr:border-primary/20
                     shadow-lg flex-shrink-0 relative overflow-hidden
                     hover-lift-lg
                     group cursor-pointer
@@ -43,7 +43,7 @@
           <span class="app-title thai-text font-semibold text-gray-800 dark:text-gray-100 theme-myhr:bg-gradient-to-r theme-myhr:from-primary theme-myhr:via-primary theme-myhr:to-primary theme-myhr:bg-clip-text theme-myhr:text-transparent text-sm md:text-lg leading-tight truncate">
             {{ 'layout.header.appTitle' | translate }}
           </span>
-          <span class="app-title-en font-medium text-gray-600 dark:text-gray-400 theme-myhr:text-white/80 text-xs desktop-only">
+          <span class="app-title-en font-medium text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 text-xs desktop-only">
             {{ 'layout.header.appTitleEn' | translate }}
           </span>
         </div>
@@ -57,10 +57,10 @@
         (click)="openOmniSearch()"
         [attr.aria-label]="'layout.header.searchMenuAriaLabel' | translate"
         class="omni-search-trigger w-full max-w-md px-4 py-2 rounded-lg
-               bg-white/50 dark:bg-gray-800/50 theme-myhr:bg-gray-800/30
-               border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
+               bg-white/50 dark:bg-gray-800/50 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-800/40
+               border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/20
                text-left flex items-center gap-3
-               hover:bg-white/70 dark:hover:bg-gray-800/70 theme-myhr:hover:bg-gray-800/50
+               hover:bg-white/70 dark:hover:bg-gray-800/70 theme-myhr:hover:bg-white/60
                hover:scale-[1.02] hover:shadow-lg
                active:scale-[0.98]
                transition-all duration-300 ease-out
@@ -71,17 +71,17 @@
                     opacity-0 group-hover:opacity-100
                     transition-opacity duration-300
                     pointer-events-none"></div>
-        <app-icon name="search" size="sm" color="text-gray-500 dark:text-gray-400 theme-myhr:text-white/70
+        <app-icon name="search" size="sm" color="text-gray-500 dark:text-gray-400 theme-myhr:text-primary dark:theme-myhr:text-gray-400
                    group-hover:scale-110 group-hover:text-primary dark:group-hover:text-primary
                    relative z-10"></app-icon>
-        <span class="flex-1 text-sm text-gray-500 dark:text-gray-400 theme-myhr:text-white/70 relative z-10
+        <span class="flex-1 text-sm text-gray-500 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 relative z-10
                      group-hover:text-gray-700 dark:group-hover:text-gray-300">
           {{ 'layout.header.searchMenuPlaceholder' | translate }}
         </span>
         <kbd class="hidden lg:inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold
-                    bg-gray-100 dark:bg-gray-700 theme-myhr:bg-gray-700/50
-                    text-gray-600 dark:text-gray-300 theme-myhr:text-white/70
-                    border border-gray-300 dark:border-gray-600 theme-myhr:border-primary/30 rounded">
+                    bg-gray-100 dark:bg-gray-700 theme-myhr:bg-white/50 dark:theme-myhr:bg-gray-700/50
+                    text-gray-600 dark:text-gray-300 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-300
+                    border border-gray-300 dark:border-gray-600 theme-myhr:border-primary/20 rounded">
           <span>Ctrl</span>
           <span>K</span>
         </kbd>
@@ -101,7 +101,7 @@
                      hover:shadow-lg hover:-translate-y-0.5
                      group relative overflow-hidden"
         (clicked)="openOmniSearch()">
-        <app-icon name="search" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-white/90
+        <app-icon name="search" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
                    group-hover:scale-110 group-hover:text-primary dark:group-hover:text-primary
                    relative z-10"></app-icon>
       </app-glass-button>
@@ -121,7 +121,7 @@
                        hover:shadow-lg hover:-translate-y-0.5
                        group overflow-hidden"
           (clicked)="toggleLanguageMenu()">
-          <app-icon name="language" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-white/90
+          <app-icon name="language" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
                      group-hover:scale-110 group-hover:rotate-12
                      icon-micro relative z-10"></app-icon>
         </app-glass-button>
@@ -179,7 +179,7 @@
                        hover:shadow-lg hover:-translate-y-0.5
                        group overflow-hidden"
           (clicked)="toggleNotificationMenu()">
-          <app-icon name="notifications" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-white/90
+          <app-icon name="notifications" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
                      group-hover:scale-110 group-hover:animate-bounce
                      icon-micro relative z-10"></app-icon>
           <span *ngIf="unreadCount > 0"
@@ -296,9 +296,9 @@
           [attr.aria-expanded]="showUserMenu"
           [attr.aria-controls]="'user-menu'"
           class="user-menu-trigger flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-lg
-                 bg-white/10 dark:bg-gray-800/20 theme-myhr:bg-gray-800/30
-                 border border-white/20 dark:border-gray-700/20 theme-myhr:border-primary/30
-                 hover:bg-white/20 dark:hover:bg-gray-800/30 theme-myhr:hover:bg-gray-800/50
+                 bg-white/50 dark:bg-gray-800/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-800/40
+                 border border-white/40 dark:border-gray-700/30 theme-myhr:border-primary/20
+                 hover:bg-white/70 dark:hover:bg-gray-800/60 theme-myhr:hover:bg-white/50
                  hover:scale-[1.02] hover:shadow-lg
                  active:scale-[0.98]
                  group relative overflow-hidden
@@ -315,10 +315,10 @@
 
           <!-- User Info (Hidden on mobile, shown on md+) -->
           <div class="flex flex-col items-start min-w-0 desktop-only">
-            <span class="text-sm font-semibold thai-text text-gray-800 dark:text-gray-100 theme-myhr:text-white/90 truncate max-w-[120px]">
+            <span class="text-sm font-semibold thai-text text-gray-800 dark:text-gray-100 theme-myhr:text-gray-900 dark:theme-myhr:text-white/90 truncate max-w-[120px]">
               {{ getUserDisplayName() }}
             </span>
-            <span class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-white/70 truncate max-w-[120px]" *ngIf="getUserRole()">
+            <span class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-white/70 truncate max-w-[120px]" *ngIf="getUserRole()">
               {{ getUserRole() }}
             </span>
           </div>
@@ -327,7 +327,7 @@
           <div class="flex-shrink-0
                        group-hover:scale-110"
                [class.rotate-180]="showUserMenu">
-            <app-icon name="expand_more" size="sm" color="text-gray-600 dark:text-gray-400 theme-myhr:text-white/70
+            <app-icon name="expand_more" size="sm" color="text-gray-600 dark:text-gray-400 theme-myhr:text-primary dark:theme-myhr:text-white/70
                        group-hover:text-primary dark:group-hover:text-primary
                        icon-micro"></app-icon>
           </div>

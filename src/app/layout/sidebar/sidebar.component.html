@@ -1,9 +1,9 @@
 <div class="two-layer-sidebar h-full flex fade-in" [class.dark]="isDarkMode">
   <!-- Left Icon Bar - Module Icons -->
-  <div class="icon-bar flex flex-col items-center py-4 border-r
+  <div *ngIf="!isHomeRoute()" class="icon-bar flex flex-col items-center py-4 border-r
               transition-all duration-300 ease-in-out
-              bg-white/5 dark:bg-gray-900/20 theme-myhr:bg-gray-900/30
-              backdrop-blur-sm">
+              bg-white/80 dark:bg-gray-900/40 theme-myhr:bg-white/20 dark:theme-myhr:bg-gray-900/40
+              backdrop-blur-md">
     <!-- Logo -->
     <div class="mb-6">
       <a routerLink="/home"
@@ -11,9 +11,9 @@
                 transition-all duration-300 ease-out
                 hover-lift-lg
                 micro-active-scale
-                bg-white/10 dark:bg-gray-900/20 theme-myhr:bg-gray-900/30
-                backdrop-blur-sm
-                border border-white/20 dark:border-gray-700/20 theme-myhr:border-primary/30
+                bg-white/50 dark:bg-gray-900/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-900/40
+                backdrop-blur-md
+                border border-white/40 dark:border-gray-700/30 theme-myhr:border-white/40
                 cursor-pointer
                 group relative overflow-hidden
                 pulse">
@@ -49,7 +49,7 @@
                 [attr.aria-current]="selectedLevel2Item === level2Item ? 'true' : 'false'"
                 [attr.title]="translateLabel(level2Item.label, 'admin', 2)"
                 [style.animation-delay.ms]="i * 50"
-                class="module-icon-btn w-full h-12 flex items-center justify-center rounded-xl
+                class="module-icon-btn w-full min-h-[64px] py-2 flex flex-col items-center justify-center rounded-xl
                 hover-lift
                 micro-active-scale
                        relative group
@@ -62,10 +62,15 @@
                       group-hover:from-primary/10 group-hover:to-primary/10
                       transition-all duration-300"></div>
           <!-- Icon -->
-          <span class="material-icons text-xl relative z-10
+          <span class="material-icons text-2xl relative z-10 mb-1
                        icon-micro group-hover:rotate-6 group-hover:scale-110
-                       text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">
+                       text-[var(--sidebar-icon-color)] transition-colors duration-300">
             {{ level2Item.icon || 'folder' }}
+          </span>
+          <!-- Label -->
+          <span class="text-[10px] font-medium leading-tight text-center px-1 truncate w-full relative z-10
+                       text-[var(--sidebar-icon-color)] transition-colors duration-300">
+            {{ translateLabel(level2Item.label, 'admin', 2) }}
           </span>
           <!-- Active Indicator -->
           <span *ngIf="selectedLevel2Item === level2Item"
@@ -97,7 +102,7 @@
            [attr.aria-current]="selectedModule === module.id ? 'true' : 'false'"
            [attr.title]="module.name"
            [style.animation-delay.ms]="i * 50"
-           class="module-icon-btn w-full h-12 flex items-center justify-center rounded-xl
+           class="module-icon-btn w-full min-h-[64px] py-2 flex flex-col items-center justify-center rounded-xl
                 hover-lift
                 micro-active-scale
                   relative group
@@ -109,14 +114,19 @@
                       transition-all duration-300"></div>
           <span *ngIf="module.iconCss"
                 [class]="module.iconCss"
-                class="text-xl relative z-10
+                class="text-2xl relative z-10 mb-1
                        icon-micro group-hover:rotate-6 group-hover:scale-110
-                       text-gray-700 dark:text-gray-300 theme-myhr:text-white/90"></span>
+                       text-[var(--sidebar-icon-color)] transition-colors duration-300"></span>
           <span *ngIf="!module.iconCss"
-                class="text-xl relative z-10
+                class="text-2xl relative z-10 mb-1
                        icon-micro group-hover:rotate-6 group-hover:scale-110
-                       text-gray-700 dark:text-gray-300 theme-myhr:text-white/90
+                       text-[var(--sidebar-icon-color)] transition-colors duration-300
                        e-icons e-folder"></span>
+          <!-- Label -->
+          <span class="text-[10px] font-medium leading-tight text-center px-1 truncate w-full relative z-10
+                       text-[var(--sidebar-icon-color)] transition-colors duration-300">
+            {{ module.name }}
+          </span>
           <!-- Active Indicator -->
           <span *ngIf="selectedModule === module.id"
                 class="active-indicator
@@ -133,23 +143,59 @@
   <!-- Right Menu Panel - Module Menu -->
   <div class="menu-panel flex-1 flex flex-col overflow-hidden
               transition-all duration-300 ease-in-out
-              bg-gradient-to-br from-white/5 via-white/10 to-white/5
-              dark:from-gray-900/20 dark:via-gray-900/30 dark:to-gray-900/20
-              theme-myhr:from-gray-900/30 theme-myhr:via-gray-900/40 theme-myhr:to-gray-900/30
-              backdrop-blur-md border-l border-white/10 dark:border-gray-800/30 theme-myhr:border-white/20">
+              bg-gradient-to-br from-white/80 via-white/90 to-white/80
+              dark:from-gray-900/40 dark:via-gray-900/60 dark:to-gray-900/40
+              theme-myhr:from-white/40 theme-myhr:via-white/60 theme-myhr:to-white/40
+              dark:theme-myhr:from-gray-900/40 dark:theme-myhr:via-gray-900/60 dark:theme-myhr:to-gray-900/40
+              backdrop-blur-md border-l border-white/20 dark:border-gray-700/30 theme-myhr:border-white/30">
     <div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+      <!-- Home Logo Section (Only for /home) -->
+
+
       <!-- Header Section -->
       <div class="mb-6">
         <!-- Module Title -->
         <div class="mb-4" *ngIf="selectedLevel2Item || selectedNavigationItem">
-          <h2 class="module-title text-xl font-bold thai-text
-                     text-gray-800 dark:text-gray-100 theme-myhr:text-white
-                     mb-1">
-            {{ translateLabel((selectedLevel2Item ? selectedLevel2Item.label : (selectedNavigationItem ? selectedNavigationItem.label : '')) || '', 'admin', selectedLevel2Item ? 2 : 1) || ('layout.sidebar.menu' | translate) }}
-          </h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400 theme-myhr:text-white/70" *ngIf="selectedNavigationItem">
-            {{ translateLabel(selectedNavigationItem.label, selectedNavigationItem.id, 1) }}
-          </p>
+          <div class="flex items-center gap-3">
+            <!-- Title Icon -->
+            <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative group overflow-hidden
+                        bg-gradient-to-br from-white/80 to-white/40 dark:from-gray-800/80 dark:to-gray-800/40
+                        theme-myhr:from-primary/10 theme-myhr:to-primary/5
+                        border border-white/60 dark:border-gray-700/50 theme-myhr:border-primary/20
+                        shadow-sm backdrop-blur-sm transition-all duration-300
+                        hover:shadow-md hover:border-primary/40">
+
+               <!-- Home Logo Mode -->
+               <ng-container *ngIf="isHomeRoute()">
+                 <!-- Glow Effect -->
+                 <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                 <!-- Logo Image -->
+                 <img [src]="getLogoPath()"
+                      [alt]="'layout.header.appLogo' | translate"
+                      class="w-7 h-7 object-contain relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 drop-shadow-sm" />
+               </ng-container>
+
+               <!-- Normal Icon Mode -->
+               <span *ngIf="!isHomeRoute()"
+                     class="material-icons text-2xl relative z-10
+                            text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-white
+                            transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                 {{ (selectedLevel2Item?.icon || selectedNavigationItem?.icon) || 'folder' }}
+               </span>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <h2 class="module-title text-xl font-bold thai-text
+                         text-gray-900 dark:text-gray-100 theme-myhr:text-primary dark:theme-myhr:text-white
+                         leading-tight m-0 truncate">
+                {{ translateLabel((selectedLevel2Item ? selectedLevel2Item.label : (selectedNavigationItem ? selectedNavigationItem.label : '')) || '', 'admin', selectedLevel2Item ? 2 : 1) || ('layout.sidebar.menu' | translate) }}
+              </h2>
+              <p class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 mt-0.5 truncate" *ngIf="selectedNavigationItem">
+                {{ translateLabel(selectedNavigationItem.label, selectedNavigationItem.id, 1) }}
+              </p>
+            </div>
+          </div>
         </div>
 
 
@@ -162,18 +208,18 @@
             (input)="onSearchChange()"
             [placeholder]="'layout.sidebar.searchMenuPlaceholder' | translate"
             [ariaLabel]="'layout.sidebar.searchMenu' | translate"
-            customClass="w-full pr-11">
+            customClass="w-full pr-11 bg-white/50 dark:bg-gray-800/50 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-800/40">
             <ng-container *ngIf="searchQuery">
               <button
                 (click)="clearSearch()"
                 class="absolute right-2 top-1/2 -translate-y-1/2
                        w-8 h-8 flex items-center justify-center rounded-lg
-                       hover:bg-gray-200/50 dark:hover:bg-gray-700/50 theme-myhr:hover:bg-white/20
+                       hover:bg-gray-200/50 dark:hover:bg-gray-700/50 theme-myhr:hover:bg-primary/10
                        hover:scale-110 active:scale-95"
                 [attr.aria-label]="'layout.sidebar.clearSearch' | translate"
                 type="button">
                 <app-icon name="close" size="sm"
-                          color="text-gray-500 dark:text-gray-400 theme-myhr:text-white/70
+                          color="text-gray-500 dark:text-gray-400 theme-myhr:text-primary dark:theme-myhr:text-white/70
                                  hover:text-red-500 dark:hover:text-red-400
                                  icon-micro"></app-icon>
               </button>
@@ -227,7 +273,7 @@
       <!-- Module Cards - Show when at /home with no menu items -->
       <div *ngIf="!isLoadingNavigation && !searchQuery && navigationChildren.length === 0 && isHomeRoute()"
            class="module-cards-container space-y-3 fade-in">
-        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 theme-myhr:text-white/90 mb-4 thai-text">
+        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-white/90 mb-4 thai-text">
           {{ 'layout.sidebar.selectModule' | translate }}
         </h3>
         <div class="grid grid-cols-1 gap-3">
@@ -236,11 +282,11 @@
              [attr.aria-label]="module.label"
              [style.animation-delay.ms]="i * 50"
              class="module-card group relative overflow-hidden
-                    bg-white/10 dark:bg-gray-800/20 theme-myhr:bg-gray-800/30
+                    bg-white/40 dark:bg-gray-800/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-800/30
                     backdrop-blur-sm rounded-xl
-                    border border-white/20 dark:border-gray-700/20 theme-myhr:border-primary/30
+                    border border-white/40 dark:border-gray-700/40 theme-myhr:border-primary/20
                     p-4 flex items-center gap-4
-                    hover:bg-white/20 dark:hover:bg-gray-800/30 theme-myhr:hover:bg-gray-800/50
+                    hover:bg-white/60 dark:hover:bg-gray-800/60 theme-myhr:hover:bg-white/50
                     hover:border-primary/50 dark:hover:border-primary/50 theme-myhr:hover:border-primary
                     hover:scale-[1.02] hover:shadow-lg
                     active:scale-[0.98]
@@ -254,9 +300,9 @@
                         pointer-events-none"></div>
             <!-- Icon -->
             <div class="flex-shrink-0 w-12 h-12 rounded-lg
-                        bg-primary/10 dark:bg-primary/20 theme-myhr:bg-primary/20
+                        bg-primary/10 dark:bg-primary/20 theme-myhr:bg-primary/10
                         flex items-center justify-center
-                        group-hover:bg-primary/20 dark:group-hover:bg-primary/30 theme-myhr:group-hover:bg-primary/30
+                        group-hover:bg-primary/20 dark:group-hover:bg-primary/30 theme-myhr:group-hover:bg-primary/20
                         group-hover:scale-110 group-hover:rotate-6
                         transition-all duration-300
                         relative z-10">
@@ -269,13 +315,13 @@
             <!-- Content -->
             <div class="flex-1 min-w-0 relative z-10">
               <h4 class="text-base font-semibold thai-text
-                         text-gray-800 dark:text-gray-100 theme-myhr:text-white/90
+                         text-gray-800 dark:text-gray-100 theme-myhr:text-gray-900 dark:theme-myhr:text-gray-100
                          mb-1 truncate
                          group-hover:text-primary dark:group-hover:text-primary-light theme-myhr:group-hover:text-primary
                          transition-colors duration-300">
                 {{ translateLabel(module.label, 'admin', 2) }}
               </h4>
-              <p class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-white/70 truncate">
+              <p class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 truncate">
                 {{ 'layout.sidebar.clickToOpen' | translate }}
               </p>
             </div>
@@ -284,7 +330,7 @@
                         group-hover:translate-x-1
                         transition-transform duration-300">
               <span class="material-icons text-lg
-                           text-gray-400 dark:text-gray-500 theme-myhr:text-white/60
+                           text-gray-400 dark:text-gray-500 theme-myhr:text-gray-400 dark:theme-myhr:text-gray-500
                            group-hover:text-primary dark:group-hover:text-primary-light theme-myhr:group-hover:text-primary">
                 arrow_forward
               </span>

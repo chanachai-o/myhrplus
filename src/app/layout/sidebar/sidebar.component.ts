@@ -1283,8 +1283,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
    * Get logo path based on current theme
    */
   getLogoPath(): string {
-    // Using new IVAP logo for both modes as per requirements
-    return 'assets/images/logo/ivap.jpg';
+     // Check if dark mode is active
+     const isDarkMode = document.documentElement.classList.contains('dark');
+     if (!isDarkMode) {
+       return 'assets/images/logo/logo-myhr-dark.png';
+     }
+     return 'assets/images/logo/logo-myhr-light.png';
   }
 
   /**

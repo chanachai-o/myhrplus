@@ -285,17 +285,19 @@ export class ThemeService {
         setImportant('--sidebar-active-bg', isDark ? `rgba(${rgb}, 0.2)` : `rgba(${rgb}, 0.2)`);
         setImportant('--sidebar-hover-bg', isDark ? `rgba(${rgb}, 0.12)` : `rgba(${rgb}, 0.08)`);
         setImportant('--sidebar-indicator-color', `rgb(${rgb})`);
+        setImportant('--sidebar-icon-color', isDark ? '#ffffff' : `rgb(${rgb})`);
         break;
 
       case 'dark':
         // Dark background
-        setImportant('--sidebar-bg-start', isDark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.2)');
-        setImportant('--sidebar-bg-end', isDark ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.1)');
+        setImportant('--sidebar-bg-start', isDark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.8)');
+        setImportant('--sidebar-bg-end', isDark ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.7)');
         setImportant('--sidebar-icon-bg-start', isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.2)');
         setImportant('--sidebar-icon-bg-end', isDark ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.1)');
         setImportant('--sidebar-active-bg', isDark ? `rgba(${rgb}, 0.2)` : `rgba(${rgb}, 0.2)`);
         setImportant('--sidebar-hover-bg', isDark ? `rgba(${rgb}, 0.12)` : `rgba(${rgb}, 0.12)`);
         setImportant('--sidebar-indicator-color', `rgb(${rgb})`);
+        setImportant('--sidebar-icon-color', '#ffffff');
         break;
 
       case 'primary':
@@ -307,6 +309,7 @@ export class ThemeService {
         setImportant('--sidebar-active-bg', isDark ? `rgba(${rgb}, 0.25)` : 'rgba(255, 255, 255, 0.3)');
         setImportant('--sidebar-hover-bg', isDark ? `rgba(${rgb}, 0.18)` : 'rgba(255, 255, 255, 0.15)');
         setImportant('--sidebar-indicator-color', isDark ? `rgb(${rgb})` : '#ffffff');
+        setImportant('--sidebar-icon-color', '#ffffff');
         break;
 
       case 'primary-gradient':
@@ -320,6 +323,7 @@ export class ThemeService {
         setImportant('--sidebar-active-bg', isDark ? `rgba(${rgb}, 0.3)` : 'rgba(255, 255, 255, 0.35)');
         setImportant('--sidebar-hover-bg', isDark ? `rgba(${rgb}, 0.22)` : 'rgba(255, 255, 255, 0.2)');
         setImportant('--sidebar-indicator-color', isDark ? `rgb(${rgb})` : '#ffffff');
+        setImportant('--sidebar-icon-color', '#ffffff');
         break;
     }
   }
