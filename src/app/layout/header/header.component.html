@@ -1,6 +1,6 @@
 <header class="">
   <div class="flex items-center justify-between py-3 md:py-4">
-    <div class="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+    <div class="flex items-center gap-2 md:gap-4 flex-shrink-0">
       <!-- Menu Toggle Button -->
       <app-glass-button
         type="button"
@@ -16,38 +16,6 @@
         <app-icon name="menu" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
                    icon-micro transition-transform duration-300"></app-icon>
       </app-glass-button>
-
-      <!-- Logo Section -->
-      <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 min-w-0">
-        <a routerLink="/home"
-           [attr.aria-label]="'layout.header.goToHome' | translate"
-           class="inline-flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] md:w-10 md:h-10 rounded-lg
-                    bg-white/50 dark:bg-gray-900/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-900/40
-                    backdrop-blur-sm
-                    border border-white/40 dark:border-gray-700/30 theme-myhr:border-primary/20
-                    shadow-lg flex-shrink-0 relative overflow-hidden
-                    hover-lift-lg
-                    group cursor-pointer
-                    animate-myhr-pulse">
-          <!-- Shimmer Effect -->
-          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
-                      -translate-x-full group-hover:translate-x-full
-                      transition-transform duration-1000 ease-in-out
-                      pointer-events-none"></div>
-          <img [src]="getLogoPath()"
-               [alt]="'layout.header.appLogo' | translate"
-               class="w-8 h-8 md:w-9 md:h-9 object-contain relative z-10
-                      icon-micro" />
-        </a>
-        <div class="flex flex-col min-w-0 hidden sm:block">
-          <span class="app-title thai-text font-semibold text-gray-800 dark:text-gray-100 theme-myhr:bg-gradient-to-r theme-myhr:from-primary theme-myhr:via-primary theme-myhr:to-primary theme-myhr:bg-clip-text theme-myhr:text-transparent text-sm md:text-lg leading-tight truncate">
-            {{ 'layout.header.appTitle' | translate }}
-          </span>
-          <span class="app-title-en font-medium text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 text-xs desktop-only">
-            {{ 'layout.header.appTitleEn' | translate }}
-          </span>
-        </div>
-      </div>
     </div>
 
     <!-- Omni-Search (Center) -->
@@ -89,22 +57,7 @@
     </div>
 
     <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
-      <!-- Omni-Search Button (Mobile) -->
-      <app-glass-button
-        type="button"
-        variant="secondary"
-        size="sm"
-        [ariaLabel]="'layout.header.searchMenuAriaLabel' | translate"
-        [title]="'layout.header.searchMenuTitle' | translate"
-        customClass="mobile-only w-11 h-11 min-w-[44px] min-h-[44px] p-0 rounded-lg
-                     hover-lift micro-active-scale
-                     hover:shadow-lg hover:-translate-y-0.5
-                     group relative overflow-hidden"
-        (clicked)="openOmniSearch()">
-        <app-icon name="search" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
-                   group-hover:scale-110 group-hover:text-primary dark:group-hover:text-primary
-                   relative z-10"></app-icon>
-      </app-glass-button>
+
 
       <!-- Language Switcher -->
       <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
@@ -112,6 +65,7 @@
           type="button"
           variant="secondary"
           size="sm"
+          (clicked)="toggleLanguageMenu()"
           [ariaLabel]="'layout.header.changeLanguage' | translate"
           [title]="'layout.header.changeLanguage' | translate"
           [attr.aria-expanded]="showLanguageMenu"
@@ -119,46 +73,49 @@
           customClass="w-11 h-11 min-w-[44px] min-h-[44px] md:w-10 md:h-10 p-0 rounded-lg
                        hover-lift micro-active-scale
                        hover:shadow-lg hover:-translate-y-0.5
-                       group overflow-hidden"
-          (clicked)="toggleLanguageMenu()">
-          <app-icon name="language" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
-                     group-hover:scale-110 group-hover:rotate-12
-                     icon-micro relative z-10"></app-icon>
+                       group overflow-hidden flex items-center justify-center">
+          <img [src]="getFlagPath(currentLanguage)"
+               [alt]="currentLanguage"
+               class="w-6 h-4 object-cover rounded shadow-sm transform group-hover:scale-110 transition-transform duration-300"
+               onerror="this.src='assets/images/flags/gb.svg'" />
         </app-glass-button>
 
         <!-- Language Dropdown -->
-        <app-glass-card
-          *ngIf="showLanguageMenu"
-          variant="strong"
-          padding="p-0"
-          customClass="language-dropdown absolute right-0 top-full mt-2 w-48
-                       rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
-                       z-50 overflow-hidden
-                       backdrop-blur-xl
-                       scale-in
-                       [animation-duration:200ms]
-                       origin-top-right">
+        <div *ngIf="showLanguageMenu"
+             class="absolute right-0 top-full mt-2 w-48
+                    rounded-xl shadow-2xl
+                    bg-white/90 dark:bg-gray-800/90 theme-myhr:bg-gray-900/90
+                    border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
+                    z-50 overflow-hidden
+                    backdrop-blur-xl
+                    animate-scale-in origin-top-right">
           <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
             <button
               *ngFor="let lang of languages; let i = index"
               type="button"
               role="menuitem"
               (click)="changeLanguage(lang.value)"
-              [class.active]="currentLanguage === lang.value"
+              [class.bg-primary-50]="currentLanguage === lang.value"
+              [class.dark:bg-primary-900_20]="currentLanguage === lang.value"
               [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.label"
               [attr.aria-current]="currentLanguage === lang.value ? 'true' : 'false'"
               [style.--animation-delay]="(i * 50) + 'ms'"
-              class="language-item w-full px-4 py-2.5 text-left flex items-center gap-3
-                     hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
-                     hover:translate-x-1 hover:scale-[1.02]
-                     active:scale-[0.98]
-                     fade-in">
-              <img [src]="lang.flagPath" [alt]="lang.label" class="w-5 h-5 rounded-sm object-cover" />
-              <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ lang.label }}</span>
-              <app-icon *ngIf="currentLanguage === lang.value" name="check" size="sm" color="text-primary theme-myhr:text-primary"></app-icon>
+              class="w-full px-4 py-3 text-left flex items-center gap-3
+                     hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/10
+                     transition-colors duration-200
+                     animate-fade-in group/item">
+              <img [src]="lang.flagPath" [alt]="lang.label" class="w-6 h-4 object-cover rounded shadow-sm group-hover/item:scale-110 transition-transform duration-200" />
+
+              <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-200 theme-myhr:text-white/90"
+                    [class.text-primary]="currentLanguage === lang.value"
+                    [class.font-bold]="currentLanguage === lang.value">
+                {{ lang.label }}
+              </span>
+
+              <app-icon *ngIf="currentLanguage === lang.value" name="check" size="sm" color="text-primary theme-myhr:text-primary animate-scale-in"></app-icon>
             </button>
           </div>
-        </app-glass-card>
+        </div>
       </div>
 
       <!-- Theme Toggle -->

@@ -15,7 +15,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 @Component({
   selector: 'app-omni-search',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GlassCardComponent, IconComponent],
+  imports: [CommonModule, ReactiveFormsModule, IconComponent],
   templateUrl: './omni-search.component.html',
   styleUrls: ['./omni-search.component.scss']
 })

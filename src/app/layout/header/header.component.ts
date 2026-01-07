@@ -290,4 +290,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     return 'assets/images/logo/logo-myhr-light.png';
   }
+
+  getFlagPath(lang: string): string {
+    return getFlagPath(lang as Language);
+  }
 }

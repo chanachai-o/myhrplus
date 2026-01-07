@@ -3,12 +3,13 @@ import { CommonModule, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService, ThemeMode, ThemeColor, SidebarStyle, HeaderStyle, MainLayoutStyle } from '@core/services';
 import { IconComponent } from '../icon/icon.component';
+import { GlassButtonComponent } from '../glass-button/glass-button.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
 @Component({
   selector: 'app-theme-toggle',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgClass, IconComponent],
+  imports: [CommonModule, FormsModule, NgClass, IconComponent, GlassButtonComponent],
   templateUrl: './theme-toggle.component.html',
   styleUrls: ['./theme-toggle.component.scss']
 })
