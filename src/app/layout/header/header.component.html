@@ -10,10 +10,11 @@
         [title]="'layout.header.menu' | translate"
         customClass="w-11 h-11 min-w-[44px] min-h-[44px] p-0 rounded-lg
                      hover-lift micro-active-scale
+                     hover:shadow-lg hover:-translate-y-0.5
                      group relative overflow-hidden"
         (clicked)="toggleSidenav.emit()">
         <app-icon name="menu" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-white/90
-                   icon-micro"></app-icon>
+                   icon-micro transition-transform duration-300"></app-icon>
       </app-glass-button>
 
       <!-- Logo Section -->

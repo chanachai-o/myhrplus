@@ -1,13 +1,18 @@
 <div class="two-layer-sidebar h-full flex fade-in" [class.dark]="isDarkMode">
   <!-- Left Icon Bar - Module Icons -->
   <div class="icon-bar flex flex-col items-center py-4 border-r
-              transition-all duration-300 ease-in-out">
+              transition-all duration-300 ease-in-out
+              bg-white/5 dark:bg-gray-900/20 theme-myhr:bg-gray-900/30
+              backdrop-blur-sm">
     <!-- Logo -->
     <div class="mb-6">
       <a routerLink="/home"
          class="logo-container w-12 h-12 rounded-xl flex items-center justify-center shadow-lg
+                transition-all duration-300 ease-out
                 hover-lift-lg
                 micro-active-scale
+                bg-white/10 dark:bg-gray-900/20 theme-myhr:bg-gray-900/30
+                backdrop-blur-sm
                 border border-white/20 dark:border-gray-700/20 theme-myhr:border-primary/30
                 cursor-pointer
                 group relative overflow-hidden
@@ -128,7 +133,10 @@
   <!-- Right Menu Panel - Module Menu -->
   <div class="menu-panel flex-1 flex flex-col overflow-hidden
               transition-all duration-300 ease-in-out
-              border-l border-white/10 dark:border-gray-800/30 theme-myhr:border-white/20">
+              bg-gradient-to-br from-white/5 via-white/10 to-white/5
+              dark:from-gray-900/20 dark:via-gray-900/30 dark:to-gray-900/20
+              theme-myhr:from-gray-900/30 theme-myhr:via-gray-900/40 theme-myhr:to-gray-900/30
+              backdrop-blur-md border-l border-white/10 dark:border-gray-800/30 theme-myhr:border-white/20">
     <div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
       <!-- Header Section -->
       <div class="mb-6">
