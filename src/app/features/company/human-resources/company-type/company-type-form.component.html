@@ -3,7 +3,7 @@
   [title]="(isEditMode ? 'company.companyType.edit' : 'company.companyType.add') | translate"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
-  
+
   <form [formGroup]="form" class="space-y-6 p-1">
     <!-- Code (PK) - Disable on Edit -->
     <app-glass-input

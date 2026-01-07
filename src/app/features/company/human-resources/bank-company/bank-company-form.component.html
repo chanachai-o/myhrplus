@@ -4,63 +4,75 @@
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
   
-  <form [formGroup]="form" class="space-y-4 p-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-1">
     
     <!-- Bank Code -->
-    <app-glass-input
-      class="col-span-2 md:col-span-1"
-      [label]="'company.bankCompany.bankId' | translate"
-      formControlName="bankid"
-      [required]="true">
-    </app-glass-input>
+    <div class="col-span-2 md:col-span-1">
+      <app-glass-input
+        [label]="'company.bankCompany.bankId' | translate"
+        formControlName="bankid"
+        [required]="true"
+        [fullWidth]="true">
+      </app-glass-input>
+    </div>
 
     <!-- Company Code (Hidden or Readonly) -->
-    <app-glass-input
-      class="col-span-2 md:col-span-1"
-      label="รหัสบริษัท"
-      formControlName="companyid"
-      [required]="true">
-    </app-glass-input>
+    <div class="col-span-2 md:col-span-1">
+      <app-glass-input
+        label="รหัสบริษัท"
+        formControlName="companyid"
+        [required]="true"
+        [fullWidth]="true">
+      </app-glass-input>
+    </div>
 
     <!-- Account Name TH -->
-    <app-glass-input
-      class="col-span-2"
-      [label]="'company.bankCompany.bankClientThName' | translate"
-      formControlName="bank_client_thname">
-    </app-glass-input>
+    <div class="col-span-2">
+      <app-glass-input
+        [label]="'company.bankCompany.bankClientThName' | translate"
+        formControlName="bank_client_thname"
+        [fullWidth]="true">
+      </app-glass-input>
+    </div>
 
     <!-- Account Name EN -->
-    <app-glass-input
-      class="col-span-2"
-      label="ชื่อบัญชี (อังกฤษ)"
-      formControlName="bank_client_engname">
-    </app-glass-input>
+    <div class="col-span-2">
+      <app-glass-input
+        label="ชื่อบัญชี (อังกฤษ)"
+        formControlName="bank_client_engname"
+        [fullWidth]="true">
+      </app-glass-input>
+    </div>
 
     <!-- Account No -->
-    <app-glass-input
-      class="col-span-2 md:col-span-1"
-      [label]="'company.bankCompany.account' | translate"
-      formControlName="account"
-      [required]="true">
-    </app-glass-input>
+    <div class="col-span-2 md:col-span-1">
+      <app-glass-input
+        [label]="'company.bankCompany.account' | translate"
+        formControlName="account"
+        [required]="true"
+        [fullWidth]="true">
+      </app-glass-input>
+    </div>
 
     <!-- Contact Person -->
-    <app-glass-input
-      class="col-span-2 md:col-span-1"
-      label="ผู้ติดต่อ"
-      formControlName="contact_person">
-    </app-glass-input>
+    <div class="col-span-2 md:col-span-1">
+      <app-glass-input
+        label="ผู้ติดต่อ"
+        formControlName="contact_person"
+        [fullWidth]="true">
+      </app-glass-input>
+    </div>
 
     <!-- Options -->
     <div class="col-span-2 flex gap-4 mt-2">
       <label class="flex items-center space-x-2 cursor-pointer">
-        <input type="checkbox" formControlName="isdefault" class="form-checkbox h-5 w-5 text-primary">
-        <span class="text-gray-700 dark:text-slate-300">{{ 'company.bankCompany.isDefault' | translate }}</span>
+        <input type="checkbox" formControlName="isdefault" class="form-checkbox h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary">
+        <span class="text-gray-700 dark:text-slate-300 select-none">{{ 'company.bankCompany.isDefault' | translate }}</span>
       </label>
       
       <label class="flex items-center space-x-2 cursor-pointer">
-        <input type="checkbox" formControlName="trans_ats" class="form-checkbox h-5 w-5 text-primary">
-        <span class="text-gray-700 dark:text-slate-300">ATS</span>
+        <input type="checkbox" formControlName="trans_ats" class="form-checkbox h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary">
+        <span class="text-gray-700 dark:text-slate-300 select-none">ATS</span>
       </label>
     </div>
 

@@ -177,7 +177,7 @@ export class ModalComponent implements OnInit, OnDestroy, OnChanges, AfterViewIn
   }
 
   get displayConfirmText(): string {
-    return this.confirmText || this.translate.instant('common.confirm');
+    return this.confirmText || this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.CONFIRM);
   }
 
   get closeAriaLabel(): string {

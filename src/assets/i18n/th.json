@@ -913,6 +913,7 @@
   "common.actions.add_new": "เพิ่มใหม่",
   "common.actions.addNew": "เพิ่มใหม่",
   "common.actions.cancel": "ยกเลิก",
+  "common.actions.confirm": "ยืนยัน",
   "common.actions.clear": "ล้าง",
   "common.actions.clearAll": "ล้างทั้งหมด",
   "common.actions.close": "ปิด",

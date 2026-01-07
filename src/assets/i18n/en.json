@@ -924,6 +924,7 @@
   "common.actions.add": "Add",
   "common.actions.addNew": "Add New",
   "common.actions.cancel": "Cancel",
+  "common.actions.confirm": "Confirm",
   "common.actions.clear": "Clear",
   "common.actions.clearAll": "Clear All",
   "common.actions.close": "Close",
