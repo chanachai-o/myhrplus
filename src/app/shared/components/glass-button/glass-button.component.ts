@@ -17,6 +17,7 @@ export class GlassButtonComponent {
   @Input() loading: boolean = false;
   @Input() fullWidth: boolean = false;
   @Input() customClass: string = '';
+  @Input() icon: string = ''; // Added icon input
   @Input() ariaLabel?: string;
   @Input() ariaDescribedBy?: string;
 
@@ -37,13 +38,15 @@ export class GlassButtonComponent {
     } else if (this.variant === 'danger') {
       variantClasses = 'bg-gradient-to-r from-error-500 to-error-600 text-white shadow-md hover:from-error-600 hover:to-error-700 hover:shadow-lg glow-error dark:from-error-600 dark:to-error-700';
     } else if (this.variant === 'info') {
-      variantClasses = 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg glow-primary dark:from-blue-600 dark:to-blue-700';
+      variantClasses = 'border border-blue-500 text-blue-600 bg-white/50 hover:bg-blue-50 shadow-sm hover:shadow-md dark:bg-gray-800/50 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-900/20';
     } else if (this.variant === 'success') {
       variantClasses = 'bg-gradient-to-r from-success-500 to-success-600 text-white shadow-md hover:from-success-600 hover:to-success-700 hover:shadow-lg glow-success dark:from-success-600 dark:to-success-700';
     } else if (this.variant === 'warning') {
       variantClasses = 'bg-gradient-to-r from-warning-500 to-warning-600 text-white shadow-md hover:from-warning-600 hover:to-warning-700 hover:shadow-lg dark:from-warning-600 dark:to-warning-700';
+    } else if (this.variant === 'secondary') {
+      variantClasses = 'glass text-slate-700 shadow-sm hover:glass-strong hover:shadow-md hover-scale-sm dark:glass-dark dark:text-slate-200 dark:hover:glass-dark-strong theme-myhr:glass-myhr theme-myhr:text-white theme-myhr:hover:glass-myhr-strong';
     } else {
-      // Secondary variant - skip glass background if customClass has gradient
+      // Default variant - skip glass background if customClass has gradient
       if (hasGradient) {
         variantClasses = 'text-slate-700 shadow-sm hover:shadow-md hover-scale-sm dark:text-slate-200';
       } else {

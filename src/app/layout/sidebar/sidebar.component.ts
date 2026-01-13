@@ -643,6 +643,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
    * Handle accordion toggle expand
    */
   onAccordionToggleExpand(event: { item: NavigationChild; expanded: boolean }): void {
+    // Auto Collapse: Close other items at the same level when one is expanded
+    if (event.expanded) {
+      this.autoCollapseSiblings(this.navigationChildren, event.item);
+    }
+
     // Expanded state is already managed by expandedLevel3Items Set
     // If item is expanded and has no route, set as selected Level 3 for breadcrumb
     if (event.expanded && !event.item.route && event.item.children && event.item.children.length > 0) {
@@ -651,6 +656,38 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.selectedLevel5Item = null;
       // Breadcrumbs are now handled by main-layout component
     }
+  }
+
+  /**
+   * Recursive function to find siblings of the target item and collapse them
+   */
+  private autoCollapseSiblings(items: NavigationChild[], targetItem: NavigationChild): boolean {
+    if (!items || items.length === 0) return false;
+
+    // Check if target item is in the current list (meaning they are siblings)
+    // Use label for comparison (assuming unique labels within siblings)
+    const match = items.find(i => i.label === targetItem.label);
+    
+    if (match) {
+      // Found the level where targetItem exists. Collapse others in this list.
+      items.forEach(i => {
+        if (i.label !== targetItem.label && this.expandedLevel3Items.has(i.label)) {
+          this.expandedLevel3Items.delete(i.label);
+        }
+      });
+      return true; // Stop searching
+    }
+
+    // If not found in current level, recurse into children
+    for (const item of items) {
+      if (item.children && item.children.length > 0) {
+        if (this.autoCollapseSiblings(item.children, targetItem)) {
+          return true; // Stop searching if found in children
+        }
+      }
+    }
+    
+    return false;
   }
 
   /**
