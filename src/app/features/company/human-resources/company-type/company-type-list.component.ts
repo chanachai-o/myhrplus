@@ -38,29 +38,29 @@ export class CompanyTypeListComponent implements OnInit {
   columns: any[] = [];
 
   ngOnInit() {
-    // Wait for translations to load, then initialize
-    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW).subscribe(() => {
-      this.initializeTranslations();
+    this.updateTranslations();
+    this.translate.onLangChange.subscribe(() => {
+      this.updateTranslations();
     });
   }
 
-  private initializeTranslations() {
+  private updateTranslations() {
     this.headerActions = [
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
-        variant: 'primary' as const,
+        variant: 'primary',
         icon: 'add',
         onClick: () => this.onCreate()
       },
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EXPORT),
-        variant: 'secondary' as const,
+        variant: 'secondary',
         icon: 'download',
         onClick: () => this.onExport()
       },
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.MANUAL),
-        variant: 'secondary' as const,
+        variant: 'secondary',
         icon: 'article',
         onClick: () => this.onManual()
       }

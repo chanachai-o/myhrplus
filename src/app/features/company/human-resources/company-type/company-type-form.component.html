@@ -6,18 +6,25 @@
 
   <form [formGroup]="form" class="space-y-6 p-1">
     <!-- Code (PK) - Disable on Edit -->
-    <app-glass-input
-      [label]="'company.companyType.codeId' | translate"
-      formControlName="codeid"
-      [required]="true"
-      [readonly]="isEditMode"
-      [useFormValidationMessages]="true"
-      maxLength="3">
-      <app-form-validation-messages
-        [control]="form.get('codeid')"
-        [customMessages]="{ required: 'company.companyType.codeIdRequired' | translate }">
-      </app-form-validation-messages>
-    </app-glass-input>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-1">
+        <app-glass-input
+          [label]="'company.companyType.codeId' | translate"
+          formControlName="codeid"
+          [required]="true"
+          [readonly]="isEditMode"
+          [useFormValidationMessages]="true"
+          maxLength="3">
+          <app-form-validation-messages
+            [control]="form.get('codeid')"
+            [customMessages]="{ required: 'company.companyType.codeIdRequired' | translate }">
+          </app-form-validation-messages>
+        </app-glass-input>
+      </div>
+      <div class="md:col-span-2">
+        <!-- Spacer or additional fields could go here -->
+      </div>
+    </div>
 
     <!-- Thai Description -->
     <app-glass-input

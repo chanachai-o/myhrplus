@@ -13,6 +13,7 @@ export interface PageHeaderAction {
   onClick?: () => void;
   class?: string;
   disabled?: boolean;
+  variant?: 'primary' | 'secondary' | 'danger';
 }
 
 export interface PageHeaderUserInfo {

@@ -1,44 +1,44 @@
 <ng-container *ngIf="useGlassCard; else noGlassCard">
-  <app-glass-card padding="p-5 md:p-6" [customClass]="'mb-6 md:mb-8 ' + customClass" [animate]="'fade-in'">
+  <app-glass-card padding="p-4 md:p-5" [customClass]="'mb-4 md:mb-6 ' + customClass" [animate]="'fade-in'">
     <ng-container *ngTemplateOutlet="headerContent"></ng-container>
   </app-glass-card>
 </ng-container>
 
 <ng-template #noGlassCard>
-  <div [class]="'mb-6 md:mb-8 ' + customClass">
+  <div [class]="'mb-4 md:mb-6 ' + customClass">
     <ng-container *ngTemplateOutlet="headerContent"></ng-container>
   </div>
 </ng-template>
 
 <ng-template #headerContent>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-3 md:gap-4">
     <!-- Breadcrumbs -->
     <app-breadcrumbs *ngIf="showBreadcrumbs"></app-breadcrumbs>
 
     <!-- Title Section -->
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div class="flex-1">
+      <div class="flex-1 min-w-0">
         <!-- Icon and Title Row -->
-        <div class="flex items-center gap-3 mb-2" *ngIf="icon || title">
+        <div class="flex items-center gap-3 mb-1" *ngIf="icon || title">
           <!-- Icon -->
-          <div 
+          <div
             *ngIf="icon"
-            [class]="'w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center shadow-lg ' + (iconGradient ? 'bg-gradient-to-br ' + iconGradient + ' dark:from-opacity-90 dark:to-opacity-90' : 'bg-gray-100 dark:bg-gray-800')">
-            <app-icon 
-              [name]="icon" 
-              [size]="iconSize" 
+            [class]="'flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center shadow-md ' + (iconGradient ? 'bg-gradient-to-br ' + iconGradient + ' dark:from-opacity-90 dark:to-opacity-90' : 'bg-gray-100 dark:bg-gray-800')">
+            <app-icon
+              [name]="icon"
+              [size]="'sm'"
               [color]="iconColor || 'text-white'">
             </app-icon>
           </div>
-          
+
           <!-- Title and Subtitle -->
-          <div class="flex-1">
-            <h1 
-              [class]="'text-xl md:text-2xl lg:text-3xl font-bold thai-text mb-0 ' + (titleGradient ? 'bg-gradient-to-r ' + titleGradient + ' bg-clip-text text-transparent' : 'text-gray-800 dark:text-gray-100')">
+          <div class="flex-1 min-w-0">
+            <h1
+              [class]="'text-lg md:text-xl lg:text-2xl font-bold thai-text mb-0 truncate ' + (titleGradient ? 'bg-gradient-to-r ' + titleGradient + ' bg-clip-text text-transparent' : 'text-gray-800 dark:text-gray-100')">
               <span *ngIf="translateTitle">{{ title | translate }}</span>
               <span *ngIf="!translateTitle">{{ title }}</span>
             </h1>
-            <p *ngIf="subtitle" class="text-xs md:text-sm text-gray-600 dark:text-gray-400 thai-text mt-1">
+            <p *ngIf="subtitle" class="text-xs text-gray-600 dark:text-gray-400 thai-text mt-0.5 truncate">
               <span *ngIf="translateSubtitle">{{ subtitle | translate }}</span>
               <span *ngIf="!translateSubtitle">{{ subtitle }}</span>
             </p>
@@ -46,13 +46,13 @@
         </div>
 
         <!-- Description -->
-        <p *ngIf="description" class="text-sm md:text-base text-gray-600 dark:text-gray-300 thai-text mt-2">
+        <p *ngIf="description" class="text-xs md:text-sm text-gray-600 dark:text-gray-300 thai-text mt-1">
           <span *ngIf="translateDescription">{{ description | translate }}</span>
           <span *ngIf="!translateDescription">{{ description }}</span>
         </p>
 
         <!-- Welcome Message -->
-        <p *ngIf="welcomeMessage" class="text-sm md:text-base text-gray-600 dark:text-gray-300 thai-text mt-2">
+        <p *ngIf="welcomeMessage" class="text-xs md:text-sm text-gray-600 dark:text-gray-300 thai-text mt-1">
           <span *ngIf="translateWelcomeMessage">{{ welcomeMessage | translate }}</span>
           <span *ngIf="!translateWelcomeMessage">{{ welcomeMessage }}</span>
         </p>
@@ -60,13 +60,13 @@
 
       <!-- User Info Badges -->
       <div *ngIf="userInfo && userInfo.length > 0" class="flex flex-wrap gap-2">
-        <div 
+        <div
           *ngFor="let info of userInfo"
-          class="flex items-center gap-2 px-3 md:px-4 py-2 bg-primary/10 dark:bg-primary/10 rounded-xl text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
-          <app-icon 
+          class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 dark:bg-primary/10 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap border border-primary/10">
+          <app-icon
             *ngIf="info.icon"
-            [name]="info.icon" 
-            size="sm" 
+            [name]="info.icon"
+            size="sm"
             [color]="info.iconColor || 'text-primary dark:text-primary'">
           </app-icon>
           <span class="thai-text">{{ info.label | translate }}: {{ info.value }}</span>
@@ -74,17 +74,18 @@
       </div>
 
       <!-- Actions -->
-      <div *ngIf="actions && actions.length > 0" class="flex flex-wrap gap-2">
+      <div *ngIf="actions && actions.length > 0" class="flex flex-wrap items-center gap-2">
         <app-glass-button
           *ngFor="let action of actions"
           type="button"
-          variant="secondary"
-          size="md"
+          [variant]="action.variant || 'secondary'"
+          size="sm"
           [ariaLabel]="action.label"
           [disabled]="action.disabled || false"
+          [customClass]="(action.class || '') + ' ' + (action.variant === 'primary' ? 'bg-gradient-primary text-white hover:shadow-primary' : (action.variant === 'secondary' ? 'bg-white/50 text-gray-700 hover:bg-white/80' : ''))"
           (clicked)="action.onClick?.()">
-          <app-icon *ngIf="action.icon" [name]="action.icon" size="sm" class="mr-2"></app-icon>
-          {{ action.label | translate }}
+          <app-icon *ngIf="action.icon" [name]="action.icon" size="sm" class="mr-1.5"></app-icon>
+          {{ action.label }}
         </app-glass-button>
       </div>
     </div>

@@ -4,14 +4,17 @@
   [actions]="headerActions"
   [useGlassCard]="false"
   icon="domain"
-  iconGradient="from-blue-500 to-cyan-400"
-  titleGradient="from-blue-600 to-cyan-500">
+  iconGradient="from-primary to-primary"
+  titleGradient="from-primary to-primary"
+  customClass="-mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 pt-6 pb-2">
 </app-page-header>
 
-<div class="w-full py-6">
-  <app-glass-card padding="p-6">
+<div class="w-full py-6 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8">
+  <app-glass-card padding="p-0">
     @if (service.loading()) {
-      <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
+      <div class="p-6">
+        <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
+      </div>
     } @else {
       <app-data-grid
         [dataSource]="(data$ | async) || []"
