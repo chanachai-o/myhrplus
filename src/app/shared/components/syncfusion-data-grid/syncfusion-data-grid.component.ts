@@ -267,6 +267,8 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
       dataSourceLength: this.dataSource?.length,
       columnsCount: this.columns?.length,
       columns: this.columns,
+      actionsCount: this.actions?.length,
+      actions: this.actions,
       showToolbar: this.showToolbar,
       showColumnMenu: this.showColumnMenu,
       showColumnChooser: this.showColumnChooser,
@@ -306,6 +308,13 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     }
     if (changes['columns']) {
       console.log('[SyncfusionDataGrid] New Columns:', this.columns);
+    }
+    if (changes['actions']) {
+      console.log('[SyncfusionDataGrid] Actions changed:', this.actions);
+      console.log('[SyncfusionDataGrid] Actions length:', this.actions?.length);
+      if (this.grid) {
+        this.grid.refresh();
+      }
     }
     if (changes['loadingIndicator'] && this.grid) {
       this.grid.loadingIndicator = this.loadingIndicator;
@@ -422,8 +431,8 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     this.actionBegin.emit(args);
 
     // Show loading indicator for pagination, sorting, filtering, etc.
-    if (args.requestType === 'paging' || 
-        args.requestType === 'sorting' || 
+    if (args.requestType === 'paging' ||
+        args.requestType === 'sorting' ||
         args.requestType === 'filtering' ||
         args.requestType === 'grouping' ||
         args.requestType === 'searching') {
@@ -438,8 +447,8 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     this.actionComplete.emit(args);
 
     // Hide loading indicator when action completes
-    if (args.requestType === 'paging' || 
-        args.requestType === 'sorting' || 
+    if (args.requestType === 'paging' ||
+        args.requestType === 'sorting' ||
         args.requestType === 'filtering' ||
         args.requestType === 'grouping' ||
         args.requestType === 'searching') {

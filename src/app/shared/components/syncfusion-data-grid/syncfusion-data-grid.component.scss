@@ -132,16 +132,39 @@
     color: var(--text-secondary);
     transition: all 0.2s;
 
+    // Ensure icons are visible
+    i {
+      display: inline-block;
+      font-size: 1rem;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
     &:hover {
       background-color: var(--bg-surface-hover);
       color: var(--primary-color);
       transform: scale(1.1);
     }
 
-    &.text-primary { color: var(--primary-color); }
-    &.text-success { color: var(--color-success); }
-    &.text-danger { color: var(--color-danger); }
-    &.text-warning { color: var(--color-warning); }
+    &.text-primary {
+      color: var(--primary-color);
+      i { color: var(--primary-color); }
+    }
+    &.text-success {
+      color: var(--color-success);
+      i { color: var(--color-success); }
+    }
+    &.text-danger {
+      color: var(--color-danger);
+      i { color: var(--color-danger); }
+    }
+    &.text-warning {
+      color: var(--color-warning);
+      i { color: var(--color-warning); }
+    }
   }
 }
 
