@@ -50,7 +50,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     });
 
     this.isHandset$.subscribe(isHandset => {
-      this.sidebarType = isHandset ? 'Over' : 'Push';
+      // Sidebar type is now handled in template (always 'Over' for layout consistency)
+      // We still use isHandset for backdrop and close-on-click behavior
     });
 
     this.router.events

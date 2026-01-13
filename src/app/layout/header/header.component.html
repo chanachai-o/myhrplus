@@ -1,394 +1,184 @@
-<header class="">
-  <div class="flex items-center justify-between py-3 md:py-4">
-    <div class="flex items-center gap-2 md:gap-4 flex-shrink-0">
-      <!-- Menu Toggle Button -->
-      <app-glass-button
-        type="button"
-        variant="secondary"
-        size="sm"
-        [ariaLabel]="'layout.header.menuAriaLabel' | translate"
-        [title]="'layout.header.menu' | translate"
-        customClass="w-11 h-11 min-w-[44px] min-h-[44px] p-0 rounded-lg
-                     hover-lift micro-active-scale
-                     hover:shadow-lg hover:-translate-y-0.5
-                     group relative overflow-hidden"
-        (clicked)="toggleSidenav.emit()">
-        <app-icon name="menu" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
-                   icon-micro transition-transform duration-300"></app-icon>
-      </app-glass-button>
-    </div>
+<header class="w-full h-14 bg-primary theme-myhr:bg-primary text-white flex items-center px-3 md:px-4 shadow-md z-50 relative justify-between transition-colors duration-300">
+  <!-- Left: App Launcher + Logo -->
+  <div class="flex items-center gap-3 md:gap-4">
+    <!-- Menu Toggle (Visible on Mobile & Desktop) -->
+    <button type="button"
+            class="p-2 rounded-lg hover:bg-white/10 text-white transition-colors"
+            (mousedown)="$event.stopPropagation()"
+            (touchstart)="$event.stopPropagation()"
+            (click)="$event.stopPropagation(); toggleSidenav.emit()"
+            [attr.aria-label]="'layout.header.menu' | translate">
+      <app-icon name="menu" size="md" color="text-white"></app-icon>
+    </button>
 
-    <!-- Omni-Search (Center) -->
-    <div class="flex-1 flex justify-center px-4 hidden md:flex">
-      <button
-        type="button"
-        (click)="openOmniSearch()"
-        [attr.aria-label]="'layout.header.searchMenuAriaLabel' | translate"
-        class="omni-search-trigger w-full max-w-md px-4 py-2 rounded-lg
-               bg-white/50 dark:bg-gray-800/50 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-800/40
-               border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/20
-               text-left flex items-center gap-3
-               hover:bg-white/70 dark:hover:bg-gray-800/70 theme-myhr:hover:bg-white/60
-               hover:scale-[1.02] hover:shadow-lg
-               active:scale-[0.98]
-               transition-all duration-300 ease-out
-               focus:outline-none focus:ring-2 focus:ring-primary/20
-               group relative overflow-hidden">
-        <!-- Hover Glow Effect -->
-        <div class="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0
-                    opacity-0 group-hover:opacity-100
-                    transition-opacity duration-300
-                    pointer-events-none"></div>
-        <app-icon name="search" size="sm" color="text-gray-500 dark:text-gray-400 theme-myhr:text-primary dark:theme-myhr:text-gray-400
-                   group-hover:scale-110 group-hover:text-primary dark:group-hover:text-primary
-                   relative z-10"></app-icon>
-        <span class="flex-1 text-sm text-gray-500 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 relative z-10
-                     group-hover:text-gray-700 dark:group-hover:text-gray-300">
-          {{ 'layout.header.searchMenuPlaceholder' | translate }}
-        </span>
-        <kbd class="hidden lg:inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold
-                    bg-gray-100 dark:bg-gray-700 theme-myhr:bg-white/50 dark:theme-myhr:bg-gray-700/50
-                    text-gray-600 dark:text-gray-300 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-300
-                    border border-gray-300 dark:border-gray-600 theme-myhr:border-primary/20 rounded">
-          <span>Ctrl</span>
-          <span>K</span>
-        </kbd>
+    <!-- App Launcher (Desktop only - Cosmetic) -->
+
+
+    <!-- App Logo / Name -->
+    <a routerLink="/home" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+       <!-- Optional: Logo Image if needed -->
+       <!-- <img src="assets/images/logo/logo-white.png" class="h-8 w-auto" alt="Logo"> -->
+       <span class="text-lg md:text-xl font-semibold tracking-wide text-white whitespace-nowrap">MyHR Plus</span>
+    </a>
+  </div>
+
+  <!-- Center: Omni-Search -->
+  <div class="flex-1 max-w-2xl px-4 hidden md:flex justify-center">
+    <button
+      type="button"
+      (click)="openOmniSearch()"
+      [attr.aria-label]="'layout.header.searchMenuAriaLabel' | translate"
+      class="w-full max-w-md h-9 px-4 rounded-md
+             bg-white/20 hover:bg-white/30
+             border border-white/10
+             text-left flex items-center gap-3
+             transition-all duration-200
+             focus:outline-none focus:ring-2 focus:ring-white/30
+             group">
+      <app-icon name="search" size="sm" color="text-white/80 group-hover:text-white transition-colors"></app-icon>
+      <span class="flex-1 text-sm text-white/80 group-hover:text-white transition-colors">
+        {{ 'layout.header.searchMenuPlaceholder' | translate }}
+      </span>
+      <kbd class="hidden lg:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium
+                  bg-black/20 text-white/70 rounded border border-white/10">
+        <span>Ctrl</span><span>K</span>
+      </kbd>
+    </button>
+  </div>
+
+  <!-- Right: Actions -->
+  <div class="flex items-center gap-1 md:gap-2">
+    <!-- Search Toggle (Mobile) -->
+    <button type="button"
+            class="md:hidden p-2 rounded-lg hover:bg-white/10 text-white transition-colors"
+            (click)="openOmniSearch()">
+      <app-icon name="search" size="md" color="text-white"></app-icon>
+    </button>
+
+    <!-- Language Switcher -->
+    <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
+      <button type="button"
+              class="p-2 h-9 min-w-[36px] flex items-center justify-center rounded-md hover:bg-white/10 transition-colors"
+              (click)="toggleLanguageMenu()"
+              [attr.aria-label]="'layout.header.changeLanguage' | translate">
+        <img [src]="getFlagPath(currentLanguage)"
+             [alt]="currentLanguage"
+             class="w-6 h-4 object-cover rounded shadow-sm"
+             onerror="this.src='assets/images/flags/gb.svg'" />
       </button>
-    </div>
 
-    <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
-
-
-      <!-- Language Switcher -->
-      <div class="relative" appClickOutside (appClickOutside)="closeLanguageMenu()">
-        <app-glass-button
-          type="button"
-          variant="secondary"
-          size="sm"
-          (clicked)="toggleLanguageMenu()"
-          [ariaLabel]="'layout.header.changeLanguage' | translate"
-          [title]="'layout.header.changeLanguage' | translate"
-          [attr.aria-expanded]="showLanguageMenu"
-          [attr.aria-controls]="'language-menu'"
-          customClass="w-11 h-11 min-w-[44px] min-h-[44px] md:w-10 md:h-10 p-0 rounded-lg
-                       hover-lift micro-active-scale
-                       hover:shadow-lg hover:-translate-y-0.5
-                       group overflow-hidden flex items-center justify-center">
-          <img [src]="getFlagPath(currentLanguage)"
-               [alt]="currentLanguage"
-               class="w-6 h-4 object-cover rounded shadow-sm transform group-hover:scale-110 transition-transform duration-300"
-               onerror="this.src='assets/images/flags/gb.svg'" />
-        </app-glass-button>
-
-        <!-- Language Dropdown -->
-        <div *ngIf="showLanguageMenu"
-             class="absolute right-0 top-full mt-2 w-48
-                    rounded-xl shadow-2xl
-                    bg-white/90 dark:bg-gray-800/90 theme-myhr:bg-gray-900/90
-                    border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
-                    z-50 overflow-hidden
-                    backdrop-blur-xl
-                    animate-scale-in origin-top-right">
-          <div id="language-menu" role="menu" [attr.aria-label]="'layout.header.languageMenuAriaLabel' | translate" class="py-1">
-            <button
-              *ngFor="let lang of languages; let i = index"
-              type="button"
-              role="menuitem"
-              (click)="changeLanguage(lang.value)"
-              [class.bg-primary-50]="currentLanguage === lang.value"
-              [class.dark:bg-primary-900_20]="currentLanguage === lang.value"
-              [attr.aria-label]="('layout.header.changeLanguageTo' | translate) + ' ' + lang.label"
-              [attr.aria-current]="currentLanguage === lang.value ? 'true' : 'false'"
-              [style.--animation-delay]="(i * 50) + 'ms'"
-              class="w-full px-4 py-3 text-left flex items-center gap-3
-                     hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/10
-                     transition-colors duration-200
-                     animate-fade-in group/item">
-              <img [src]="lang.flagPath" [alt]="lang.label" class="w-6 h-4 object-cover rounded shadow-sm group-hover/item:scale-110 transition-transform duration-200" />
-
-              <span class="flex-1 thai-text text-sm font-medium text-gray-700 dark:text-gray-200 theme-myhr:text-white/90"
-                    [class.text-primary]="currentLanguage === lang.value"
-                    [class.font-bold]="currentLanguage === lang.value">
-                {{ lang.label }}
-              </span>
-
-              <app-icon *ngIf="currentLanguage === lang.value" name="check" size="sm" color="text-primary theme-myhr:text-primary animate-scale-in"></app-icon>
-            </button>
-          </div>
+      <!-- Language Dropdown -->
+      <div *ngIf="showLanguageMenu"
+           class="absolute right-0 top-full mt-2 w-48
+                  rounded-xl shadow-xl
+                  bg-white dark:bg-gray-800
+                  border border-gray-200 dark:border-gray-700
+                  z-50 overflow-hidden
+                  animate-scale-in origin-top-right">
+        <div class="py-1">
+          <button *ngFor="let lang of languages"
+                  type="button"
+                  (click)="changeLanguage(lang.value)"
+                  class="w-full px-4 py-3 text-left flex items-center gap-3
+                         hover:bg-gray-50 dark:hover:bg-gray-700
+                         transition-colors duration-200">
+             <img [src]="lang.flagPath" class="w-5 h-3.5 object-cover rounded-sm">
+             <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ lang.label }}</span>
+             <app-icon *ngIf="currentLanguage === lang.value" name="check" size="sm" color="text-primary"></app-icon>
+          </button>
         </div>
       </div>
+    </div>
 
-      <!-- Theme Toggle -->
-      <app-theme-toggle></app-theme-toggle>
+    <!-- Theme Toggle -->
+    <app-theme-toggle customClass="text-white hover:bg-white/10"></app-theme-toggle>
 
-      <!-- Notifications -->
-      <div class="relative" appClickOutside (appClickOutside)="closeNotificationMenu()">
-        <app-glass-button
-          type="button"
-          variant="secondary"
-          size="sm"
-          [ariaLabel]="('layout.header.notifications' | translate) + (unreadCount > 0 ? ' (' + unreadCount + ' ' + ('layout.header.newItems' | translate) + ')' : '')"
-          [title]="'layout.header.notifications' | translate"
-          [attr.aria-expanded]="showNotificationMenu"
-          [attr.aria-controls]="'notification-menu'"
-          customClass="w-11 h-11 min-w-[44px] min-h-[44px] md:w-10 md:h-10 p-0 rounded-lg relative
-                       hover-lift micro-active-scale
-                       hover:shadow-lg hover:-translate-y-0.5
-                       group overflow-hidden"
-          (clicked)="toggleNotificationMenu()">
-          <app-icon name="notifications" size="md" color="text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300
-                     group-hover:scale-110 group-hover:animate-bounce
-                     icon-micro relative z-10"></app-icon>
-          <span *ngIf="unreadCount > 0"
-                [attr.aria-label]="unreadCount + ' ' + ('layout.header.newItems' | translate)"
-                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 dark:bg-red-400 rounded-full
-                       flex items-center justify-center text-white text-xs font-bold shadow-lg
-                       animate-pulse z-20
-                       group-hover:scale-125 group-hover:shadow-xl
-                       transition-all duration-300">
-            {{ unreadCount > 9 ? '9+' : unreadCount }}
-          </span>
-        </app-glass-button>
+    <!-- Notifications -->
+    <div class="relative" appClickOutside (appClickOutside)="closeNotificationMenu()">
+       <button type="button"
+               class="p-2 rounded-lg hover:bg-white/10 text-white transition-colors relative"
+               (click)="toggleNotificationMenu()"
+               [attr.aria-label]="'layout.header.notifications' | translate">
+         <app-icon name="notifications" size="md" color="text-white"></app-icon>
+         <span *ngIf="unreadCount > 0"
+               class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-primary"></span>
+       </button>
 
-        <!-- Notification Dropdown -->
-        <app-glass-card
-          *ngIf="showNotificationMenu"
+       <!-- Notification Dropdown (Same as before but standard colors) -->
+       <app-glass-card *ngIf="showNotificationMenu"
+         variant="strong"
+         padding="p-0"
+         customClass="absolute right-0 top-full mt-2 w-80 md:w-96 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 max-h-96 overflow-hidden flex flex-col bg-white dark:bg-gray-900 origin-top-right animate-scale-in">
+          <!-- ... Reuse existing notification content structure but simplify colors ... -->
+          <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
+             <h3 class="font-semibold text-gray-800 dark:text-white">{{ 'layout.header.notifications' | translate }}</h3>
+             <button *ngIf="unreadCount > 0" (click)="markAllAsRead()" class="text-xs text-primary font-medium hover:underline">{{ 'layout.header.markAllAsRead' | translate }}</button>
+          </div>
+          <div class="overflow-y-auto flex-1 max-h-[300px]">
+             <div *ngIf="notifications.length === 0" class="p-8 text-center text-gray-500">
+                <app-icon name="notifications_none" size="xl" class="mb-2 block mx-auto opacity-50"></app-icon>
+                <p class="text-sm">{{ 'layout.header.noNotifications' | translate }}</p>
+             </div>
+             <div *ngFor="let notification of notifications"
+                  (click)="handleNotificationClick(notification)"
+                  class="px-4 py-3 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                  [class.bg-blue-50]="!notification.read"
+                  [class.dark:bg-blue-900_10]="!notification.read">
+                  <div class="flex gap-3">
+                     <app-icon [name]="getNotificationIconName(notification.type)" [color]="getNotificationIconColor(notification.type)"></app-icon>
+                     <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ notification.title }}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">{{ notification.message }}</p>
+                        <p class="text-xs text-gray-400 mt-1">{{ getTimeAgo(notification.timestamp) }}</p>
+                     </div>
+                  </div>
+             </div>
+          </div>
+       </app-glass-card>
+    </div>
+
+    <!-- User Profile -->
+    <div class="relative ml-1" appClickOutside (appClickOutside)="closeUserMenu()" *ngIf="currentUser">
+       <button type="button"
+               (click)="toggleUserMenu()"
+               class="flex items-center gap-2 pl-2 pr-1 py-1 rounded-full hover:bg-white/10 transition-colors border border-transparent hover:border-white/10">
+          <app-avatar [src]="getAvatarUrl() || ''" [name]="getUserDisplayName()" size="xs" status="online"
+                      class="ring-2 ring-white/20"></app-avatar>
+          <span class="hidden lg:block text-sm font-medium text-white whitespace-nowrap">{{ getUserDisplayName() }}</span>
+          <app-icon name="expand_more" size="sm" color="text-white/70"></app-icon>
+       </button>
+
+       <!-- User Dropdown -->
+       <app-glass-card *ngIf="showUserMenu"
           variant="strong"
           padding="p-0"
-          customClass="notification-dropdown absolute right-0 top-full mt-2 w-80 md:w-96
-                       rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
-                       z-50 max-h-96 overflow-hidden flex flex-col
-                       backdrop-blur-xl
-                       scale-in
-                       [animation-duration:200ms]
-                       origin-top-right">
-          <div id="notification-menu" role="menu" [attr.aria-label]="'layout.header.notificationMenuAriaLabel' | translate" class="flex flex-col">
-          <!-- Header -->
-          <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30 flex items-center justify-between bg-gray-50 dark:bg-gray-900 theme-myhr:bg-gray-900/70">
-            <h3 class="font-semibold text-gray-800 dark:text-gray-200 theme-myhr:text-white/90 thai-text">{{ 'layout.header.notifications' | translate }}</h3>
-            <button
-              *ngIf="unreadCount > 0"
-              type="button"
-              role="menuitem"
-              (click)="markAllAsRead()"
-              [attr.aria-label]="'layout.header.markAllAsRead' | translate"
-              class="text-xs text-primary dark:text-primary hover:text-primary/80 dark:hover:text-primary/80">
-              {{ 'layout.header.markAllAsRead' | translate }}
-            </button>
-          </div>
-
-          <!-- Notifications List -->
-          <div class="overflow-y-auto flex-1">
-            <div *ngIf="notifications.length === 0"
-                 class="p-8 text-center">
-              <app-icon name="notifications_none" size="xl" color="text-gray-400 dark:text-gray-600 theme-myhr:text-white/60" class="mb-2 block mx-auto"></app-icon>
-              <p class="text-gray-500 dark:text-gray-400 theme-myhr:text-white/70 thai-text text-sm">{{ 'layout.header.noNotifications' | translate }}</p>
-            </div>
-
-            <div *ngFor="let notification of notifications; let i = index"
-                 role="menuitem"
-                 tabindex="0"
-                 (click)="handleNotificationClick(notification)"
-                 (keydown.enter)="handleNotificationClick(notification)"
-                 (keydown.space)="handleNotificationClick(notification); $event.preventDefault()"
-                 [class.unread]="!notification.read"
-                 [attr.aria-label]="notification.title + (notification.read ? '' : ' (' + ('layout.header.unread' | translate) + ')')"
-                 [style.--animation-delay]="(i * 30) + 'ms'"
-                 class="notification-item px-4 py-3 border-b border-gray-100 dark:border-gray-700 theme-myhr:border-primary/20
-                        cursor-pointer
-                        transition-all duration-200 ease-out
-                        hover:bg-gray-50 dark:hover:bg-gray-700/50 theme-myhr:hover:bg-white/10
-                        hover:translate-x-1 hover:scale-[1.01]
-                        active:scale-[0.99]
-                        fade-in">
-              <div class="flex items-start gap-3">
-                <div class="flex-shrink-0 mt-1">
-                  <app-icon
-                    [name]="getNotificationIconName(notification.type)"
-                    size="md"
-                    [color]="getNotificationIconColor(notification.type)"
-                    class="notification-icon">
-                  </app-icon>
+          customClass="absolute right-0 top-full mt-2 w-72 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden bg-white dark:bg-gray-900 origin-top-right animate-scale-in">
+          <!-- ... Reuse user menu structure ... -->
+          <div class="px-4 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+             <div class="flex items-center gap-3">
+                <app-avatar [src]="getAvatarUrl() || ''" [name]="getUserDisplayName()" size="md"></app-avatar>
+                <div class="min-w-0">
+                   <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ getUserDisplayName() }}</p>
+                   <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ getUserRole() }}</p>
                 </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-start justify-between gap-2 mb-1">
-                    <h4 class="font-semibold text-sm text-gray-800 dark:text-gray-200 theme-myhr:text-white/90 thai-text truncate">
-                      {{ notification.title }}
-                    </h4>
-                    <span *ngIf="!notification.read"
-                          class="flex-shrink-0 w-2 h-2 bg-primary theme-myhr:bg-primary rounded-full mt-1"></span>
-                  </div>
-                  <p class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-white/80 thai-text line-clamp-2 mb-1">
-                    {{ notification.message }}
-                  </p>
-                  <span class="text-xs text-gray-400 dark:text-gray-500 theme-myhr:text-white/60">
-                    {{ getTimeAgo(notification.timestamp) }}
-                  </span>
-                </div>
-              </div>
-            </div>
+             </div>
           </div>
-
-          <!-- Footer -->
-          <div *ngIf="notifications.length > 0"
-               class="px-4 py-2 border-t border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30 bg-gray-50 dark:bg-gray-900 theme-myhr:bg-gray-900/70 text-center">
-            <button
-              type="button"
-              role="menuitem"
-              [attr.aria-label]="'layout.header.viewAll' | translate"
-              class="text-xs text-primary dark:text-primary hover:text-primary/80 dark:hover:text-primary/80">
-              {{ 'layout.header.viewAll' | translate }}
-            </button>
+          <div class="py-1">
+             <button (click)="onProfile()" class="w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
+                <app-icon name="person" size="sm"></app-icon> {{ 'layout.header.profile' | translate }}
+             </button>
+             <button (click)="onPreferences()" class="w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
+                <app-icon name="settings" size="sm"></app-icon> {{ 'layout.header.settings' | translate }}
+             </button>
+             <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
+             <button (click)="onLogout()" class="w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 text-sm">
+                <app-icon name="logout" size="sm"></app-icon> {{ 'layout.header.logout' | translate }}
+             </button>
           </div>
-          </div>
-        </app-glass-card>
-      </div>
-
-      <!-- User Menu -->
-      <div class="relative" appClickOutside (appClickOutside)="closeUserMenu()" *ngIf="currentUser">
-        <button
-          type="button"
-          (click)="toggleUserMenu()"
-          [attr.aria-label]="'layout.header.userMenu' | translate"
-          [attr.aria-expanded]="showUserMenu"
-          [attr.aria-controls]="'user-menu'"
-          class="user-menu-trigger flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-lg
-                 bg-white/50 dark:bg-gray-800/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-800/40
-                 border border-white/40 dark:border-gray-700/30 theme-myhr:border-primary/20
-                 hover:bg-white/70 dark:hover:bg-gray-800/60 theme-myhr:hover:bg-white/50
-                 hover:scale-[1.02] hover:shadow-lg
-                 active:scale-[0.98]
-                 group relative overflow-hidden
-                 backdrop-blur-sm">
-          <!-- Avatar -->
-          <div class="flex-shrink-0 group-hover:scale-110 group-hover:ring-2 group-hover:ring-primary/50">
-            <app-avatar
-              [src]="getAvatarUrl() || ''"
-              [name]="getUserDisplayName()"
-              size="sm"
-              [status]="'online'">
-            </app-avatar>
-          </div>
-
-          <!-- User Info (Hidden on mobile, shown on md+) -->
-          <div class="flex flex-col items-start min-w-0 desktop-only">
-            <span class="text-sm font-semibold thai-text text-gray-800 dark:text-gray-100 theme-myhr:text-gray-900 dark:theme-myhr:text-white/90 truncate max-w-[120px]">
-              {{ getUserDisplayName() }}
-            </span>
-            <span class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-white/70 truncate max-w-[120px]" *ngIf="getUserRole()">
-              {{ getUserRole() }}
-            </span>
-          </div>
-
-          <!-- Dropdown Icon -->
-          <div class="flex-shrink-0
-                       group-hover:scale-110"
-               [class.rotate-180]="showUserMenu">
-            <app-icon name="expand_more" size="sm" color="text-gray-600 dark:text-gray-400 theme-myhr:text-primary dark:theme-myhr:text-white/70
-                       group-hover:text-primary dark:group-hover:text-primary
-                       icon-micro"></app-icon>
-          </div>
-        </button>
-
-        <!-- User Menu Dropdown -->
-        <app-glass-card
-          *ngIf="showUserMenu"
-          variant="strong"
-          padding="p-0"
-          customClass="user-dropdown absolute right-0 top-full mt-2 w-64 md:w-72
-                       rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
-                       z-50 overflow-hidden
-                       backdrop-blur-xl
-                       scale-in
-                       [animation-duration:200ms]
-                       origin-top-right">
-          <div id="user-menu" role="menu" [attr.aria-label]="'layout.header.userMenu' | translate">
-            <!-- User Header Section -->
-            <div class="px-4 py-4 border-b border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30
-                        bg-gradient-to-br from-gray-50/50 to-white/50 dark:from-gray-900/50 dark:to-gray-800/50
-                        theme-myhr:from-gray-900/70 theme-myhr:to-gray-800/70">
-              <div class="flex items-center gap-3">
-                <div class="flex-shrink-0">
-                  <app-avatar
-                    [src]="getAvatarUrl() || ''"
-                    [name]="getUserDisplayName()"
-                    size="md"
-                    [status]="'online'">
-                  </app-avatar>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="text-sm font-semibold thai-text text-gray-800 dark:text-gray-100 theme-myhr:text-white/90 truncate">
-                    {{ getUserDisplayName() }}
-                  </div>
-                  <div class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-white/70 truncate" *ngIf="getUserRole()">
-                    {{ getUserRole() }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Menu Items -->
-            <div class="py-1">
-              <button
-                type="button"
-                role="menuitem"
-                (click)="onProfile()"
-                [attr.aria-label]="'layout.header.openProfile' | translate"
-                class="user-menu-item w-full px-4 py-2.5 text-left flex items-center gap-3
-                       hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
-                       hover:translate-x-1 hover:scale-[1.02]
-                       active:scale-[0.98]
-                       transition-all duration-200 ease-out
-                       fade-in
-                       [animation-delay:50ms]">
-                <app-icon name="person" size="sm" color="text-gray-600 dark:text-gray-400 theme-myhr:text-white/70
-                           group-hover:text-primary dark:group-hover:text-primary
-                           icon-micro"></app-icon>
-                <span class="thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ 'layout.header.profile' | translate }}</span>
-              </button>
-              <button
-                type="button"
-                role="menuitem"
-                (click)="onPreferences()"
-                [attr.aria-label]="'layout.header.openSettings' | translate"
-                class="user-menu-item w-full px-4 py-2.5 text-left flex items-center gap-3
-                       hover:bg-gray-50 dark:hover:bg-gray-700 theme-myhr:hover:bg-white/20
-                       hover:translate-x-1 hover:scale-[1.02]
-                       active:scale-[0.98]
-                       transition-all duration-200 ease-out
-                       fade-in
-                       [animation-delay:100ms]">
-                <app-icon name="settings" size="sm" color="text-gray-600 dark:text-gray-400 theme-myhr:text-white/70
-                           group-hover:text-primary dark:group-hover:text-primary
-                           icon-micro"></app-icon>
-                <span class="thai-text text-sm font-medium text-gray-700 dark:text-gray-300 theme-myhr:text-white/90">{{ 'layout.header.settings' | translate }}</span>
-              </button>
-              <div class="border-t border-gray-200 dark:border-gray-700 theme-myhr:border-primary/30 my-1"></div>
-              <button
-                type="button"
-                role="menuitem"
-                (click)="onLogout()"
-                [attr.aria-label]="'layout.header.logout' | translate"
-                class="user-menu-item w-full px-4 py-2.5 text-left flex items-center gap-3
-                       hover:bg-red-50 dark:hover:bg-red-900/20 theme-myhr:hover:bg-red-900/30
-                       hover:translate-x-1 hover:scale-[1.02]
-                       active:scale-[0.98]
-                       transition-all duration-200 ease-out
-                       text-red-600 dark:text-red-400
-                       fade-in
-                       [animation-delay:150ms]">
-                <app-icon name="logout" size="sm" color="text-red-600 dark:text-red-400
-                           icon-micro"></app-icon>
-                <span class="thai-text text-sm font-medium">{{ 'layout.header.logout' | translate }}</span>
-              </button>
-            </div>
-          </div>
-        </app-glass-card>
-      </div>
+       </app-glass-card>
     </div>
   </div>
 
-  <!-- Omni-Search Component -->
+  <!-- Omni-Search Component (Hidden) -->
   <app-omni-search #omniSearch (resultSelected)="onOmniSearchResult($event)"></app-omni-search>
 </header>
-

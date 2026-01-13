@@ -2,66 +2,69 @@
   isHandset: isHandset$ | async,
   sidebarOpen: sidebarOpen$ | async
 } as layout">
-  <div
-    class="w-full overflow-x-hidden relative min-h-screen transition-all duration-300 layout-background"
-    appSwipe
-    (swipeRight)="onSwipeRight()"
-    (swipeLeft)="onSwipeLeft()">
-    <!-- Syncfusion Sidebar -->
-    <ejs-sidebar
-      #sidebar
-      [width]="sidebarWidth"
-      [isOpen]="layout.sidebarOpen"
-      [type]="sidebarType"
-      [position]="'Left'"
-      [closeOnDocumentClick]="layout.isHandset"
-      (close)="onSidebarClose()"
-      class="modern-sidebar">
-      <app-sidebar></app-sidebar>
-    </ejs-sidebar>
+  <div class="h-screen flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-900 layout-background">
+    <!-- 1. Header (Fixed Top) -->
+    <header class="flex-shrink-0 z-50 relative sticky-header-wrapper shadow-md">
+       <app-header (toggleSidenav)="toggleSidebar()"></app-header>
+    </header>
 
-    <!-- Main Content -->
-    <div
-      class="main-wrapper flex-1 min-h-screen flex flex-col transition-all duration-300 relative"
-      [class.main-wrapper-sidebar-open]="layout.sidebarOpen && !layout.isHandset"
-      [class.main-wrapper-sidebar-closed]="!layout.sidebarOpen && !layout.isHandset"
-      [class.main-wrapper-mobile]="layout.isHandset">
-      <!-- Header (Sticky - ติดบนหน้าจอตลอด) -->
-      <div class="sticky-header-wrapper">
-        <header class="glass-nav backdrop-blur-xl border-b border-white/20 dark:border-gray-700/20 theme-myhr:border-primary/30 shadow-2xl transition-all duration-500 ease-in-out px-3 sm:px-4 md:px-6 fade-in hover:shadow-3xl">
-          <app-header
-            (toggleSidenav)="toggleSidebar()"
-          ></app-header>
-        </header>
-      </div>
+    <!-- 2. Body (Flex Row) -->
+    <div class="flex-1 flex overflow-hidden relative sidebar-container">
+      <!-- Syncfusion Sidebar -->
+      <ejs-sidebar
+        #sidebar
+        [width]="sidebarWidth"
+        [target]="'.sidebar-container'"
+        [isOpen]="layout.sidebarOpen"
+        [type]="'Over'"
+        [showBackdrop]="layout.isHandset"
+        [closeOnDocumentClick]="layout.isHandset"
+        [position]="'Left'"
+        (close)="onSidebarClose()"
+        class="modern-sidebar"
+        [style.height]="'100%'"
+        [style.position]="'absolute'"
+        [style.top]="'0'"
+        [style.zIndex]="'100'">
+        <app-sidebar></app-sidebar>
+      </ejs-sidebar>
 
-      <!-- Scrollable Content Area -->
-      <div class="main-content-wrapper flex-1 flex flex-col min-h-0 overflow-y-auto">
-        <!-- Content Container -->
-        <div class="content-container flex-1 relative">
-          <!-- Route Content -->
-          <div class="route-content-wrapper">
-            <!-- Breadcrumbs (Centered above router-outlet) -->
-            <div class="flex items-center justify-center fade-in"
-                 [style.animation-delay.ms]="100">
-              <app-breadcrumbs
-                [items]="breadcrumbs"
-                [separator]="'/'"
-                [showHome]="false"
-                [autoGenerate]="false">
-              </app-breadcrumbs>
-            </div>
+      <!-- Main Content -->
+      <div
+        class="main-wrapper flex-1 flex flex-col min-w-0 transition-all duration-300"
+        [class.pl-[368px]]="layout.sidebarOpen && !layout.isHandset"
+        [class.pl-0]="!layout.sidebarOpen || layout.isHandset">
 
-            <div class="route-container relative px-4 md:px-6 lg:px-8 pb-4 md:pb-6 lg:pb-8">
-              <div [@routeFade]="prepareRoute(outlet)">
-                <router-outlet #outlet="outlet"></router-outlet>
+        <div class="main-content-wrapper flex-1 flex flex-col min-h-0 overflow-y-auto">
+          <!-- Content Container -->
+          <div class="content-container flex-1 relative">
+            <!-- Route Content -->
+            <div class="route-content-wrapper">
+              <!-- Breadcrumbs (Centered above router-outlet) -->
+              <div class="flex items-center justify-center fade-in"
+                   [style.animation-delay.ms]="100">
+                <app-breadcrumbs
+                  [items]="breadcrumbs"
+                  [separator]="'/'"
+                  [showHome]="false"
+                  [autoGenerate]="false">
+                </app-breadcrumbs>
+              </div>
+
+              <div class="route-container relative px-4 md:px-6 lg:px-8 pb-4 md:pb-6 lg:pb-8">
+                <div [@routeFade]="prepareRoute(outlet)">
+                  <router-outlet #outlet="outlet"></router-outlet>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Footer (Sticky at bottom) -->
+          <!-- Moved outside to separate scroll context -->
         </div>
 
-        <!-- Footer (Sticky at bottom) -->
-        <div class="sticky-footer-wrapper mt-auto">
+        <!-- Footer (Fixed at bottom) -->
+        <div class="sticky-footer-wrapper mt-auto flex-shrink-0 z-40">
           <app-footer></app-footer>
         </div>
       </div>

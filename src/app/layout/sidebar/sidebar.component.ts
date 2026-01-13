@@ -1228,6 +1228,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Auto-close sidebar on mobile when navigating
+    if (window.innerWidth < 768) { // Mobile breakpoint
+      this.layoutService.setSidebarState(false);
+    }
+
     // Navigate to the route
     this.router.navigate([route]).then(
       (success) => {

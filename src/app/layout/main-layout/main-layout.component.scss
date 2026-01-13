@@ -135,8 +135,7 @@
 
    /* Sticky Footer Wrapper */
    .sticky-footer-wrapper {
-     position: sticky;
-     bottom: 0;
+     position: relative; /* Changed from sticky to relative as it's now outside scroll area */
      z-index: 40;
      background: linear-gradient(
        to top,
@@ -189,9 +188,9 @@
          /* Transparent background - let sidebar component handle its own background */
          background: transparent !important;
 
-         /* Full height sidebar - always full screen height */
-         top: 0 !important;
-         height: 100vh !important;
+         /* Full height sidebar - let container control height */
+         /* top: 0 !important; */
+         /* height: 100vh !important; */
 
          /* Dark mode - Enhanced shadow only */
          .dark &,

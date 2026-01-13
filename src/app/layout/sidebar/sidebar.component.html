@@ -4,38 +4,7 @@
               transition-all duration-300 ease-in-out
               bg-white/80 dark:bg-gray-900/40 theme-myhr:bg-white/20 dark:theme-myhr:bg-gray-900/40
               backdrop-blur-md">
-    <!-- Logo -->
-    <div class="mb-6">
-      <a routerLink="/home"
-         class="logo-container w-12 h-12 rounded-xl flex items-center justify-center shadow-lg
-                transition-all duration-300 ease-out
-                hover-lift-lg
-                micro-active-scale
-                bg-white/50 dark:bg-gray-900/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-900/40
-                backdrop-blur-md
-                border border-white/40 dark:border-gray-700/30 theme-myhr:border-white/40
-                cursor-pointer
-                group relative overflow-hidden
-                pulse">
-        <!-- Shimmer Effect -->
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
-                    -translate-x-full group-hover:translate-x-full
-                    transition-transform duration-1000 ease-in-out
-                    pointer-events-none"></div>
-        <!-- Glow Effect on Hover -->
-        <div class="absolute inset-0 rounded-xl
-                    bg-gradient-to-br from-primary/0 to-primary/0
-                    group-hover:from-primary/20 group-hover:to-primary/20
-                    transition-all duration-300
-                    blur-sm opacity-0 group-hover:opacity-100
-                    pointer-events-none"></div>
-        <img [src]="getLogoPath()"
-             [alt]="'layout.sidebar.appLogo' | translate"
-             class="w-10 h-10 object-contain relative z-10
-                    icon-micro" />
-      </a>
-    </div>
-
+    <!-- Logo Removed (Moved to Header) -->
     <!-- Navigation Icons (Rail) -->
     <div class="flex flex-col gap-3 flex-1 w-full px-2">
       <!-- Level 2 Items - Show Admin Level 2 items directly (no Level 1 selection) -->
@@ -47,9 +16,8 @@
                 [class.active]="selectedLevel2Item === level2Item"
                 [attr.aria-label]="translateLabel(level2Item.label, 'admin', 2)"
                 [attr.aria-current]="selectedLevel2Item === level2Item ? 'true' : 'false'"
-                [attr.title]="translateLabel(level2Item.label, 'admin', 2)"
                 [style.animation-delay.ms]="i * 50"
-                class="module-icon-btn w-full min-h-[64px] py-2 flex flex-col items-center justify-center rounded-xl
+                class="module-icon-btn w-full h-12 mb-2 flex items-center justify-center rounded-xl
                 hover-lift
                 micro-active-scale
                        relative group
@@ -62,27 +30,25 @@
                       group-hover:from-primary/10 group-hover:to-primary/10
                       transition-all duration-300"></div>
           <!-- Icon -->
-          <span class="material-icons text-2xl relative z-10 mb-1
-                       icon-micro group-hover:rotate-6 group-hover:scale-110
-                       text-[var(--sidebar-icon-color)] transition-colors duration-300">
+          <span class="material-icons text-2xl relative z-10
+                       icon-micro group-hover:scale-110
+                       transition-colors duration-300"
+                [class.text-primary]="selectedLevel2Item === level2Item"
+                [class.text-gray-500]="selectedLevel2Item !== level2Item && !isDarkMode"
+                [class.text-gray-400]="selectedLevel2Item !== level2Item && isDarkMode">
             {{ level2Item.icon || 'folder' }}
           </span>
-          <!-- Label -->
-          <span class="text-[10px] font-medium leading-tight text-center px-1 truncate w-full relative z-10
-                       text-[var(--sidebar-icon-color)] transition-colors duration-300">
-            {{ translateLabel(level2Item.label, 'admin', 2) }}
-          </span>
+          
           <!-- Active Indicator -->
           <span *ngIf="selectedLevel2Item === level2Item"
                 class="active-indicator
                        pulse"></span>
           <!-- Badge -->
           <span *ngIf="level2Item.badge"
-                class="absolute top-0 right-0 w-5 h-5 rounded-full
-                       flex items-center justify-center text-xs font-bold
+                class="absolute top-1 right-1 w-4 h-4 rounded-full
+                       flex items-center justify-center text-[10px] font-bold
                        bg-red-500 text-white
-                       transform translate-x-1 -translate-y-1
-                       z-20">{{ level2Item.badge }}</span>
+                       z-20 shadow-sm">{{ level2Item.badge }}</span>
           <!-- Tooltip -->
           <span class="module-tooltip
                        fade-in
@@ -100,9 +66,8 @@
            [class.active]="selectedModule === module.id"
            [attr.aria-label]="module.name"
            [attr.aria-current]="selectedModule === module.id ? 'true' : 'false'"
-           [attr.title]="module.name"
            [style.animation-delay.ms]="i * 50"
-           class="module-icon-btn w-full min-h-[64px] py-2 flex flex-col items-center justify-center rounded-xl
+           class="module-icon-btn w-full h-12 mb-2 flex items-center justify-center rounded-xl
                 hover-lift
                 micro-active-scale
                   relative group
@@ -114,19 +79,21 @@
                       transition-all duration-300"></div>
           <span *ngIf="module.iconCss"
                 [class]="module.iconCss"
-                class="text-2xl relative z-10 mb-1
-                       icon-micro group-hover:rotate-6 group-hover:scale-110
-                       text-[var(--sidebar-icon-color)] transition-colors duration-300"></span>
+                class="text-2xl relative z-10
+                       icon-micro group-hover:scale-110
+                       transition-colors duration-300"
+                [class.text-primary]="selectedModule === module.id"
+                [class.text-gray-500]="selectedModule !== module.id && !isDarkMode"
+                [class.text-gray-400]="selectedModule !== module.id && isDarkMode"></span>
           <span *ngIf="!module.iconCss"
-                class="text-2xl relative z-10 mb-1
-                       icon-micro group-hover:rotate-6 group-hover:scale-110
-                       text-[var(--sidebar-icon-color)] transition-colors duration-300
-                       e-icons e-folder"></span>
-          <!-- Label -->
-          <span class="text-[10px] font-medium leading-tight text-center px-1 truncate w-full relative z-10
-                       text-[var(--sidebar-icon-color)] transition-colors duration-300">
-            {{ module.name }}
-          </span>
+                class="text-2xl relative z-10
+                       icon-micro group-hover:scale-110
+                       transition-colors duration-300
+                       e-icons e-folder"
+                [class.text-primary]="selectedModule === module.id"
+                [class.text-gray-500]="selectedModule !== module.id && !isDarkMode"
+                [class.text-gray-400]="selectedModule !== module.id && isDarkMode"></span>
+          
           <!-- Active Indicator -->
           <span *ngIf="selectedModule === module.id"
                 class="active-indicator
