@@ -133,6 +133,7 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Input() showColumnChooser = true;
   @Input() showColumnMenu = true; // Enabled by default
   @Input() showToolbar = true;
+  @Input() loadingIndicator: { indicatorType?: 'Spinner' | 'Shimmer'; } = { indicatorType: 'Spinner' };
 
   // Settings
   @Input() pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100], pageCount: 5 };
@@ -222,9 +223,11 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Output() actionComplete = new EventEmitter<any>();
   @Output() toolbarClick = new EventEmitter<any>();
   @Output() contextMenuClick = new EventEmitter<any>();
+  @Output() detailDataBound = new EventEmitter<DetailDataBoundEventArgs>();
 
   // Internal State
   public query: Query = new Query();
+  private isLoading = false;
 
   // Aggregates State
   aggregatesSum: any[] = [];
@@ -303,6 +306,9 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     }
     if (changes['columns']) {
       console.log('[SyncfusionDataGrid] New Columns:', this.columns);
+    }
+    if (changes['loadingIndicator'] && this.grid) {
+      this.grid.loadingIndicator = this.loadingIndicator;
     }
   }
 
@@ -408,6 +414,38 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
         });
       } catch (error) {
         console.warn('[SyncfusionDataGrid] Error initializing column menu in dataBound:', error);
+      }
+    }
+  }
+
+  onActionBegin(args: any): void {
+    this.actionBegin.emit(args);
+
+    // Show loading indicator for pagination, sorting, filtering, etc.
+    if (args.requestType === 'paging' || 
+        args.requestType === 'sorting' || 
+        args.requestType === 'filtering' ||
+        args.requestType === 'grouping' ||
+        args.requestType === 'searching') {
+      this.isLoading = true;
+      if (this.grid) {
+        this.grid.showSpinner();
+      }
+    }
+  }
+
+  onActionComplete(args: any): void {
+    this.actionComplete.emit(args);
+
+    // Hide loading indicator when action completes
+    if (args.requestType === 'paging' || 
+        args.requestType === 'sorting' || 
+        args.requestType === 'filtering' ||
+        args.requestType === 'grouping' ||
+        args.requestType === 'searching') {
+      this.isLoading = false;
+      if (this.grid) {
+        this.grid.hideSpinner();
       }
     }
   }
@@ -530,7 +568,10 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
 
   // --- Detail Row Handling ---
 
-  detailDataBound(args: DetailDataBoundEventArgs): void {
+  onDetailDataBound(args: DetailDataBoundEventArgs): void {
+    // Emit the event for parent components
+    this.detailDataBound.emit(args);
+
     if (!this.enableDetailRow || !this.childGridConfig) return;
   }
 

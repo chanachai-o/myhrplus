@@ -25,14 +25,16 @@
     [editSettings]="editSettings"
     [selectionSettings]="selectionSettings"
     [searchSettings]="searchSettings"
+    [loadingIndicator]="loadingIndicator"
     [locale]="locale"
     (rowSelected)="rowSelected.emit($event)"
     (rowDeselected)="rowDeselected.emit($event)"
     (dataBound)="onDataBound($event)"
-    (actionBegin)="actionBegin.emit($event)"
-    (actionComplete)="actionComplete.emit($event)"
+    (actionBegin)="onActionBegin($event)"
+    (actionComplete)="onActionComplete($event)"
     (toolbarClick)="onToolbarClick($event)"
-    (columnMenuClick)="onColumnMenuClick($event)">
+    (columnMenuClick)="onColumnMenuClick($event)"
+    (detailDataBound)="onDetailDataBound($event)">
 
     <ng-template #emptyRecordTemplate>
       <div class="h-full w-full flex flex-col items-center justify-center p-8">
