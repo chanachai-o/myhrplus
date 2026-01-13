@@ -99,10 +99,10 @@ export class CompanyTypeListComponent implements OnInit {
     ];
 
     this.columns = [
-      { field: 'codeid', headerText: 'company.companyType.column.codeId', width: 120, isPrimaryKey: true },
-      { field: 'tdesc', headerText: 'company.companyType.column.tdesc', width: 250 },
-      { field: 'edesc', headerText: 'company.companyType.column.edesc', width: 250 },
-      { field: 'edit_date', headerText: 'company.companyType.column.editDate', type: 'date', width: 150, format: 'dd/MM/yyyy' }
+      { field: 'codeid', headerText: 'company.companyType.column.codeId', width: 150, isPrimaryKey: true },
+      { field: 'tdesc', headerText: 'company.companyType.column.tdesc', width: 300, minWidth: 200 },
+      { field: 'edesc', headerText: 'company.companyType.column.edesc', width: 300, minWidth: 200 },
+      { field: 'edit_date', headerText: 'company.companyType.column.editDate', type: 'date', width: 180, format: 'dd/MM/yyyy' }
     ];
 
     this.gridActions = [

@@ -1,45 +1,52 @@
 .syncfusion-data-grid {
   // Syncfusion overrides to match MyHR Theme
-  
+
   .e-grid {
     border-radius: 0.5rem;
     border: none;
     box-shadow: none;
     font-family: inherit;
-    
+
     // Header
     .e-gridheader {
       border-bottom-color: var(--border-light);
       background-color: var(--bg-surface-secondary);
-      
+
       .e-headercell {
         background-color: transparent;
-        color: var(--text-secondary);
-        font-weight: 600;
-        font-size: 0.75rem;
+        color: var(--text-primary); // Increased contrast (was text-secondary)
+        font-weight: 700; // Bolder (was 600)
+        font-size: 0.9rem; // Increased size (was 0.8rem)
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        vertical-align: middle;
       }
     }
-    
+
     // Rows
     .e-row {
       .e-rowcell {
         color: var(--text-primary);
         font-size: 0.875rem;
         border-bottom-color: var(--border-light);
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        vertical-align: middle;
+        line-height: 1.5;
       }
-      
+
       &:hover .e-rowcell {
         background-color: var(--bg-surface-hover) !important;
       }
     }
-    
+
     // Pager
     .e-gridpager {
       background-color: transparent;
       border-top-color: var(--border-light);
-      
+
       .e-pagercontainer {
         .e-active {
           background-color: var(--primary-color) !important;
@@ -48,7 +55,7 @@
         }
       }
     }
-    
+
     // Checkbox
     .e-checkbox-wrapper .e-frame.e-check {
       background-color: var(--primary-color);
@@ -66,7 +73,7 @@
     font-size: 0.75rem;
     font-weight: 500;
     line-height: 1;
-    
+
     &.badge-success {
       background-color: rgba(var(--color-success-rgb-value), 0.1);
       color: rgb(var(--color-success-rgb-value));
@@ -88,7 +95,7 @@
       color: rgb(55, 65, 81);
     }
   }
-  
+
   // Action Buttons
   .btn-icon {
     display: inline-flex;
@@ -99,13 +106,13 @@
     border-radius: 50%;
     color: var(--text-secondary);
     transition: all 0.2s;
-    
+
     &:hover {
       background-color: var(--bg-surface-hover);
       color: var(--primary-color);
       transform: scale(1.1);
     }
-    
+
     &.text-primary { color: var(--primary-color); }
     &.text-success { color: var(--color-success); }
     &.text-danger { color: var(--color-danger); }
