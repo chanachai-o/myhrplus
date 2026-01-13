@@ -179,7 +179,7 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Input() searchSettings: any = { fields: [], operator: 'contains', ignoreCase: true };
 
   // Toolbar
-  @Input() toolbarItems: any[] = ['Search', 'ColumnChooser', 'ExcelExport', 'PdfExport', 'Print'];
+  @Input() toolbarItems: any[] = ['ColumnChooser', 'ExcelExport', 'PdfExport', 'Print'];
 
   // Context Menu
   @Input() contextMenuItems: any[] = [
