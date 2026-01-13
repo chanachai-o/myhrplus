@@ -22,10 +22,9 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [],
   imports: [
+    AppComponent,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

@@ -54,38 +54,3 @@
   </form>
 
 </app-modal>
-
-<!-- Confirmation Dialog -->
-<ejs-dialog
-  #confirmDialog
-  [(visible)]="confirmDialogVisible"
-  [header]="confirmDialogTitle"
-  [width]="'400px'"
-  [isModal]="true"
-  [showCloseIcon]="true"
-  [closeOnEscape]="true"
-  [animationSettings]="{ effect: 'Zoom', duration: 400, delay: 0 }">
-  <ng-template #content>
-    <div class="p-4">
-      <p class="text-gray-700 dark:text-gray-300">{{ confirmDialogMessage }}</p>
-    </div>
-  </ng-template>
-  <ng-template #footerTemplate>
-    <div class="flex justify-end gap-3 p-4">
-      <button
-        ejs-button
-        type="button"
-        cssClass="e-outline"
-        (click)="onCancelSave()">
-        {{ TRANSLATION_KEYS.COMMON.ACTIONS.CANCEL | translate }}
-      </button>
-      <button
-        ejs-button
-        type="button"
-        cssClass="e-primary"
-        (click)="onConfirmSave()">
-        {{ TRANSLATION_KEYS.COMMON.ACTIONS.CONFIRM | translate }}
-      </button>
-    </div>
-  </ng-template>
-</ejs-dialog>

@@ -6,7 +6,6 @@ import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
 import { ColumnModel } from '@syncfusion/ej2-grids';
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
@@ -16,7 +15,7 @@ import { CompanyTypeFormComponent } from './company-type-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { NotificationService } from '@core/services/notification.service';
+import { NotificationService, ConfirmationDialogService } from '@core/services';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
@@ -52,21 +51,15 @@ export class CompanyTypeListComponent implements OnInit {
   public service = inject(CompanyTypeService);
   private translate = inject(TranslateService);
   private notificationService = inject(NotificationService);
+  private confirmationDialogService = inject(ConfirmationDialogService);
 
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
-  @ViewChild('confirmDialog') confirmDialog!: DialogComponent;
 
   // Use signal for data to avoid AsyncPipe deadlock with loading state
   data = signal<CompanyType[]>([]);
   showModal = false;
   selectedItem: CompanyType | null = null;
   searchControl = new FormControl('');
-
-  // Confirmation Dialog
-  confirmDialogVisible = false;
-  confirmDialogTitle = '';
-  confirmDialogMessage = '';
-  rowToDelete: CompanyType | null = null;
 
   headerActions: any[] = [];
   columns: ColumnModel[] = [];
@@ -185,48 +178,24 @@ export class CompanyTypeListComponent implements OnInit {
 
     console.log('[CompanyTypeList] Delete action clicked for row:', row);
 
-    // Store row to delete
-    this.rowToDelete = row;
-
-    // Set dialog content
-    this.confirmDialogTitle = this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE) || 'ลบ';
-    this.confirmDialogMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.CONFIRM.DELETE) || 'คุณต้องการลบข้อมูลหรือไม่?';
-
-    // Show dialog
-    this.confirmDialogVisible = true;
-  }
-
-  onConfirmDelete(): void {
-    if (!this.rowToDelete || !this.rowToDelete.codeid) {
-      console.error('[CompanyTypeList] Confirm delete: Row data is invalid');
-      this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
-      this.confirmDialogVisible = false;
-      return;
-    }
-
-    console.log('[CompanyTypeList] Delete confirmed for codeid:', this.rowToDelete.codeid);
-
-    this.service.delete(this.rowToDelete.codeid).subscribe({
-      next: () => {
-        console.log('[CompanyTypeList] Delete successful');
-        this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
-        this.confirmDialogVisible = false;
-        this.rowToDelete = null;
-        this.loadData();
-      },
-      error: (err) => {
-        console.error('[CompanyTypeList] Delete error:', err);
-        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
-        this.confirmDialogVisible = false;
-        this.rowToDelete = null;
+    // Show confirmation dialog using service
+    this.confirmationDialogService.confirmDelete().subscribe({
+      next: (result) => {
+        if (result.confirmed) {
+          this.service.delete(row.codeid).subscribe({
+            next: () => {
+              console.log('[CompanyTypeList] Delete successful');
+              this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
+              this.loadData();
+            },
+            error: (err) => {
+              console.error('[CompanyTypeList] Delete error:', err);
+              this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+            }
+          });
+        }
       }
     });
-  }
-
-  onCancelDelete(): void {
-    console.log('[CompanyTypeList] Delete cancelled');
-    this.confirmDialogVisible = false;
-    this.rowToDelete = null;
   }
 
   onRowDeleted(row: any): void {

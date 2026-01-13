@@ -1,16 +1,14 @@
-import { Component, EventEmitter, Input, Output, OnChanges, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
 import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeService } from '../../services/company-type.service';
-import { NotificationService } from '@core/services/notification.service';
+import { NotificationService, ConfirmationDialogService } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
-import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
 @Component({
   selector: 'app-company-type-form',
@@ -19,7 +17,6 @@ import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
     CommonModule,
     ReactiveFormsModule,
     TranslateModule,
-    SyncfusionModule,
     ModalComponent,
     GlassInputComponent,
     FormValidationMessagesComponent
@@ -32,20 +29,14 @@ export class CompanyTypeFormComponent implements OnChanges {
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
 
-  @ViewChild('confirmDialog') confirmDialog!: DialogComponent;
-
   private fb = inject(FormBuilder);
   private service = inject(CompanyTypeService);
   private notificationService = inject(NotificationService);
   private translate = inject(TranslateService);
+  private confirmationDialogService = inject(ConfirmationDialogService);
 
   form: FormGroup;
   isEditMode = false;
-
-  // Confirmation dialog properties
-  confirmDialogVisible = false;
-  confirmDialogTitle = '';
-  confirmDialogMessage = '';
 
   // Expose TRANSLATION_KEYS to template
   readonly TRANSLATION_KEYS = TRANSLATION_KEYS;
@@ -82,26 +73,14 @@ export class CompanyTypeFormComponent implements OnChanges {
       return;
     }
 
-    // Show confirmation dialog before saving
-    this.confirmDialogTitle = this.isEditMode
-      ? this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EDIT)
-      : this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.SAVE);
-
-    // Use appropriate confirmation message
-    this.confirmDialogMessage = this.isEditMode
-      ? 'คุณต้องการบันทึกการแก้ไขข้อมูลหรือไม่?'
-      : 'คุณต้องการบันทึกข้อมูลหรือไม่?';
-
-    this.confirmDialogVisible = true;
-  }
-
-  onConfirmSave(): void {
-    this.confirmDialogVisible = false;
-    this.saveData();
-  }
-
-  onCancelSave(): void {
-    this.confirmDialogVisible = false;
+    // Show confirmation dialog before saving using service
+    this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
+      next: (result) => {
+        if (result.confirmed) {
+          this.saveData();
+        }
+      }
+    });
   }
 
   private saveData() {

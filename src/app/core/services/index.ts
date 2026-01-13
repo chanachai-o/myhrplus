@@ -33,6 +33,7 @@ export * from './shift-plan.service';
 // UI Services
 export * from './notification.service';
 export * from './dialog.service';
+export * from './confirmation-dialog.service';
 export * from './loading.service';
 export * from './layout.service';
 export * from './nav.service';

@@ -1,0 +1,16 @@
+// Confirmation Dialog Component Styles
+// This component uses Syncfusion Dialog with minimal custom styling
+
+:host {
+  display: block;
+}
+
+// Ensure dialog content is properly styled
+::ng-deep {
+  .e-dialog {
+    .e-dlg-content {
+      padding: 0;
+    }
+  }
+}
+

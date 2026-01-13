@@ -1,17 +1,25 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './core/services/auth.service';
 import { ThemeService } from './core/services/theme.service';
 import { StorageService } from './core/services/storage.service';
 import { SyncfusionThemeService } from './shared/syncfusion/syncfusion-theme.service';
 import { NotificationService } from './core/services/notification.service';
+import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
+import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { STORAGE_KEYS } from '@core/constants/storage-keys.constant';
 import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES, isSupportedLanguage, Language } from '@core/types/language.type';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    ConfirmationDialogComponent,
+    LoadingSpinnerComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
