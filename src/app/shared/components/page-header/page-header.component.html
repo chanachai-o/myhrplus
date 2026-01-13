@@ -1,11 +1,11 @@
 <ng-container *ngIf="useGlassCard; else noGlassCard">
-  <app-glass-card padding="p-4 md:p-5" [customClass]="'mb-4 md:mb-6 ' + customClass" [animate]="'fade-in'">
+  <app-glass-card padding="p-4 md:p-5" [customClass]="'mb-4 md:mb-6 mt-0 ' + customClass" [animate]="'fade-in'">
     <ng-container *ngTemplateOutlet="headerContent"></ng-container>
   </app-glass-card>
 </ng-container>
 
 <ng-template #noGlassCard>
-  <div [class]="'mb-4 md:mb-6 ' + customClass">
+  <div [class]="'mb-4 md:mb-6 mt-0 ' + customClass">
     <ng-container *ngTemplateOutlet="headerContent"></ng-container>
   </div>
 </ng-template>

@@ -8,8 +8,10 @@ export interface ConfirmationDialogConfig {
   message: string;
   confirmText?: string;
   cancelText?: string;
-  confirmButtonClass?: string;
-  cancelButtonClass?: string;
+  confirmButtonClass?: string; // Deprecated: Use confirmVariant instead
+  cancelButtonClass?: string; // Deprecated: Use cancelVariant instead
+  confirmVariant?: 'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning';
+  cancelVariant?: 'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning';
   width?: string;
   showCloseIcon?: boolean;
   closeOnEscape?: boolean;
@@ -70,6 +72,30 @@ export class ConfirmationDialogService {
     const config = this._config();
     if (!config) return 'e-outline';
     return config.cancelButtonClass || 'e-outline';
+  });
+
+  confirmVariant = computed(() => {
+    const config = this._config();
+    if (!config) return 'primary';
+    if (config.confirmVariant) return config.confirmVariant;
+    // Fallback: Map from old confirmButtonClass
+    const classStr = config.confirmButtonClass || '';
+    if (classStr.includes('danger')) return 'danger';
+    if (classStr.includes('primary')) return 'primary';
+    if (classStr.includes('success')) return 'success';
+    if (classStr.includes('warning')) return 'warning';
+    if (classStr.includes('info')) return 'info';
+    return 'primary';
+  });
+
+  cancelVariant = computed(() => {
+    const config = this._config();
+    if (!config) return 'secondary';
+    if (config.cancelVariant) return config.cancelVariant;
+    // Fallback: Map from old cancelButtonClass
+    const classStr = config.cancelButtonClass || '';
+    if (classStr.includes('outline')) return 'secondary';
+    return 'secondary';
   });
 
   width = computed(() => {
@@ -134,8 +160,8 @@ export class ConfirmationDialogService {
     return this.confirm({
       title,
       message: message || defaultMessage,
-      confirmButtonClass: 'e-primary',
-      cancelButtonClass: 'e-outline'
+      confirmVariant: 'primary',
+      cancelVariant: 'secondary'
     });
   }
 
@@ -148,8 +174,8 @@ export class ConfirmationDialogService {
     return this.confirm({
       title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.CANCEL),
       message: message || this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.CONFIRM.CANCEL),
-      confirmButtonClass: 'e-primary',
-      cancelButtonClass: 'e-outline'
+      confirmVariant: 'primary',
+      cancelVariant: 'secondary'
     });
   }
 

@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationDialogService } from '@core/services/confirmation-dialog.service';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
+import { GlassButtonComponent } from '@shared/components/glass-button/glass-button.component';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -11,7 +12,8 @@ import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
   imports: [
     CommonModule,
     TranslateModule,
-    SyncfusionModule
+    SyncfusionModule,
+    GlassButtonComponent
   ],
   templateUrl: './confirmation-dialog.component.html',
   styleUrls: ['./confirmation-dialog.component.scss']
@@ -30,6 +32,8 @@ export class ConfirmationDialogComponent {
   cancelText = computed(() => this.dialogService.cancelText());
   confirmButtonClass = computed(() => this.dialogService.confirmButtonClass());
   cancelButtonClass = computed(() => this.dialogService.cancelButtonClass());
+  confirmVariant = computed(() => this.dialogService.confirmVariant());
+  cancelVariant = computed(() => this.dialogService.cancelVariant());
   width = computed(() => this.dialogService.width());
   showCloseIcon = computed(() => this.dialogService.showCloseIcon());
   closeOnEscape = computed(() => this.dialogService.closeOnEscape());

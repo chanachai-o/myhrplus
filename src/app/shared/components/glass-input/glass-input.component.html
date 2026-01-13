@@ -6,8 +6,12 @@
   <div class="relative">
     <!-- Left Icon (Search/Custom) -->
     <div *ngIf="icon" 
-         class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 dark:text-slate-500 theme-myhr:text-white/60">
-      <app-icon [name]="icon" size="sm"></app-icon>
+         class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10 flex items-center justify-center">
+      <app-icon 
+        [name]="icon" 
+        size="sm" 
+        [color]="'text-slate-400 dark:text-slate-500 theme-myhr:text-white/60'">
+      </app-icon>
     </div>
 
     <input

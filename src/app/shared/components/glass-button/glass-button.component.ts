@@ -24,7 +24,10 @@ export class GlassButtonComponent {
   @Output() clicked = new EventEmitter<MouseEvent>();
 
   get buttonClasses(): string {
-    const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-smooth cursor-pointer border border-transparent relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed btn-micro hover-lift active-scale';
+    // Base classes - exclude border-transparent for variants that need visible borders
+    const needsVisibleBorder = this.variant === 'info';
+    const borderClass = needsVisibleBorder ? 'border' : 'border border-transparent';
+    const baseClasses = `inline-flex items-center justify-center rounded-md font-medium transition-smooth cursor-pointer ${borderClass} relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed btn-micro hover-lift active-scale`;
 
     // Check if customClass contains gradient - if so, skip glass background for secondary variant
     const hasGradient = this.customClass.includes('bg-gradient-');
@@ -38,7 +41,7 @@ export class GlassButtonComponent {
     } else if (this.variant === 'danger') {
       variantClasses = 'bg-gradient-to-r from-error-500 to-error-600 text-white shadow-md hover:from-error-600 hover:to-error-700 hover:shadow-lg glow-error dark:from-error-600 dark:to-error-700';
     } else if (this.variant === 'info') {
-      variantClasses = 'border border-blue-500 text-blue-600 bg-white/50 hover:bg-blue-50 shadow-sm hover:shadow-md dark:bg-gray-800/50 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-900/20';
+      variantClasses = '!border-blue-500 text-blue-600 bg-white/50 hover:bg-blue-50 shadow-sm hover:shadow-md dark:bg-gray-800/50 dark:text-blue-400 dark:!border-blue-400 dark:hover:bg-blue-900/20';
     } else if (this.variant === 'success') {
       variantClasses = 'bg-gradient-to-r from-success-500 to-success-600 text-white shadow-md hover:from-success-600 hover:to-success-700 hover:shadow-lg glow-success dark:from-success-600 dark:to-success-700';
     } else if (this.variant === 'warning') {

@@ -14,20 +14,20 @@
   </ng-template>
   <ng-template #footerTemplate>
     <div class="flex justify-end gap-3 p-4">
-      <button
-        ejs-button
+      <app-glass-button
         type="button"
-        [cssClass]="cancelButtonClass()"
-        (click)="onCancel()">
+        [variant]="cancelVariant()"
+        size="md"
+        (clicked)="onCancel()">
         {{ cancelText() }}
-      </button>
-      <button
-        ejs-button
+      </app-glass-button>
+      <app-glass-button
         type="button"
-        [cssClass]="confirmButtonClass()"
-        (click)="onConfirm()">
+        [variant]="confirmVariant()"
+        size="md"
+        (clicked)="onConfirm()">
         {{ confirmText() }}
-      </button>
+      </app-glass-button>
     </div>
   </ng-template>
 </ejs-dialog>
