@@ -30,13 +30,12 @@
                       group-hover:from-primary/10 group-hover:to-primary/10
                       transition-all duration-300"></div>
           <!-- Icon -->
-          <span class="material-icons text-2xl relative z-10
+          <span class="text-2xl relative z-10
                        icon-micro group-hover:scale-110
-                       transition-colors duration-300"
-                [class.text-primary]="selectedLevel2Item === level2Item"
-                [class.text-gray-500]="selectedLevel2Item !== level2Item && !isDarkMode"
-                [class.text-gray-400]="selectedLevel2Item !== level2Item && isDarkMode">
-            {{ level2Item.icon || 'folder' }}
+                       transition-transform duration-300
+                       leading-none flex items-center justify-center"
+                style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
+            {{ getUnicodeIcon(level2Item.icon || 'folder') }}
           </span>
           
           <!-- Active Indicator -->
@@ -50,9 +49,7 @@
                        bg-red-500 text-white
                        z-20 shadow-sm">{{ level2Item.badge }}</span>
           <!-- Tooltip -->
-          <span class="module-tooltip
-                       fade-in
-                       [animation-delay:100ms]">{{ translateLabel(level2Item.label, 'admin', 2) }}</span>
+          <span class="module-tooltip">{{ translateLabel(level2Item.label, 'admin', 2) }}</span>
         </button>
       </ng-container>
 
@@ -99,9 +96,7 @@
                 class="active-indicator
                        pulse"></span>
           <!-- Tooltip -->
-          <span class="module-tooltip
-                       fade-in
-                       [animation-delay:100ms]">{{ module.name }}</span>
+          <span class="module-tooltip">{{ module.name }}</span>
         </a>
       </ng-container>
     </div>
@@ -110,26 +105,21 @@
   <!-- Right Menu Panel - Module Menu -->
   <div class="menu-panel flex-1 flex flex-col overflow-hidden
               transition-all duration-300 ease-in-out
-              bg-gradient-to-br from-white/80 via-white/90 to-white/80
-              dark:from-gray-900/40 dark:via-gray-900/60 dark:to-gray-900/40
-              theme-myhr:from-white/40 theme-myhr:via-white/60 theme-myhr:to-white/40
-              dark:theme-myhr:from-gray-900/40 dark:theme-myhr:via-gray-900/60 dark:theme-myhr:to-gray-900/40
-              backdrop-blur-md border-l border-white/20 dark:border-gray-700/30 theme-myhr:border-white/30">
-    <div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+              backdrop-blur-sm border-l border-gray-200 dark:border-gray-800 theme-myhr:border-white/20">
+    <div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
       <!-- Home Logo Section (Only for /home) -->
 
 
       <!-- Header Section -->
-      <div class="mb-6">
+      <div class="px-6 pt-6 pb-2">
         <!-- Module Title -->
         <div class="mb-4" *ngIf="selectedLevel2Item || selectedNavigationItem">
           <div class="flex items-center gap-3">
             <!-- Title Icon -->
             <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative group overflow-hidden
-                        bg-gradient-to-br from-white/80 to-white/40 dark:from-gray-800/80 dark:to-gray-800/40
-                        theme-myhr:from-primary/10 theme-myhr:to-primary/5
-                        border border-white/60 dark:border-gray-700/50 theme-myhr:border-primary/20
-                        shadow-sm backdrop-blur-sm transition-all duration-300
+                        bg-primary/5 dark:bg-primary/10 theme-myhr:bg-primary/10
+                        border border-primary/10 dark:border-primary/20 theme-myhr:border-primary/20
+                        shadow-sm transition-all duration-300
                         hover:shadow-md hover:border-primary/40">
 
                <!-- Home Logo Mode -->
@@ -145,10 +135,12 @@
 
                <!-- Normal Icon Mode -->
                <span *ngIf="!isHomeRoute()"
-                     class="material-icons text-2xl relative z-10
-                            text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-white
-                            transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                 {{ (selectedLevel2Item?.icon || selectedNavigationItem?.icon) || 'folder' }}
+                     class="text-2xl relative z-10
+                            text-primary dark:text-primary-light theme-myhr:text-primary
+                            transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6
+                            leading-none flex items-center justify-center"
+                     style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
+                 {{ getUnicodeIcon((selectedLevel2Item?.icon || selectedNavigationItem?.icon) || 'folder') }}
                </span>
             </div>
 
@@ -158,7 +150,7 @@
                          leading-tight m-0 truncate">
                 {{ translateLabel((selectedLevel2Item ? selectedLevel2Item.label : (selectedNavigationItem ? selectedNavigationItem.label : '')) || '', 'admin', selectedLevel2Item ? 2 : 1) || ('layout.sidebar.menu' | translate) }}
               </h2>
-              <p class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 mt-0.5 truncate" *ngIf="selectedNavigationItem">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate" *ngIf="selectedNavigationItem">
                 {{ translateLabel(selectedNavigationItem.label, selectedNavigationItem.id, 1) }}
               </p>
             </div>
@@ -168,14 +160,14 @@
 
 
         <!-- Search Box -->
-        <div class="search-container mb-4 relative fade-in" *ngIf="shouldShowSearchBox()">
+        <div class="search-container mb-2 relative fade-in" *ngIf="shouldShowSearchBox()">
           <app-glass-input
             type="text"
             [(ngModel)]="searchQuery"
             (input)="onSearchChange()"
             [placeholder]="'layout.sidebar.searchMenuPlaceholder' | translate"
             [ariaLabel]="'layout.sidebar.searchMenu' | translate"
-            customClass="w-full pr-11 bg-white/50 dark:bg-gray-800/50 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-800/40">
+            customClass="w-full pr-11 bg-gray-50 dark:bg-gray-800/50 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-800/40 border-gray-200 dark:border-gray-700">
             <ng-container *ngIf="searchQuery">
               <button
                 (click)="clearSearch()"
@@ -196,7 +188,7 @@
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoadingNavigation" class="space-y-3">
+      <div *ngIf="isLoadingNavigation" class="space-y-3 px-6">
         <app-skeleton-loader
           [type]="'list'"
           [rows]="5">
@@ -206,10 +198,7 @@
       <!-- Module Menu Items - Using Nested Accordion -->
       <!-- Show Level 3 items when Level 2 is selected (Level 4 as children) -->
       <ng-container *ngIf="!isLoadingNavigation && navigationChildren.length > 0">
-        <div class="nested-menu-container
-                    bg-white/20 dark:bg-gray-800/20 theme-myhr:bg-white/5
-                    backdrop-blur-sm rounded-xl
-                    border border-white/20 dark:border-gray-700/20 theme-myhr:border-white/10">
+        <div class="nested-menu-container flex-1">
           <app-nested-menu-accordion
             [items]="navigationChildren"
             [activeRoute]="activeRoute"
@@ -227,7 +216,8 @@
         *ngIf="!isLoadingNavigation && searchQuery && navigationChildren.length === 0"
         [icon]="'search_off'"
         [title]="'layout.sidebar.noSearchResults' | translate"
-        [description]="'layout.sidebar.tryDifferentSearch' | translate">
+        [description]="'layout.sidebar.tryDifferentSearch' | translate"
+        class="px-6">
         <app-glass-button
           variant="secondary"
           size="sm"
@@ -239,7 +229,7 @@
 
       <!-- Module Cards - Show when at /home with no menu items -->
       <div *ngIf="!isLoadingNavigation && !searchQuery && navigationChildren.length === 0 && isHomeRoute()"
-           class="module-cards-container space-y-3 fade-in">
+           class="module-cards-container space-y-3 fade-in px-6 pb-6">
         <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-white/90 mb-4 thai-text">
           {{ 'layout.sidebar.selectModule' | translate }}
         </h3>
@@ -273,10 +263,11 @@
                         group-hover:scale-110 group-hover:rotate-6
                         transition-all duration-300
                         relative z-10">
-              <span class="material-icons text-2xl
-                           text-primary dark:text-primary-light theme-myhr:text-primary
-                           relative z-10">
-                {{ module.icon || 'folder' }}
+              <span class="text-2xl
+                           relative z-10
+                           leading-none flex items-center justify-center"
+                    style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
+                {{ getUnicodeIcon(module.icon || 'folder') }}
               </span>
             </div>
             <!-- Content -->
@@ -310,7 +301,8 @@
       <app-empty-state
         *ngIf="!isLoadingNavigation && !searchQuery && navigationChildren.length === 0 && !isHomeRoute()"
         [icon]="'folder_open'"
-        [title]="'layout.sidebar.noMenuInMode' | translate">
+        [title]="'layout.sidebar.noMenuInMode' | translate"
+        class="px-6">
       </app-empty-state>
     </div>
   </div>

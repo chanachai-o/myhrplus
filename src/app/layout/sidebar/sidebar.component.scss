@@ -27,6 +27,7 @@
 /* Icon Bar */
 .icon-bar {
   position: relative;
+  z-index: 50; /* Ensure tooltips appear above menu panel */
   width: 88px;
   min-width: 88px;
   max-width: 88px;
@@ -250,39 +251,29 @@
 /* Menu Panel */
 .menu-panel {
   position: relative;
+  z-index: 10; /* Lower z-index than icon bar */
   min-width: 320px;
   max-width: 400px;
+  width: 400px; /* Force width to take more space if container allows */
+
+  /* Remove heavy borders and simplify background for cleaner look */
+  border-left: 1px solid var(--border-light);
 
   /* Background gradient with subtle pattern - Using CSS Variables */
-  background: linear-gradient(
-    to bottom,
-    var(--glass-bg) 0%,
-    var(--glass-bg-weak) 100%
-  );
-
-  /* Subtle pattern overlay - Using standardized mixin */
-  @include pattern-overlay(var(--sidebar-pattern-color), 0.4, 4px, 0deg);
+  background: var(--bg-base); /* Use solid base background instead of complex gradients */
 
   .dark & {
-    background: linear-gradient(
-      to bottom,
-      var(--glass-bg) 0%,
-      var(--glass-bg-weak) 100%
-    );
-
-    /* Pattern overlay for dark mode */
-    @include pattern-overlay(var(--pattern-color), 0.2, 4px, 0deg);
+    background: var(--bg-base);
+    border-left-color: var(--border-light-subtle);
   }
 
   [class*='theme-myhr'] & {
     background: linear-gradient(
       to bottom,
-      rgba(var(--primary-rgb), 0.15) 0%,
-      rgba(var(--primary-rgb), 0.05) 100%
+      rgba(var(--primary-rgb), 0.08) 0%,
+      rgba(var(--primary-rgb), 0.02) 100%
     );
-
-    /* Pattern overlay for myhr theme */
-    @include pattern-overlay(var(--pattern-color-subtle), 0.3, 4px, 0deg);
+    border-left-color: rgba(var(--primary-rgb), 0.1);
   }
 
   /* Ensure content is above pattern */

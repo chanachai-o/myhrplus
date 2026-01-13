@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild, Input } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService, ThemeMode, ThemeColor, SidebarStyle, HeaderStyle, MainLayoutStyle } from '@core/services';
@@ -110,6 +110,9 @@ export class ThemeToggleComponent implements OnInit {
       preview: '#ec4899'
     }
   ];
+
+  @Input() customClass: string = '';
+  @Input() iconColor: string = '';
 
   constructor(public themeService: ThemeService) {}
 

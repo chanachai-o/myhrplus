@@ -91,7 +91,10 @@
     </div>
 
     <!-- Theme Toggle -->
-    <app-theme-toggle customClass="text-white hover:bg-white/10"></app-theme-toggle>
+    <app-theme-toggle
+      customClass="p-2 rounded-lg hover:bg-white/10 text-white transition-colors !bg-transparent !border-none !shadow-none !w-auto !h-auto !min-w-[unset] !min-h-[unset] !px-2 !py-2"
+      iconColor="text-white group-hover:rotate-12 transition-transform duration-300">
+    </app-theme-toggle>
 
     <!-- Notifications -->
     <div class="relative" appClickOutside (appClickOutside)="closeNotificationMenu()">
