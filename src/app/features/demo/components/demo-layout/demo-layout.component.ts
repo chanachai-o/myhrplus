@@ -244,7 +244,7 @@ export class DemoLayoutComponent implements OnInit, OnDestroy {
         { name: 'Modal', route: 'modal', description: 'Modal dialog component', icon: '🪟' },
         { name: 'Dialog', route: 'dialog', description: 'Dialog component for modal dialogs, alerts, and confirmations (Syncfusion)', icon: '🪟' },
         { name: 'Notification', route: 'notification', description: 'Toast notification component', icon: '🔔' },
-        { name: 'Confirm Dialog', route: 'confirm-dialog', description: 'Confirmation dialog component', icon: '❓' },
+        { name: 'Confirmation Dialog Service', route: 'confirm-dialog', description: 'Centralized confirmation dialog service', icon: '❓' },
         { name: 'Alert', route: 'alert', description: 'Inline alert component for displaying important messages', icon: '⚠️' },
         { name: 'SweetAlert2', route: 'sweetalert2', description: 'SweetAlert2 integration for beautiful alert dialogs', icon: '🎨' }
       ]

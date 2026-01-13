@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 
 /**
  * Shared Standalone Module
- * 
+ *
  * Re-exports commonly used standalone components for convenience.
- * 
+ *
  * Note: Most components are standalone and can be imported directly.
  * This module is optional - you can import components directly if preferred.
- * 
+ *
  * Usage:
  * ```typescript
  * import { SharedStandaloneModule } from '@shared/shared-standalone.module';
@@ -39,7 +39,6 @@ import { ProgressiveDisclosureComponent } from './components/progressive-disclos
 import { ModalComponent } from './components/modal/modal.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from './components/icon/icon.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
@@ -108,7 +107,6 @@ const STANDALONE_COMPONENTS = [
   ModalComponent,
   NotificationComponent,
   TooltipComponent,
-  ConfirmDialogComponent,
   IconComponent,
   SpinnerComponent,
   BackToTopComponent,
@@ -159,7 +157,7 @@ export class SharedStandaloneModule { }
  * Note: Additional standalone components not included in this module:
  * - Syncfusion components (data-grid, scheduler, chart, etc.)
  * - Advanced components (ai-assist-view, contextual-help, etc.)
- * 
+ *
  * These can be imported directly when needed:
  * ```typescript
  * import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';

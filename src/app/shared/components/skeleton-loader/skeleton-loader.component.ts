@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
-export type SkeletonType = 'text' | 'card' | 'table' | 'list' | 'avatar' | 'custom';
+export type SkeletonType = 'text' | 'card' | 'table' | 'datagrid' | 'list' | 'avatar' | 'custom';
 
 @Component({
   selector: 'app-skeleton-loader',
@@ -17,6 +17,9 @@ export class SkeletonLoaderComponent implements OnInit, OnChanges {
   @Input() animation: 'pulse' | 'wave' | 'shimmer' | 'none' = 'pulse';
   @Input() width: string = '100%';
   @Input() height: string = '';
+  @Input() showToolbar: boolean = true;
+  @Input() showPagination: boolean = true;
+  @Input() hasActions: boolean = false;
 
   // Cache for random widths to prevent ExpressionChangedAfterItHasBeenCheckedError
   // For single-level loops (text, card): use randomWidths[0]
@@ -52,9 +55,9 @@ export class SkeletonLoaderComponent implements OnInit, OnChanges {
   }
 
   getRandomWidth(rowIndex: number, itemIndex?: number): string {
-    const widths = ['60%', '80%', '90%', '100%'];
+    const widths = ['60%', '70%', '80%', '90%', '100%'];
     
-    // For nested loops (list type), generate widths for each item if not exists
+    // For nested loops (list type, datagrid type), generate widths for each item if not exists
     if (itemIndex !== undefined) {
       if (!this.randomWidths[itemIndex]) {
         this.randomWidths[itemIndex] = Array(this.rows).fill(0).map(() => 

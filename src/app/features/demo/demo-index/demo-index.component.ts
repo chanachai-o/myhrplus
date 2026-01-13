@@ -166,7 +166,7 @@ export class DemoIndexComponent {
     { name: 'Modal', route: 'modal', description: 'Modal dialog component', category: 'Feedback', icon: '🪟' },
     { name: 'Dialog', route: 'dialog', description: 'Dialog component for modal dialogs, alerts, and confirmations (Syncfusion)', category: 'Feedback', icon: '🪟' },
     { name: 'Notification', route: 'notification', description: 'Toast notification component', category: 'Feedback', icon: '🔔' },
-    { name: 'Confirm Dialog', route: 'confirm-dialog', description: 'Confirmation dialog component', category: 'Feedback', icon: '❓' },
+    { name: 'Confirmation Dialog Service', route: 'confirm-dialog', description: 'Centralized confirmation dialog service', category: 'Services', icon: '❓' },
     { name: 'Alert', route: 'alert', description: 'Inline alert component for displaying important messages', category: 'Feedback', icon: '⚠️' },
     { name: 'SweetAlert2', route: 'sweetalert2', description: 'SweetAlert2 integration for beautiful alert dialogs', category: 'Feedback', icon: '🎨' },
 

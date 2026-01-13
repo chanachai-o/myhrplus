@@ -24,12 +24,14 @@
   <!-- DataGrid Section -->
   <div class="flex-1 w-full min-h-0 relative bg-white dark:bg-gray-900 mt-4 rounded-lg overflow-hidden">
     @if (service.loading()) {
-      <!-- Debug: Entered IF (Loading) block -->
-      <div class="absolute inset-0 p-6 overflow-auto">
+      <div class="absolute inset-0 overflow-hidden">
         <app-skeleton-loader
-          type="table"
+          type="datagrid"
           [rows]="10"
-          [columns]="columns.length || 5"
+          [columns]="columns.length"
+          [showToolbar]="true"
+          [showPagination]="true"
+          [hasActions]="gridActions.length > 0"
         ></app-skeleton-loader>
       </div>
     } @else {
@@ -47,7 +49,6 @@
         [dataSource]="data()"
         [columns]="columns"
         [actions]="gridActions"
-        [customClass]="'border-0'"
         [showToolbar]="true"
         [showColumnMenu]="true"
         [showColumnChooser]="true"

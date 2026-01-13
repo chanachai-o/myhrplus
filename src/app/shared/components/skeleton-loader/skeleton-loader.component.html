@@ -38,6 +38,69 @@
     </div>
   </ng-container>
 
+  <!-- DataGrid Skeleton (Syncfusion DataGrid) -->
+  <ng-container *ngIf="type === 'datagrid'">
+    <div class="w-full h-full flex flex-col bg-white dark:bg-gray-900 rounded-lg overflow-hidden">
+      <!-- Toolbar Skeleton -->
+      <div *ngIf="showToolbar" class="flex items-center justify-between gap-2 p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-20 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-8 w-20 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+        </div>
+      </div>
+
+      <!-- Header Row Skeleton -->
+      <div class="grid gap-0 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800" 
+           [style.grid-template-columns]="'repeat(' + (columns + (hasActions ? 1 : 0)) + ', minmax(0, 1fr))'">
+        <div *ngFor="let col of getColumnsArray()" 
+             class="h-12 px-4 flex items-center border-r border-gray-200 dark:border-gray-700 last:border-r-0">
+          <div class="h-4 w-24 rounded bg-gradient-to-r from-slate-300 via-slate-200 to-slate-300 bg-[length:200%_100%] dark:from-slate-600 dark:via-slate-500 dark:to-slate-600 theme-myhr:from-primary/30 theme-myhr:via-primary/40 theme-myhr:to-primary/30"></div>
+        </div>
+        <div *ngIf="hasActions" 
+             class="h-12 px-4 flex items-center justify-center border-r border-gray-200 dark:border-gray-700 last:border-r-0">
+          <div class="h-4 w-16 rounded bg-gradient-to-r from-slate-300 via-slate-200 to-slate-300 bg-[length:200%_100%] dark:from-slate-600 dark:via-slate-500 dark:to-slate-600 theme-myhr:from-primary/30 theme-myhr:via-primary/40 theme-myhr:to-primary/30"></div>
+        </div>
+      </div>
+
+      <!-- Data Rows Skeleton -->
+      <div class="flex-1 overflow-auto">
+        <div *ngFor="let row of getRowsArray(); let rowIndex = index" 
+             class="grid gap-0 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+             [style.grid-template-columns]="'repeat(' + (columns + (hasActions ? 1 : 0)) + ', minmax(0, 1fr))'">
+          <div *ngFor="let col of getColumnsArray(); let colIndex = index" 
+               class="h-12 px-4 flex items-center border-r border-gray-100 dark:border-gray-800 last:border-r-0">
+            <div class="h-4 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"
+                 [style.width]="getRandomWidth(rowIndex, colIndex)"></div>
+          </div>
+          <div *ngIf="hasActions" 
+               class="h-12 px-4 flex items-center justify-center gap-2 border-r border-gray-100 dark:border-gray-800 last:border-r-0">
+            <div class="h-6 w-6 rounded-full bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+            <div class="h-6 w-6 rounded-full bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination Skeleton -->
+      <div *ngIf="showPagination" class="flex items-center justify-between gap-4 p-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div class="flex items-center gap-2">
+          <div class="h-6 w-20 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-6 w-32 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+          <div class="h-8 w-8 rounded bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 theme-myhr:from-primary/20 theme-myhr:via-primary/30 theme-myhr:to-primary/20"></div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
   <!-- List Skeleton -->
   <ng-container *ngIf="type === 'list'">
     <div *ngFor="let listItem of getRowsArray(); let itemIndex = index" 
