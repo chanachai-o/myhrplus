@@ -20,10 +20,11 @@
   </div>
 </app-page-header>
 
-<app-glass-card>
+<app-glass-card customClass="flex flex-col flex-1 h-[600px] min-h-0">
   <!-- DataGrid Section -->
-  <div class="flex-1 w-full relative bg-white dark:bg-gray-900 mt-4 rounded-lg overflow-hidden">
+  <div class="flex-1 w-full min-h-0 relative bg-white dark:bg-gray-900 mt-4 rounded-lg overflow-hidden">
     @if (service.loading()) {
+      <!-- Debug: Entered IF (Loading) block -->
       <div class="absolute inset-0 p-6 overflow-auto">
         <app-skeleton-loader
           type="table"
@@ -32,9 +33,18 @@
         ></app-skeleton-loader>
       </div>
     } @else {
+      <!-- Debug: Entered ELSE block -->
+      <div class="hidden">DEBUG: Loading is FALSE</div>
+
+      <!-- Debug info (hidden in production) -->
+      <div class="hidden">
+        Data Count: {{ data().length }}
+        Columns: {{ columns.length }}
+      </div>
+
       <app-syncfusion-data-grid
         class="h-full block"
-        [dataSource]="(data$ | async) || []"
+        [dataSource]="data()"
         [columns]="columns"
         [actions]="gridActions"
         [allowPaging]="true"

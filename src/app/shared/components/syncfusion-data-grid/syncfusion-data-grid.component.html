@@ -46,6 +46,15 @@
       </div>
     </ng-template>
 
+    <!-- Debug Template (Temporary) -->
+    <!--
+    <ng-template #template let-data>
+      <div style="background: red; padding: 10px; color: white;">
+        ROW RENDERED: {{ data | json }}
+      </div>
+    </ng-template>
+    -->
+
     <e-columns>
       <!-- Dynamic Columns -->
       <ng-container *ngFor="let col of columns">
@@ -62,6 +71,20 @@
           [allowFiltering]="col.allowFiltering !== false"
           [allowGrouping]="col.allowGrouping !== false"
           [showInColumnChooser]="col.showInColumnChooser !== false">
+
+          <!-- DEBUG: Simple text template to force rendering -->
+          <!--
+          <ng-template #template let-data>
+             <span>{{ data[col.field] }}</span>
+          </ng-template>
+          -->
+
+          <!-- Default Template for String/Number/Date (Forces rendering) -->
+          <!--
+          <ng-template #template let-data *ngIf="!col.type || col.type === 'string' || col.type === 'number' || col.type === 'date'">
+            {{ getDataValue(data, col.field) }}
+          </ng-template>
+          -->
 
           <!-- Template for Badge -->
           <ng-template #template let-data *ngIf="col.type === 'badge'">

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -51,7 +51,8 @@ export class CompanyTypeListComponent implements OnInit {
 
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
 
-  data$ = this.service.getAll();
+  // Use signal for data to avoid AsyncPipe deadlock with loading state
+  data = signal<CompanyType[]>([]);
   showModal = false;
   selectedItem: CompanyType | null = null;
   searchControl = new FormControl('');
@@ -71,6 +72,22 @@ export class CompanyTypeListComponent implements OnInit {
       distinctUntilChanged()
     ).subscribe(value => {
       this.grid.search(value || '');
+    });
+
+    // Load data
+    this.loadData();
+  }
+
+  loadData() {
+    this.service.getAll().subscribe({
+      next: (res) => {
+        console.log('[CompanyTypeList] Data loaded:', res);
+        this.data.set(res);
+      },
+      error: (err) => {
+        console.error('[CompanyTypeList] Error loading data:', err);
+        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.LOAD));
+      }
     });
   }
 
@@ -104,6 +121,7 @@ export class CompanyTypeListComponent implements OnInit {
       { field: 'edesc', headerText: 'company.companyType.column.edesc', width: 300, minWidth: 200 },
       { field: 'edit_date', headerText: 'company.companyType.column.editDate', type: 'date', width: 180, format: 'dd/MM/yyyy' }
     ];
+    console.log('[CompanyTypeList] Columns configured:', this.columns);
 
     this.gridActions = [
       {
@@ -146,7 +164,7 @@ export class CompanyTypeListComponent implements OnInit {
         this.service.delete(row.codeid).subscribe({
           next: () => {
             this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
-            this.data$ = this.service.getAll();
+            this.loadData();
           },
           error: (err) => {
             console.error(err);
@@ -159,7 +177,7 @@ export class CompanyTypeListComponent implements OnInit {
 
   onSaveSuccess() {
     this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE));
-    this.data$ = this.service.getAll();
+    this.loadData();
     this.showModal = false;
   }
 

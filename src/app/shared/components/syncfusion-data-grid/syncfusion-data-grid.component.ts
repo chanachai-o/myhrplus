@@ -191,6 +191,11 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('[SyncfusionDataGrid] Init', {
+      dataSourceLength: this.dataSource?.length,
+      columnsCount: this.columns?.length,
+      columns: this.columns
+    });
     this.setupLocalization();
     this.translateService.onLangChange.subscribe((event) => {
       this.locale = event.lang === 'th' ? 'th-TH' : 'en-US';
@@ -202,8 +207,15 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dataSource'] && this.grid) {
-      this.grid.refresh();
+    console.log('[SyncfusionDataGrid] Changes:', changes);
+    if (changes['dataSource']) {
+      console.log('[SyncfusionDataGrid] New DataSource:', this.dataSource);
+      if (this.grid) {
+        this.grid.refresh();
+      }
+    }
+    if (changes['columns']) {
+      console.log('[SyncfusionDataGrid] New Columns:', this.columns);
     }
   }
 
