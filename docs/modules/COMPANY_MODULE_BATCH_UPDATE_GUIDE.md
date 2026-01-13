@@ -132,5 +132,31 @@ import { [Entity]FormComponent } from './[entity]-form.component';
 
 ---
 
-**Last Updated:** 2024-12-29
+## Syncfusion Data Grid Features
+
+### ✅ Default Features Enabled (2025-01-07)
+- ✅ **Column Menu**: Enabled by default (`showColumnMenu = true`)
+  - AutoFit, AutoFitAll, SortAscending, SortDescending
+  - Group, Ungroup, ColumnChooser, Filter
+  - Aggregate functions (Sum, Count, Average, Min, Max)
+- ✅ **Filter Menu**: Enabled by default (`allowFiltering = true`, `filterSettings.type = 'Menu'`)
+  - Excel-style filter menu with checkbox list
+  - Search input for filtering values
+  - Sort options (A to Z, Z to A)
+- ✅ **Context Menu**: Enabled by default (right-click on rows)
+  - AutoFit, Sort, Copy, Export options
+  - Page navigation (First, Prev, Next, Last)
+- ✅ **Checkbox Column**: Optional (`showCheckboxColumn = false` by default)
+  - Enable with `[showCheckboxColumn]="true"` and `selectionSettings.type = 'Multiple'`
+- ✅ **Column Chooser**: Enabled by default (`showColumnChooser = true`)
+  - Available in toolbar and column menu
+
+### Required Services
+- `ColumnMenuService` ✅ (in providers)
+- `FilterService` ✅ (in providers)
+- `ContextMenuService` ✅ (in providers)
+- `ColumnChooserService` ✅ (in providers)
+- `MenuModule` ✅ (imported in component)
+
+**Last Updated:** 2025-01-07
 

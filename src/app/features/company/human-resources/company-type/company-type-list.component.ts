@@ -4,7 +4,9 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { SyncfusionDataGridComponent, CustomColumnModel, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
+import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
+import { ColumnModel } from '@syncfusion/ej2-grids';
+
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { CompanyTypeService } from '../../services/company-type.service';
@@ -58,7 +60,7 @@ export class CompanyTypeListComponent implements OnInit {
   searchControl = new FormControl('');
 
   headerActions: any[] = [];
-  columns: CustomColumnModel[] = [];
+  columns: ColumnModel[] = [];
   gridActions: GridAction[] = [];
 
   ngOnInit() {

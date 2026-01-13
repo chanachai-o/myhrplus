@@ -28,7 +28,7 @@
     [locale]="locale"
     (rowSelected)="rowSelected.emit($event)"
     (rowDeselected)="rowDeselected.emit($event)"
-    (dataBound)="dataBound.emit($event)"
+    (dataBound)="onDataBound($event)"
     (actionBegin)="actionBegin.emit($event)"
     (actionComplete)="actionComplete.emit($event)"
     (toolbarClick)="onToolbarClick($event)"

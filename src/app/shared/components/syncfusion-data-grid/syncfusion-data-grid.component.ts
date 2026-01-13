@@ -5,6 +5,7 @@ import {
   EventEmitter,
   ViewEncapsulation,
   OnInit,
+  AfterViewInit,
   ViewChild,
   SimpleChanges,
   ChangeDetectorRef,
@@ -46,10 +47,13 @@ import {
   ContextMenuService,
   FreezeService,
   SelectionService,
-  VirtualScrollService
+  VirtualScrollService,
+  ColumnChooserService
 } from '@syncfusion/ej2-angular-grids';
 import { Query } from '@syncfusion/ej2-data';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
+import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
+import { MenuModule } from '@syncfusion/ej2-angular-navigations';
 
 export interface GridAction {
   id?: string;
@@ -66,6 +70,10 @@ export interface CustomColumnModel extends ColumnModel {
   type?: string; // 'string' | 'number' | 'boolean' | 'date' | 'datetime' | 'image' | 'badge' | 'checkbox'
   isPrimaryKey?: boolean;
   showInColumnChooser?: boolean;
+  allowFiltering?: boolean; // Allow filtering for this column (default: true)
+  allowSorting?: boolean; // Allow sorting for this column (default: true)
+  allowGrouping?: boolean; // Allow grouping for this column (default: true)
+  filterTemplate?: any; // Custom filter template
   // For 'badge' type
   badgeConfig?: {
     [key: string]: { class: string; label: string; icon?: string };
@@ -73,11 +81,12 @@ export interface CustomColumnModel extends ColumnModel {
 }
 
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
+import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
 @Component({
   selector: 'app-syncfusion-data-grid',
   standalone: true,
-  imports: [CommonModule, GridModule, TranslateModule, EmptyStateComponent],
+  imports: [CommonModule, SyncfusionModule, TranslateModule, EmptyStateComponent, DropDownButtonModule, MenuModule],
   templateUrl: './syncfusion-data-grid.component.html',
   styleUrls: ['./syncfusion-data-grid.component.scss'],
   providers: [
@@ -85,6 +94,7 @@ import { EmptyStateComponent } from '../empty-state/empty-state.component';
     SortService,
     GroupService,
     ColumnMenuService,
+    ColumnChooserService,
     PageService,
     FilterService,
     ToolbarService,
@@ -100,15 +110,14 @@ import { EmptyStateComponent } from '../empty-state/empty-state.component';
     FreezeService,
     SelectionService,
     VirtualScrollService
-  ],
-  encapsulation: ViewEncapsulation.None
+  ]
 })
-export class SyncfusionDataGridComponent implements OnInit, OnChanges {
+export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('grid') public grid?: GridComponent;
 
   // Data
   @Input() dataSource: any[] = [];
-  @Input() columns: CustomColumnModel[] = [];
+  @Input() columns: ColumnModel[] = [];
 
   // Features Flags
   @Input() allowPaging = true;
@@ -118,6 +127,7 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
   @Input() allowResizing = true;
   @Input() allowReordering = true;
   @Input() allowSelection = true;
+  @Input() showCheckboxColumn = false; // Show checkbox column for row selection
   @Input() allowExcelExport = true;
   @Input() allowPdfExport = true;
   @Input() showColumnChooser = true;
@@ -126,14 +136,65 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
 
   // Settings
   @Input() pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100], pageCount: 5 };
-  @Input() filterSettings: FilterSettingsModel = { type: 'Menu' };
-  @Input() groupSettings: GroupSettingsModel = { showDropArea: false, showGroupedColumn: true }; // Updated defaults
-  @Input() editSettings: EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Normal' };
-  @Input() selectionSettings: SelectionSettingsModel = { type: 'Single', mode: 'Row' };
+  @Input() filterSettings: FilterSettingsModel = {
+    type: 'Menu', // 'Menu' shows filter menu dropdown, 'Excel' shows Excel-style filter, 'FilterBar' shows filter bar
+    showFilterBarStatus: true,
+    immediateModeDelay: 0,
+    mode: 'Immediate', // 'Immediate' or 'OnEnter'
+    operators: {
+      stringOperator: [
+        { value: 'startsWith', text: 'Starts With' },
+        { value: 'endsWith', text: 'Ends With' },
+        { value: 'contains', text: 'Contains' },
+        { value: 'equal', text: 'Equal' },
+        { value: 'notEqual', text: 'Not Equal' }
+      ],
+      numberOperator: [
+        { value: 'equal', text: 'Equal' },
+        { value: 'notEqual', text: 'Not Equal' },
+        { value: 'greaterThan', text: 'Greater Than' },
+        { value: 'lessThan', text: 'Less Than' },
+        { value: 'greaterThanOrEqual', text: 'Greater Than Or Equal' },
+        { value: 'lessThanOrEqual', text: 'Less Than Or Equal' }
+      ],
+      dateOperator: [
+        { value: 'equal', text: 'Equal' },
+        { value: 'notEqual', text: 'Not Equal' },
+        { value: 'greaterThan', text: 'Greater Than' },
+        { value: 'lessThan', text: 'Less Than' },
+        { value: 'greaterThanOrEqual', text: 'Greater Than Or Equal' },
+        { value: 'lessThanOrEqual', text: 'Less Than Or Equal' }
+      ]
+    }
+  };
+  @Input() groupSettings: GroupSettingsModel = { showDropArea: true, showGroupedColumn: true }; // Enabled by default
+  @Input() editSettings: EditSettingsModel = { allowEditing: false, allowAdding: false, allowDeleting: false, mode: 'Batch' };
+  @Input() selectionSettings: SelectionSettingsModel = {
+    type: 'Single',
+    mode: 'Row',
+    checkboxOnly: false,
+    persistSelection: false
+  };
   @Input() searchSettings: any = { fields: [], operator: 'contains', ignoreCase: true };
 
   // Toolbar
   @Input() toolbarItems: any[] = ['Search', 'ColumnChooser', 'ExcelExport', 'PdfExport', 'Print'];
+
+  // Context Menu
+  @Input() contextMenuItems: any[] = [
+    'AutoFit',
+    'AutoFitAll',
+    'SortAscending',
+    'SortDescending',
+    'Copy',
+    { text: 'ExcelExport', id: 'excelexport' },
+    { text: 'PdfExport', id: 'pdfexport' },
+    { text: 'CsvExport', id: 'csvexport' },
+    { text: 'FirstPage', id: 'firstpage' },
+    { text: 'PrevPage', id: 'prevpage' },
+    { text: 'LastPage', id: 'lastpage' },
+    { text: 'NextPage', id: 'nextpage' }
+  ];
 
   // Actions
   @Input() actions: GridAction[] = [];
@@ -154,11 +215,13 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
   // Outputs
   @Output() rowSelected = new EventEmitter<any>();
   @Output() rowDeselected = new EventEmitter<any>();
+  @Output() rowSelectionChanged = new EventEmitter<any>(); // Emitted when selection changes (for checkbox)
   @Output() actionClick = new EventEmitter<{ action: GridAction; data: any }>();
   @Output() dataBound = new EventEmitter<any>();
   @Output() actionBegin = new EventEmitter<any>();
   @Output() actionComplete = new EventEmitter<any>();
   @Output() toolbarClick = new EventEmitter<any>();
+  @Output() contextMenuClick = new EventEmitter<any>();
 
   // Internal State
   public query: Query = new Query();
@@ -174,8 +237,14 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
   locale = 'th-TH';
 
   public columnMenuItems: any[] = [
-    'AutoFit', 'AutoFitAll', 'SortAscending', 'SortDescending',
-    'Group', 'Ungroup', 'ColumnChooser', 'Filter',
+    'AutoFit',
+    'AutoFitAll',
+    'SortAscending',
+    'SortDescending',
+    'Group',
+    'Ungroup',
+    'ColumnChooser',
+    'Filter',
     { text: 'Sum', id: 'aggregate_sum' },
     { text: 'Count', id: 'aggregate_count' },
     { text: 'Average', id: 'aggregate_average' },
@@ -194,7 +263,12 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
     console.log('[SyncfusionDataGrid] Init', {
       dataSourceLength: this.dataSource?.length,
       columnsCount: this.columns?.length,
-      columns: this.columns
+      columns: this.columns,
+      showToolbar: this.showToolbar,
+      showColumnMenu: this.showColumnMenu,
+      showColumnChooser: this.showColumnChooser,
+      toolbarItems: this.toolbarItems,
+      columnMenuItems: this.columnMenuItems
     });
     this.setupLocalization();
     this.translateService.onLangChange.subscribe((event) => {
@@ -206,10 +280,23 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
     });
   }
 
+  ngAfterViewInit(): void {
+    console.log('[SyncfusionDataGrid] AfterViewInit', {
+      grid: !!this.grid,
+      showColumnMenu: this.showColumnMenu,
+      columnMenuItems: this.columnMenuItems,
+      columnMenuItemsLength: this.columnMenuItems?.length
+    });
+
+    // Column menu initialization will be handled in onDataBound event
+    // This ensures grid is fully rendered before setting properties
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log('[SyncfusionDataGrid] Changes:', changes);
     if (changes['dataSource']) {
       console.log('[SyncfusionDataGrid] New DataSource:', this.dataSource);
+      console.log('[SyncfusionDataGrid] Grid:', this.grid?.columnMenuItems);
       if (this.grid) {
         this.grid.refresh();
       }
@@ -238,6 +325,93 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
     this.actionClick.emit({ action, data });
   }
 
+  onRowSelected(args: any): void {
+    this.rowSelected.emit(args);
+    this.emitSelectionChanged();
+  }
+
+  onRowDeselected(args: any): void {
+    this.rowDeselected.emit(args);
+    this.emitSelectionChanged();
+  }
+
+  onRowSelecting(args: any): void {
+    // This event fires before selection happens
+    // Can be used to prevent selection if needed
+  }
+
+  private emitSelectionChanged(): void {
+    if (this.grid) {
+      const selectedRows = this.grid.getSelectedRows();
+      this.rowSelectionChanged.emit({
+        selectedRows: selectedRows,
+        selectedRowIndexes: this.grid.getSelectedRowIndexes(),
+        selectedRecords: this.grid.getSelectedRecords()
+      });
+    }
+  }
+
+  /**
+   * Get selected rows
+   */
+  getSelectedRows(): any[] {
+    return this.grid?.getSelectedRows() || [];
+  }
+
+  /**
+   * Get selected records
+   */
+  getSelectedRecords(): any[] {
+    return this.grid?.getSelectedRecords() || [];
+  }
+
+  /**
+   * Get selected row indexes
+   */
+  getSelectedRowIndexes(): number[] {
+    return this.grid?.getSelectedRowIndexes() || [];
+  }
+
+  /**
+   * Clear selection
+   */
+  clearSelection(): void {
+    this.grid?.clearSelection();
+  }
+
+  /**
+   * Select all rows
+   */
+  selectAll(): void {
+    if (this.grid && this.showCheckboxColumn) {
+      this.grid.selectRows([...Array(this.dataSource.length).keys()]);
+    }
+  }
+
+  onDataBound(args: any): void {
+    this.dataBound.emit(args);
+
+    // Ensure column menu is properly initialized after data is bound
+    if (this.grid && this.showColumnMenu) {
+      try {
+        // Set showColumnMenu property
+        (this.grid as any).showColumnMenu = true;
+
+        // Set columnMenuItems
+        if (this.columnMenuItems && this.columnMenuItems.length > 0) {
+          this.grid.columnMenuItems = this.columnMenuItems;
+        }
+
+        console.log('[SyncfusionDataGrid] DataBound - Column Menu initialized:', {
+          showColumnMenu: (this.grid as any).showColumnMenu,
+          columnMenuItems: this.grid.columnMenuItems?.length
+        });
+      } catch (error) {
+        console.warn('[SyncfusionDataGrid] Error initializing column menu in dataBound:', error);
+      }
+    }
+  }
+
   onToolbarClick(args: any): void {
     this.toolbarClick.emit(args);
 
@@ -249,6 +423,10 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
       this.grid?.csvExport();
     } else if (args.item.id?.includes('print')) {
       this.grid?.print();
+    } else if (args.item.id?.includes('columnchooser')) {
+      // ColumnChooser is handled automatically by Syncfusion
+      // This is just for logging/debugging
+      console.log('[SyncfusionDataGrid] ColumnChooser clicked');
     }
   }
 
@@ -261,6 +439,54 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
 
       const selectedAgg = args.item.id.split('_')[1]; // sum, count, average, min, max
       this.updateAggregate(selectedAgg, colField);
+    }
+  }
+
+  onContextMenuClick(args: any): void {
+    this.contextMenuClick.emit(args);
+
+    if (!args.item || !args.item.id) return;
+
+    const itemId = args.item.id.toLowerCase();
+
+    // Handle context menu items
+    if (itemId.includes('autofit')) {
+      if (itemId.includes('all')) {
+        this.grid?.autoFitColumns();
+      } else {
+        // AutoFit single column - handled by Syncfusion automatically
+        console.log('[SyncfusionDataGrid] AutoFit column');
+      }
+    } else if (itemId.includes('sort')) {
+      // Sorting is handled automatically by Syncfusion
+      console.log('[SyncfusionDataGrid] Sort clicked');
+    } else if (itemId.includes('copy')) {
+      // Copy is handled automatically by Syncfusion
+      console.log('[SyncfusionDataGrid] Copy clicked');
+    } else if (itemId.includes('excelexport')) {
+      this.grid?.excelExport();
+    } else if (itemId.includes('pdfexport')) {
+      this.grid?.pdfExport();
+    } else if (itemId.includes('csvexport')) {
+      this.grid?.csvExport();
+    } else if (itemId.includes('firstpage')) {
+      this.grid?.goToPage(1);
+    } else if (itemId.includes('prevpage')) {
+      // Get current page from pageSettings
+      const currentPage = (this.pageSettings as any)?.currentPage || 1;
+      if (currentPage > 1) {
+        this.grid?.goToPage(currentPage - 1);
+      }
+    } else if (itemId.includes('nextpage')) {
+      // Get current page from pageSettings
+      const currentPage = (this.pageSettings as any)?.currentPage || 1;
+      const totalPages = this.pageSettings?.pageCount || 1;
+      if (currentPage < totalPages) {
+        this.grid?.goToPage(currentPage + 1);
+      }
+    } else if (itemId.includes('lastpage')) {
+      const totalPages = this.pageSettings?.pageCount || 1;
+      this.grid?.goToPage(totalPages);
     }
   }
 

@@ -26,6 +26,27 @@
         .e-headertext {
           color: var(--text-primary);
         }
+
+        // Column Menu Icon
+        .e-columnmenu {
+          display: inline-block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          cursor: pointer;
+          margin-left: 0.5rem;
+          color: var(--text-secondary);
+          font-size: 1rem;
+
+          &:hover {
+            color: var(--text-primary);
+          }
+        }
+
+        // Ensure column menu icon is visible
+        .e-icons {
+          display: inline-block !important;
+          visibility: visible !important;
+        }
       }
     }
 

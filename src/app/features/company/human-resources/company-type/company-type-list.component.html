@@ -47,14 +47,11 @@
         [dataSource]="data()"
         [columns]="columns"
         [actions]="gridActions"
-        [allowPaging]="true"
-        [allowSorting]="true"
-        [allowFiltering]="true"
-        [allowExcelExport]="true"
         [customClass]="'border-0'"
-        [height]="'100%'"
-        [width]="'100%'"
-        [showToolbar]="false"
+        [showToolbar]="true"
+        [showColumnMenu]="true"
+        [showColumnChooser]="true"
+        [pageSettings]="{ pageSize: 10, pageSizes: [10, 20, 50, 100], pageCount: 5 }"
         (rowSelected)="onEdit($event.data)"
       >
       </app-syncfusion-data-grid>
