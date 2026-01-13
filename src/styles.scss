@@ -107,6 +107,7 @@
 
   /* Background Colors */
   --bg-base: #f5f1e8;
+  --bg-surface-secondary: #ffffff; /* White background for better contrast */
   --bg-gradient-start: #faf8f3;
   --bg-gradient-mid: #f5f1e8;
   --bg-gradient-end: #ede8d8;
@@ -193,6 +194,7 @@ body {
 [data-theme='dark'],
 .dark {
   --bg-base: #000000;
+  --bg-surface-secondary: #0a0a0f; /* Slightly lighter than base black */
   --bg-gradient-start: #000000;
   --bg-gradient-mid: #0a0a0f;
   --bg-gradient-end: #1e293b;
@@ -468,6 +470,7 @@ body.theme-myhr.dark {
     linear-gradient(180deg, #000000 0%, #0a0a0f 50%, #000000 100%);
   background-attachment: fixed;
   color: #ffffff;
+  --bg-surface-secondary: rgba(10, 10, 15, 0.7); /* Translucent dark for glass effect */
 
   /* Mobile performance optimization - use scroll instead of fixed */
   @media (max-width: 768px) {

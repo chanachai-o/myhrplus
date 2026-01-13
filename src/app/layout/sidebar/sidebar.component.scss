@@ -259,22 +259,15 @@
   /* Remove heavy borders and simplify background for cleaner look */
   border-left: 1px solid var(--border-light);
 
-  /* Background gradient with subtle pattern - Using CSS Variables */
-  background: var(--bg-base); /* Use solid base background instead of complex gradients */
+  /* Background - using CSS Variables for theme support */
+  background: var(--bg-surface-secondary); /* Use surface secondary for contrast with main content */
 
   .dark & {
-    background: var(--bg-base);
+    background: var(--bg-surface-secondary);
     border-left-color: var(--border-light-subtle);
   }
 
-  [class*='theme-myhr'] & {
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--primary-rgb), 0.08) 0%,
-      rgba(var(--primary-rgb), 0.02) 100%
-    );
-    border-left-color: rgba(var(--primary-rgb), 0.1);
-  }
+
 
   /* Ensure content is above pattern */
   > * {

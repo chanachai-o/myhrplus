@@ -37,7 +37,7 @@
                 style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
             {{ getUnicodeIcon(level2Item.icon || 'folder') }}
           </span>
-          
+
           <!-- Active Indicator -->
           <span *ngIf="selectedLevel2Item === level2Item"
                 class="active-indicator
@@ -90,7 +90,7 @@
                 [class.text-primary]="selectedModule === module.id"
                 [class.text-gray-500]="selectedModule !== module.id && !isDarkMode"
                 [class.text-gray-400]="selectedModule !== module.id && isDarkMode"></span>
-          
+
           <!-- Active Indicator -->
           <span *ngIf="selectedModule === module.id"
                 class="active-indicator
@@ -271,17 +271,14 @@
               </span>
             </div>
             <!-- Content -->
-            <div class="flex-1 min-w-0 relative z-10">
-              <h4 class="text-base font-semibold thai-text
+            <div class="flex-1 min-w-0 relative z-10 flex flex-col justify-center">
+              <h4 class="text-base font-bold thai-text
                          text-gray-800 dark:text-gray-100 theme-myhr:text-gray-900 dark:theme-myhr:text-gray-100
-                         mb-1 truncate
+                         mb-0 leading-tight truncate
                          group-hover:text-primary dark:group-hover:text-primary-light theme-myhr:group-hover:text-primary
                          transition-colors duration-300">
                 {{ translateLabel(module.label, 'admin', 2) }}
               </h4>
-              <p class="text-xs text-gray-600 dark:text-gray-400 theme-myhr:text-gray-600 dark:theme-myhr:text-gray-400 truncate">
-                {{ 'layout.sidebar.clickToOpen' | translate }}
-              </p>
             </div>
             <!-- Arrow Icon -->
             <div class="flex-shrink-0 relative z-10
