@@ -9,21 +9,49 @@
   customClass="-mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 pt-6 pb-2">
 </app-page-header>
 
-<div class="w-full py-6 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8">
-  <app-glass-card padding="p-0">
-    @if (service.loading()) {
-      <div class="p-6">
-        <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
+
+
+  <app-glass-card>
+
+    <!-- Search Section inside Card Header -->
+    <div class="py-4 border-b border-gray-100 dark:border-gray-700 flex justify-end ">
+      <div class="w-full md:w-72">
+        <app-glass-input
+          [formControl]="searchControl"
+          icon="search"
+          [placeholder]="'common.actions.search' | translate"
+          [isSearch]="true"
+          [customClass]="'h-10 text-sm'">
+        </app-glass-input>
       </div>
-    } @else {
-      <app-data-grid
+    </div>
+
+    <!-- DataGrid Section -->
+    <div class="flex-1 w-full min-h-0 relative bg-white dark:bg-gray-900">
+      @if (service.loading()) {
+        <div class="absolute inset-0 p-6 overflow-auto">
+          <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
+        </div>
+      } @else {
+        <app-syncfusion-data-grid
         [dataSource]="(data$ | async) || []"
         [columns]="columns"
-        (rowSelected)="onEdit($event)">
-      </app-data-grid>
-    }
+        [actions]="gridActions"
+        [allowPaging]="true"
+        [allowSorting]="true"
+        [allowFiltering]="true"
+        [allowExcelExport]="true"
+        [customClass]="'border-0'"
+        [height]="'100%'"
+        [width]="'100%'"
+        [showToolbar]="false"
+        (rowSelected)="onEdit($event.data)">
+      </app-syncfusion-data-grid>
+      }
+    </div>
+
   </app-glass-card>
-</div>
+
 
 <app-company-type-form
   [isOpen]="showModal"

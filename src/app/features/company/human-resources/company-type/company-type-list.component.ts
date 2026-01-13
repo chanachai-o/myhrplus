@@ -1,15 +1,18 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { DataGridComponent } from '@shared/components/data-grid/data-grid.component';
+import { SyncfusionDataGridComponent, CustomColumnModel, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
+import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { CompanyTypeService } from '../../services/company-type.service';
 import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeFormComponent } from './company-type-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
+import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-type-list',
@@ -20,9 +23,12 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
     TranslateModule,
     SharedModule,
     PageHeaderComponent,
-    DataGridComponent,
+    SyncfusionDataGridComponent,
     GlassCardComponent,
-    CompanyTypeFormComponent
+    GlassInputComponent,
+    CompanyTypeFormComponent,
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './company-type-list.component.html'
 })
@@ -30,17 +36,28 @@ export class CompanyTypeListComponent implements OnInit {
   public service = inject(CompanyTypeService);
   private translate = inject(TranslateService);
 
+  @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: CompanyType | null = null;
+  searchControl = new FormControl('');
 
   headerActions: any[] = [];
-  columns: any[] = [];
+  columns: CustomColumnModel[] = [];
+  gridActions: GridAction[] = [];
 
   ngOnInit() {
     this.updateTranslations();
     this.translate.onLangChange.subscribe(() => {
       this.updateTranslations();
+    });
+
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(value => {
+      this.grid.search(value || '');
     });
   }
 
@@ -69,10 +86,25 @@ export class CompanyTypeListComponent implements OnInit {
     ];
 
     this.columns = [
-      { field: 'codeid', headerText: this.translate.instant('company.companyType.column.codeId'), width: '100px' },
-      { field: 'tdesc', headerText: this.translate.instant('company.companyType.column.tdesc'), width: '200px' },
-      { field: 'edesc', headerText: this.translate.instant('company.companyType.column.edesc'), width: '200px' },
-      { field: 'edit_date', headerText: this.translate.instant('company.companyType.column.editDate'), type: 'date' as const, width: '120px' }
+      { field: 'codeid', headerText: 'company.companyType.column.codeId', width: 120, isPrimaryKey: true },
+      { field: 'tdesc', headerText: 'company.companyType.column.tdesc', width: 250 },
+      { field: 'edesc', headerText: 'company.companyType.column.edesc', width: 250 },
+      { field: 'edit_date', headerText: 'company.companyType.column.editDate', type: 'date', width: 150, format: 'dd/MM/yyyy' }
+    ];
+
+    this.gridActions = [
+      {
+        title: this.translate.instant('Edit'),
+        icon: 'ti ti-edit',
+        class: 'text-primary',
+        onClick: (data) => this.onEdit(data)
+      },
+      {
+        title: this.translate.instant('Delete'),
+        icon: 'ti ti-trash',
+        class: 'text-danger',
+        onClick: (data) => this.onDelete(data)
+      }
     ];
   }
 
@@ -81,10 +113,14 @@ export class CompanyTypeListComponent implements OnInit {
     this.showModal = true;
   }
 
-  onEdit(args: any) {
-    const row = args.data || args;
+  onEdit(row: any) {
     this.selectedItem = row;
     this.showModal = true;
+  }
+
+  onDelete(row: any) {
+    // TODO: Implement delete functionality
+    console.log('Delete clicked', row);
   }
 
   onSaveSuccess() {
@@ -103,5 +139,3 @@ export class CompanyTypeListComponent implements OnInit {
     console.log('Manual clicked');
   }
 }
-
-

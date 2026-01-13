@@ -1,0 +1,138 @@
+<div class="syncfusion-data-grid w-full h-full" [ngClass]="customClass">
+  <ejs-grid
+    #grid
+    [id]="'grid'"
+    [dataSource]="dataSource"
+    [height]="height"
+    [width]="width"
+    [allowPaging]="allowPaging"
+    [allowSorting]="allowSorting"
+    [allowFiltering]="allowFiltering"
+    [allowGrouping]="allowGrouping"
+    [allowResizing]="allowResizing"
+    [allowReordering]="allowReordering"
+    [allowSelection]="allowSelection"
+    [allowExcelExport]="allowExcelExport"
+    [allowPdfExport]="allowPdfExport"
+    [showColumnChooser]="showColumnChooser"
+    [showColumnMenu]="showColumnMenu"
+    [columnMenuItems]="columnMenuItems"
+    [toolbar]="showToolbar ? toolbarItems : []"
+    [pageSettings]="pageSettings"
+    [filterSettings]="filterSettings"
+    [groupSettings]="groupSettings"
+    [editSettings]="editSettings"
+    [selectionSettings]="selectionSettings"
+    [searchSettings]="searchSettings"
+    [locale]="locale"
+    (rowSelected)="rowSelected.emit($event)"
+    (rowDeselected)="rowDeselected.emit($event)"
+    (dataBound)="dataBound.emit($event)"
+    (actionBegin)="actionBegin.emit($event)"
+    (actionComplete)="actionComplete.emit($event)"
+    (toolbarClick)="onToolbarClick($event)"
+    (columnMenuClick)="onColumnMenuClick($event)">
+
+    <e-columns>
+      <!-- Dynamic Columns -->
+      <ng-container *ngFor="let col of columns">
+        <e-column
+          [field]="col.field"
+          [headerText]="col.headerText | translate"
+          [width]="col.width"
+          [textAlign]="col.textAlign || 'Left'"
+          [format]="col.format"
+          [type]="col.type === 'date' || col.type === 'datetime' ? 'date' : (col.type === 'boolean' ? 'boolean' : 'string')"
+          [isPrimaryKey]="col.isPrimaryKey"
+          [visible]="col.visible !== false"
+          [allowSorting]="col.allowSorting !== false"
+          [allowFiltering]="col.allowFiltering !== false"
+          [allowGrouping]="col.allowGrouping !== false"
+          [showInColumnChooser]="col.showInColumnChooser !== false">
+
+          <!-- Template for Badge -->
+          <ng-template #template let-data *ngIf="col.type === 'badge'">
+            <ng-container *ngIf="getBadgeConfig(col, getDataValue(data, col.field)) as badge">
+              <span class="badge" [ngClass]="badge.class">
+                <i *ngIf="badge.icon" [class]="badge.icon"></i>
+                {{ badge.label | translate }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="!getBadgeConfig(col, getDataValue(data, col.field))">
+              {{ getDataValue(data, col.field) }}
+            </ng-container>
+          </ng-template>
+
+          <!-- Template for Image -->
+          <ng-template #template let-data *ngIf="col.type === 'image'">
+             <div class="flex items-center justify-center">
+               <img [src]="getDataValue(data, col.field) || './assets/img/users/defaultperson.jpg'"
+                    class="h-10 w-10 rounded-full object-cover border border-gray-200"
+                    alt="Image">
+             </div>
+          </ng-template>
+
+        </e-column>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <e-column
+        *ngIf="actions.length > 0"
+        [headerText]="actionHeaderText | translate"
+        [width]="actionWidth"
+        textAlign="Center"
+        [allowSorting]="false"
+        [allowFiltering]="false"
+        [allowGrouping]="false"
+        [showInColumnChooser]="false">
+        <ng-template #template let-data>
+          <div class="flex items-center justify-center gap-2">
+            <ng-container *ngFor="let action of actions">
+              <button
+                *ngIf="!action.visible || action.visible(data)"
+                type="button"
+                [title]="action.title | translate"
+                class="btn-icon p-1 rounded-full transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                [ngClass]="action.class || ''"
+                (click)="onActionClick(action, data)">
+                <i *ngIf="action.icon" [class]="action.icon"></i>
+                <span *ngIf="!action.icon && action.label">{{ action.label | translate }}</span>
+              </button>
+            </ng-container>
+          </div>
+        </ng-template>
+      </e-column>
+
+    </e-columns>
+
+    <!-- Aggregates -->
+    <e-aggregates>
+       <e-aggregate *ngIf="aggregatesSum.length > 0">
+         <e-columns>
+           <e-column *ngFor="let ag of aggregatesSum" [field]="ag.field" type="Sum" [footerTemplate]="ag.footerTemplate"></e-column>
+         </e-columns>
+       </e-aggregate>
+       <e-aggregate *ngIf="aggregatesCount.length > 0">
+         <e-columns>
+           <e-column *ngFor="let ag of aggregatesCount" [field]="ag.field" type="Count" [footerTemplate]="ag.footerTemplate"></e-column>
+         </e-columns>
+       </e-aggregate>
+       <e-aggregate *ngIf="aggregatesAvg.length > 0">
+         <e-columns>
+           <e-column *ngFor="let ag of aggregatesAvg" [field]="ag.field" type="Average" [footerTemplate]="ag.footerTemplate"></e-column>
+         </e-columns>
+       </e-aggregate>
+       <e-aggregate *ngIf="aggregatesMin.length > 0">
+         <e-columns>
+           <e-column *ngFor="let ag of aggregatesMin" [field]="ag.field" type="Min" [footerTemplate]="ag.footerTemplate"></e-column>
+         </e-columns>
+       </e-aggregate>
+       <e-aggregate *ngIf="aggregatesMax.length > 0">
+         <e-columns>
+           <e-column *ngFor="let ag of aggregatesMax" [field]="ag.field" type="Max" [footerTemplate]="ag.footerTemplate"></e-column>
+         </e-columns>
+       </e-aggregate>
+    </e-aggregates>
+
+  </ejs-grid>
+</div>

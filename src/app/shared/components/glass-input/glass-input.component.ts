@@ -36,6 +36,9 @@ export class GlassInputComponent implements ControlValueAccessor {
   @Input() ariaLabel?: string;
   @Input() ariaDescribedBy?: string;
   @Input() inputmode: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined = undefined;
+  @Input() icon: string = '';
+  @Input() isSearch: boolean = false;
+  @Input() customClass: string = '';
 
   value: string = '';
   hasError: boolean = false;
