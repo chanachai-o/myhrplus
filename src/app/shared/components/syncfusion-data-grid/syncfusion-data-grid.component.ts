@@ -218,6 +218,7 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Output() rowDeselected = new EventEmitter<any>();
   @Output() rowSelectionChanged = new EventEmitter<any>(); // Emitted when selection changes (for checkbox)
   @Output() actionClick = new EventEmitter<{ action: GridAction; data: any }>();
+  @Output() rowDeleted = new EventEmitter<any>(); // Emitted when a row is deleted
   @Output() dataBound = new EventEmitter<any>();
   @Output() actionBegin = new EventEmitter<any>();
   @Output() actionComplete = new EventEmitter<any>();
@@ -325,18 +326,142 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     const isThai = this.locale === 'th-TH';
 
     if (isThai) {
-        setCulture('th-TH');
+      setCulture('th-TH');
+
+      // Load Thai locale configuration for Syncfusion Grid
+      L10n.load({
+        'th-TH': {
+          grid: {
+            EmptyRecord: 'ไม่มีข้อมูลที่จะแสดง',
+            GroupDropArea: 'ลากหัวข้อคอลัมน์มาที่นี่เพื่อจัดกลุ่มคอลัมน์',
+            UnGroup: 'คลิกที่นี่เพื่อยกเลิกการจัดกลุ่ม',
+            EmptyDataSourceError: 'DataSource ไม่ควรเป็นค่าว่างในครั้งแรกที่โหลด เนื่องจากคอลัมน์ถูกสร้างขึ้นโดยอัตโนมัติจาก DataSource',
+            Item: 'รายการ',
+            Items: 'รายการ',
+            ConfirmDelete: 'คุณต้องการลบรายการนี้หรือไม่?',
+            CancelEdit: 'คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก คุณต้องการยกเลิกหรือไม่?',
+            OKButton: 'ตกลง',
+            CancelButton: 'ยกเลิก',
+            EditFormTitle: 'รายละเอียดของ',
+            AddFormTitle: 'เพิ่มรายการใหม่',
+            BatchSaveConfirm: 'คุณต้องการบันทึกการเปลี่ยนแปลงหรือไม่?',
+            BatchSaveLostChanges: 'การเปลี่ยนแปลงที่ยังไม่ได้บันทึกจะสูญหาย คุณต้องการดำเนินการต่อหรือไม่?',
+            ChooseColumns: 'เลือกคอลัมน์',
+            SearchColumns: 'ค้นหาคอลัมน์',
+            Matchs: 'ไม่พบผลลัพธ์',
+            FilterButton: 'กรอง',
+            ClearButton: 'ล้าง',
+            StoredFilters: 'กรองที่บันทึกไว้',
+            AutoFitAll: 'ปรับความกว้างอัตโนมัติทั้งหมด',
+            AutoFit: 'ปรับความกว้างอัตโนมัติ',
+            Export: 'ส่งออก',
+            PdfExport: 'ส่งออก PDF',
+            ExcelExport: 'ส่งออก Excel',
+            FirstPage: 'หน้าแรก',
+            PrevPage: 'หน้าก่อน',
+            LastPage: 'หน้าสุดท้าย',
+            NextPage: 'หน้าถัดไป',
+            SortAscending: 'เรียงจากน้อยไปมาก',
+            SortDescending: 'เรียงจากมากไปน้อย',
+            EditRecord: 'แก้ไข',
+            DeleteRecord: 'ลบ',
+            Save: 'บันทึก',
+            Cancel: 'ยกเลิก',
+            Add: 'เพิ่ม',
+            Edit: 'แก้ไข',
+            Delete: 'ลบ',
+            Update: 'อัปเดต',
+            Refresh: 'รีเฟรช',
+            Print: 'พิมพ์',
+            Pdf: 'PDF',
+            Excel: 'Excel',
+            Word: 'Word',
+            Csv: 'CSV',
+            Search: 'ค้นหา',
+            ColumnChooser: 'เลือกคอลัมน์',
+            ItemsPerPage: 'รายการต่อหน้า',
+            TotalItems: 'ทั้งหมด',
+            SelectedItems: 'รายการที่เลือก',
+            MatchCase: 'ตรงตามตัวพิมพ์ใหญ่-เล็ก',
+            Between: 'ระหว่าง',
+            CustomFilter: 'กรองแบบกำหนดเอง',
+            CustomFilterDatePlaceholder: 'เลือกวันที่',
+            CustomFilterPlaceholder: 'ป้อนค่า',
+            AND: 'และ',
+            OR: 'หรือ',
+            ShowRowsWhere: 'แสดงแถวที่',
+            CurrentPageInfo: '{0} จาก {1} หน้า',
+            TotalItemsInfo: '({0} รายการ)',
+            FirstPageTooltip: 'หน้าแรก',
+            LastPageTooltip: 'หน้าสุดท้าย',
+            NextPageTooltip: 'หน้าถัดไป',
+            PreviousPageTooltip: 'หน้าก่อน',
+            NextPagerTooltip: 'หน้าถัดไป',
+            PreviousPagerTooltip: 'หน้าก่อน',
+            PagerDropDown: 'รายการต่อหน้า',
+            PagerAllDropDown: 'รายการ',
+            All: 'ทั้งหมด'
+          },
+          pager: {
+            currentPageInfo: '{0} จาก {1} หน้า',
+            totalItemsInfo: '({0} รายการ)',
+            firstPageTooltip: 'หน้าแรก',
+            lastPageTooltip: 'หน้าสุดท้าย',
+            nextPageTooltip: 'หน้าถัดไป',
+            previousPageTooltip: 'หน้าก่อน',
+            nextPagerTooltip: 'หน้าถัดไป',
+            previousPagerTooltip: 'หน้าก่อน',
+            pagerDropDown: 'รายการต่อหน้า',
+            pagerAllDropDown: 'รายการ',
+            All: 'ทั้งหมด'
+          }
+        }
+      });
     } else {
-        setCulture('en-US');
+      setCulture('en-US');
     }
   }
 
   // --- Event Handlers ---
 
   onActionClick(action: GridAction, data: any): void {
-    if (action.onClick) {
-      action.onClick(data);
+    // Prevent event propagation to avoid row selection
+    if (!action) {
+      console.warn('[SyncfusionDataGrid] Action is undefined');
+      return;
     }
+
+    console.log('[SyncfusionDataGrid] Action clicked:', {
+      actionTitle: action.title,
+      actionId: action.id,
+      data: data
+    });
+
+    // Check if this is a delete action
+    const isDeleteAction = action.id === 'delete' ||
+                          action.title?.toLowerCase().includes('delete') ||
+                          action.title?.toLowerCase().includes('ลบ');
+
+    // Call the onClick callback if provided
+    if (action.onClick && typeof action.onClick === 'function') {
+      try {
+        action.onClick(data);
+
+        // Emit rowDeleted event if this is a delete action
+        if (isDeleteAction) {
+          console.log('[SyncfusionDataGrid] Emitting rowDeleted event for:', data);
+          this.rowDeleted.emit(data);
+        }
+      } catch (error) {
+        console.error('[SyncfusionDataGrid] Error in action onClick callback:', error);
+        console.error('[SyncfusionDataGrid] Action details:', action);
+        console.error('[SyncfusionDataGrid] Data passed:', data);
+      }
+    } else {
+      console.warn('[SyncfusionDataGrid] Action onClick is not a function:', action);
+    }
+
+    // Always emit the actionClick event for parent components that want to listen
     this.actionClick.emit({ action, data });
   }
 

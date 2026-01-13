@@ -25,6 +25,7 @@ export class ModalComponent implements OnInit, OnDestroy, OnChanges, AfterViewIn
   @Input() confirmText?: string;
   @Input() confirmVariant: 'primary' | 'danger' = 'primary';
   @Input() closeOnBackdrop: boolean = true;
+  @Input() useSolidBackground: boolean = false; // Use solid background instead of glass
   @Input() ariaLabelledBy?: string;
   @Input() ariaDescribedBy?: string;
 

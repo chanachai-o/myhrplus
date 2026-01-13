@@ -6,6 +6,7 @@ import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
 import { ColumnModel } from '@syncfusion/ej2-grids';
+import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
@@ -17,7 +18,7 @@ import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NotificationService } from '@core/services/notification.service';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
-import Swal from 'sweetalert2';
+import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
 @Component({
   selector: 'app-company-type-list',
@@ -27,6 +28,7 @@ import Swal from 'sweetalert2';
     RouterModule,
     TranslateModule,
     SharedModule,
+    SyncfusionModule,
     PageHeaderComponent,
     SyncfusionDataGridComponent,
     GlassCardComponent,
@@ -52,12 +54,19 @@ export class CompanyTypeListComponent implements OnInit {
   private notificationService = inject(NotificationService);
 
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
+  @ViewChild('confirmDialog') confirmDialog!: DialogComponent;
 
   // Use signal for data to avoid AsyncPipe deadlock with loading state
   data = signal<CompanyType[]>([]);
   showModal = false;
   selectedItem: CompanyType | null = null;
   searchControl = new FormControl('');
+
+  // Confirmation Dialog
+  confirmDialogVisible = false;
+  confirmDialogTitle = '';
+  confirmDialogMessage = '';
+  rowToDelete: CompanyType | null = null;
 
   headerActions: any[] = [];
   columns: ColumnModel[] = [];
@@ -127,13 +136,15 @@ export class CompanyTypeListComponent implements OnInit {
 
     this.gridActions = [
       {
-        title: this.translate.instant('Edit'),
+        id: 'edit',
+        title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EDIT),
         icon: 'ti ti-edit',
         class: 'text-primary',
         onClick: (data) => this.onEdit(data)
       },
       {
-        title: this.translate.instant('Delete'),
+        id: 'delete',
+        title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE),
         icon: 'ti ti-trash',
         class: 'text-danger',
         onClick: (data) => this.onDelete(data)
@@ -147,34 +158,82 @@ export class CompanyTypeListComponent implements OnInit {
   }
 
   onEdit(row: any) {
+    // Validate row data
+    if (!row) {
+      console.error('[CompanyTypeList] Edit: Row data is undefined');
+      return;
+    }
+
+    console.log('[CompanyTypeList] Edit action clicked for row:', row);
     this.selectedItem = row;
     this.showModal = true;
   }
 
   onDelete(row: any) {
-    Swal.fire({
-      title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE),
-      text: this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.CONFIRM.DELETE),
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#ef4444',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE),
-      cancelButtonText: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.CANCEL)
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.delete(row.codeid).subscribe({
-          next: () => {
-            this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
-            this.loadData();
-          },
-          error: (err) => {
-            console.error(err);
-            this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
-          }
-        });
+    // Validate row data
+    if (!row) {
+      console.error('[CompanyTypeList] Delete: Row data is undefined');
+      this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+      return;
+    }
+
+    if (!row.codeid) {
+      console.error('[CompanyTypeList] Delete: Row codeid is missing', row);
+      this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+      return;
+    }
+
+    console.log('[CompanyTypeList] Delete action clicked for row:', row);
+
+    // Store row to delete
+    this.rowToDelete = row;
+
+    // Set dialog content
+    this.confirmDialogTitle = this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE) || 'ลบ';
+    this.confirmDialogMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.CONFIRM.DELETE) || 'คุณต้องการลบข้อมูลหรือไม่?';
+
+    // Show dialog
+    this.confirmDialogVisible = true;
+  }
+
+  onConfirmDelete(): void {
+    if (!this.rowToDelete || !this.rowToDelete.codeid) {
+      console.error('[CompanyTypeList] Confirm delete: Row data is invalid');
+      this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+      this.confirmDialogVisible = false;
+      return;
+    }
+
+    console.log('[CompanyTypeList] Delete confirmed for codeid:', this.rowToDelete.codeid);
+
+    this.service.delete(this.rowToDelete.codeid).subscribe({
+      next: () => {
+        console.log('[CompanyTypeList] Delete successful');
+        this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
+        this.confirmDialogVisible = false;
+        this.rowToDelete = null;
+        this.loadData();
+      },
+      error: (err) => {
+        console.error('[CompanyTypeList] Delete error:', err);
+        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+        this.confirmDialogVisible = false;
+        this.rowToDelete = null;
       }
     });
+  }
+
+  onCancelDelete(): void {
+    console.log('[CompanyTypeList] Delete cancelled');
+    this.confirmDialogVisible = false;
+    this.rowToDelete = null;
+  }
+
+  onRowDeleted(row: any): void {
+    console.log('[CompanyTypeList] Row deleted event received:', row);
+    // This event is emitted when delete action is clicked
+    // The actual deletion is handled in onDelete method
+    // This can be used for additional logging, analytics, or other side effects
   }
 
   onSaveSuccess() {

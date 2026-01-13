@@ -14,12 +14,21 @@
     <!-- Added mt-24 for desktop spacing, kept mx-auto -->
     <div
       #modalPanel
-      class="relative w-full transform overflow-hidden rounded-2xl text-left shadow-xl transition-all sm:my-8 sm:mt-24 sm:max-w-lg glass-strong animate-slide-down motion-safe:animate-none dark:glass-dark-strong theme-myhr:glass-myhr-strong theme-myhr:shadow-myhr-lg"
+      class="relative w-full transform overflow-hidden rounded-2xl text-left shadow-xl transition-all sm:my-8 sm:mt-24 sm:max-w-lg animate-slide-down motion-safe:animate-none"
+      [ngClass]="{
+        'glass-strong dark:glass-dark-strong theme-myhr:glass-myhr-strong theme-myhr:shadow-myhr-lg': !useSolidBackground,
+        'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700': useSolidBackground
+      }"
       [class]="sizeClass"
       role="document"
       (click)="$event.stopPropagation()">
       <!-- Header -->
-      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+      <div
+        class="px-6 py-4 border-b flex items-center justify-between"
+        [ngClass]="{
+          'border-slate-200 dark:border-slate-700': !useSolidBackground,
+          'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700': useSolidBackground
+        }">
         <h3 [id]="modalTitleId" class="text-lg font-semibold text-slate-900 dark:text-slate-100">
           {{ title | translate }}
         </h3>
@@ -37,12 +46,24 @@
       </div>
 
       <!-- Body -->
-      <div [id]="modalDescriptionId" class="px-6 py-4">
+      <div
+        [id]="modalDescriptionId"
+        class="px-6 py-6"
+        [ngClass]="{
+          'bg-transparent': !useSolidBackground,
+          'bg-white dark:bg-gray-800': useSolidBackground
+        }">
         <ng-content></ng-content>
       </div>
 
       <!-- Footer -->
-      <div *ngIf="showFooter" class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 flex justify-end space-x-3">
+      <div
+        *ngIf="showFooter"
+        class="px-6 py-4 border-t flex justify-end space-x-3"
+        [ngClass]="{
+          'border-slate-200 dark:border-slate-700': !useSolidBackground,
+          'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700': useSolidBackground
+        }">
         <app-glass-button
           *ngIf="showCancel"
           variant="secondary"

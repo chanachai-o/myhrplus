@@ -53,6 +53,7 @@
         [showColumnChooser]="true"
         [pageSettings]="{ pageSize: 10, pageSizes: [10, 20, 50, 100], pageCount: 5 }"
         (rowSelected)="onEdit($event.data)"
+        (rowDeleted)="onRowDeleted($event)"
       >
       </app-syncfusion-data-grid>
     }
@@ -66,3 +67,38 @@
   (save)="onSaveSuccess()"
 >
 </app-company-type-form>
+
+<!-- Confirmation Dialog -->
+<ejs-dialog
+  #confirmDialog
+  [(visible)]="confirmDialogVisible"
+  [header]="confirmDialogTitle"
+  [width]="'400px'"
+  [isModal]="true"
+  [showCloseIcon]="true"
+  [closeOnEscape]="true"
+  [animationSettings]="{ effect: 'Zoom', duration: 400, delay: 0 }">
+  <ng-template #content>
+    <div class="p-4">
+      <p class="text-gray-700 dark:text-gray-300">{{ confirmDialogMessage }}</p>
+    </div>
+  </ng-template>
+  <ng-template #footerTemplate>
+    <div class="flex justify-end gap-3 p-4">
+      <button
+        ejs-button
+        type="button"
+        cssClass="e-outline"
+        (click)="onCancelDelete()">
+        {{ 'common.actions.cancel' | translate }}
+      </button>
+      <button
+        ejs-button
+        type="button"
+        cssClass="e-primary e-danger"
+        (click)="onConfirmDelete()">
+        {{ 'common.actions.delete' | translate }}
+      </button>
+    </div>
+  </ng-template>
+</ejs-dialog>

@@ -30,6 +30,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
 
 /* ============================================
+   Third-party Libraries
+   ============================================ */
+@import 'sweetalert2/dist/sweetalert2.min.css';
+
+/* ============================================
    Design Tokens & Mixins
    ============================================ */
 @import 'styles/design-tokens';

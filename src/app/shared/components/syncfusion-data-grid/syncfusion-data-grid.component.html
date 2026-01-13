@@ -132,7 +132,7 @@
                 [title]="action.title | translate"
                 class="btn-icon p-1 rounded-full transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 [ngClass]="action.class || ''"
-                (click)="onActionClick(action, data)">
+                (click)="$event.stopPropagation(); onActionClick(action, data)">
                 <i *ngIf="action.icon" [class]="action.icon"></i>
                 <span *ngIf="!action.icon && action.label">{{ action.label | translate }}</span>
               </button>

@@ -1,10 +1,12 @@
 <app-modal
   [show]="isOpen"
   [title]="(isEditMode ? 'company.companyType.edit' : 'company.companyType.add') | translate"
+  [useSolidBackground]="true"
+  [size]="'md'"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
 
-  <form [formGroup]="form" class="space-y-6 p-1">
+  <form [formGroup]="form" class="space-y-6">
     <!-- Code (PK) - Disable on Edit -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="md:col-span-1">
@@ -22,27 +24,68 @@
         </app-glass-input>
       </div>
       <div class="md:col-span-2">
-        <!-- Spacer or additional fields could go here -->
+        <!-- Spacer for layout balance -->
       </div>
     </div>
 
-    <!-- Thai Description -->
-    <app-glass-input
-      [label]="'company.companyType.tdesc' | translate"
-      formControlName="tdesc"
-      [required]="true"
-      [useFormValidationMessages]="true">
-      <app-form-validation-messages
-        [control]="form.get('tdesc')"
-        [customMessages]="{ required: 'company.companyType.tdescRequired' | translate }">
-      </app-form-validation-messages>
-    </app-glass-input>
+    <!-- Divider -->
+    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
 
-    <!-- English Description -->
-    <app-glass-input
-      [label]="'company.companyType.edesc' | translate"
-      formControlName="edesc">
-    </app-glass-input>
+    <!-- Descriptions Section -->
+    <div class="space-y-6">
+      <!-- Thai Description -->
+      <app-glass-input
+        [label]="'company.companyType.tdesc' | translate"
+        formControlName="tdesc"
+        [required]="true"
+        [useFormValidationMessages]="true">
+        <app-form-validation-messages
+          [control]="form.get('tdesc')"
+          [customMessages]="{ required: 'company.companyType.tdescRequired' | translate }">
+        </app-form-validation-messages>
+      </app-glass-input>
+
+      <!-- English Description -->
+      <app-glass-input
+        [label]="'company.companyType.edesc' | translate"
+        formControlName="edesc">
+      </app-glass-input>
+    </div>
   </form>
 
 </app-modal>
+
+<!-- Confirmation Dialog -->
+<ejs-dialog
+  #confirmDialog
+  [(visible)]="confirmDialogVisible"
+  [header]="confirmDialogTitle"
+  [width]="'400px'"
+  [isModal]="true"
+  [showCloseIcon]="true"
+  [closeOnEscape]="true"
+  [animationSettings]="{ effect: 'Zoom', duration: 400, delay: 0 }">
+  <ng-template #content>
+    <div class="p-4">
+      <p class="text-gray-700 dark:text-gray-300">{{ confirmDialogMessage }}</p>
+    </div>
+  </ng-template>
+  <ng-template #footerTemplate>
+    <div class="flex justify-end gap-3 p-4">
+      <button
+        ejs-button
+        type="button"
+        cssClass="e-outline"
+        (click)="onCancelSave()">
+        {{ TRANSLATION_KEYS.COMMON.ACTIONS.CANCEL | translate }}
+      </button>
+      <button
+        ejs-button
+        type="button"
+        cssClass="e-primary"
+        (click)="onConfirmSave()">
+        {{ TRANSLATION_KEYS.COMMON.ACTIONS.CONFIRM | translate }}
+      </button>
+    </div>
+  </ng-template>
+</ejs-dialog>
