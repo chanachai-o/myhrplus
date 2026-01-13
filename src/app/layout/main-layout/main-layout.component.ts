@@ -62,23 +62,30 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
           const currentUrl = event.urlAfterRedirects || event.url;
-          const breadcrumbPath = getBreadcrumbPathFromNavigation(currentUrl);
-
-          if (breadcrumbPath.length > 0) {
-            const breadcrumbItems: BreadcrumbItem[] = breadcrumbPath.map(item => ({
-              label: item.label,
-              route: item.route,
-              icon: item.icon || getBreadcrumbIcon(item.level || 1)
-            }));
-
-            this.breadcrumbs = breadcrumbItems;
-            this.layoutService.setBreadcrumbs(breadcrumbItems);
-          } else {
-            this.breadcrumbs = [];
-            this.layoutService.setBreadcrumbs([]);
-          }
+          this.updateBreadcrumbs(currentUrl);
         }
       });
+
+    // Initialize breadcrumbs with current URL
+    this.updateBreadcrumbs(this.router.url);
+  }
+
+  updateBreadcrumbs(url: string): void {
+    const breadcrumbPath = getBreadcrumbPathFromNavigation(url);
+
+    if (breadcrumbPath.length > 0) {
+      const breadcrumbItems: BreadcrumbItem[] = breadcrumbPath.map(item => ({
+        label: item.label,
+        route: item.route,
+        icon: item.icon || getBreadcrumbIcon(item.level || 1)
+      }));
+
+      this.breadcrumbs = breadcrumbItems;
+      this.layoutService.setBreadcrumbs(breadcrumbItems);
+    } else {
+      this.breadcrumbs = [];
+      this.layoutService.setBreadcrumbs([]);
+    }
   }
 
   ngOnDestroy(): void {
