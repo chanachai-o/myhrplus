@@ -6,7 +6,7 @@
   icon="domain"
   iconGradient="from-primary to-primary"
   titleGradient="from-primary to-primary"
-  customClass="border-b border-gray-200 dark:border-gray-700 pb-4"
+  customClass="border-b border-primary/30 dark:border-primary/50 pb-4"
 >
   <div header-actions class="w-full md:w-64">
     <app-glass-input
@@ -45,7 +45,7 @@
       </div>
 
       <app-syncfusion-data-grid
-        class="h-full block"
+        class="h-full block border border-primary/20 dark:border-primary/30 rounded-lg overflow-hidden shadow-sm"
         [dataSource]="data()"
         [columns]="columns"
         [actions]="gridActions"

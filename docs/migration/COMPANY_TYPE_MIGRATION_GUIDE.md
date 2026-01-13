@@ -47,15 +47,16 @@ company-type/
 - ใช้ `SyncfusionDataGridComponent` สำหรับแสดงข้อมูล
 - ใช้ `signal()` สำหรับ reactive data
 - ใช้ `FormControl` สำหรับ search
-- ใช้ `Syncfusion Dialog` สำหรับ confirmation
+- ใช้ `ConfirmationDialogService` สำหรับ confirmation dialogs
 - ใช้ `NotificationService` สำหรับแสดง messages
+- ใช้ `app-skeleton-loader` type="datagrid" สำหรับ loading state
 
 **Imports:**
 ```typescript
 import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
-import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { ConfirmationDialogService } from '@core/services';
+import { NotificationService } from '@core/services';
 ```
 
 #### Form Component (`company-type-form.component.ts`)
@@ -68,17 +69,17 @@ import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 
 **Key Features:**
 - ใช้ `ReactiveFormsModule` สำหรับ form management
-- ใช้ `ModalComponent` สำหรับ modal dialog
+- ใช้ `ModalComponent` สำหรับ modal dialog (with `useSolidBackground="true"`)
 - ใช้ `GlassInputComponent` สำหรับ input fields
 - ใช้ `FormValidationMessagesComponent` สำหรับ validation messages
-- ใช้ `Syncfusion Dialog` สำหรับ confirmation
+- ใช้ `ConfirmationDialogService` สำหรับ save confirmation
 
 **Imports:**
 ```typescript
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
-import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
+import { ConfirmationDialogService } from '@core/services';
 ```
 
 ### 3. Service Pattern
@@ -167,7 +168,14 @@ loading = signal<boolean>(false);
 
 // Component
 @if (service.loading()) {
-  <app-skeleton-loader type="table" [rows]="10" [columns]="5"></app-skeleton-loader>
+  <app-skeleton-loader 
+    type="datagrid" 
+    [rows]="10" 
+    [columns]="columns.length"
+    [showToolbar]="true"
+    [showPagination]="true"
+    [hasActions]="gridActions.length > 0">
+  </app-skeleton-loader>
 } @else {
   <app-syncfusion-data-grid [dataSource]="data()"></app-syncfusion-data-grid>
 }
@@ -191,28 +199,50 @@ this.service.getAll().subscribe({
 
 ### 5. Confirmation Dialogs
 
-**ใช้ Syncfusion Dialog:**
+**ใช้ ConfirmationDialogService (Recommended):**
 ```typescript
-// Component
-confirmDialogVisible = false;
-confirmDialogTitle = '';
-confirmDialogMessage = '';
+// Import service
+import { ConfirmationDialogService } from '@core/services';
 
-// Show dialog
-this.confirmDialogTitle = this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE);
-this.confirmDialogMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.CONFIRM.DELETE);
-this.confirmDialogVisible = true;
+// Inject service
+private confirmationDialogService = inject(ConfirmationDialogService);
 
-// Template
-<ejs-dialog
-  #confirmDialog
-  [(visible)]="confirmDialogVisible"
-  [header]="confirmDialogTitle"
-  [width]="'400px'"
-  [isModal]="true">
-  <!-- Content and Footer templates -->
-</ejs-dialog>
+// Delete confirmation
+onDelete(row: any): void {
+  this.confirmationDialogService.confirmDelete().subscribe({
+    next: (result) => {
+      if (result.confirmed) {
+        this.service.delete(row.codeid).subscribe({
+          next: () => {
+            this.loadData();
+            this.notificationService.showSuccess(
+              this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE)
+            );
+          }
+        });
+      }
+    }
+  });
+}
+
+// Save confirmation
+onSubmit(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+  
+  this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
+    next: (result) => {
+      if (result.confirmed) {
+        this.saveData();
+      }
+    }
+  });
+}
 ```
+
+**Note**: `ConfirmationDialogComponent` ถูกเพิ่มใน `app.component.html` เป็น global component แล้ว ไม่ต้องเพิ่ม template ใน component เอง
 
 ### 6. Translation
 
@@ -284,6 +314,28 @@ gridActions: GridAction[] = [
 
 **Template:**
 ```html
+<app-page-header
+  [title]="'company.companyType.titleFull' | translate"
+  [showBreadcrumbs]="true"
+  [actions]="headerActions"
+  [useGlassCard]="false"
+  icon="domain"
+  iconGradient="from-primary to-primary"
+  titleGradient="from-primary to-primary"
+  customClass="border-b border-gray-200 dark:border-gray-700 pb-4"
+>
+  <div header-actions class="w-full md:w-64">
+    <app-glass-input
+      [formControl]="searchControl"
+      icon="search"
+      [placeholder]="'common.actions.search' | translate"
+      [isSearch]="true"
+      [customClass]="'h-9 text-sm'"
+    >
+    </app-glass-input>
+  </div>
+</app-page-header>
+
 <app-syncfusion-data-grid
   [dataSource]="data()"
   [columns]="columns"
@@ -316,8 +368,8 @@ gridActions: GridAction[] = [
 - [ ] ใช้ `signal()` สำหรับ data state
 - [ ] ใช้ `FormControl` สำหรับ search
 - [ ] ใช้ `NotificationService` สำหรับ error/success messages
-- [ ] ใช้ `Syncfusion Dialog` สำหรับ delete confirmation
-- [ ] ใช้ `app-skeleton-loader` สำหรับ loading state
+- [ ] ใช้ `ConfirmationDialogService` สำหรับ delete confirmation
+- [ ] ใช้ `app-skeleton-loader` type="datagrid" สำหรับ loading state
 
 ### Phase 3: Form Component
 - [ ] สร้าง form component (`*-form.component.ts`)
@@ -326,7 +378,7 @@ gridActions: GridAction[] = [
 - [ ] ใช้ `ModalComponent` สำหรับ modal dialog
 - [ ] ใช้ `GlassInputComponent` สำหรับ input fields
 - [ ] ใช้ `FormValidationMessagesComponent` สำหรับ validation
-- [ ] ใช้ `Syncfusion Dialog` สำหรับ save confirmation
+- [ ] ใช้ `ConfirmationDialogService` สำหรับ save confirmation
 - [ ] จัดการ edit mode (disable PK field)
 
 ### Phase 4: Integration
@@ -388,17 +440,13 @@ export class EntityListComponent implements OnInit {
   private notificationService = inject(NotificationService);
   
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
-  @ViewChild('confirmDialog') confirmDialog!: DialogComponent;
+  
+  private confirmationDialogService = inject(ConfirmationDialogService);
   
   data = signal<Entity[]>([]);
   showModal = false;
   selectedItem: Entity | null = null;
   searchControl = new FormControl('');
-  
-  confirmDialogVisible = false;
-  confirmDialogTitle = '';
-  confirmDialogMessage = '';
-  rowToDelete: Entity | null = null;
   
   columns: ColumnModel[] = [];
   gridActions: GridAction[] = [];
@@ -440,19 +488,14 @@ export class EntityFormComponent implements OnChanges {
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
   
-  @ViewChild('confirmDialog') confirmDialog!: DialogComponent;
-  
   private fb = inject(FormBuilder);
   private service = inject(EntityService);
   private notificationService = inject(NotificationService);
   private translate = inject(TranslateService);
+  private confirmationDialogService = inject(ConfirmationDialogService);
   
   form: FormGroup;
   isEditMode = false;
-  
-  confirmDialogVisible = false;
-  confirmDialogTitle = '';
-  confirmDialogMessage = '';
   
   readonly TRANSLATION_KEYS = TRANSLATION_KEYS;
   
@@ -480,20 +523,13 @@ export class EntityFormComponent implements OnChanges {
       return;
     }
     
-    this.confirmDialogTitle = this.isEditMode
-      ? this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EDIT)
-      : this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.SAVE);
-    
-    this.confirmDialogMessage = this.isEditMode
-      ? 'คุณต้องการบันทึกการแก้ไขข้อมูลหรือไม่?'
-      : 'คุณต้องการบันทึกข้อมูลหรือไม่?';
-    
-    this.confirmDialogVisible = true;
-  }
-  
-  onConfirmSave(): void {
-    this.confirmDialogVisible = false;
-    this.saveData();
+    this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
+      next: (result) => {
+        if (result.confirmed) {
+          this.saveData();
+        }
+      }
+    });
   }
   
   private saveData() {
@@ -553,7 +589,7 @@ export class EntityFormComponent implements OnChanges {
 
 ### 8. Dialogs
 - ❌ JSP: Alert/Confirm, custom modals
-- ✅ Angular: `Syncfusion Dialog`, `ModalComponent`
+- ✅ Angular: `ConfirmationDialogService` (centralized), `ModalComponent`
 
 ## Testing Checklist
 
@@ -581,6 +617,27 @@ export class EntityFormComponent implements OnChanges {
 
 ---
 
-**Last Updated**: 2025-01-07
+**Last Updated**: 2025-01-08
 **Status**: ✅ Complete Reference Implementation
+
+## Recent Updates (2025-01-08)
+
+### 1. Confirmation Dialog Service Integration
+- ✅ เปลี่ยนจาก Syncfusion Dialog โดยตรงเป็น `ConfirmationDialogService`
+- ✅ ใช้ `app-glass-button` ใน confirmation dialog แทน `ejs-button`
+- ✅ ลบ dialog template จาก component (ใช้ global component แทน)
+
+### 2. Skeleton Loader Enhancement
+- ✅ เพิ่ม `type="datagrid"` สำหรับ skeleton loader
+- ✅ รองรับ `showToolbar`, `showPagination`, `hasActions` properties
+- ✅ Skeleton structure ตรงกับ Syncfusion DataGrid
+
+### 3. Page Header Improvements
+- ✅ ลด top spacing (`pt-2` แทน `pt-6`)
+- ✅ เพิ่ม border-bottom (`border-b border-gray-200 dark:border-gray-700`)
+- ✅ รองรับ search input ใน header actions
+
+### 4. Glass Input Icon Fix
+- ✅ แก้ไข icon search ไม่แสดง (เพิ่ม `z-10` และ `flex items-center justify-center`)
+- ✅ Icon color ถูกส่งไปที่ `app-icon` component โดยตรง
 

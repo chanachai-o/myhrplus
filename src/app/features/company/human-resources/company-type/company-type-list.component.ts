@@ -104,13 +104,6 @@ export class CompanyTypeListComponent implements OnInit {
         onClick: () => this.onCreate()
       },
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EXPORT),
-        variant: 'success',
-        icon: 'download',
-        class: 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700',
-        onClick: () => this.onExport()
-      },
-      {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.MANUAL),
         variant: 'info',
         icon: 'article',

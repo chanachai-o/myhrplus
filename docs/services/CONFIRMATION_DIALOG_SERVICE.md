@@ -176,13 +176,17 @@ interface ConfirmationDialogConfig {
   message: string;                    // Dialog message (required)
   confirmText?: string;               // Confirm button text
   cancelText?: string;                // Cancel button text
-  confirmButtonClass?: string;        // Confirm button CSS class
-  cancelButtonClass?: string;         // Cancel button CSS class
+  confirmButtonClass?: string;        // Confirm button CSS class (deprecated: use confirmVariant)
+  cancelButtonClass?: string;         // Cancel button CSS class (deprecated: use cancelVariant)
+  confirmVariant?: 'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning'; // Glass button variant
+  cancelVariant?: 'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning'; // Glass button variant
   width?: string;                     // Dialog width (default: '400px')
   showCloseIcon?: boolean;            // Show close icon (default: true)
   closeOnEscape?: boolean;            // Close on Escape key (default: true)
 }
 ```
+
+**Note**: Dialog buttons ใช้ `app-glass-button` component แทน `ejs-button` เพื่อความสอดคล้องกับ design system
 
 #### `ConfirmationDialogResult`
 
@@ -202,8 +206,10 @@ Service มี signals สำหรับ reactive state:
 - `message()`: `ReadonlySignal<string>` - Dialog message
 - `confirmText()`: `ReadonlySignal<string>` - Confirm button text
 - `cancelText()`: `ReadonlySignal<string>` - Cancel button text
-- `confirmButtonClass()`: `ReadonlySignal<string>` - Confirm button CSS class
-- `cancelButtonClass()`: `ReadonlySignal<string>` - Cancel button CSS class
+- `confirmButtonClass()`: `ReadonlySignal<string>` - Confirm button CSS class (deprecated)
+- `cancelButtonClass()`: `ReadonlySignal<string>` - Cancel button CSS class (deprecated)
+- `confirmVariant()`: `ReadonlySignal<'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning'>` - Confirm button variant
+- `cancelVariant()`: `ReadonlySignal<'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning'>` - Cancel button variant
 - `width()`: `ReadonlySignal<string>` - Dialog width
 - `showCloseIcon()`: `ReadonlySignal<boolean>` - Show close icon
 - `closeOnEscape()`: `ReadonlySignal<boolean>` - Close on Escape
@@ -394,6 +400,20 @@ onSubmit(): void {
 
 ---
 
-**Last Updated**: 2025-01-07
+**Last Updated**: 2025-01-08
 **Status**: ✅ Complete
+
+## Recent Updates (2025-01-08)
+
+### 1. Glass Button Integration
+- ✅ เปลี่ยนจาก `ejs-button` เป็น `app-glass-button` ใน confirmation dialog
+- ✅ เพิ่ม `confirmVariant` และ `cancelVariant` properties
+- ✅ รองรับ dynamic primary color theming
+- ✅ Consistent UI กับ design system
+
+### 2. Button Variants
+- ✅ `confirmDelete()`: ใช้ `confirmVariant: 'danger'`, `cancelVariant: 'secondary'`
+- ✅ `confirmSave()`: ใช้ `confirmVariant: 'primary'`, `cancelVariant: 'secondary'`
+- ✅ `confirmCancel()`: ใช้ `confirmVariant: 'primary'`, `cancelVariant: 'secondary'`
+- ✅ Backward compatible: ยังรองรับ `confirmButtonClass` และ `cancelButtonClass` (deprecated)
 
