@@ -11,7 +11,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 })
 export class GlassButtonComponent {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() variant: 'primary' | 'secondary' | 'danger' = 'secondary';
+  @Input() variant: 'primary' | 'secondary' | 'danger' | 'info' | 'success' | 'warning' = 'secondary';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() disabled: boolean = false;
   @Input() loading: boolean = false;
@@ -36,6 +36,12 @@ export class GlassButtonComponent {
       variantClasses = 'bg-gradient-primary text-white shadow-md hover:bg-gradient-primary hover:shadow-lg glow-primary transition-all duration-200';
     } else if (this.variant === 'danger') {
       variantClasses = 'bg-gradient-to-r from-error-500 to-error-600 text-white shadow-md hover:from-error-600 hover:to-error-700 hover:shadow-lg glow-error dark:from-error-600 dark:to-error-700';
+    } else if (this.variant === 'info') {
+      variantClasses = 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg glow-primary dark:from-blue-600 dark:to-blue-700';
+    } else if (this.variant === 'success') {
+      variantClasses = 'bg-gradient-to-r from-success-500 to-success-600 text-white shadow-md hover:from-success-600 hover:to-success-700 hover:shadow-lg glow-success dark:from-success-600 dark:to-success-700';
+    } else if (this.variant === 'warning') {
+      variantClasses = 'bg-gradient-to-r from-warning-500 to-warning-600 text-white shadow-md hover:from-warning-600 hover:to-warning-700 hover:shadow-lg dark:from-warning-600 dark:to-warning-700';
     } else {
       // Secondary variant - skip glass background if customClass has gradient
       if (hasGradient) {

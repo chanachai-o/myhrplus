@@ -82,7 +82,7 @@
           size="sm"
           [ariaLabel]="action.label"
           [disabled]="action.disabled || false"
-          [customClass]="(action.class || '') + ' ' + (action.variant === 'primary' ? 'bg-gradient-primary text-white hover:shadow-primary' : (action.variant === 'secondary' ? 'bg-white/50 text-gray-700 hover:bg-white/80' : ''))"
+          [customClass]="(action.variant === 'primary' ? 'bg-gradient-primary text-white hover:shadow-primary' : (action.variant === 'secondary' ? 'bg-white/50 text-gray-700 hover:bg-white/80' : '')) + ' ' + (action.class || '')"
           (clicked)="action.onClick?.()">
           <app-icon *ngIf="action.icon" [name]="action.icon" size="sm" class="mr-1.5"></app-icon>
           {{ action.label }}

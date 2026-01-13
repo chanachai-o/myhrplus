@@ -38,18 +38,18 @@ module.exports = {
       },
       colors: {
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
-          DEFAULT: '#0ea5e9',
+          50: 'rgba(var(--primary-rgb), 0.05)',
+          100: 'rgba(var(--primary-rgb), 0.1)',
+          200: 'rgba(var(--primary-rgb), 0.2)',
+          300: 'rgba(var(--primary-rgb), 0.3)',
+          400: 'rgba(var(--primary-rgb), 0.5)',
+          500: 'rgba(var(--primary-rgb), 0.7)',
+          600: 'rgba(var(--primary-rgb), 0.8)',
+          700: 'rgba(var(--primary-rgb), 0.9)',
+          800: 'rgba(var(--primary-rgb), 0.95)',
+          900: 'rgb(var(--primary-rgb))',
+          950: 'rgb(var(--primary-rgb))',
+          DEFAULT: 'rgb(var(--primary-rgb))',
         },
         success: {
           50: '#f0fdf4',
@@ -99,13 +99,13 @@ module.exports = {
           200: '#bfdbfe',
           300: '#93c5fd',
           400: '#60a5fa',
-          500: '#07399C',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-          DEFAULT: '#07399C',
+          500: '#3b82f6', // Changed from custom color to standard blue-500
+          600: '#2563eb', // Changed from custom color to standard blue-600
+          700: '#1d4ed8', // Changed from custom color to standard blue-700
+          800: '#1e40af', // Changed from custom color to standard blue-800
+          900: '#1e3a8a', // Changed from custom color to standard blue-900
+          950: '#172554', // Changed from custom color to standard blue-950
+          DEFAULT: '#3b82f6',
         },
         glass: {
           white: 'rgba(255, 255, 255, 0.25)',
