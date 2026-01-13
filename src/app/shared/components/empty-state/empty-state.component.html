@@ -1,4 +1,14 @@
-<app-glass-card padding="p-12" customClass="text-center">
+@if (useGlassCard) {
+  <app-glass-card padding="p-12" customClass="text-center">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </app-glass-card>
+} @else {
+  <div class="text-center p-12">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </div>
+}
+
+<ng-template #content>
   <div class="flex flex-col items-center justify-center">
     <!-- Icon -->
     <div class="mb-4 flex items-center justify-center" [class]="!useIconComponent ? (iconSizeClass + ' sm:text-4xl md:text-6xl lg:text-8xl') : ''">
@@ -31,4 +41,4 @@
       {{ action.label | translate }}
     </app-glass-button>
   </div>
-</app-glass-card>
+</ng-template>

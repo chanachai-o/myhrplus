@@ -72,10 +72,12 @@ export interface CustomColumnModel extends ColumnModel {
   };
 }
 
+import { EmptyStateComponent } from '../empty-state/empty-state.component';
+
 @Component({
   selector: 'app-syncfusion-data-grid',
   standalone: true,
-  imports: [CommonModule, GridModule, TranslateModule],
+  imports: [CommonModule, GridModule, TranslateModule, EmptyStateComponent],
   templateUrl: './syncfusion-data-grid.component.html',
   styleUrls: ['./syncfusion-data-grid.component.scss'],
   providers: [
@@ -324,6 +326,15 @@ export class SyncfusionDataGridComponent implements OnInit, OnChanges {
   search(text: string): void {
     if (this.grid) {
       this.grid.search(text);
+    }
+  }
+
+  /**
+   * Export grid data to Excel
+   */
+  exportToExcel(): void {
+    if (this.grid) {
+      this.grid.excelExport();
     }
   }
 }

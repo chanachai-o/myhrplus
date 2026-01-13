@@ -22,13 +22,14 @@ export interface EmptyStateAction {
 })
 export class EmptyStateComponent {
   private translate = inject(TranslateService);
-  
+
   @Input() icon?: string; // Icon name (for app-icon) or emoji/text
   @Input() iconName?: string; // Icon name for app-icon component
   @Input() title?: string;
   @Input() description?: string;
   @Input() action?: EmptyStateAction;
   @Input() iconSize: 'sm' | 'md' | 'lg' = 'md';
+  @Input() useGlassCard = false;
 
   defaultIcon = '📭';
 

@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
 import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeService } from '../../services/company-type.service';
+import { NotificationService } from '@core/services/notification.service';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
 @Component({
@@ -30,6 +31,8 @@ export class CompanyTypeFormComponent implements OnChanges {
 
   private fb = inject(FormBuilder);
   private service = inject(CompanyTypeService);
+  private notificationService = inject(NotificationService);
+  private translate = inject(TranslateService);
 
   form: FormGroup;
   isEditMode = false;
@@ -82,7 +85,7 @@ export class CompanyTypeFormComponent implements OnChanges {
       error: (err: unknown) => {
         console.error(err);
         this.service.loading.set(false);
-        // TODO: Show toast error
+        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE));
       }
     });
   }

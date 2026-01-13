@@ -13,6 +13,9 @@ import { CompanyTypeFormComponent } from './company-type-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { NotificationService } from '@core/services/notification.service';
+import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-company-type-list',
@@ -28,13 +31,23 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     GlassInputComponent,
     CompanyTypeFormComponent,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    EmptyStateComponent
   ],
-  templateUrl: './company-type-list.component.html'
+  templateUrl: './company-type-list.component.html',
+  styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 1.5rem;
+    }
+  `]
 })
 export class CompanyTypeListComponent implements OnInit {
   public service = inject(CompanyTypeService);
   private translate = inject(TranslateService);
+  private notificationService = inject(NotificationService);
 
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
 
@@ -119,19 +132,41 @@ export class CompanyTypeListComponent implements OnInit {
   }
 
   onDelete(row: any) {
-    // TODO: Implement delete functionality
-    console.log('Delete clicked', row);
+    Swal.fire({
+      title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE),
+      text: this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.CONFIRM.DELETE),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE),
+      cancelButtonText: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.CANCEL)
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.delete(row.codeid).subscribe({
+          next: () => {
+            this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
+            this.data$ = this.service.getAll();
+          },
+          error: (err) => {
+            console.error(err);
+            this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+          }
+        });
+      }
+    });
   }
 
   onSaveSuccess() {
-    // Refresh data
+    this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE));
     this.data$ = this.service.getAll();
     this.showModal = false;
   }
 
   onExport() {
-    // TODO: Implement export functionality
-    console.log('Export clicked');
+    if (this.grid) {
+      this.grid.exportToExcel();
+    }
   }
 
   onManual() {

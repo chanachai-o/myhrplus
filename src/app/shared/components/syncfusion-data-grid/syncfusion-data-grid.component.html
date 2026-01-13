@@ -1,10 +1,11 @@
-<div class="syncfusion-data-grid w-full h-full" [ngClass]="customClass">
+<div class="syncfusion-data-grid w-full h-full flex flex-col" [ngClass]="customClass">
   <ejs-grid
     #grid
+    class="flex-1 w-full min-h-0 block"
     [id]="'grid'"
     [dataSource]="dataSource"
-    [height]="height"
-    [width]="width"
+    [height]="'100%'"
+    [width]="'100%'"
     [allowPaging]="allowPaging"
     [allowSorting]="allowSorting"
     [allowFiltering]="allowFiltering"
@@ -32,6 +33,18 @@
     (actionComplete)="actionComplete.emit($event)"
     (toolbarClick)="onToolbarClick($event)"
     (columnMenuClick)="onColumnMenuClick($event)">
+
+    <ng-template #emptyRecordTemplate>
+      <div class="h-full w-full flex flex-col items-center justify-center p-8">
+        <app-empty-state
+          [iconName]="'search'"
+          [title]="'common.labels.noData' | translate"
+          [description]="'common.labels.noDataDescription' | translate"
+          [iconSize]="'lg'"
+          class="w-full flex justify-center">
+        </app-empty-state>
+      </div>
+    </ng-template>
 
     <e-columns>
       <!-- Dynamic Columns -->
