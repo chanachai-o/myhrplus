@@ -2,10 +2,10 @@ export const environment = {
   production: false,
   // Base URLs - following hrplus-std-rd pattern
   baseUrl: 'https://hrplus-std.myhr.co.th/plus',  // For /plus endpoints
-  jbossUrl: 'https://hrplus-std.myhr.co.th/hr',   // For /hr endpoints (main API)
+  jbossUrl: 'http://192.168.30.71:8082/hr',   // For /hr endpoints (main API)
   rootUrl: 'https://hrplus-std.myhr.co.th',       // Root URL without path
   // Legacy support - keep for backward compatibility
-  apiBaseUrl: 'https://hrplus-std.myhr.co.th/hr', // Alias for jbossUrl
+  apiBaseUrl: 'http://192.168.30.71:8082/hr', // Alias for jbossUrl
   apiEndpoints: {
     auth: '/restauthen',
     core: '/capi',

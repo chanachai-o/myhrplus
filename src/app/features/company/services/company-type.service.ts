@@ -1,95 +1,164 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseApiService } from '@core/services';
 import { CompanyType } from '../models/company-type.model';
-import { Observable, of } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+
+// API Response interfaces
+interface CompanyTypeApiResponse {
+  codeId: string;
+  tdesc: string;
+  edesc: string;
+}
+
+interface PaginatedResponse<T> {
+  content: T[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
+
+// Pagination parameters interface
+export interface PaginationParams {
+  page?: number;
+  size?: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyTypeService extends BaseApiService<CompanyType> {
-  protected baseUrl = 'hr/company/type'; // Adjust endpoint to match backend
+  protected baseUrl = 'company/type'; // Relative path (will be overridden by apiUrl)
 
   // State
   loading = signal<boolean>(false);
 
-  // Mock data for UI testing
-  private mockData: CompanyType[] = Array.from({ length: 15 }, (_, i) => {
-    const id = (i + 1).toString().padStart(3, '0');
-    return {
-      codeid: id,
-      tdesc: `ประเภทธุรกิจ ${i + 1} (จำกัด)`,
-      edesc: `Business Type ${i + 1} (Co., Ltd.)`,
-      edit_date: new Date(2024, 0, i + 1).toISOString(),
-      edit_by: 'System Admin',
-      edit_time: '10:30:00',
-      verified: 'Y'
-    };
-  });
+  // Override apiUrl to use specific endpoint
+  protected override get apiUrl(): string {
+    return 'http://192.168.30.71:8110/company/type';
+  }
 
-  override getAll(): Observable<CompanyType[]> {
-    // Simulate API delay and loading state
+  /**
+   * Get all company types with pagination support
+   * @param params Optional pagination parameters (page, size)
+   * @returns Observable of CompanyType array
+   */
+  override getAll(params?: PaginationParams): Observable<CompanyType[]> {
     this.loading.set(true);
-    console.log('CompanyTypeService: Fetching mock data...', this.mockData);
-    return of(this.mockData).pipe(
-      delay(800), // 800ms delay to show skeleton
+
+    // Build query parameters
+    let httpParams = new HttpParams();
+    if (params?.page !== undefined) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+    if (params?.size !== undefined) {
+      httpParams = httpParams.set('size', params.size.toString());
+    }
+
+    console.log('[CompanyTypeService] Fetching data from:', this.apiUrl, 'with params:', params);
+
+    return this.http.get<PaginatedResponse<CompanyTypeApiResponse>>(this.apiUrl, { params: httpParams }).pipe(
+      map((response) => {
+        // Transform API response to CompanyType model
+        // Convert camelCase (codeId) to lowercase (codeid)
+        const transformedData: CompanyType[] = response.content.map((item) => ({
+          codeid: item.codeId,
+          tdesc: item.tdesc,
+          edesc: item.edesc
+        }));
+
+        console.log('[CompanyTypeService] Data transformed:', {
+          totalElements: response.totalElements,
+          totalPages: response.totalPages,
+          currentPage: response.number,
+          itemsCount: transformedData.length
+        });
+
+        return transformedData;
+      }),
       tap((data) => {
-        console.log('CompanyTypeService: Data returned', data);
+        console.log('[CompanyTypeService] Data loaded:', data);
         this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('[CompanyTypeService] Error loading data:', error);
+        this.loading.set(false);
+        return throwError(() => error);
       })
     );
   }
 
   override create(data: Partial<CompanyType>): Observable<CompanyType> {
     this.loading.set(true);
-    const newId = (this.mockData.length + 1).toString().padStart(3, '0');
-    const newItem: CompanyType = {
-      ...data,
-      codeid: newId,
-      edit_date: new Date().toISOString(),
-      edit_by: 'System Admin',
-      edit_time: new Date().toLocaleTimeString('en-GB'),
-      verified: 'N'
-    } as CompanyType;
-
-    // Add to beginning of list
-    this.mockData = [newItem, ...this.mockData];
-
-    return of(newItem).pipe(
-      delay(800),
-      tap(() => this.loading.set(false))
+    console.log('[CompanyTypeService] Creating:', data);
+    return this.http.post<CompanyType>(this.apiUrl, data).pipe(
+      tap((result) => {
+        console.log('[CompanyTypeService] Created:', result);
+        this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('[CompanyTypeService] Error creating:', error);
+        this.loading.set(false);
+        return throwError(() => error);
+      })
     );
   }
 
   override update(id: string | number, data: Partial<CompanyType>): Observable<CompanyType> {
     this.loading.set(true);
-    const index = this.mockData.findIndex(item => item.codeid === id);
-
-    if (index !== -1) {
-      this.mockData[index] = {
-        ...this.mockData[index],
-        ...data,
-        edit_date: new Date().toISOString(),
-        edit_time: new Date().toLocaleTimeString('en-GB')
-      };
-
-      return of(this.mockData[index]).pipe(
-        delay(800),
-        tap(() => this.loading.set(false))
-      );
-    }
-
-    this.loading.set(false);
-    throw new Error('Item not found');
+    const url = `${this.apiUrl}/${id}`;
+    console.log('[CompanyTypeService] Updating:', id, data);
+    return this.http.put<CompanyType>(url, data).pipe(
+      tap((result) => {
+        console.log('[CompanyTypeService] Updated:', result);
+        this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('[CompanyTypeService] Error updating:', error);
+        this.loading.set(false);
+        return throwError(() => error);
+      })
+    );
   }
 
   override delete(id: string | number): Observable<void> {
     this.loading.set(true);
-    this.mockData = this.mockData.filter(item => item.codeid !== id);
-
-    return of(void 0).pipe(
-      delay(800),
-      tap(() => this.loading.set(false))
+    const url = `${this.apiUrl}/${id}`;
+    console.log('[CompanyTypeService] Deleting:', id);
+    return this.http.delete<void>(url).pipe(
+      tap(() => {
+        console.log('[CompanyTypeService] Deleted:', id);
+        this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('[CompanyTypeService] Error deleting:', error);
+        this.loading.set(false);
+        return throwError(() => error);
+      })
     );
   }
 }

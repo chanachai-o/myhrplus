@@ -1,33 +1,56 @@
 <app-modal
   [show]="isOpen"
   [title]="(isEditMode ? 'company.companyGroup.edit' : 'company.companyGroup.add') | translate"
+  [useSolidBackground]="true"
+  [size]="'md'"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
-  
-  <form [formGroup]="form" class="space-y-4 p-2">
-    <!-- Code (PK) -->
-    <app-glass-input
-      [label]="'company.companyGroup.codeId' | translate"
-      formControlName="codeid"
-      [required]="true"
-      [readonly]="isEditMode"
-      [errorMessage]="'company.companyGroup.codeIdRequired' | translate"
-      maxLength="3">
-    </app-glass-input>
 
-    <!-- Thai Description -->
-    <app-glass-input
-      [label]="'company.companyGroup.tdesc' | translate"
-      formControlName="tdesc"
-      [required]="true"
-      [errorMessage]="'company.companyGroup.tdescRequired' | translate">
-    </app-glass-input>
+  <form [formGroup]="form" class="space-y-6">
+    <!-- Code (PK) - Disable on Edit -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-1">
+        <app-glass-input
+          [label]="'company.companyGroup.codeId' | translate"
+          formControlName="codeid"
+          [required]="true"
+          [readonly]="isEditMode"
+          [useFormValidationMessages]="true"
+          maxLength="3">
+          <app-form-validation-messages
+            [control]="form.get('codeid')"
+            [customMessages]="{ required: 'company.companyGroup.codeIdRequired' | translate }">
+          </app-form-validation-messages>
+        </app-glass-input>
+      </div>
+      <div class="md:col-span-2">
+        <!-- Spacer for layout balance -->
+      </div>
+    </div>
 
-    <!-- English Description -->
-    <app-glass-input
-      [label]="'company.companyGroup.edesc' | translate"
-      formControlName="edesc">
-    </app-glass-input>
+    <!-- Divider -->
+    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+
+    <!-- Descriptions Section -->
+    <div class="space-y-6">
+      <!-- Thai Description -->
+      <app-glass-input
+        [label]="'company.companyGroup.tdesc' | translate"
+        formControlName="tdesc"
+        [required]="true"
+        [useFormValidationMessages]="true">
+        <app-form-validation-messages
+          [control]="form.get('tdesc')"
+          [customMessages]="{ required: 'company.companyGroup.tdescRequired' | translate }">
+        </app-form-validation-messages>
+      </app-glass-input>
+
+      <!-- English Description -->
+      <app-glass-input
+        [label]="'company.companyGroup.edesc' | translate"
+        formControlName="edesc">
+      </app-glass-input>
+    </div>
   </form>
 
 </app-modal>

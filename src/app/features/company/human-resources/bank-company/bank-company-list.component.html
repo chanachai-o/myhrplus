@@ -1,24 +1,70 @@
-<app-page-header 
-  [title]="'company.bankCompany.titleFull' | translate" 
+<app-page-header
+  [title]="'company.bankCompany.titleFull' | translate"
   [showBreadcrumbs]="true"
-  [actions]="headerActions">
+  [actions]="headerActions"
+  [useGlassCard]="false"
+  icon="account_balance"
+  iconGradient="from-primary to-primary"
+  titleGradient="from-primary to-primary"
+  customClass="border-b border-primary/30 dark:border-primary/50 pb-4"
+>
+  <div header-actions class="w-full md:w-64">
+    <app-glass-input
+      [formControl]="searchControl"
+      icon="search"
+      [placeholder]="'common.actions.search' | translate"
+      [isSearch]="true"
+      [customClass]="'h-9 text-sm'"
+    >
+    </app-glass-input>
+  </div>
 </app-page-header>
 
-<div class="-mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 transition-colors duration-300">
-  @if (service.loading()) {
-    <app-skeleton-loader type="table" [rows]="10" [columns]="columns.length || 5"></app-skeleton-loader>
-  } @else {
-    <app-data-grid
-      [dataSource]="(data$ | async) || []"
-      [columns]="columns"
-      (rowSelected)="onEdit($event)">
-    </app-data-grid>
-  }
-</div>
+<app-glass-card customClass="flex flex-col flex-1 h-[600px] min-h-0">
+  <!-- DataGrid Section -->
+  <div class="flex-1 w-full min-h-0 relative bg-white dark:bg-gray-900 mt-4 rounded-lg overflow-hidden">
+    @if (service.loading()) {
+      <div class="absolute inset-0 overflow-hidden">
+        <app-skeleton-loader
+          type="datagrid"
+          [rows]="10"
+          [columns]="columns.length"
+          [showToolbar]="true"
+          [showPagination]="true"
+          [hasActions]="gridActions.length > 0"
+        ></app-skeleton-loader>
+      </div>
+    } @else {
+      <!-- Debug: Entered ELSE block -->
+      <div class="hidden">DEBUG: Loading is FALSE</div>
+
+      <!-- Debug info (hidden in production) -->
+      <div class="hidden">
+        Data Count: {{ data().length }}
+        Columns: {{ columns.length }}
+      </div>
+
+      <app-syncfusion-data-grid
+        class="h-full block border border-primary/20 dark:border-primary/30 rounded-lg overflow-hidden shadow-sm"
+        [dataSource]="data()"
+        [columns]="columns"
+        [actions]="gridActions"
+        [showToolbar]="true"
+        [showColumnMenu]="true"
+        [showColumnChooser]="true"
+        [pageSettings]="{ pageSize: 10, pageSizes: [10, 20, 50, 100], pageCount: 5 }"
+        (rowSelected)="onEdit($event.data)"
+        (rowDeleted)="onRowDeleted($event)"
+      >
+      </app-syncfusion-data-grid>
+    }
+  </div>
+</app-glass-card>
 
 <app-bank-company-form
   [isOpen]="showModal"
   [data]="selectedItem"
   (close)="showModal = false"
-  (save)="onSaveSuccess()">
+  (save)="onSaveSuccess()"
+>
 </app-bank-company-form>

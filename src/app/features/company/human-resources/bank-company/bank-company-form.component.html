@@ -1,81 +1,116 @@
 <app-modal
   [show]="isOpen"
   [title]="(isEditMode ? 'company.bankCompany.edit' : 'company.bankCompany.add') | translate"
+  [useSolidBackground]="true"
+  [size]="'lg'"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
-  
-  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-1">
-    
-    <!-- Bank Code -->
-    <div class="col-span-2 md:col-span-1">
-      <app-glass-input
-        [label]="'company.bankCompany.bankId' | translate"
-        formControlName="bankid"
-        [required]="true"
-        [fullWidth]="true">
-      </app-glass-input>
+
+  <form [formGroup]="form" class="space-y-6">
+    <!-- Basic Information Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Bank Code -->
+      <div>
+        <app-glass-input
+          [label]="'company.bankCompany.bankId' | translate"
+          formControlName="bankid"
+          [required]="true"
+          [useFormValidationMessages]="true">
+          <app-form-validation-messages
+            [control]="form.get('bankid')">
+          </app-form-validation-messages>
+        </app-glass-input>
+      </div>
+
+      <!-- Company Code -->
+      <div>
+        <app-glass-input
+          label="รหัสบริษัท"
+          formControlName="companyid"
+          [required]="true"
+          [readonly]="isEditMode"
+          [useFormValidationMessages]="true">
+          <app-form-validation-messages
+            [control]="form.get('companyid')">
+          </app-form-validation-messages>
+        </app-glass-input>
+      </div>
     </div>
 
-    <!-- Company Code (Hidden or Readonly) -->
-    <div class="col-span-2 md:col-span-1">
-      <app-glass-input
-        label="รหัสบริษัท"
-        formControlName="companyid"
-        [required]="true"
-        [fullWidth]="true">
-      </app-glass-input>
-    </div>
+    <!-- Divider -->
+    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
 
-    <!-- Account Name TH -->
-    <div class="col-span-2">
+    <!-- Account Information Section -->
+    <div class="space-y-6">
+      <!-- Account Name (Thai) -->
       <app-glass-input
         [label]="'company.bankCompany.bankClientThName' | translate"
-        formControlName="bank_client_thname"
-        [fullWidth]="true">
+        formControlName="bank_client_thname">
       </app-glass-input>
-    </div>
 
-    <!-- Account Name EN -->
-    <div class="col-span-2">
+      <!-- Account Name (English) -->
       <app-glass-input
         label="ชื่อบัญชี (อังกฤษ)"
-        formControlName="bank_client_engname"
-        [fullWidth]="true">
+        formControlName="bank_client_engname">
       </app-glass-input>
-    </div>
 
-    <!-- Account No -->
-    <div class="col-span-2 md:col-span-1">
+      <!-- Account No -->
       <app-glass-input
         [label]="'company.bankCompany.account' | translate"
         formControlName="account"
         [required]="true"
-        [fullWidth]="true">
+        [useFormValidationMessages]="true">
+        <app-form-validation-messages
+          [control]="form.get('account')">
+        </app-form-validation-messages>
       </app-glass-input>
     </div>
 
-    <!-- Contact Person -->
-    <div class="col-span-2 md:col-span-1">
-      <app-glass-input
-        label="ผู้ติดต่อ"
-        formControlName="contact_person"
-        [fullWidth]="true">
-      </app-glass-input>
+    <!-- Divider -->
+    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+
+    <!-- Contact Information Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Contact Person -->
+      <div>
+        <app-glass-input
+          label="ผู้ติดต่อ"
+          formControlName="contact_person">
+        </app-glass-input>
+      </div>
+
+      <!-- Telephone -->
+      <div>
+        <app-glass-input
+          label="เบอร์โทรศัพท์"
+          formControlName="tel">
+        </app-glass-input>
+      </div>
     </div>
 
-    <!-- Options -->
-    <div class="col-span-2 flex gap-4 mt-2">
+    <!-- Divider -->
+    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+
+    <!-- Options Section -->
+    <div class="flex flex-wrap gap-6">
       <label class="flex items-center space-x-2 cursor-pointer">
-        <input type="checkbox" formControlName="isdefault" class="form-checkbox h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary">
-        <span class="text-gray-700 dark:text-slate-300 select-none">{{ 'company.bankCompany.isDefault' | translate }}</span>
+        <input 
+          type="checkbox" 
+          formControlName="isdefault" 
+          class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary focus:ring-2">
+        <span class="text-gray-700 dark:text-gray-300 select-none">
+          {{ 'company.bankCompany.isDefault' | translate }}
+        </span>
       </label>
       
       <label class="flex items-center space-x-2 cursor-pointer">
-        <input type="checkbox" formControlName="trans_ats" class="form-checkbox h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary">
-        <span class="text-gray-700 dark:text-slate-300 select-none">ATS</span>
+        <input 
+          type="checkbox" 
+          formControlName="trans_ats" 
+          class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary focus:ring-2">
+        <span class="text-gray-700 dark:text-gray-300 select-none">ATS</span>
       </label>
     </div>
-
   </form>
 
 </app-modal>
