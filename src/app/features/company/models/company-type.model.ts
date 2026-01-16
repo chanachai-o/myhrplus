@@ -15,4 +15,14 @@ export interface CompanyTypePayload {
   edesc: string;
 }
 
+/**
+ * API Response interface for CompanyType
+ * Used when API returns camelCase field names
+ */
+export interface CompanyTypeApiResponse {
+  codeId: string;
+  tdesc: string;
+  edesc: string;
+}
+
 

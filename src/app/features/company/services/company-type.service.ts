@@ -1,52 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseApiService } from '@core/services';
-import { CompanyType } from '../models/company-type.model';
+import { PaginatedResponse, PaginationParams } from '@core/models/pagination.model';
+import { CompanyType, CompanyTypeApiResponse } from '../models/company-type.model';
 import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
-
-// API Response interfaces
-interface CompanyTypeApiResponse {
-  codeId: string;
-  tdesc: string;
-  edesc: string;
-}
-
-interface PaginatedResponse<T> {
-  content: T[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
-  totalPages: number;
-  totalElements: number;
-  last: boolean;
-  size: number;
-  number: number;
-  sort: {
-    empty: boolean;
-    sorted: boolean;
-    unsorted: boolean;
-  };
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
-}
-
-// Pagination parameters interface
-export interface PaginationParams {
-  page?: number;
-  size?: number;
-}
 
 @Injectable({
   providedIn: 'root'

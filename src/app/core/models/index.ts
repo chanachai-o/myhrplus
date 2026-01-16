@@ -16,6 +16,7 @@ export * from './sort.model';
 export * from './sort2.model';
 export * from './pageable.model';
 export * from './page.model';
+export * from './pagination.model';
 
 // Authentication models
 export * from './login.model';
