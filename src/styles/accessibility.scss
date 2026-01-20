@@ -333,7 +333,7 @@ textarea:focus-visible,
 }
 
 [role="navigation"]::before {
-  content: "Navigation";
+  content: "";
   position: absolute;
   top: -20px;
   left: 0;
