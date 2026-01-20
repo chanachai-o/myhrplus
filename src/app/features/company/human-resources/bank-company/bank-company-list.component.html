@@ -52,9 +52,10 @@
         [showToolbar]="true"
         [showColumnMenu]="true"
         [showColumnChooser]="true"
-        [pageSettings]="{ pageSize: 10, pageSizes: [10, 20, 50, 100], pageCount: 5 }"
+        [pageSettings]="pageSettings"
         (rowSelected)="onEdit($event.data)"
         (rowDeleted)="onRowDeleted($event)"
+        (actionBegin)="onActionBegin($event)"
       >
       </app-syncfusion-data-grid>
     }

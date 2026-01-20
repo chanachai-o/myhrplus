@@ -13,11 +13,11 @@
       <div>
         <app-glass-input
           [label]="'company.bankCompany.bankId' | translate"
-          formControlName="bankid"
+          formControlName="bankId"
           [required]="true"
           [useFormValidationMessages]="true">
           <app-form-validation-messages
-            [control]="form.get('bankid')">
+            [control]="form.get('bankId')">
           </app-form-validation-messages>
         </app-glass-input>
       </div>
@@ -26,12 +26,12 @@
       <div>
         <app-glass-input
           label="รหัสบริษัท"
-          formControlName="companyid"
+          formControlName="companyId"
           [required]="true"
           [readonly]="isEditMode"
           [useFormValidationMessages]="true">
           <app-form-validation-messages
-            [control]="form.get('companyid')">
+            [control]="form.get('companyId')">
           </app-form-validation-messages>
         </app-glass-input>
       </div>
@@ -45,13 +45,13 @@
       <!-- Account Name (Thai) -->
       <app-glass-input
         [label]="'company.bankCompany.bankClientThName' | translate"
-        formControlName="bank_client_thname">
+        formControlName="bankClientThName">
       </app-glass-input>
 
       <!-- Account Name (English) -->
       <app-glass-input
         label="ชื่อบัญชี (อังกฤษ)"
-        formControlName="bank_client_engname">
+        formControlName="bankClientEngName">
       </app-glass-input>
 
       <!-- Account No -->
@@ -75,7 +75,7 @@
       <div>
         <app-glass-input
           label="ผู้ติดต่อ"
-          formControlName="contact_person">
+          formControlName="contactPerson">
         </app-glass-input>
       </div>
 
@@ -96,7 +96,7 @@
       <label class="flex items-center space-x-2 cursor-pointer">
         <input 
           type="checkbox" 
-          formControlName="isdefault" 
+          formControlName="isDefault" 
           class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary focus:ring-2">
         <span class="text-gray-700 dark:text-gray-300 select-none">
           {{ 'company.bankCompany.isDefault' | translate }}
@@ -106,7 +106,7 @@
       <label class="flex items-center space-x-2 cursor-pointer">
         <input 
           type="checkbox" 
-          formControlName="trans_ats" 
+          formControlName="transAts" 
           class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary focus:ring-2">
         <span class="text-gray-700 dark:text-gray-300 select-none">ATS</span>
       </label>

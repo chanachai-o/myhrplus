@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angu
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
 import { BankCompany } from '../../models/bank-company.model';
 import { BankCompanyService } from '../../services/bank-company.service';
-import { NotificationService, ConfirmationDialogService } from '@core/services';
+import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
 @Component({
@@ -43,18 +44,18 @@ export class BankCompanyFormComponent implements OnChanges {
 
   constructor() {
     this.form = this.fb.group({
-      line_no: [''], // Hidden Key
-      companyid: ['', Validators.required],
-      bankid: ['', Validators.required],
+      lineNo: [''], // Hidden Key
+      companyId: ['', Validators.required],
+      bankId: ['', Validators.required],
       branch: [''],
-      bank_branch: [''],
+      bankBranch: [''],
       account: ['', Validators.required],
-      bank_client_thname: [''],
-      bank_client_engname: [''],
-      contact_person: [''],
+      bankClientThName: [''],
+      bankClientEngName: [''],
+      contactPerson: [''],
       tel: [''],
-      trans_ats: [false],
-      isdefault: [false]
+      transAts: [false],
+      isDefault: [false]
     });
   }
 
@@ -63,29 +64,16 @@ export class BankCompanyFormComponent implements OnChanges {
     if (this.isOpen) {
       this.isEditMode = !!this.data;
       if (this.data) {
-        // Convert '1'/'0' string to boolean for checkboxes if needed
-        // Handle both string ('1'/'0') and boolean types
-        const transAtsValue = this.data.trans_ats;
-        const isDefaultValue = this.data.isdefault;
-        
-        const patchData = {
-          ...this.data,
-          trans_ats: typeof transAtsValue === 'string' 
-            ? transAtsValue === '1' 
-            : Boolean(transAtsValue),
-          isdefault: typeof isDefaultValue === 'string'
-            ? isDefaultValue === '1'
-            : Boolean(isDefaultValue)
-        };
-        this.form.patchValue(patchData);
-        this.form.get('line_no')?.disable(); // PK cannot be changed
+        // Data is already in camelCase from service
+        this.form.patchValue(this.data);
+        this.form.get('lineNo')?.disable(); // PK cannot be changed
       } else {
         this.form.reset({
-          companyid: 'C001', // TODO: Get current company ID
-          isdefault: false,
-          trans_ats: false
+          companyId: 'C001', // TODO: Get current company ID
+          isDefault: false,
+          transAts: false
         });
-        this.form.get('line_no')?.enable();
+        this.form.get('lineNo')?.enable();
       }
     }
   }
@@ -101,9 +89,13 @@ export class BankCompanyFormComponent implements OnChanges {
     }
 
     // Show confirmation dialog before saving using service
-    this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
-      next: (result) => {
+    this.confirmationDialogService.confirmSave(this.isEditMode).pipe(
+      first() // Only take first emission to prevent duplicate subscriptions
+    ).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
         if (result.confirmed) {
+          // Wait for confirmation dialog to fully close before proceeding
+          await this.confirmationDialogService.waitForClose();
           this.saveData();
         }
       }
@@ -111,30 +103,43 @@ export class BankCompanyFormComponent implements OnChanges {
   }
 
   private saveData() {
-    const rawData = this.form.getRawValue();
-    // Convert boolean back to '1'/'0'
-    const formData = {
-      ...rawData,
-      trans_ats: rawData.trans_ats ? '1' : '0',
-      isdefault: rawData.isdefault ? '1' : '0'
-    };
-
+    const formData = this.form.getRawValue();
     this.service.loading.set(true);
 
     const request$ = this.isEditMode
-      ? this.service.update(formData.line_no, formData) // Use line_no as key
+      ? this.service.update(formData.lineNo, formData) // Use lineNo as key
       : this.service.create(formData);
 
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
-        this.save.emit(); // Notify parent to refresh list
-        this.onClose();
+        // Wait a bit to ensure confirmation dialog is fully closed
+        setTimeout(() => {
+          const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE);
+          this.confirmationDialogService.showSuccess(successMessage).pipe(
+            first() // Only take first emission
+          ).subscribe({
+            next: () => {
+              this.save.emit(); // Notify parent to refresh list
+              this.onClose();
+            }
+          });
+        }, 100);
       },
       error: (err: unknown) => {
         console.error(err);
         this.service.loading.set(false);
-        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE));
+        // Wait a bit to ensure confirmation dialog is fully closed
+        setTimeout(() => {
+          // Get error message from error object
+          const errorMessage = (err as any)?.error?.message ||
+                             (err as any)?.message ||
+                             this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE);
+          // Show error dialog
+          this.confirmationDialogService.showError(errorMessage).pipe(
+            first() // Only take first emission
+          ).subscribe();
+        }, 100);
       }
     });
   }

@@ -5,7 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
-import { ColumnModel } from '@syncfusion/ej2-grids';
+import { ColumnModel, PageSettingsModel } from '@syncfusion/ej2-grids';
 
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
@@ -14,8 +14,8 @@ import { BankCompany } from '../../models/bank-company.model';
 import { BankCompanyFormComponent } from './bank-company-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { NotificationService, ConfirmationDialogService } from '@core/services';
+import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
@@ -56,7 +56,8 @@ export class BankCompanyListComponent implements OnInit {
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
 
   // Use signal for data to avoid AsyncPipe deadlock with loading state
-  data = signal<BankCompany[]>([]);
+  // Changed type to any to support { result: any[], count: number } for server-side pagination
+  data = signal<any>({ result: [], count: 0 });
   showModal = false;
   selectedItem: BankCompany | null = null;
   searchControl = new FormControl('');
@@ -64,6 +65,18 @@ export class BankCompanyListComponent implements OnInit {
   headerActions: any[] = [];
   columns: ColumnModel[] = [];
   gridActions: GridAction[] = [];
+
+  // Pagination state
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 0;
+  totalElements = 0;
+  pageSettings: PageSettingsModel = {
+    pageSize: 10,
+    pageSizes: [10, 20, 50, 100],
+    pageCount: 5,
+    currentPage: 1
+  };
 
   ngOnInit() {
     this.updateTranslations();
@@ -82,17 +95,52 @@ export class BankCompanyListComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {
-    this.service.getAll().subscribe({
-      next: (res) => {
-        console.log('[BankCompanyList] Data loaded:', res);
-        this.data.set(res);
+  loadData(page: number = this.currentPage, size: number = this.pageSize) {
+    this.service.getAllWithPagination({ page, size }).subscribe({
+      next: (response) => {
+        console.log('[BankCompanyList] Data loaded:', response);
+
+        // Update data signal with { result, count } structure for server-side pagination
+        this.data.set({
+          result: response.data,
+          count: response.totalElements
+        });
+
+        // Update pagination info from service response
+        this.currentPage = response.currentPage;
+        this.pageSize = response.pageSize;
+        this.totalPages = response.totalPages;
+        this.totalElements = response.totalElements;
+        this.updatePageSettings();
       },
       error: (err) => {
         console.error('[BankCompanyList] Error loading data:', err);
         this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.LOAD));
       }
     });
+  }
+
+  private updatePageSettings() {
+    this.pageSettings = {
+      ...this.pageSettings,
+      pageSize: this.pageSize,
+      currentPage: this.currentPage + 1, // Syncfusion uses 1-based page index
+      pageCount: 5
+    };
+  }
+
+  onActionBegin(event: any) {
+    // Handle pagination
+    if (event.requestType === 'paging') {
+      const newPage = (event.currentPage as number) - 1; // Convert from 1-based to 0-based
+      const newPageSize = event.pageSize || this.pageSize;
+
+      if (newPage !== this.currentPage || newPageSize !== this.pageSize) {
+        this.currentPage = newPage;
+        this.pageSize = newPageSize;
+        this.loadData(this.currentPage, this.pageSize);
+      }
+    }
   }
 
   private updateTranslations() {
@@ -113,11 +161,11 @@ export class BankCompanyListComponent implements OnInit {
     ];
 
     this.columns = [
-      { field: 'line_no', headerText: 'Line No.', width: 100, isPrimaryKey: true, visible: false },
-      { field: 'bankid', headerText: 'company.bankCompany.column.bankId', width: 120 },
-      { field: 'bank_client_thname', headerText: 'company.bankCompany.column.bankClientThName', width: 250, minWidth: 200 },
+      { field: 'lineNo', headerText: 'Line No.', width: 100, isPrimaryKey: true, visible: false },
+      { field: 'bankId', headerText: 'company.bankCompany.column.bankId', width: 120 },
+      { field: 'bankClientThName', headerText: 'company.bankCompany.column.bankClientThName', width: 250, minWidth: 200 },
       { field: 'account', headerText: 'company.bankCompany.column.account', width: 150 },
-      { field: 'isdefault', headerText: 'company.bankCompany.column.isDefault', width: 100, type: 'boolean', displayAsCheckBox: true }
+      { field: 'isDefault', headerText: 'company.bankCompany.column.isDefault', width: 100, type: 'boolean', displayAsCheckBox: true }
     ];
     console.log('[BankCompanyList] Columns configured:', this.columns);
 
@@ -164,8 +212,8 @@ export class BankCompanyListComponent implements OnInit {
       return;
     }
 
-    if (!row.line_no) {
-      console.error('[BankCompanyList] Delete: Row line_no is missing', row);
+    if (!row.lineNo) {
+      console.error('[BankCompanyList] Delete: Row lineNo is missing', row);
       this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
       return;
     }
@@ -173,18 +221,41 @@ export class BankCompanyListComponent implements OnInit {
     console.log('[BankCompanyList] Delete action clicked for row:', row);
 
     // Show confirmation dialog using service
-    this.confirmationDialogService.confirmDelete().subscribe({
-      next: (result) => {
+    this.confirmationDialogService.confirmDelete().pipe(
+      first() // Only take first emission to prevent duplicate subscriptions
+    ).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
         if (result.confirmed) {
-          this.service.delete(row.line_no).subscribe({
+          // Wait for confirmation dialog to fully close before proceeding
+          await this.confirmationDialogService.waitForClose();
+          this.service.delete(row.lineNo).subscribe({
             next: () => {
               console.log('[BankCompanyList] Delete successful');
-              this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
-              this.loadData();
+              // Wait a bit to ensure confirmation dialog is fully closed
+              setTimeout(() => {
+                const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE);
+                this.confirmationDialogService.showSuccess(successMessage).pipe(
+                  first() // Only take first emission
+                ).subscribe({
+                  next: () => {
+                    this.loadData();
+                  }
+                });
+              }, 100);
             },
             error: (err) => {
               console.error('[BankCompanyList] Delete error:', err);
-              this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+              // Wait a bit to ensure confirmation dialog is fully closed
+              setTimeout(() => {
+                // Get error message from error object
+                const errorMessage = err?.error?.message ||
+                                   err?.message ||
+                                   this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE);
+                // Show error dialog instead of toast
+                this.confirmationDialogService.showError(errorMessage).pipe(
+                  first() // Only take first emission
+                ).subscribe();
+              }, 100);
             }
           });
         }
@@ -200,7 +271,7 @@ export class BankCompanyListComponent implements OnInit {
   }
 
   onSaveSuccess() {
-    this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE));
+    // No toast here, handled in form
     this.loadData();
     this.showModal = false;
   }
