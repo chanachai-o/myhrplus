@@ -156,10 +156,10 @@ export class CompanyTypeListComponent implements OnInit {
     ];
 
     this.columns = [
-      { field: 'codeid', headerText: 'company.companyType.column.codeId', width: 150, isPrimaryKey: true },
+      { field: 'codeId', headerText: 'company.companyType.column.codeId', width: 150, isPrimaryKey: true },
       { field: 'tdesc', headerText: 'company.companyType.column.tdesc', width: 300, minWidth: 200 },
       { field: 'edesc', headerText: 'company.companyType.column.edesc', width: 300, minWidth: 200 },
-      { field: 'edit_date', headerText: 'company.companyType.column.editDate', type: 'date', width: 180, format: 'dd/MM/yyyy' }
+      { field: 'editDate', headerText: 'company.companyType.column.editDate', type: 'date', width: 180, format: 'dd/MM/yyyy' }
     ];
     console.log('[CompanyTypeList] Columns configured:', this.columns);
 
@@ -206,8 +206,8 @@ export class CompanyTypeListComponent implements OnInit {
       return;
     }
 
-    if (!row.codeid) {
-      console.error('[CompanyTypeList] Delete: Row codeid is missing', row);
+    if (!row.codeId) {
+      console.error('[CompanyTypeList] Delete: Row codeId is missing', row);
       this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
       return;
     }
@@ -218,7 +218,7 @@ export class CompanyTypeListComponent implements OnInit {
     this.confirmationDialogService.confirmDelete().subscribe({
       next: (result) => {
         if (result.confirmed) {
-          this.service.delete(row.codeid).subscribe({
+          this.service.delete(row.codeId).subscribe({
             next: () => {
               console.log('[CompanyTypeList] Delete successful');
               this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));

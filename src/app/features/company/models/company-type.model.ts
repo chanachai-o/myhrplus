@@ -1,16 +1,16 @@
 export interface CompanyType {
-  codeid: string;
+  codeId: string;
   tdesc: string;
   edesc: string;
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   verified?: string;
   companyId?: string; // from comment but might be needed
 }
 
 export interface CompanyTypePayload {
-  codeid: string;
+  codeId: string;
   tdesc: string;
   edesc: string;
 }
@@ -23,6 +23,7 @@ export interface CompanyTypeApiResponse {
   codeId: string;
   tdesc: string;
   edesc: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
 }
-
-

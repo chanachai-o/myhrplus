@@ -43,7 +43,7 @@ export class CompanyTypeFormComponent implements OnChanges {
 
   constructor() {
     this.form = this.fb.group({
-      codeid: ['', [Validators.required, Validators.maxLength(3)]],
+      codeId: ['', [Validators.required, Validators.maxLength(3)]],
       tdesc: ['', Validators.required],
       edesc: ['']
     });
@@ -55,10 +55,10 @@ export class CompanyTypeFormComponent implements OnChanges {
       this.isEditMode = !!this.data;
       if (this.data) {
         this.form.patchValue(this.data);
-        this.form.get('codeid')?.disable(); // PK cannot be changed
+        this.form.get('codeId')?.disable(); // PK cannot be changed
       } else {
         this.form.reset();
-        this.form.get('codeid')?.enable();
+        this.form.get('codeId')?.enable();
       }
     }
   }
@@ -88,7 +88,7 @@ export class CompanyTypeFormComponent implements OnChanges {
     this.service.loading.set(true);
 
     const request$ = this.isEditMode
-      ? this.service.update(formData.codeid, formData)
+      ? this.service.update(formData.codeId, formData)
       : this.service.create(formData);
 
     request$.subscribe({
@@ -105,5 +105,3 @@ export class CompanyTypeFormComponent implements OnChanges {
     });
   }
 }
-
-

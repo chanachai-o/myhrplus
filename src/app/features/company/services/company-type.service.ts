@@ -43,11 +43,13 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     return this.http.get<PaginatedResponse<CompanyTypeApiResponse>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
         // Transform API response to CompanyType model
-        // Convert camelCase (codeId) to lowercase (codeid)
         const transformedData: CompanyType[] = response.content.map((item) => ({
-          codeid: item.codeId,
+          codeId: item.codeId,
           tdesc: item.tdesc,
-          edesc: item.edesc
+          edesc: item.edesc,
+          editBy: item.editBy,
+          editDate: item.editDate,
+          editTime: item.editTime
         }));
 
         console.log('[CompanyTypeService] Data transformed:', {
@@ -100,9 +102,12 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
       map((response) => {
         // Transform API response to CompanyType model
         const transformedData: CompanyType[] = response.content.map((item) => ({
-          codeid: item.codeId,
+          codeId: item.codeId,
           tdesc: item.tdesc,
-          edesc: item.edesc
+          edesc: item.edesc,
+          editBy: item.editBy,
+          editDate: item.editDate,
+          editTime: item.editTime
         }));
 
         console.log('[CompanyTypeService] Pagination response:', {
@@ -183,5 +188,3 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     );
   }
 }
-
-
