@@ -43,22 +43,21 @@ company-type/
 - จัดการ search และ filtering
 - จัดการ confirmation dialogs
 - จัดการ loading states
-- **แสดง Toast notification เฉพาะกรณี Delete (Create/Update ให้ Form Component จัดการ)**
+- **แสดง Success/Error Dialog สำหรับ Delete operation**
 
 **Key Features:**
 - ใช้ `SyncfusionDataGridComponent` สำหรับแสดงข้อมูล
 - ใช้ `signal<any>({ result: [], count: 0 })` สำหรับ reactive data ที่รองรับ pagination
 - ใช้ `FormControl` สำหรับ search
-- ใช้ `ConfirmationDialogService` สำหรับ confirmation dialogs
-- ใช้ `NotificationService` สำหรับแสดง messages
+- ใช้ `ConfirmationDialogService` สำหรับ confirmation dialogs และ success/error dialogs
 - ใช้ `app-skeleton-loader` type="datagrid" สำหรับ loading state
 
 **Imports:**
 ```typescript
 import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { ConfirmationDialogService } from '@core/services';
-import { NotificationService } from '@core/services';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+import { first } from 'rxjs/operators';
 ```
 
 #### Form Component (`company-type-form.component.ts`)
@@ -68,21 +67,22 @@ import { NotificationService } from '@core/services';
 - จัดการ form validation
 - จัดการ confirmation dialog ก่อนบันทึก
 - เรียกใช้ service สำหรับ save/update
-- **แสดง Toast notification กรณี Save สำเร็จ**
+- **แสดง Success/Error Dialog สำหรับ Save operation**
 
 **Key Features:**
 - ใช้ `ReactiveFormsModule` สำหรับ form management
 - ใช้ `ModalComponent` สำหรับ modal dialog (with `useSolidBackground="true"`)
 - ใช้ `GlassInputComponent` สำหรับ input fields
 - ใช้ `FormValidationMessagesComponent` สำหรับ validation messages
-- ใช้ `ConfirmationDialogService` สำหรับ save confirmation
+- ใช้ `ConfirmationDialogService` สำหรับ save confirmation และ success/error dialogs
 
 **Imports:**
 ```typescript
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
-import { ConfirmationDialogService } from '@core/services';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+import { first } from 'rxjs/operators';
 ```
 
 ### 3. Service Pattern
@@ -96,12 +96,27 @@ import { ConfirmationDialogService } from '@core/services';
 - ใช้ `ApiService` wrapper แทน `HttpClient` โดยตรง
 - จัดการ error handling
 - **Map ข้อมูล API response ให้เป็น camelCase model**
+- **ตรวจสอบ Logical Errors ใน Response Body** (แม้ HTTP status เป็น 200 แต่ response มี `state: 'FAIL'`)
 
 **Key Features:**
 - ใช้ `providedIn: 'root'` สำหรับ singleton service
 - ใช้ `signal()` สำหรับ loading state
 - ใช้ `ApiResponse<T>` wrapper สำหรับ API responses
 - ใช้ `Observable` สำหรับ async operations
+
+**Error Handling Pattern:**
+```typescript
+override delete(id: string | number): Observable<void> {
+  return this.http.delete<any>(url).pipe(
+    tap((response) => {
+      // Check for logical error in response (even if HTTP status is 200)
+      if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
+        throw new Error(response.message || 'Delete failed');
+      }
+    })
+  );
+}
+```
 
 ### 4. Model Pattern
 
@@ -193,7 +208,7 @@ loading = signal<boolean>(false);
 
 ### 4. Error Handling
 
-**ใช้ NotificationService:**
+**ใช้ NotificationService สำหรับ Load Errors:**
 ```typescript
 this.service.getAll().subscribe({
   next: (res) => {
@@ -207,50 +222,119 @@ this.service.getAll().subscribe({
 });
 ```
 
-### 5. Confirmation Dialogs
+### 5. Confirmation Dialogs & Success/Error Dialogs
 
 **ใช้ ConfirmationDialogService (Recommended):**
+
+**Delete with Success/Error Dialog:**
 ```typescript
-// Import service
-import { ConfirmationDialogService } from '@core/services';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+import { first } from 'rxjs/operators';
 
-// Inject service
-private confirmationDialogService = inject(ConfirmationDialogService);
-
-// Delete confirmation
 onDelete(row: any): void {
-  this.confirmationDialogService.confirmDelete().subscribe({
-    next: (result) => {
+  this.confirmationDialogService.confirmDelete().pipe(
+    first() // Prevent duplicate subscriptions
+  ).subscribe({
+    next: async (result: ConfirmationDialogResult) => {
       if (result.confirmed) {
+        // Wait for confirmation dialog to fully close
+        await this.confirmationDialogService.waitForClose();
+        
         this.service.delete(row.codeId).subscribe({
           next: () => {
-            this.loadData();
-            this.notificationService.showSuccess(
-              this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE)
-            );
+            // Wait a bit to ensure confirmation dialog is fully closed
+            setTimeout(() => {
+              const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE);
+              this.confirmationDialogService.showSuccess(successMessage).pipe(
+                first() // Prevent duplicate subscriptions
+              ).subscribe({
+                next: () => {
+                  this.loadData();
+                }
+              });
+            }, 100);
+          },
+          error: (err) => {
+            // Wait a bit to ensure confirmation dialog is fully closed
+            setTimeout(() => {
+              const errorMessage = err?.error?.message ||
+                                 err?.message ||
+                                 this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE);
+              this.confirmationDialogService.showError(errorMessage).pipe(
+                first() // Prevent duplicate subscriptions
+              ).subscribe();
+            }, 100);
           }
         });
       }
     }
   });
 }
+```
 
-// Save confirmation
+**Save with Success/Error Dialog:**
+```typescript
 onSubmit(): void {
   if (this.form.invalid) {
     this.form.markAllAsTouched();
     return;
   }
   
-  this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
-    next: (result) => {
+  this.confirmationDialogService.confirmSave(this.isEditMode).pipe(
+    first() // Prevent duplicate subscriptions
+  ).subscribe({
+    next: async (result: ConfirmationDialogResult) => {
       if (result.confirmed) {
+        // Wait for confirmation dialog to fully close
+        await this.confirmationDialogService.waitForClose();
         this.saveData();
       }
     }
   });
 }
+
+private saveData() {
+  const request$ = this.isEditMode
+    ? this.service.update(formData.codeId, formData)
+    : this.service.create(formData);
+
+  request$.subscribe({
+    next: () => {
+      this.service.loading.set(false);
+      // Wait a bit to ensure confirmation dialog is fully closed
+      setTimeout(() => {
+        const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE);
+        this.confirmationDialogService.showSuccess(successMessage).pipe(
+          first() // Prevent duplicate subscriptions
+        ).subscribe({
+          next: () => {
+            this.save.emit();
+            this.onClose();
+          }
+        });
+      }, 100);
+    },
+    error: (err: unknown) => {
+      this.service.loading.set(false);
+      // Wait a bit to ensure confirmation dialog is fully closed
+      setTimeout(() => {
+        const errorMessage = (err as any)?.error?.message ||
+                           (err as any)?.message ||
+                           this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE);
+        this.confirmationDialogService.showError(errorMessage).pipe(
+          first() // Prevent duplicate subscriptions
+        ).subscribe();
+      }, 100);
+    }
+  });
+}
 ```
+
+**Key Points:**
+- **ใช้ `first()` operator** กับทุก dialog subscription เพื่อป้องกัน duplicate subscriptions
+- **ใช้ `waitForClose()`** ก่อนเรียก API เพื่อรอให้ confirmation dialog ปิดสนิท
+- **ใช้ `setTimeout(100ms)`** ก่อนแสดง Success/Error Dialog เพื่อให้แน่ใจว่า confirmation dialog ปิดสนิทแล้ว
+- **ใช้ Dialog แทน Toast** สำหรับ Success/Error messages เพื่อความชัดเจนและไม่ถูกปิดไปพร้อมกับ confirmation dialog
 
 **Note**: `ConfirmationDialogComponent` ถูกเพิ่มใน `app.component.html` เป็น global component แล้ว ไม่ต้องเพิ่ม template ใน component เอง
 
@@ -356,6 +440,7 @@ gridActions: GridAction[] = [
   [pageSettings]="{ pageSize: 10, pageSizes: [10, 20, 50, 100], pageCount: 5 }"
   (rowSelected)="onEdit($event.data)"
   (rowDeleted)="onRowDeleted($event)"
+  (actionBegin)="onActionBegin($event)"
 >
 </app-syncfusion-data-grid>
 ```
@@ -367,6 +452,7 @@ gridActions: GridAction[] = [
 ### Phase 1: Setup
 - [ ] สร้าง model interface (`*.model.ts`) ใช้ **camelCase**
 - [ ] สร้าง service (`*.service.ts`) ใช้ **POST for Update**
+- [ ] **ตรวจสอบ Logical Errors ใน Response Body** (แม้ HTTP status เป็น 200)
 - [ ] เพิ่ม translation keys ใน `th.json`, `en.json`, และภาษาอื่นๆ
 - [ ] เพิ่ม route ใน routing module
 
@@ -377,8 +463,10 @@ gridActions: GridAction[] = [
 - [ ] **ใช้ `signal<any>({ result: [], count: 0 })` รองรับ Server-side Pagination**
 - [ ] ใช้ `PageHeaderComponent` สำหรับ header
 - [ ] ใช้ `FormControl` สำหรับ search
-- [ ] ใช้ `NotificationService` สำหรับ error/success messages (เฉพาะ Delete)
-- [ ] ใช้ `ConfirmationDialogService` สำหรับ delete confirmation
+- [ ] ใช้ `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
+- [ ] **ใช้ `first()` operator กับทุก dialog subscription**
+- [ ] **ใช้ `waitForClose()` ก่อนเรียก API**
+- [ ] **ใช้ `setTimeout(100ms)` ก่อนแสดง Success/Error Dialog**
 - [ ] ใช้ `app-skeleton-loader` type="datagrid" สำหรับ loading state
 
 ### Phase 3: Form Component
@@ -388,18 +476,21 @@ gridActions: GridAction[] = [
 - [ ] ใช้ `ModalComponent` สำหรับ modal dialog
 - [ ] ใช้ `GlassInputComponent` สำหรับ input fields
 - [ ] ใช้ `FormValidationMessagesComponent` สำหรับ validation
-- [ ] ใช้ `ConfirmationDialogService` สำหรับ save confirmation
-- [ ] **จัดการแสดง Success Toast ใน Form Component เมื่อบันทึกสำเร็จ**
+- [ ] ใช้ `ConfirmationDialogService` สำหรับ save confirmation และ success/error dialogs
+- [ ] **ใช้ `first()` operator กับทุก dialog subscription**
+- [ ] **ใช้ `waitForClose()` ก่อนเรียก API**
+- [ ] **ใช้ `setTimeout(100ms)` ก่อนแสดง Success/Error Dialog**
 - [ ] จัดการ edit mode (disable PK field)
 
 ### Phase 4: Integration
 - [ ] เชื่อมต่อ list component กับ form component
 - [ ] ทดสอบ CRUD operations
 - [ ] ทดสอบ validation
-- [ ] ทดสอบ error handling
+- [ ] ทดสอบ error handling (รวมถึง logical errors)
 - [ ] ทดสอบ loading states
 - [ ] ทดสอบ translation
 - [ ] **ทดสอบ Server-side Pagination (เปลี่ยนหน้าแล้วข้อมูลโหลดใหม่)**
+- [ ] **ทดสอบ Dialog sequence (Confirmation → Success/Error) ไม่ซ้ำซ้อน**
 
 ### Phase 5: Polish
 - [ ] เพิ่ม accessibility attributes
@@ -430,11 +521,26 @@ export class EntityService extends BaseApiService<Entity> {
       // ...
     );
   }
+
+  // Delete with logical error checking
+  override delete(id: string | number): Observable<void> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+      tap((response) => {
+        // Check for logical error in response (even if HTTP status is 200)
+        if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
+          throw new Error(response.message || 'Delete failed');
+        }
+      })
+    );
+  }
 }
 ```
 
-### 2. List Component Pattern (With Server-side Pagination)
+### 2. List Component Pattern (With Server-side Pagination & Dialogs)
 ```typescript
+import { first } from 'rxjs/operators';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+
 export class EntityListComponent implements OnInit {
   // Use signal for data with count support
   data = signal<any>({ result: [], count: 0 });
@@ -455,30 +561,111 @@ export class EntityListComponent implements OnInit {
       }
     });
   }
+
+  onDelete(row: any) {
+    this.confirmationDialogService.confirmDelete().pipe(
+      first() // Prevent duplicate subscriptions
+    ).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
+        if (result.confirmed) {
+          // Wait for confirmation dialog to fully close
+          await this.confirmationDialogService.waitForClose();
+          
+          this.service.delete(row.codeId).subscribe({
+            next: () => {
+              // Wait a bit before showing success dialog
+              setTimeout(() => {
+                const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE);
+                this.confirmationDialogService.showSuccess(successMessage).pipe(
+                  first() // Prevent duplicate subscriptions
+                ).subscribe({
+                  next: () => {
+                    this.loadData();
+                  }
+                });
+              }, 100);
+            },
+            error: (err) => {
+              // Wait a bit before showing error dialog
+              setTimeout(() => {
+                const errorMessage = err?.error?.message ||
+                                   err?.message ||
+                                   this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE);
+                this.confirmationDialogService.showError(errorMessage).pipe(
+                  first() // Prevent duplicate subscriptions
+                ).subscribe();
+              }, 100);
+            }
+          });
+        }
+      }
+    });
+  }
   
   onSaveSuccess() {
-    // No toast here, handled in form
+    // No dialog here, handled in form
     this.loadData();
     this.showModal = false;
   }
 }
 ```
 
-### 3. Form Component Pattern
+### 3. Form Component Pattern (With Dialogs)
 ```typescript
+import { first } from 'rxjs/operators';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+
 export class EntityFormComponent implements OnChanges {
   // ...
+  
+  onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    
+    this.confirmationDialogService.confirmSave(this.isEditMode).pipe(
+      first() // Prevent duplicate subscriptions
+    ).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
+        if (result.confirmed) {
+          // Wait for confirmation dialog to fully close
+          await this.confirmationDialogService.waitForClose();
+          this.saveData();
+        }
+      }
+    });
+  }
   
   private saveData() {
     // ...
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
-        this.notificationService.showSuccess(
-          this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE)
-        );
-        this.save.emit();
-        this.onClose();
+        // Wait a bit before showing success dialog
+        setTimeout(() => {
+          const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE);
+          this.confirmationDialogService.showSuccess(successMessage).pipe(
+            first() // Prevent duplicate subscriptions
+          ).subscribe({
+            next: () => {
+              this.save.emit();
+              this.onClose();
+            }
+          });
+        }, 100);
+      },
+      error: (err: unknown) => {
+        this.service.loading.set(false);
+        // Wait a bit before showing error dialog
+        setTimeout(() => {
+          const errorMessage = (err as any)?.error?.message ||
+                             (err as any)?.message ||
+                             this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE);
+          this.confirmationDialogService.showError(errorMessage).pipe(
+            first() // Prevent duplicate subscriptions
+          ).subscribe();
+        }, 100);
       }
     });
   }
@@ -495,11 +682,18 @@ export class EntityFormComponent implements OnChanges {
 - ❌ JSP: Various patterns
 - ✅ Angular: POST for Create/Update, DELETE for Delete, GET for Read
 
-### 3. Toast Notifications
-- ❌ JSP: Alert boxes
-- ✅ Angular: Centralized `NotificationService`, Success toast in Form (Save) and List (Delete)
+### 3. Success/Error Feedback
+- ❌ JSP: Alert boxes, page reloads
+- ✅ Angular: **Dialog-based feedback** (Success/Error Dialogs) แทน Toast notifications
+  - **Success Dialog**: แสดงเมื่อ Create/Update/Delete สำเร็จ (มีแค่ปุ่ม OK)
+  - **Error Dialog**: แสดงเมื่อ Create/Update/Delete ไม่สำเร็จ (มีแค่ปุ่ม OK)
+  - **ใช้ `waitForClose()` และ `setTimeout(100ms)`** เพื่อป้องกัน dialog ซ้ำซ้อน
 
-### 4. Pagination
+### 4. Error Handling
+- ❌ JSP: Server-side validation only
+- ✅ Angular: **ตรวจสอบ Logical Errors ใน Response Body** (แม้ HTTP status เป็น 200 แต่ response มี `state: 'FAIL'`)
+
+### 5. Pagination
 - ❌ JSP: Server-side rendering pagination HTML
 - ✅ Angular: **Server-side pagination** via API, client-side rendering with `{ result, count }` structure
 
@@ -527,12 +721,19 @@ export class EntityFormComponent implements OnChanges {
 - ✅ ใช้ `POST` method สำหรับ Update operation (เหมือนกับ Create)
 - ✅ `update()` method ใน service เรียกไปที่ `apiUrl` เดียวกันกับ `create()`
 
-### 3. Toast Notification Standardization
-- ✅ **Save Success**: ย้ายการแสดง toast ไปที่ `FormComponent` (ผู้กระทำ action)
-- ✅ **Delete Success**: แสดง toast ที่ `ListComponent` (ผู้กระทำ action)
-- ✅ ลดความซ้ำซ้อนของการเรียก NotificationService
+### 3. Success/Error Feedback Standardization
+- ✅ **เปลี่ยนจาก Toast เป็น Dialog** สำหรับ Success/Error messages
+- ✅ **Success Dialog**: ใช้ `confirmationDialogService.showSuccess()` (มีแค่ปุ่ม OK, variant: 'success')
+- ✅ **Error Dialog**: ใช้ `confirmationDialogService.showError()` (มีแค่ปุ่ม OK, variant: 'primary')
+- ✅ **ใช้ `waitForClose()`** เพื่อรอให้ confirmation dialog ปิดสนิทก่อนเรียก API
+- ✅ **ใช้ `setTimeout(100ms)`** ก่อนแสดง Success/Error Dialog เพื่อป้องกัน dialog ซ้ำซ้อน
+- ✅ **ใช้ `first()` operator** กับทุก dialog subscription เพื่อป้องกัน duplicate subscriptions
 
 ### 4. Server-side Pagination Support
 - ✅ **SyncfusionDataGrid**: รองรับ datasource format `{ result: any[], count: number }`
 - ✅ **ListComponent**: ส่งข้อมูลพร้อม count ไปยัง grid เพื่อแสดง pager ได้ถูกต้อง
 - ✅ **Paging Logic**: เปลี่ยนหน้าแล้วโหลดข้อมูลใหม่จาก API (ไม่โหลดทั้งหมดครั้งเดียว)
+
+### 5. Error Handling Enhancement
+- ✅ **ตรวจสอบ Logical Errors**: Service ตรวจสอบ response body สำหรับ `state: 'FAIL'`, `success: false`, หรือ `statusCode: 500` แม้ HTTP status เป็น 200
+- ✅ **Throw Error**: เมื่อพบ logical error จะ throw Error เพื่อให้ไปตกที่ error callback ของ component

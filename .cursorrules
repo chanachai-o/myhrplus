@@ -338,7 +338,11 @@ export class ModelNameService {
 - **Staggered Animations**: Use `appStagger` directive for automatic delay management.
   - Usage: `[appStagger]="i" [staggerDelay]="0.1"` (0.1s for cards, 0.05s for small items)
   - Standard: `animate-fade-in-up` class is applied automatically
-- **Feedback**: Use `NotificationService` (Toast/Snackbar) for success/error messages instead of full page alerts or redirects.
+- **Feedback**: Use `ConfirmationDialogService` (Dialog-based) for success/error messages instead of Toast notifications.
+  - **Success Dialog**: `confirmationDialogService.showSuccess(message)` - แสดงเมื่อ Create/Update/Delete สำเร็จ
+  - **Error Dialog**: `confirmationDialogService.showError(message)` - แสดงเมื่อ Create/Update/Delete ไม่สำเร็จ
+  - **Pattern**: ใช้ `waitForClose()` ก่อนเรียก API, ใช้ `setTimeout(100ms)` ก่อนแสดง Success/Error Dialog, ใช้ `first()` operator กับทุก dialog subscription
+  - **Load Errors**: ใช้ `NotificationService.showError()` สำหรับ error ในการโหลดข้อมูล (ไม่ใช่ CRUD operations)
 - **Glassmorphism Consistency**: Ensure all cards and containers use `<app-glass-card>` component instead of `<div class="glass-card">` to maintain design consistency.
 - **Backgrounds**: **DO NOT** use solid background colors (e.g., `bg-white`, `bg-gray-50`, `bg-slate-900`) on main page containers. Let the global theme gradient show through. Use transparent or semi-transparent backgrounds (e.g., `bg-white/50` or `glass-card`).
 - **Page Header Standardization**: Always use `<app-page-header>` component instead of custom headers.
@@ -410,8 +414,8 @@ export class ModelNameService {
 - **State Management**: Use `signal()` for reactive state, `BehaviorSubject` for complex state management in Services.
 
 ### Standard Component Structure
-- **List Component**: ใช้ `SyncfusionDataGridComponent`, `PageHeaderComponent`, `signal()` สำหรับ data, `FormControl` สำหรับ search, `Syncfusion Dialog` สำหรับ confirmation
-- **Form Component**: ใช้ `ReactiveFormsModule`, `ModalComponent`, `GlassInputComponent`, `FormValidationMessagesComponent`, `Syncfusion Dialog` สำหรับ confirmation
+- **List Component**: ใช้ `SyncfusionDataGridComponent`, `PageHeaderComponent`, `signal<any>({ result: [], count: 0 })` สำหรับ data (รองรับ Server-side Pagination), `FormControl` สำหรับ search, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
+- **Form Component**: ใช้ `ReactiveFormsModule`, `ModalComponent`, `GlassInputComponent`, `FormValidationMessagesComponent`, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
 - **Service**: Extend `BaseApiService<T>`, ใช้ `signal()` สำหรับ loading state, ใช้ `ApiService` wrapper
 - **Model**: TypeScript interface ที่ตรงกับ database schema, ใช้ strict typing
 
@@ -842,8 +846,8 @@ export class ComponentNameDemoComponent {
   - **Documentation**: `docs/migration/COMPANY_TYPE_MIGRATION_GUIDE.md`
 - **Pattern**: ใช้เป็น template สำหรับ migrate หน้าทะเบียนอื่นๆ
 - **Key Features**:
-  - List Component: `SyncfusionDataGridComponent`, `PageHeaderComponent`, `signal()` สำหรับ data, `FormControl` สำหรับ search, `Syncfusion Dialog` สำหรับ confirmation
-  - Form Component: `ReactiveFormsModule`, `ModalComponent`, `GlassInputComponent`, `FormValidationMessagesComponent`, `Syncfusion Dialog` สำหรับ confirmation
+  - List Component: `SyncfusionDataGridComponent`, `PageHeaderComponent`, `signal<any>({ result: [], count: 0 })` สำหรับ data (รองรับ Server-side Pagination), `FormControl` สำหรับ search, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
+  - Form Component: `ReactiveFormsModule`, `ModalComponent`, `GlassInputComponent`, `FormValidationMessagesComponent`, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
   - Service: Extend `BaseApiService<T>`, ใช้ `signal()` สำหรับ loading state
   - Model: TypeScript interface ที่ตรงกับ database schema
 
@@ -944,7 +948,11 @@ export class ComponentNameDemoComponent {
 - [ ] **Barrel exports used** (`@core/services`, `@core/constants`) - **NOT individual files**
 - [ ] RxJS operators used correctly
 - [ ] Syncfusion components imported via `SyncfusionModule`
-- [ ] UX/UI standards followed (Skeleton loaders, Staggered animations, Toast feedback)
+- [ ] UX/UI standards followed (Skeleton loaders, Staggered animations, Dialog-based feedback)
+- [ ] **Success/Error Dialogs**: ใช้ `ConfirmationDialogService.showSuccess()` และ `showError()` แทน Toast notifications
+- [ ] **Dialog Sequence**: ใช้ `waitForClose()` ก่อนเรียก API, ใช้ `setTimeout(100ms)` ก่อนแสดง Success/Error Dialog
+- [ ] **Prevent Duplicates**: ใช้ `first()` operator กับทุก dialog subscription
+- [ ] **Logical Error Handling**: Service ตรวจสอบ response body สำหรับ `state: 'FAIL'` แม้ HTTP status เป็น 200
 - [ ] No solid backgrounds on page containers (Transparent/Glass only)
 - [ ] Dynamic primary color support (Use CSS variables, not hardcoded colors)
 - [ ] No hardcoded primary colors (`#07399C`, `rgba(59, 130, 246, ...)`, or Tailwind `primary-*` classes)
@@ -1386,7 +1394,25 @@ export class ComponentNameDemoComponent {
   - Complete documentation และ examples
   - Faster migration process
 
-**Last Updated**: 2025-01-07 (Company Type Migration Guide)
-**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + UX/UI Improvements (Sidebar/Header/Search)
+### Dialog-based Feedback Standardization (2026-01-20)
+- ✅ **Success/Error Dialogs**: เปลี่ยนจาก Toast notifications เป็น Dialog-based feedback
+  - **Success Dialog**: `confirmationDialogService.showSuccess(message)` - แสดงเมื่อ Create/Update/Delete สำเร็จ
+  - **Error Dialog**: `confirmationDialogService.showError(message)` - แสดงเมื่อ Create/Update/Delete ไม่สำเร็จ
+- ✅ **Dialog Sequence Management**:
+  - ใช้ `waitForClose()` ก่อนเรียก API เพื่อรอให้ confirmation dialog ปิดสนิท
+  - ใช้ `setTimeout(100ms)` ก่อนแสดง Success/Error Dialog เพื่อป้องกัน dialog ซ้ำซ้อน
+  - ใช้ `first()` operator กับทุก dialog subscription เพื่อป้องกัน duplicate subscriptions
+- ✅ **Logical Error Handling**: Service ตรวจสอบ response body สำหรับ `state: 'FAIL'`, `success: false`, หรือ `statusCode: 500` แม้ HTTP status เป็น 200
+- ✅ **Server-side Pagination**: รองรับ `{ result: any[], count: number }` structure สำหรับ pagination
+- ✅ **Updated Documentation**: `COMPANY_TYPE_MIGRATION_GUIDE.md` อัพเดทแล้ว
+- ✅ **Updated Rules**: `.cursorrules` อัพเดทแล้ว
+- ✅ **Impact**:
+  - Dialog-based feedback ชัดเจนกว่า Toast notifications
+  - ไม่มีปัญหา dialog ซ้ำซ้อนหรือถูกปิดไปพร้อมกัน
+  - Error handling ครอบคลุมทั้ง HTTP errors และ logical errors
+  - Server-side pagination รองรับข้อมูลขนาดใหญ่ได้ดีขึ้น
+
+**Last Updated**: 2026-01-20 (Company Type Migration Guide - Dialog-based Feedback)
+**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + UX/UI Improvements (Sidebar/Header/Search) + Dialog-based Feedback Standardization Complete
 **Angular Version**: 17.0.0+
 **TypeScript Version**: 5.2.2+
