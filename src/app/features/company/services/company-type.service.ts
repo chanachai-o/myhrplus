@@ -156,9 +156,9 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
 
   override update(id: string | number, data: Partial<CompanyType>): Observable<CompanyType> {
     this.loading.set(true);
-    const url = `${this.apiUrl}/${id}`;
-    console.log('[CompanyTypeService] Updating:', id, data);
-    return this.http.put<CompanyType>(url, data).pipe(
+    // Use POST same as create, to apiUrl
+    console.log('[CompanyTypeService] Updating (POST):', id, data);
+    return this.http.post<CompanyType>(this.apiUrl, data).pipe(
       tap((result) => {
         console.log('[CompanyTypeService] Updated:', result);
         this.loading.set(false);
