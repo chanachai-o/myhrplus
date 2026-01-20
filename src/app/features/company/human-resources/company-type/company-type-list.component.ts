@@ -143,14 +143,14 @@ export class CompanyTypeListComponent implements OnInit {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
         variant: 'primary',
         icon: 'add',
-        class: 'h-9 min-h-[36px]',
+        class: 'h-11 min-h-[44px]',
         onClick: () => this.onCreate()
       },
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.MANUAL),
         variant: 'info',
         icon: 'article',
-        class: 'h-9 min-h-[36px]',
+        class: 'h-11 min-h-[44px]',
         onClick: () => this.onManual()
       }
     ];
