@@ -94,6 +94,7 @@ export class CompanyTypeFormComponent implements OnChanges {
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
+        this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE));
         this.save.emit(); // Notify parent to refresh list
         this.onClose();
       },

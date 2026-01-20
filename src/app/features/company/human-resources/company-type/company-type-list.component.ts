@@ -242,7 +242,6 @@ export class CompanyTypeListComponent implements OnInit {
   }
 
   onSaveSuccess() {
-    this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE));
     this.loadData();
     this.showModal = false;
   }
