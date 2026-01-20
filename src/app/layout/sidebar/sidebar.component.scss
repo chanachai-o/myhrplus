@@ -28,9 +28,9 @@
 .icon-bar {
   position: relative;
   z-index: 50; /* Ensure tooltips appear above menu panel */
-  width: 88px;
-  min-width: 88px;
-  max-width: 88px;
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
 
   /* Background gradient with pattern overlay - Using CSS Variables */
   background: linear-gradient(
@@ -128,38 +128,38 @@
   /* Active state with enhanced visual feedback - Using CSS Variables */
   &.active,
   &[routerlinkactive='active'] {
-    background: var(--sidebar-active-bg);
-    box-shadow:
-      0 2px 8px rgba(var(--primary-rgb), 0.2),
-      inset 0 1px 0 var(--glass-border-weak);
+    transform: scale(1.05);
+    z-index: 5;
+
+    /* Enhanced glow effect */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, 
+        rgba(var(--primary-rgb), 0.3), 
+        rgba(var(--primary-rgb), 0.1),
+        rgba(var(--primary-rgb), 0.3));
+      opacity: 0.6;
+      filter: blur(8px);
+      z-index: -1;
+      animation: activeGlow 2s ease-in-out infinite;
+    }
 
     [data-theme='dark'] &,
     .dark & {
-      box-shadow:
-        0 2px 8px rgba(var(--primary-rgb), 0.3),
-        inset 0 1px 0 var(--glass-border-weak);
+      &::after {
+        opacity: 0.8;
+      }
     }
 
     [data-theme='myhr'] &,
     [class*='theme-myhr'] & {
-      box-shadow:
-        0 2px 8px rgba(var(--primary-rgb), 0.4),
-        inset 0 1px 0 var(--glass-border-weak),
-        0 0 12px rgba(var(--primary-rgb), 0.2);
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 60%;
-      background: linear-gradient(to bottom, var(--primary-color), rgba(var(--primary-rgb), 0.8));
-      border-radius: 0 2px 2px 0;
-      box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5);
-      /* Note: Using custom shadow for active indicator glow */
+      &::after {
+        opacity: 0.7;
+        animation: activeGlow 1.5s ease-in-out infinite;
+      }
     }
   }
 
@@ -589,6 +589,17 @@
 }
 
 /* Animations */
+@keyframes activeGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
 @keyframes indicatorPulse {
   0%, 100% {
     opacity: 1;

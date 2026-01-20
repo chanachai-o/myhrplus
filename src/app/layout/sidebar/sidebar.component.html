@@ -2,8 +2,9 @@
   <!-- Left Icon Bar - Module Icons -->
   <div *ngIf="!isHomeRoute()" class="icon-bar flex flex-col items-center py-4 border-r
               transition-all duration-300 ease-in-out
-              bg-white/80 dark:bg-gray-900/40 theme-myhr:bg-white/20 dark:theme-myhr:bg-gray-900/40
-              backdrop-blur-md">
+              bg-white/80 dark:bg-gray-700/60 theme-myhr:bg-white/20 dark:theme-myhr:bg-gray-700/60
+              backdrop-blur-md
+              w-14 min-w-14 max-w-14">
     <!-- Logo Removed (Moved to Header) -->
     <!-- Navigation Icons (Rail) -->
     <div class="flex flex-col gap-3 flex-1 w-full px-2">
@@ -24,24 +25,68 @@
                        fade-in
                        cursor-pointer
                        border-0 bg-transparent">
+          <!-- Active Background Glow -->
+          <div *ngIf="selectedLevel2Item === level2Item"
+               class="absolute inset-0 rounded-xl
+                      bg-gradient-to-br from-primary via-primary/90 to-primary
+                      dark:from-primary dark:via-primary/95 dark:to-primary
+                      theme-myhr:from-primary theme-myhr:via-primary/95 theme-myhr:to-primary
+                      shadow-lg shadow-primary/50
+                      ring-2 ring-primary/50 ring-inset
+                      transition-all duration-300"></div>
+
           <!-- Hover Background -->
           <div class="absolute inset-0 rounded-xl
-                      bg-gradient-to-br from-primary/0 to-primary/0
-                      group-hover:from-primary/10 group-hover:to-primary/10
-                      transition-all duration-300"></div>
+                      bg-gradient-to-br from-primary/70 via-primary/65 to-primary/70
+                      dark:from-primary/80 dark:via-primary/75 dark:to-primary/80
+                      theme-myhr:from-primary/75 theme-myhr:via-primary/70 theme-myhr:to-primary/75
+                      group-hover:from-primary/80 group-hover:via-primary/75 group-hover:to-primary/80
+                      dark:group-hover:from-primary/90 dark:group-hover:via-primary/85 dark:group-hover:to-primary/90
+                      theme-myhr:group-hover:from-primary/85 theme-myhr:group-hover:via-primary/80 theme-myhr:group-hover:to-primary/85
+                      transition-all duration-300"
+               [class.opacity-0]="selectedLevel2Item === level2Item"></div>
+
+          <!-- Active Glow Effect -->
+          <div *ngIf="selectedLevel2Item === level2Item"
+               class="absolute inset-0 rounded-xl
+                      bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0
+                      animate-pulse
+                      pointer-events-none"></div>
+
           <!-- Icon -->
+          <img [src]="getIconPath(level2Item.icon || 'home', '01')"
+               [alt]="translateLabel(level2Item.label, 'admin', 2)"
+               (error)="onIconError($event)"
+               class="w-6 h-6 relative z-10
+                      icon-micro group-hover:scale-110
+                      transition-all duration-300
+                      object-contain
+                      drop-shadow-2xl"
+               [class.scale-110]="selectedLevel2Item === level2Item"
+               [class.brightness-0]="selectedLevel2Item === level2Item"
+               [class.invert]="selectedLevel2Item === level2Item">
+          <!-- Fallback to Unicode icon if image fails to load -->
           <span class="text-2xl relative z-10
                        icon-micro group-hover:scale-110
                        transition-transform duration-300
-                       leading-none flex items-center justify-center"
+                       leading-none flex items-center justify-center hidden"
                 style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
             {{ getUnicodeIcon(level2Item.icon || 'folder') }}
           </span>
 
-          <!-- Active Indicator -->
+          <!-- Active Indicator Bar -->
           <span *ngIf="selectedLevel2Item === level2Item"
-                class="active-indicator
-                       pulse"></span>
+                class="absolute left-0 top-1/2 -translate-y-1/2
+                       w-1 h-3/4 rounded-r-full
+                       bg-gradient-to-b from-primary-light via-primary to-primary-dark
+                       shadow-lg shadow-primary/60
+                       animate-pulse"></span>
+
+          <!-- Active Ring -->
+          <div *ngIf="selectedLevel2Item === level2Item"
+               class="absolute inset-0 rounded-xl
+                      ring-2 ring-primary/60 ring-offset-2 ring-offset-transparent
+                      pointer-events-none"></div>
           <!-- Badge -->
           <span *ngIf="level2Item.badge"
                 class="absolute top-1 right-1 w-4 h-4 rounded-full
@@ -105,7 +150,7 @@
   <!-- Right Menu Panel - Module Menu -->
   <div class="menu-panel flex-1 flex flex-col overflow-hidden
               transition-all duration-300 ease-in-out
-              backdrop-blur-sm border-l border-gray-200 dark:border-gray-800 theme-myhr:border-white/20">
+              backdrop-blur-sm border-l border-gray-200 dark:border-gray-600/50 theme-myhr:border-white/20">
     <div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
       <!-- Home Logo Section (Only for /home) -->
 
@@ -117,10 +162,14 @@
           <div class="flex items-center gap-3">
             <!-- Title Icon -->
             <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative group overflow-hidden
-                        bg-primary/5 dark:bg-primary/10 theme-myhr:bg-primary/10
-                        border border-primary/10 dark:border-primary/20 theme-myhr:border-primary/20
-                        shadow-sm transition-all duration-300
-                        hover:shadow-md hover:border-primary/40">
+                        bg-gradient-to-br from-primary/80 via-primary/75 to-primary/80
+                        dark:from-primary/90 dark:via-primary/85 dark:to-primary/90
+                        theme-myhr:from-primary/85 theme-myhr:via-primary/80 theme-myhr:to-primary/85
+                        border border-primary/60 dark:border-primary/70 theme-myhr:border-primary/65
+                        shadow-xl transition-all duration-300
+                        hover:shadow-2xl hover:from-primary/90 hover:via-primary/85 hover:to-primary/90
+                        dark:hover:from-primary dark:hover:via-primary/95 dark:hover:to-primary
+                        theme-myhr:hover:from-primary/95 theme-myhr:hover:via-primary/90 theme-myhr:hover:to-primary/95">
 
                <!-- Home Logo Mode -->
                <ng-container *ngIf="isHomeRoute()">
@@ -134,14 +183,23 @@
                </ng-container>
 
                <!-- Normal Icon Mode -->
-               <span *ngIf="!isHomeRoute()"
-                     class="text-2xl relative z-10
-                            text-primary dark:text-primary-light theme-myhr:text-primary
-                            transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6
-                            leading-none flex items-center justify-center"
-                     style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
-                 {{ getUnicodeIcon((selectedLevel2Item?.icon || selectedNavigationItem?.icon) || 'folder') }}
-               </span>
+               <ng-container *ngIf="!isHomeRoute()">
+                 <img [src]="getIconPath((selectedLevel2Item?.icon || selectedNavigationItem?.icon) || 'home', '01')"
+                      [alt]="translateLabel((selectedLevel2Item ? selectedLevel2Item.label : (selectedNavigationItem ? selectedNavigationItem.label : '')) || '', 'admin', selectedLevel2Item ? 2 : 1)"
+                      (error)="onIconError($event)"
+                      class="w-7 h-7 relative z-10
+                             transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6
+                             object-contain
+                             drop-shadow-2xl">
+                 <!-- Fallback to Unicode icon if image fails to load -->
+                 <span class="text-2xl relative z-10
+                              text-primary dark:text-primary-light theme-myhr:text-primary
+                              transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6
+                              leading-none flex items-center justify-center hidden"
+                       style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
+                   {{ getUnicodeIcon((selectedLevel2Item?.icon || selectedNavigationItem?.icon) || 'folder') }}
+                 </span>
+               </ng-container>
             </div>
 
             <div class="flex-1 min-w-0">
@@ -167,7 +225,7 @@
             (input)="onSearchChange()"
             [placeholder]="'layout.sidebar.searchMenuPlaceholder' | translate"
             [ariaLabel]="'layout.sidebar.searchMenu' | translate"
-            customClass="w-full pr-11 bg-gray-50 dark:bg-gray-800/50 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-800/40 border-gray-200 dark:border-gray-700">
+            customClass="w-full pr-11 bg-gray-50 dark:bg-gray-700/60 theme-myhr:bg-white/40 dark:theme-myhr:bg-gray-700/60 border-gray-200 dark:border-gray-600/50">
             <ng-container *ngIf="searchQuery">
               <button
                 (click)="clearSearch()"
@@ -239,9 +297,9 @@
              [attr.aria-label]="module.label"
              [style.animation-delay.ms]="i * 50"
              class="module-card group relative overflow-hidden
-                    bg-white/40 dark:bg-gray-800/40 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-800/30
+                    bg-white/40 dark:bg-gray-700/50 theme-myhr:bg-white/30 dark:theme-myhr:bg-gray-700/50
                     backdrop-blur-sm rounded-xl
-                    border border-white/40 dark:border-gray-700/40 theme-myhr:border-primary/20
+                    border border-white/40 dark:border-gray-600/40 theme-myhr:border-primary/20
                     p-4 flex items-center gap-4
                     hover:bg-white/60 dark:hover:bg-gray-800/60 theme-myhr:hover:bg-white/50
                     hover:border-primary/50 dark:hover:border-primary/50 theme-myhr:hover:border-primary
@@ -257,15 +315,27 @@
                         pointer-events-none"></div>
             <!-- Icon -->
             <div class="flex-shrink-0 w-12 h-12 rounded-lg
-                        bg-primary/10 dark:bg-primary/20 theme-myhr:bg-primary/10
+                        bg-gradient-to-br from-primary/80 via-primary/75 to-primary/80
+                        dark:from-primary/90 dark:via-primary/85 dark:to-primary/90
+                        theme-myhr:from-primary/85 theme-myhr:via-primary/80 theme-myhr:to-primary/85
                         flex items-center justify-center
-                        group-hover:bg-primary/20 dark:group-hover:bg-primary/30 theme-myhr:group-hover:bg-primary/20
+                        group-hover:from-primary/90 group-hover:via-primary/85 group-hover:to-primary/90
+                        dark:group-hover:from-primary dark:group-hover:via-primary/95 dark:group-hover:to-primary
+                        theme-myhr:group-hover:from-primary/95 theme-myhr:group-hover:via-primary/90 theme-myhr:group-hover:to-primary/95
                         group-hover:scale-110 group-hover:rotate-6
                         transition-all duration-300
-                        relative z-10">
+                        relative z-10
+                        shadow-xl">
+              <img [src]="getIconPath(module.icon || 'home', '01')"
+                   [alt]="translateLabel(module.label, 'admin', 2)"
+                   (error)="onIconError($event)"
+                   class="w-8 h-8 relative z-10
+                          object-contain
+                          drop-shadow-2xl">
+              <!-- Fallback to Unicode icon if image fails to load -->
               <span class="text-2xl
                            relative z-10
-                           leading-none flex items-center justify-center"
+                           leading-none flex items-center justify-center hidden"
                     style="font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;">
                 {{ getUnicodeIcon(module.icon || 'folder') }}
               </span>

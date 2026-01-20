@@ -667,7 +667,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // Check if target item is in the current list (meaning they are siblings)
     // Use label for comparison (assuming unique labels within siblings)
     const match = items.find(i => i.label === targetItem.label);
-    
+
     if (match) {
       // Found the level where targetItem exists. Collapse others in this list.
       items.forEach(i => {
@@ -686,7 +686,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       }
     }
-    
+
     return false;
   }
 
@@ -969,7 +969,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Get Unicode icon for the sidebar
+   * Get Unicode icon for the sidebar (legacy - kept for backward compatibility)
    */
   getUnicodeIcon(iconName: string): string {
     const iconMap: { [key: string]: string } = {
@@ -1159,6 +1159,52 @@ export class SidebarComponent implements OnInit, OnDestroy {
     };
 
     return iconMap[iconName.toLowerCase()] || '📁'; // Default folder
+  }
+
+  /**
+   * Get icon image path from assets/images/icon
+   * Maps icon names to actual icon files
+   * @param iconName Icon name from navigation item
+   * @param variant Icon variant (01, 02, 03) - default is 01
+   * @returns Path to icon image
+   */
+  getIconPath(iconName: string, variant: string = '01'): string {
+    // Map icon names to file names (matching assets/images/icon/*.png)
+    const iconFileMap: { [key: string]: string } = {
+      // Level 1 & 2 Icons
+      'home': 'Home',
+      'business': 'Company Info',
+      'info': 'Company Info',
+      'people': 'Personal',
+      'person': 'Personal',
+      'access_time': 'Time',
+      'attach_money': 'Payroll',
+      'school': 'Training',
+      'assessment': 'Appraisal',
+      'person_add': 'Recruit',
+      'favorite': 'Benefit',
+      'settings': 'Setting',
+      'location_on': 'Location',
+      'route': 'Location',
+      'map': 'Location'
+    };
+
+    // Get file name from map or use iconName as fallback
+    const fileName = iconFileMap[iconName?.toLowerCase()] || iconName || 'Home';
+
+    // Return path to icon file
+    return `assets/images/icon/${fileName}-${variant}.png`;
+  }
+
+  /**
+   * Handle icon image load error - fallback to Unicode icon
+   */
+  onIconError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img && img.nextElementSibling) {
+      img.style.display = 'none';
+      (img.nextElementSibling as HTMLElement).style.display = 'flex';
+    }
   }
 
   navigateToHome(): void {
