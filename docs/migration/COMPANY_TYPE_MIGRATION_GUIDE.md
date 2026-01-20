@@ -95,7 +95,9 @@ import { first } from 'rxjs/operators';
 - จัดการ loading state ด้วย `signal()`
 - ใช้ `ApiService` wrapper แทน `HttpClient` โดยตรง
 - จัดการ error handling
-- **Map ข้อมูล API response ให้เป็น camelCase model**
+- **Map ข้อมูลจาก model (camelCase) ไปยัง API และจาก API กลับมาเป็น model**
+- **ใช้ camelCase ทั้งหมด** - ไม่มี snake_case ใน model และ service
+- **Normalize field names** - รองรับกรณีที่ API ส่งมา field name ไม่ตรงกับ model (เช่น `bankClientThname` → `bankClientThName`)
 - **ตรวจสอบ Logical Errors ใน Response Body** (แม้ HTTP status เป็น 200 แต่ response มี `state: 'FAIL'`)
 
 **Key Features:**
@@ -124,9 +126,10 @@ override delete(id: string | number): Observable<void> {
 
 **Responsibilities:**
 - กำหนด TypeScript interface สำหรับ data structure
-- **ใช้ camelCase naming convention** (e.g., `codeId`, `editDate`)
+- **ใช้ camelCase naming convention เท่านั้น** (e.g., `codeId`, `editDate`)
+- **ไม่มี snake_case** - ใช้ camelCase ทั้งหมด
 - ใช้ strict typing (no `any`)
-- ตรงกับ database schema
+- Service จะ map ข้อมูลจาก API (ถ้ามี field name variations) ให้ตรงกับ model
 
 ## Best Practices
 
@@ -508,17 +511,52 @@ gridActions: GridAction[] = [
 export class EntityService extends BaseApiService<Entity> {
   loading = signal<boolean>(false);
   
-  // Override for custom mapping if needed
+  // Override for custom normalization if needed
   override getAll(params?: PaginationParams): Observable<Entity[]> {
-    // ... implementation with mapping to camelCase
+    return this.http.get<PaginatedResponse<Entity>>(this.apiUrl, { params: httpParams }).pipe(
+      map((response) => {
+        // API returns camelCase, normalize field names to match our model
+        const transformedData: Entity[] = (response.content || []).map((item: any) => 
+          this.normalizeFromApiFormat(item)
+        );
+        return transformedData;
+      })
+    );
+  }
+
+  // Normalize API response to model format (camelCase)
+  // Handles field name variations (e.g., bankClientThname → bankClientThName)
+  private normalizeFromApiFormat(item: any): Entity {
+    return {
+      // Map from API response to model, handling field name variations
+      fieldName: item.fieldName || item.fieldname || '',
+      // ...
+    };
+  }
+
+  // Normalize model data to API format (camelCase)
+  private normalizeToApiFormat(data: Partial<Entity>): any {
+    return {
+      // Convert from model to API format
+      // Handle boolean to number/string conversion if needed
+      fieldName: data.fieldName,
+      // ...
+    };
   }
   
   // Create and Update use POST
+  override create(data: Partial<Entity>): Observable<Entity> {
+    const apiData = this.normalizeToApiFormat(data);
+    return this.http.post<Entity>(this.apiUrl, apiData).pipe(
+      map((response) => this.normalizeFromApiFormat(response))
+    );
+  }
+
   override update(id: string | number, data: Partial<Entity>): Observable<Entity> {
-    this.loading.set(true);
+    const apiData = this.normalizeToApiFormat(data);
     // Use POST for update
-    return this.http.post<Entity>(this.apiUrl, data).pipe(
-      // ...
+    return this.http.post<Entity>(this.apiUrl, apiData).pipe(
+      map((response) => this.normalizeFromApiFormat(response))
     );
   }
 
@@ -676,7 +714,9 @@ export class EntityFormComponent implements OnChanges {
 
 ### 1. Naming Convention
 - ❌ JSP: `snake_case` (e.g., `code_id`, `edit_date`)
-- ✅ Angular: `camelCase` (e.g., `codeId`, `editDate`)
+- ✅ Angular: **`camelCase` เท่านั้น** (e.g., `codeId`, `editDate`)
+- ✅ **ไม่มี snake_case** - ใช้ camelCase ทั้งหมดใน model, service, และ components
+- ✅ Service จะ normalize field names จาก API (ถ้ามี variations) ให้ตรงกับ model
 
 ### 2. HTTP Methods
 - ❌ JSP: Various patterns
@@ -715,7 +755,9 @@ export class EntityFormComponent implements OnChanges {
 
 ### 1. Naming Convention Standardization
 - ✅ เปลี่ยน Model properties เป็น `camelCase` ทั้งหมด (e.g., `codeId`, `editDate`)
-- ✅ Service ทำหน้าที่ map ข้อมูลจาก API (ถ้ายังส่งมาเป็น format อื่น) ให้เป็น camelCase model
+- ✅ **ไม่มี snake_case** - ใช้ camelCase เท่านั้นใน model, service, และ components
+- ✅ Service ทำหน้าที่ normalize ข้อมูลจาก API (รองรับ field name variations) ให้ตรงกับ camelCase model
+- ✅ Service map ข้อมูลจาก model (camelCase) ไปยัง API และจาก API กลับมาเป็น model
 
 ### 2. Service Method Standardization
 - ✅ ใช้ `POST` method สำหรับ Update operation (เหมือนกับ Create)
@@ -737,3 +779,10 @@ export class EntityFormComponent implements OnChanges {
 ### 5. Error Handling Enhancement
 - ✅ **ตรวจสอบ Logical Errors**: Service ตรวจสอบ response body สำหรับ `state: 'FAIL'`, `success: false`, หรือ `statusCode: 500` แม้ HTTP status เป็น 200
 - ✅ **Throw Error**: เมื่อพบ logical error จะ throw Error เพื่อให้ไปตกที่ error callback ของ component
+
+### 6. Naming Convention - camelCase Only (2026-01-20)
+- ✅ **ไม่มี snake_case**: ใช้ camelCase เท่านั้นใน model, service, และ components
+- ✅ **Service Normalization**: Service map ข้อมูลจาก model (camelCase) ไปยัง API และจาก API กลับมาเป็น model
+- ✅ **Field Name Variations**: Service รองรับกรณีที่ API ส่งมา field name ไม่ตรงกับ model (เช่น `bankClientThname` → `bankClientThName`, `isdefault` → `isDefault`)
+- ✅ **Normalization Methods**: ใช้ `normalizeToApiFormat()` และ `normalizeFromApiFormat()` สำหรับจัดการ field name variations และ type conversions
+- ✅ **Model Standardization**: Model interface ใช้ camelCase เท่านั้น ไม่มี snake_case interface

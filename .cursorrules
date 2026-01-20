@@ -416,8 +416,8 @@ export class ModelNameService {
 ### Standard Component Structure
 - **List Component**: ใช้ `SyncfusionDataGridComponent`, `PageHeaderComponent`, `signal<any>({ result: [], count: 0 })` สำหรับ data (รองรับ Server-side Pagination), `FormControl` สำหรับ search, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
 - **Form Component**: ใช้ `ReactiveFormsModule`, `ModalComponent`, `GlassInputComponent`, `FormValidationMessagesComponent`, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
-- **Service**: Extend `BaseApiService<T>`, ใช้ `signal()` สำหรับ loading state, ใช้ `ApiService` wrapper
-- **Model**: TypeScript interface ที่ตรงกับ database schema, ใช้ strict typing
+- **Service**: Extend `BaseApiService<T>`, ใช้ `signal()` สำหรับ loading state, ใช้ `ApiService` wrapper, **map ข้อมูลจาก model (camelCase) ไปยัง API และจาก API กลับมาเป็น model**
+- **Model**: TypeScript interface ที่ตรงกับ database schema, ใช้ strict typing, **ใช้ camelCase เท่านั้น (ไม่มี snake_case)**
 
 ### Migration Checklist
 เมื่อ migrate หน้าทะเบียนใหม่ ให้ทำตาม checklist ใน `COMPANY_TYPE_MIGRATION_GUIDE.md`:
@@ -848,8 +848,8 @@ export class ComponentNameDemoComponent {
 - **Key Features**:
   - List Component: `SyncfusionDataGridComponent`, `PageHeaderComponent`, `signal<any>({ result: [], count: 0 })` สำหรับ data (รองรับ Server-side Pagination), `FormControl` สำหรับ search, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
   - Form Component: `ReactiveFormsModule`, `ModalComponent`, `GlassInputComponent`, `FormValidationMessagesComponent`, `ConfirmationDialogService` สำหรับ confirmation และ success/error dialogs
-  - Service: Extend `BaseApiService<T>`, ใช้ `signal()` สำหรับ loading state
-  - Model: TypeScript interface ที่ตรงกับ database schema
+  - Service: Extend `BaseApiService<T>`, ใช้ `signal()` สำหรับ loading state, **map ข้อมูลจาก model (camelCase) ไปยัง API และจาก API กลับมาเป็น model**, **ใช้ normalization methods สำหรับจัดการ field name variations**
+  - Model: TypeScript interface ที่ตรงกับ database schema, **ใช้ camelCase เท่านั้น (ไม่มี snake_case)**
 
 ### From hrplus-std-rd
 - **Legacy Code**: Some components still use module-based architecture
@@ -1412,7 +1412,21 @@ export class ComponentNameDemoComponent {
   - Error handling ครอบคลุมทั้ง HTTP errors และ logical errors
   - Server-side pagination รองรับข้อมูลขนาดใหญ่ได้ดีขึ้น
 
-**Last Updated**: 2026-01-20 (Company Type Migration Guide - Dialog-based Feedback)
-**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + UX/UI Improvements (Sidebar/Header/Search) + Dialog-based Feedback Standardization Complete
+### Naming Convention - camelCase Only (2026-01-20)
+- ✅ **ไม่มี snake_case**: ใช้ camelCase เท่านั้นใน model, service, และ components
+- ✅ **Service Normalization**: Service map ข้อมูลจาก model (camelCase) ไปยัง API และจาก API กลับมาเป็น model
+- ✅ **Field Name Variations**: Service รองรับกรณีที่ API ส่งมา field name ไม่ตรงกับ model (เช่น `bankClientThname` → `bankClientThName`, `isdefault` → `isDefault`)
+- ✅ **Normalization Methods**: ใช้ `normalizeToApiFormat()` และ `normalizeFromApiFormat()` สำหรับจัดการ field name variations และ type conversions
+- ✅ **Model Standardization**: Model interface ใช้ camelCase เท่านั้น ไม่มี snake_case interface
+- ✅ **Updated Documentation**: `COMPANY_TYPE_MIGRATION_GUIDE.md` อัพเดทแล้ว
+- ✅ **Updated Rules**: `.cursorrules` อัพเดทแล้ว
+- ✅ **Impact**:
+  - Consistent naming convention ทั่วทั้ง application
+  - Service จัดการ mapping อัตโนมัติ
+  - รองรับ field name variations จาก API
+  - Code maintainability ดีขึ้น
+
+**Last Updated**: 2026-01-20 (Company Type Migration Guide - Dialog-based Feedback + camelCase Only)
+**Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + UX/UI Improvements (Sidebar/Header/Search) + Dialog-based Feedback Standardization Complete + Naming Convention camelCase Only Complete
 **Angular Version**: 17.0.0+
 **TypeScript Version**: 5.2.2+

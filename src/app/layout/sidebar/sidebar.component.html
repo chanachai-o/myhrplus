@@ -162,14 +162,15 @@
           <div class="flex items-center gap-3">
             <!-- Title Icon -->
             <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative group overflow-hidden
-                        bg-gradient-to-br from-primary/80 via-primary/75 to-primary/80
-                        dark:from-primary/90 dark:via-primary/85 dark:to-primary/90
-                        theme-myhr:from-primary/85 theme-myhr:via-primary/80 theme-myhr:to-primary/85
-                        border border-primary/60 dark:border-primary/70 theme-myhr:border-primary/65
-                        shadow-xl transition-all duration-300
-                        hover:shadow-2xl hover:from-primary/90 hover:via-primary/85 hover:to-primary/90
-                        dark:hover:from-primary dark:hover:via-primary/95 dark:hover:to-primary
-                        theme-myhr:hover:from-primary/95 theme-myhr:hover:via-primary/90 theme-myhr:hover:to-primary/95">
+                        bg-gradient-to-br from-primary via-primary/95 to-primary
+                        dark:from-primary dark:via-primary/98 dark:to-primary
+                        theme-myhr:from-primary theme-myhr:via-primary/97 theme-myhr:to-primary
+                        border border-primary/40 dark:border-primary/50 theme-myhr:border-primary/45
+                        shadow-xl shadow-primary/30 transition-all duration-300
+                        hover:shadow-2xl hover:shadow-primary/50 hover:from-primary hover:via-primary hover:to-primary
+                        dark:hover:from-primary dark:hover:via-primary dark:hover:to-primary
+                        theme-myhr:hover:from-primary theme-myhr:hover:via-primary theme-myhr:hover:to-primary
+                        hover:border-primary/60 dark:hover:border-primary/70 theme-myhr:hover:border-primary/65">
 
                <!-- Home Logo Mode -->
                <ng-container *ngIf="isHomeRoute()">
@@ -315,17 +316,20 @@
                         pointer-events-none"></div>
             <!-- Icon -->
             <div class="flex-shrink-0 w-12 h-12 rounded-lg
-                        bg-gradient-to-br from-primary/80 via-primary/75 to-primary/80
-                        dark:from-primary/90 dark:via-primary/85 dark:to-primary/90
-                        theme-myhr:from-primary/85 theme-myhr:via-primary/80 theme-myhr:to-primary/85
+                        bg-gradient-to-br from-primary via-primary/95 to-primary
+                        dark:from-primary dark:via-primary/98 dark:to-primary
+                        theme-myhr:from-primary theme-myhr:via-primary/97 theme-myhr:to-primary
+                        border border-primary/30 dark:border-primary/40 theme-myhr:border-primary/35
                         flex items-center justify-center
-                        group-hover:from-primary/90 group-hover:via-primary/85 group-hover:to-primary/90
-                        dark:group-hover:from-primary dark:group-hover:via-primary/95 dark:group-hover:to-primary
-                        theme-myhr:group-hover:from-primary/95 theme-myhr:group-hover:via-primary/90 theme-myhr:group-hover:to-primary/95
+                        group-hover:from-primary group-hover:via-primary group-hover:to-primary
+                        dark:group-hover:from-primary dark:group-hover:via-primary dark:group-hover:to-primary
+                        theme-myhr:group-hover:from-primary theme-myhr:group-hover:via-primary theme-myhr:group-hover:to-primary
                         group-hover:scale-110 group-hover:rotate-6
+                        group-hover:border-primary/50 dark:group-hover:border-primary/60 theme-myhr:group-hover:border-primary/55
+                        group-hover:shadow-2xl group-hover:shadow-primary/50
                         transition-all duration-300
                         relative z-10
-                        shadow-xl">
+                        shadow-xl shadow-primary/30">
               <img [src]="getIconPath(module.icon || 'home', '01')"
                    [alt]="translateLabel(module.label, 'admin', 2)"
                    (error)="onIconError($event)"
