@@ -1,10 +1,193 @@
 /* ============================================
    Avatar Component Styles
    ============================================
-   Migrated to Tailwind - Minimal SCSS for component-specific styles only
+   Enhanced styling for avatar component with responsive support
    ============================================ */
 
-/* Component uses Tailwind classes directly in HTML */
-/* All styles handled by Tailwind utilities and plugins */
+@import '../../../../styles/mixins';
+
+.avatar-wrapper {
+  // Ensure proper alignment
+  vertical-align: middle;
+}
+
+.avatar-container {
+  // Smooth transitions with hardware acceleration
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+
+  // Touch-friendly on mobile
+  @media (max-width: 768px) {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+// Image quality enhancement
+.avatar-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+
+  // Loading state
+  &.loading {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+
+  // Responsive image sizing
+  @media (max-width: 640px) {
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+// Initials styling with gradient
+.avatar-initials {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+
+  span {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+  }
+}
+
+// Status indicator with glow effect
+.avatar-status {
+  // Responsive sizing
+  @media (max-width: 640px) {
+    border-width: 1.5px;
+  }
+
+  &.status-glow {
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6), 0 0 16px rgba(34, 197, 94, 0.4);
+    animation: statusPulse 2s ease-in-out infinite;
+  }
+}
+
+// Glow effect
+.avatar-glow {
+  background-size: 200% 200%;
+}
+
+// Shimmer effect for loading
+.avatar-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}
+
+// Badge styling
+.avatar-badge {
+  // Responsive positioning
+  @media (max-width: 640px) {
+    top: -2px;
+    right: -2px;
+  }
+
+  // Ensure badge is visible on all backgrounds
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+// Animations
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .avatar-container {
+    // Reduce hover effects on mobile
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  .avatar-status {
+    // Smaller status indicator on mobile
+    &.status-glow {
+      box-shadow: 0 0 4px rgba(34, 197, 94, 0.5), 0 0 8px rgba(34, 197, 94, 0.3);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .avatar-container {
+    // Enhanced hover effects on desktop
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .avatar-container,
+  .avatar-image,
+  .avatar-status,
+  .avatar-glow,
+  .avatar-badge,
+  .avatar-initials {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .avatar-status.status-glow {
+    animation: none !important;
+  }
+
+  .animate-shimmer {
+    animation: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .avatar-container {
+    border: 2px solid currentColor;
+  }
+
+  .avatar-status {
+    border-width: 3px;
+  }
+}
 
 

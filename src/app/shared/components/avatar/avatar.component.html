@@ -1,30 +1,59 @@
-<div class="relative inline-block" [ngClass]="getSizeClasses()">
-  <div class="relative inline-block overflow-hidden hover-scale transition-transform-smooth" [ngClass]="getShapeClasses() + (status && showStatus ? ' pr-0.5' : '')">
+<div class="avatar-wrapper relative inline-flex items-center justify-center" [ngClass]="getSizeClasses()">
+  <!-- Main Avatar Container -->
+  <div class="avatar-container relative inline-flex items-center justify-center overflow-hidden transition-all duration-300 ease-out hover:scale-105 active:scale-95 group cursor-pointer" [ngClass]="getShapeClasses() + (status && showStatus ? ' pr-0.5' : '') + ' ' + getContainerClasses()">
+    <!-- Ring Border with Gradient -->
+    <div class="absolute inset-0 rounded-full ring-2 ring-offset-2 transition-all duration-300" [ngClass]="getRingClasses()"></div>
+
+    <!-- Image with enhanced styling and loading state -->
     <img
       *ngIf="src && !hasError"
       [src]="src"
-      [alt]="name"
+      [alt]="name || 'Avatar'"
       (error)="onImageError()"
-      class="block w-full h-full object-cover transition-opacity-smooth">
+      (load)="onImageLoad()"
+      class="avatar-image block w-full h-full object-cover transition-all duration-300 ease-out group-hover:scale-110 brightness-100 group-hover:brightness-110 contrast-100 group-hover:contrast-105"
+      [class.loading]="isLoading" />
+
+    <!-- Initials with beautiful animated gradient -->
     <div
       *ngIf="!src || hasError"
-      class="flex items-center justify-center text-white font-semibold bg-gradient-primary"
-      [ngClass]="getInitialsSizeClasses()">
-      {{ initials }}
+      class="avatar-initials flex items-center justify-center text-white font-bold w-full h-full transition-all duration-300 ease-out"
+      [ngClass]="getInitialsClasses()">
+      <span [ngClass]="getInitialsSizeClasses()">{{ initials }}</span>
     </div>
+
+    <!-- Status indicator with enhanced styling and pulse animation -->
     <div
       *ngIf="status && showStatus"
-      class="absolute bottom-0 right-0 rounded-full border-2 border-white dark:border-slate-800 shadow-md transition-transform-smooth"
-      [ngClass]="getStatusClasses()"
+      class="avatar-status absolute bottom-0 right-0 rounded-full border-2 shadow-lg transition-all duration-300 ease-out group-hover:scale-110 z-10"
+      [ngClass]="getStatusClasses() + ' ' + getStatusBorderClasses()"
       [style.background-color]="statusColor"
-      [class.animate-pulse]="status === 'online'">
+      [class.animate-pulse]="status === 'online'"
+      [class.status-glow]="status === 'online'"
+      [attr.aria-label]="'Status: ' + status">
+    </div>
+
+    <!-- Glow effect on hover with smooth animation -->
+    <div
+      class="avatar-glow absolute inset-0 rounded-full bg-gradient-to-br transition-all duration-500 ease-out pointer-events-none opacity-0 group-hover:opacity-100"
+      [ngClass]="getShapeClasses() + ' ' + getGlowClasses()">
+    </div>
+
+    <!-- Shimmer effect for loading state -->
+    <div
+      *ngIf="isLoading"
+      class="avatar-shimmer absolute inset-0 rounded-full animate-shimmer pointer-events-none"
+      [ngClass]="getShapeClasses()">
     </div>
   </div>
+
+  <!-- Badge with enhanced styling and responsive sizing -->
   <div
     *ngIf="badge && showBadge"
-    class="absolute -top-1 -right-1 bg-error-500 text-white rounded-full flex items-center justify-center font-semibold text-xs min-w-[18px] px-1.5 py-0 shadow-md hover:scale-110 transition-transform-smooth"
-    [ngClass]="getBadgeClasses()">
-    <span *ngIf="isBadgeNumber() && isBadgeGreaterThanZero()">{{ getBadgeValue() }}</span>
+    class="avatar-badge absolute -top-1 -right-1 rounded-full flex items-center justify-center font-bold shadow-lg ring-2 hover:scale-110 hover:shadow-xl transition-all duration-300 ease-out z-20"
+    [ngClass]="getBadgeClasses() + ' ' + getBadgeRingClasses()"
+    [attr.aria-label]="'Badge: ' + (isBadgeNumber() ? getBadgeValue() : 'Notification')">
+    <span *ngIf="isBadgeNumber() && isBadgeGreaterThanZero()" [ngClass]="getBadgeTextClasses()">{{ getBadgeValue() }}</span>
+    <span *ngIf="isBadgeDot()" class="w-full h-full rounded-full bg-white"></span>
   </div>
 </div>
-

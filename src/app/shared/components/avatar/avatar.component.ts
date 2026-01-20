@@ -18,9 +18,14 @@ export class AvatarComponent implements OnInit {
 
   initials: string = '';
   hasError: boolean = false;
+  isLoading: boolean = true;
 
   ngOnInit(): void {
     this.initials = this.getInitials(this.name);
+  }
+
+  onImageLoad(): void {
+    this.isLoading = false;
   }
 
   private getInitials(name: string): string {
@@ -118,6 +123,43 @@ export class AvatarComponent implements OnInit {
       md: 'w-4.5 h-4.5 text-[10px] px-1.5',
       lg: 'w-5.5 h-5.5 text-xs px-1.5',
       xl: 'w-7 h-7 text-sm px-2'
+    };
+    return sizes[this.size] || sizes.md;
+  }
+
+  getContainerClasses(): string {
+    const baseClasses = 'ring-2 ring-white/20 dark:ring-gray-700/30 shadow-lg';
+    const responsiveClasses = 'md:shadow-xl';
+    return `${baseClasses} ${responsiveClasses}`;
+  }
+
+  getRingClasses(): string {
+    return 'ring-primary/30 dark:ring-primary/40 group-hover:ring-primary/50 dark:group-hover:ring-primary/60 ring-offset-white dark:ring-offset-gray-800';
+  }
+
+  getInitialsClasses(): string {
+    return 'bg-gradient-to-br from-primary via-primary/90 to-primary-dark dark:from-primary dark:via-primary/95 dark:to-primary-dark shadow-inner group-hover:from-primary/90 group-hover:via-primary/85 group-hover:to-primary-dark';
+  }
+
+  getStatusBorderClasses(): string {
+    return 'border-white dark:border-gray-900';
+  }
+
+  getGlowClasses(): string {
+    return 'from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/20 group-hover:via-primary/10 group-hover:to-primary/20';
+  }
+
+  getBadgeRingClasses(): string {
+    return 'ring-white dark:ring-gray-900';
+  }
+
+  getBadgeTextClasses(): string {
+    const sizes = {
+      xs: 'text-[8px]',
+      sm: 'text-[9px]',
+      md: 'text-[10px]',
+      lg: 'text-xs',
+      xl: 'text-sm'
     };
     return sizes[this.size] || sizes.md;
   }

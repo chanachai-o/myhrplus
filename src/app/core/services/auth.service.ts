@@ -203,6 +203,42 @@ export class AuthService {
               this.storage.setItem(this.USER_KEY, JSON.stringify(user));
               this.currentUserSubject.next(user);
 
+              // Fetch employee profile after login to get additional user data (picture, etc.)
+              this.fetchEmployeeProfile(user.employeeid || user.id || user.uid).subscribe({
+                next: (profileData) => {
+                  // Merge profile data with existing user data
+                  const updatedUser: User = {
+                    ...user,
+                    ...profileData,
+                    picture: profileData['picture'] || user['picture'],
+                    fullname: profileData.fname && profileData.lname
+                      ? `${profileData.prefix?.tdesc || ''} ${profileData.fname} ${profileData.lname}`.trim()
+                      : user.fullname || user.name,
+                    name: profileData.fname && profileData.lname
+                      ? `${profileData.fname} ${profileData.lname}`.trim()
+                      : user.name,
+                    email: profileData.email || profileData.emailMicrosoft365 || user.email,
+                    emp_position: profileData.position?.tdesc || user.emp_position,
+                    job: profileData.position?.edesc || user.job
+                  };
+
+                  // Update stored user data
+                  this.storage.setItem(this.USER_KEY, JSON.stringify(updatedUser));
+                  this.currentUserSubject.next(updatedUser);
+
+                  // Also update sessionStorage
+                  if (typeof window !== 'undefined' && window.sessionStorage) {
+                    sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                  }
+
+                  console.log('[AuthService] Employee profile loaded and merged:', updatedUser);
+                },
+                error: (error) => {
+                  console.warn('[AuthService] Failed to load employee profile:', error);
+                  // Continue with login even if profile fetch fails
+                }
+              });
+
               resolve(response);
             } catch (error) {
               console.error('Error decoding token:', error);
@@ -655,6 +691,36 @@ export class AuthService {
     return this.apiService.post<unknown>(
       `${environment.apiEndpoints.employeeView}/pdpa/employee-consent`,
       body
+    );
+  }
+
+  /**
+   * Fetch employee profile from /plus/employee/profile endpoint
+   * @param employeeId - Employee ID
+   * @returns Observable with employee profile data
+   */
+  private fetchEmployeeProfile(employeeId: string | undefined): Observable<any> {
+    if (!employeeId) {
+      return throwError(() => new Error('Employee ID is required'));
+    }
+
+    // Use baseUrl for /plus endpoints (not jbossUrl)
+    const url = `${environment.baseUrl}/employee/profile`;
+
+    console.log('[AuthService] Fetching employee profile from:', url, 'for employeeId:', employeeId);
+
+    // Use HttpClient directly since ApiService uses jbossUrl, but we need baseUrl for /plus endpoints
+    return this.http.get<any>(url).pipe(
+      map((response: any) => {
+        // Handle both ApiResponse format and direct data format
+        const profileData = response.data || response;
+        console.log('[AuthService] Employee profile data received:', profileData);
+        return profileData;
+      }),
+      catchError(error => {
+        console.error('[AuthService] Error fetching employee profile:', error);
+        return throwError(() => error);
+      })
     );
   }
 }
