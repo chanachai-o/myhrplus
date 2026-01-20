@@ -14,13 +14,15 @@
   </ng-template>
   <ng-template #footerTemplate>
     <div class="flex justify-end gap-3 p-4">
-      <app-glass-button
-        type="button"
-        [variant]="cancelVariant()"
-        size="md"
-        (clicked)="onCancel()">
-        {{ cancelText() }}
-      </app-glass-button>
+      @if (showCancelButton()) {
+        <app-glass-button
+          type="button"
+          [variant]="cancelVariant()"
+          size="md"
+          (clicked)="onCancel()">
+          {{ cancelText() }}
+        </app-glass-button>
+      }
       <app-glass-button
         type="button"
         [variant]="confirmVariant()"

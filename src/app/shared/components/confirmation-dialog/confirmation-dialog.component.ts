@@ -37,6 +37,7 @@ export class ConfirmationDialogComponent {
   width = computed(() => this.dialogService.width());
   showCloseIcon = computed(() => this.dialogService.showCloseIcon());
   closeOnEscape = computed(() => this.dialogService.closeOnEscape());
+  showCancelButton = computed(() => this.dialogService.showCancelButton());
 
   // Getter for two-way binding (Syncfusion Dialog requires property, not function call)
   get visibleValue(): boolean {

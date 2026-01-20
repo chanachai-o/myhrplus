@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angu
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
 import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeService } from '../../services/company-type.service';
-import { NotificationService, ConfirmationDialogService } from '@core/services';
+import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
 @Component({
@@ -74,9 +75,13 @@ export class CompanyTypeFormComponent implements OnChanges {
     }
 
     // Show confirmation dialog before saving using service
-    this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
-      next: (result) => {
+    this.confirmationDialogService.confirmSave(this.isEditMode).pipe(
+      first() // Only take first emission to prevent duplicate subscriptions
+    ).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
         if (result.confirmed) {
+          // Wait for confirmation dialog to fully close before proceeding
+          await this.confirmationDialogService.waitForClose();
           this.saveData();
         }
       }
@@ -94,14 +99,33 @@ export class CompanyTypeFormComponent implements OnChanges {
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
-        this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE));
-        this.save.emit(); // Notify parent to refresh list
-        this.onClose();
+        // Wait a bit to ensure confirmation dialog is fully closed
+        setTimeout(() => {
+          const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE);
+          this.confirmationDialogService.showSuccess(successMessage).pipe(
+            first() // Only take first emission
+          ).subscribe({
+            next: () => {
+              this.save.emit(); // Notify parent to refresh list
+              this.onClose();
+            }
+          });
+        }, 100);
       },
       error: (err: unknown) => {
         console.error(err);
         this.service.loading.set(false);
-        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE));
+        // Wait a bit to ensure confirmation dialog is fully closed
+        setTimeout(() => {
+          // Get error message from error object
+          const errorMessage = (err as any)?.error?.message ||
+                             (err as any)?.message ||
+                             this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE);
+          // Show error dialog
+          this.confirmationDialogService.showError(errorMessage).pipe(
+            first() // Only take first emission
+          ).subscribe();
+        }, 100);
       }
     });
   }

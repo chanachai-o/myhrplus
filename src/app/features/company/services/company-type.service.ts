@@ -175,8 +175,13 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     this.loading.set(true);
     const url = `${this.apiUrl}/${id}`;
     console.log('[CompanyTypeService] Deleting:', id);
-    return this.http.delete<void>(url).pipe(
-      tap(() => {
+    return this.http.delete<any>(url).pipe(
+      tap((response) => {
+        // Check for logical error in response (even if HTTP status is 200)
+        if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
+          console.error('[CompanyTypeService] Logical error in delete response:', response);
+          throw new Error(response.message || 'Delete failed');
+        }
         console.log('[CompanyTypeService] Deleted:', id);
         this.loading.set(false);
       }),

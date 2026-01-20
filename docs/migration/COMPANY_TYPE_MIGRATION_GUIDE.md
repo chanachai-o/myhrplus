@@ -38,6 +38,7 @@ company-type/
 
 **Responsibilities:**
 - แสดงรายการข้อมูลใน DataGrid
+- **รองรับ Server-side Pagination** (รับข้อมูล `{ result: any[], count: number }`)
 - จัดการ CRUD operations (Create, Read, Update, Delete)
 - จัดการ search และ filtering
 - จัดการ confirmation dialogs
@@ -46,7 +47,7 @@ company-type/
 
 **Key Features:**
 - ใช้ `SyncfusionDataGridComponent` สำหรับแสดงข้อมูล
-- ใช้ `signal()` สำหรับ reactive data
+- ใช้ `signal<any>({ result: [], count: 0 })` สำหรับ reactive data ที่รองรับ pagination
 - ใช้ `FormControl` สำหรับ search
 - ใช้ `ConfirmationDialogService` สำหรับ confirmation dialogs
 - ใช้ `NotificationService` สำหรับแสดง messages
@@ -141,12 +142,16 @@ this.save.emit();
 
 ### 2. State Management
 
-**ใช้ `signal()` สำหรับ reactive data:**
+**ใช้ `signal()` สำหรับ reactive data (Server-side Pagination):**
 ```typescript
-data = signal<CompanyType[]>([]);
+// Initial state with empty result and count 0
+data = signal<any>({ result: [], count: 0 });
 
-// Update
-this.data.set(res);
+// Update in loadData
+this.data.set({
+  result: res.data,
+  count: res.totalElements
+});
 
 // Access in template
 [dataSource]="data()"
@@ -369,8 +374,8 @@ gridActions: GridAction[] = [
 - [ ] สร้าง list component (`*-list.component.ts`)
 - [ ] สร้าง list template (`*-list.component.html`)
 - [ ] ใช้ `SyncfusionDataGridComponent` สำหรับแสดงข้อมูล
+- [ ] **ใช้ `signal<any>({ result: [], count: 0 })` รองรับ Server-side Pagination**
 - [ ] ใช้ `PageHeaderComponent` สำหรับ header
-- [ ] ใช้ `signal()` สำหรับ data state
 - [ ] ใช้ `FormControl` สำหรับ search
 - [ ] ใช้ `NotificationService` สำหรับ error/success messages (เฉพาะ Delete)
 - [ ] ใช้ `ConfirmationDialogService` สำหรับ delete confirmation
@@ -394,6 +399,7 @@ gridActions: GridAction[] = [
 - [ ] ทดสอบ error handling
 - [ ] ทดสอบ loading states
 - [ ] ทดสอบ translation
+- [ ] **ทดสอบ Server-side Pagination (เปลี่ยนหน้าแล้วข้อมูลโหลดใหม่)**
 
 ### Phase 5: Polish
 - [ ] เพิ่ม accessibility attributes
@@ -427,32 +433,33 @@ export class EntityService extends BaseApiService<Entity> {
 }
 ```
 
-### 2. List Component Pattern
+### 2. List Component Pattern (With Server-side Pagination)
 ```typescript
 export class EntityListComponent implements OnInit {
-  // ... injections
+  // Use signal for data with count support
+  data = signal<any>({ result: [], count: 0 });
+
+  loadData(page: number = this.currentPage, size: number = this.pageSize) {
+    this.service.getAllWithPagination({ page, size }).subscribe({
+      next: (res) => {
+        // Update data with { result, count } structure
+        this.data.set({
+          result: res.data,
+          count: res.totalElements
+        });
+        
+        // Update pagination info
+        this.currentPage = res.currentPage;
+        this.pageSize = res.pageSize;
+        // ...
+      }
+    });
+  }
   
   onSaveSuccess() {
     // No toast here, handled in form
     this.loadData();
     this.showModal = false;
-  }
-
-  onDelete(row: any) {
-    this.confirmationDialogService.confirmDelete().subscribe({
-      next: (result) => {
-        if (result.confirmed) {
-          this.service.delete(row.codeId).subscribe({
-            next: () => {
-              this.loadData();
-              this.notificationService.showSuccess(
-                this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE)
-              );
-            }
-          });
-        }
-      }
-    });
   }
 }
 ```
@@ -492,6 +499,10 @@ export class EntityFormComponent implements OnChanges {
 - ❌ JSP: Alert boxes
 - ✅ Angular: Centralized `NotificationService`, Success toast in Form (Save) and List (Delete)
 
+### 4. Pagination
+- ❌ JSP: Server-side rendering pagination HTML
+- ✅ Angular: **Server-side pagination** via API, client-side rendering with `{ result, count }` structure
+
 ## References
 
 - **Component Location**: `src/app/features/company/human-resources/company-type/`
@@ -520,3 +531,8 @@ export class EntityFormComponent implements OnChanges {
 - ✅ **Save Success**: ย้ายการแสดง toast ไปที่ `FormComponent` (ผู้กระทำ action)
 - ✅ **Delete Success**: แสดง toast ที่ `ListComponent` (ผู้กระทำ action)
 - ✅ ลดความซ้ำซ้อนของการเรียก NotificationService
+
+### 4. Server-side Pagination Support
+- ✅ **SyncfusionDataGrid**: รองรับ datasource format `{ result: any[], count: number }`
+- ✅ **ListComponent**: ส่งข้อมูลพร้อม count ไปยัง grid เพื่อแสดง pager ได้ถูกต้อง
+- ✅ **Paging Logic**: เปลี่ยนหน้าแล้วโหลดข้อมูลใหม่จาก API (ไม่โหลดทั้งหมดครั้งเดียว)

@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
+import { first, take } from 'rxjs/operators';
 import { TRANSLATION_KEYS } from '../constants/translation-keys.constant';
 
 export interface ConfirmationDialogConfig {
@@ -15,6 +16,7 @@ export interface ConfirmationDialogConfig {
   width?: string;
   showCloseIcon?: boolean;
   closeOnEscape?: boolean;
+  showCancelButton?: boolean; // Show/hide cancel button (default: true)
 }
 
 export interface ConfirmationDialogResult {
@@ -116,16 +118,30 @@ export class ConfirmationDialogService {
     return config.closeOnEscape !== false;
   });
 
+  showCancelButton = computed(() => {
+    const config = this._config();
+    if (!config) return true;
+    return config.showCancelButton !== false;
+  });
+
   /**
    * Show confirmation dialog
    * @param config Dialog configuration
    * @returns Observable that emits when user confirms or cancels
    */
   confirm(config: ConfirmationDialogConfig): Observable<ConfirmationDialogResult> {
-    this._config.set(config);
-    this._visible.set(true);
+    // If dialog is already open, close it first
+    if (this._visible()) {
+      this.close();
+    }
+    
+    // Wait a bit to ensure previous dialog is closed
+    setTimeout(() => {
+      this._config.set(config);
+      this._visible.set(true);
+    }, 50);
 
-    return this._resultSubject.asObservable();
+    return this._resultSubject.asObservable().pipe(take(1));
   }
 
   /**
@@ -180,6 +196,38 @@ export class ConfirmationDialogService {
   }
 
   /**
+   * Show error dialog (single OK button)
+   * @param message Error message
+   * @param title Dialog title (optional, defaults to "Error")
+   * @returns Observable that emits when user clicks OK
+   */
+  showError(message: string, title?: string): Observable<ConfirmationDialogResult> {
+    return this.confirm({
+      title: title || this.translate.instant('common.status.error'),
+      message: message,
+      confirmText: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.OK),
+      confirmVariant: 'primary',
+      showCancelButton: false
+    });
+  }
+
+  /**
+   * Show success dialog (single OK button)
+   * @param message Success message
+   * @param title Dialog title (optional, defaults to "Success")
+   * @returns Observable that emits when user clicks OK
+   */
+  showSuccess(message: string, title?: string): Observable<ConfirmationDialogResult> {
+    return this.confirm({
+      title: title || this.translate.instant('common.status.success'),
+      message: message,
+      confirmText: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.OK),
+      confirmVariant: 'success',
+      showCancelButton: false
+    });
+  }
+
+  /**
    * Handle confirm button click
    */
   onConfirm(): void {
@@ -199,10 +247,48 @@ export class ConfirmationDialogService {
    * Close dialog
    */
   close(): void {
+    if (!this._visible()) {
+      return; // Already closed
+    }
+    
     this._visible.set(false);
-    this._config.set(null);
-    this._resultSubject.complete();
+    // Complete and reset subject immediately
+    if (!this._resultSubject.closed) {
+      this._resultSubject.complete();
+    }
     this._resultSubject = new Subject<ConfirmationDialogResult>();
+    
+    // Delay clearing config to allow animation to complete
+    setTimeout(() => {
+      this._config.set(null);
+    }, 450); // Match animation duration (400ms) + buffer
+  }
+
+  /**
+   * Check if dialog is fully closed (after animation)
+   * @returns Promise that resolves when dialog is fully closed
+   */
+  waitForClose(): Promise<void> {
+    return new Promise((resolve) => {
+      if (!this._visible()) {
+        // Already closed, wait for animation to complete
+        setTimeout(resolve, 450);
+      } else {
+        // Wait for close + animation
+        const checkInterval = setInterval(() => {
+          if (!this._visible()) {
+            clearInterval(checkInterval);
+            setTimeout(resolve, 450); // Wait for animation to complete
+          }
+        }, 50);
+        
+        // Safety timeout - resolve after max wait time
+        setTimeout(() => {
+          clearInterval(checkInterval);
+          resolve();
+        }, 1000);
+      }
+    });
   }
 }
 

@@ -14,8 +14,8 @@ import { CompanyType } from '../../models/company-type.model';
 import { CompanyTypeFormComponent } from './company-type-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { NotificationService, ConfirmationDialogService } from '@core/services';
+import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
@@ -221,18 +221,41 @@ export class CompanyTypeListComponent implements OnInit {
     console.log('[CompanyTypeList] Delete action clicked for row:', row);
 
     // Show confirmation dialog using service
-    this.confirmationDialogService.confirmDelete().subscribe({
-      next: (result) => {
+    this.confirmationDialogService.confirmDelete().pipe(
+      first() // Only take first emission to prevent duplicate subscriptions
+    ).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
         if (result.confirmed) {
+          // Wait for confirmation dialog to fully close before proceeding
+          await this.confirmationDialogService.waitForClose();
           this.service.delete(row.codeId).subscribe({
             next: () => {
               console.log('[CompanyTypeList] Delete successful');
-              this.notificationService.showSuccess(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE));
-              this.loadData();
+              // Wait a bit to ensure confirmation dialog is fully closed
+              setTimeout(() => {
+                const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE);
+                this.confirmationDialogService.showSuccess(successMessage).pipe(
+                  first() // Only take first emission
+                ).subscribe({
+                  next: () => {
+                    this.loadData();
+                  }
+                });
+              }, 100);
             },
             error: (err) => {
               console.error('[CompanyTypeList] Delete error:', err);
-              this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE));
+              // Wait a bit to ensure confirmation dialog is fully closed
+              setTimeout(() => {
+                // Get error message from error object
+                const errorMessage = err?.error?.message ||
+                                   err?.message ||
+                                   this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.DELETE);
+                // Show error dialog instead of toast
+                this.confirmationDialogService.showError(errorMessage).pipe(
+                  first() // Only take first emission
+                ).subscribe();
+              }, 100);
             }
           });
         }
