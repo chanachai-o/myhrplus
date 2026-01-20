@@ -1,10 +1,10 @@
 export interface CompanyGroup {
-  codeid: string;
+  codeId: string;
   tdesc: string;
   edesc: string;
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   verified?: string;
 }
 

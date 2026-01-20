@@ -22,8 +22,9 @@ module.exports = {
         xs: '2px',
       },
       fontFamily: {
-        // Montserrat as primary font (local variable font)
+        // IBM Plex Sans Thai as primary font
         sans: [
+          'IBM Plex Sans Thai',
           'Montserrat',
           'Prompt',
           'Noto Sans Thai',
@@ -33,8 +34,8 @@ module.exports = {
         ],
         mono: [...fontFamily.mono],
         // Separate font families for specific use cases
-        english: ['Montserrat', 'Prompt', 'Inter', ...fontFamily.sans],
-        thai: ['Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', ...fontFamily.sans],
+        english: ['IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Inter', ...fontFamily.sans],
+        thai: ['IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', ...fontFamily.sans],
       },
       colors: {
         primary: {

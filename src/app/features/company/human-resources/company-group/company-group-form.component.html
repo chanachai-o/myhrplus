@@ -12,13 +12,13 @@
       <div class="md:col-span-1">
         <app-glass-input
           [label]="'company.companyGroup.codeId' | translate"
-          formControlName="codeid"
+          formControlName="codeId"
           [required]="true"
           [readonly]="isEditMode"
           [useFormValidationMessages]="true"
           maxLength="3">
           <app-form-validation-messages
-            [control]="form.get('codeid')"
+            [control]="form.get('codeId')"
             [customMessages]="{ required: 'company.companyGroup.codeIdRequired' | translate }">
           </app-form-validation-messages>
         </app-glass-input>

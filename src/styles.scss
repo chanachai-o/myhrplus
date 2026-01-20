@@ -22,9 +22,10 @@
 /* ============================================
    Google Fonts Import
    ============================================ */
-/* Prompt font (Thai & English support) */
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap');
+/* IBM Plex Sans Thai (Primary font) */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap');
 /* Legacy fonts for backward compatibility */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
@@ -433,8 +434,8 @@ body.theme-myhr {
 html,
 body {
   height: 100%;
-  /* Prompt font (Thai & English support) */
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Inter', 'Sarabun', system-ui, sans-serif;
+  /* IBM Plex Sans Thai (Primary font) */
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Inter', 'Sarabun', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -846,7 +847,7 @@ body.theme-pink {
    ============================================ */
 /* Typography Scale ตาม Design System */
 h1 {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
   font-size: 2.25rem;
   /* 36px */
   font-weight: 700;
@@ -857,7 +858,7 @@ h1 {
 }
 
 h2 {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
   font-size: 1.5rem;
   /* 24px */
   font-weight: 600;
@@ -868,7 +869,7 @@ h2 {
 }
 
 h3 {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
   font-size: 1.25rem;
   /* 20px */
   font-weight: 600;
@@ -879,7 +880,7 @@ h3 {
 }
 
 h4 {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
   font-size: 1.125rem;
   /* 18px */
   font-weight: 600;
@@ -891,7 +892,7 @@ h4 {
 
 h5,
 h6 {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', sans-serif;
   font-weight: 600;
   line-height: 1.375;
   color: #1e293b;
@@ -979,7 +980,7 @@ body.theme-myhr .myhr-text-glow {
 }
 
 p {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', sans-serif;
   font-size: 1rem;
   /* 16px */
   font-weight: 400;
@@ -994,7 +995,7 @@ button,
 input,
 textarea,
 select {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', sans-serif;
 }
 
 code,
@@ -1006,7 +1007,7 @@ samp {
 
 /* Thai text specific */
 .thai-text {
-  font-family: 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Montserrat', 'Prompt', 'Noto Sans Thai', 'Sarabun', sans-serif;
 }
 
 /* ============================================
