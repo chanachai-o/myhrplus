@@ -17,9 +17,9 @@
        [attr.aria-current]="isActive(item) ? 'page' : null"
        [attr.tabindex]="0">
       <!-- Icon -->
-      <span *ngIf="item.icon" 
-            [class]="getIconClass(item.icon)"
-            class="menu-item-icon">{{ isMaterialIcon(item.icon) ? item.icon : '' }}</span>
+      <span *ngIf="item.icon || true" 
+            [class]="getIconClass(item.icon || 'folder')"
+            class="menu-item-icon">{{ isMaterialIcon(item.icon || 'folder') ? (item.icon || 'folder') : '' }}</span>
       
       <!-- Label -->
       <span class="menu-item-label">{{ translateLabel(item.label) }}</span>
@@ -47,9 +47,9 @@
          (keydown.enter)="onToggleExpand(item, $event)"
          (keydown.space)="onToggleExpand(item, $event); $event.preventDefault()">
       <!-- Icon -->
-      <span *ngIf="item.icon" 
-            [class]="getIconClass(item.icon)"
-            class="menu-item-icon">{{ isMaterialIcon(item.icon) ? item.icon : '' }}</span>
+      <span *ngIf="item.icon || true" 
+            [class]="getIconClass(item.icon || 'folder')"
+            class="menu-item-icon">{{ isMaterialIcon(item.icon || 'folder') ? (item.icon || 'folder') : '' }}</span>
       
       <!-- Label -->
       <span class="menu-item-label">{{ translateLabel(item.label) }}</span>

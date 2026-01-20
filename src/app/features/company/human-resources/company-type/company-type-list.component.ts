@@ -5,7 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '@shared/shared.module';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { SyncfusionDataGridComponent, GridAction } from '@shared/components/syncfusion-data-grid/syncfusion-data-grid.component';
-import { ColumnModel } from '@syncfusion/ej2-grids';
+import { ColumnModel, PageSettingsModel } from '@syncfusion/ej2-grids';
 
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
@@ -65,6 +65,18 @@ export class CompanyTypeListComponent implements OnInit {
   columns: ColumnModel[] = [];
   gridActions: GridAction[] = [];
 
+  // Pagination state
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 0;
+  totalElements = 0;
+  pageSettings: PageSettingsModel = {
+    pageSize: 10,
+    pageSizes: [10, 20, 50, 100],
+    pageCount: 5,
+    currentPage: 1
+  };
+
   ngOnInit() {
     this.updateTranslations();
     this.translate.onLangChange.subscribe(() => {
@@ -82,11 +94,18 @@ export class CompanyTypeListComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {
-    this.service.getAll().subscribe({
-      next: (res) => {
-        console.log('[CompanyTypeList] Data loaded:', res);
-        this.data.set(res);
+  loadData(page: number = this.currentPage, size: number = this.pageSize) {
+    this.service.getAllWithPagination({ page, size }).subscribe({
+      next: (response) => {
+        console.log('[CompanyTypeList] Data loaded:', response);
+        this.data.set(response.data);
+
+        // Update pagination info from service response
+        this.currentPage = response.currentPage;
+        this.pageSize = response.pageSize;
+        this.totalPages = response.totalPages;
+        this.totalElements = response.totalElements;
+        this.updatePageSettings();
       },
       error: (err) => {
         console.error('[CompanyTypeList] Error loading data:', err);
@@ -95,19 +114,43 @@ export class CompanyTypeListComponent implements OnInit {
     });
   }
 
+  private updatePageSettings() {
+    this.pageSettings = {
+      ...this.pageSettings,
+      pageSize: this.pageSize,
+      currentPage: this.currentPage + 1, // Syncfusion uses 1-based page index
+      pageCount: this.totalPages || 5
+    };
+  }
+
+  onActionBegin(event: any) {
+    // Handle pagination
+    if (event.requestType === 'paging') {
+      const newPage = event.currentPage - 1; // Convert from 1-based to 0-based
+      const newPageSize = event.pageSize || this.pageSize;
+
+      if (newPage !== this.currentPage || newPageSize !== this.pageSize) {
+        this.currentPage = newPage;
+        this.pageSize = newPageSize;
+        this.loadData(this.currentPage, this.pageSize);
+      }
+    }
+  }
+
   private updateTranslations() {
     this.headerActions = [
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
         variant: 'primary',
         icon: 'add',
+        class: 'h-9 min-h-[36px]',
         onClick: () => this.onCreate()
       },
       {
         label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.MANUAL),
         variant: 'info',
         icon: 'article',
-        class: '',
+        class: 'h-9 min-h-[36px]',
         onClick: () => this.onManual()
       }
     ];

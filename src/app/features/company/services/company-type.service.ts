@@ -71,6 +71,68 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     );
   }
 
+  /**
+   * Get all company types with pagination info
+   * @param params Optional pagination parameters (page, size)
+   * @returns Observable with data and pagination info
+   */
+  getAllWithPagination(params?: PaginationParams): Observable<{
+    data: CompanyType[];
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalElements: number;
+  }> {
+    this.loading.set(true);
+
+    // Build query parameters
+    let httpParams = new HttpParams();
+    if (params?.page !== undefined) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+    if (params?.size !== undefined) {
+      httpParams = httpParams.set('size', params.size.toString());
+    }
+
+    console.log('[CompanyTypeService] Fetching data with pagination from:', this.apiUrl, 'with params:', params);
+
+    return this.http.get<PaginatedResponse<CompanyTypeApiResponse>>(this.apiUrl, { params: httpParams }).pipe(
+      map((response) => {
+        // Transform API response to CompanyType model
+        const transformedData: CompanyType[] = response.content.map((item) => ({
+          codeid: item.codeId,
+          tdesc: item.tdesc,
+          edesc: item.edesc
+        }));
+
+        console.log('[CompanyTypeService] Pagination response:', {
+          totalElements: response.totalElements,
+          totalPages: response.totalPages,
+          currentPage: response.number,
+          pageSize: response.size,
+          itemsCount: transformedData.length
+        });
+
+        return {
+          data: transformedData,
+          currentPage: response.number,
+          pageSize: response.size,
+          totalPages: response.totalPages,
+          totalElements: response.totalElements
+        };
+      }),
+      tap((result) => {
+        console.log('[CompanyTypeService] Data with pagination loaded:', result);
+        this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('[CompanyTypeService] Error loading data with pagination:', error);
+        this.loading.set(false);
+        return throwError(() => error);
+      })
+    );
+  }
+
   override create(data: Partial<CompanyType>): Observable<CompanyType> {
     this.loading.set(true);
     console.log('[CompanyTypeService] Creating:', data);
