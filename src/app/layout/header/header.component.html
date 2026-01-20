@@ -15,10 +15,10 @@
 
 
     <!-- App Logo / Name -->
-    <a routerLink="/home" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
-       <!-- Optional: Logo Image if needed -->
-       <!-- <img src="assets/images/logo/logo-white.png" class="h-8 w-auto" alt="Logo"> -->
-       <span class="text-lg md:text-xl font-semibold tracking-wide text-white whitespace-nowrap">MyHR Plus</span>
+    <a routerLink="/home" class="flex items-center gap-2 hover:opacity-90 transition-opacity group">
+       <!-- Logo Image -->
+       <img [src]="'assets/images/logo/logo-myhr-light.png'" [alt]="'layout.header.appLogo' | translate" class="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+
     </a>
   </div>
 
