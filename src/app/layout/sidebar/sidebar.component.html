@@ -260,7 +260,7 @@
           <app-nested-menu-accordion
             [items]="navigationChildren"
             [activeRoute]="activeRoute"
-            [level]="3"
+            [level]="getMenuLevel()"
             [expandedItems]="expandedLevel3Items"
             [navId]="'admin'"
             (itemClick)="onAccordionItemClick($event)"

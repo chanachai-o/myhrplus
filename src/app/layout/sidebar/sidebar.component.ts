@@ -366,8 +366,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // For Admin: Return Level 3 items (children of selected Level 2)
     // Admin requires Level 2 selection first
     if (this.selectedNavigationItem?.id === 'admin' && this.selectedLevel2Item && this.selectedLevel2Item.children) {
-      result = [...this.selectedLevel2Item.children];
-      console.log('[Sidebar] getNavigationChildren (Admin - Level 3):', result.map(item => ({
+      // Check if any Level 3 item is "Human Resources" and skip it, showing its children instead
+      const flattenedChildren: NavigationChild[] = [];
+
+      for (const level3Item of this.selectedLevel2Item.children) {
+        // If this is "Human Resources", skip it and add its children directly
+        if (level3Item.label === 'Human Resources' && level3Item.children && level3Item.children.length > 0) {
+          // Add all children of Human Resources directly (Level 4 items)
+          flattenedChildren.push(...level3Item.children);
+        } else {
+          // Add the item normally
+          flattenedChildren.push(level3Item);
+        }
+      }
+
+      result = flattenedChildren;
+      console.log('[Sidebar] getNavigationChildren (Admin - Level 3/4 flattened):', result.map(item => ({
         label: item.label,
         route: item.route,
         childrenCount: item.children?.length || 0
@@ -403,6 +417,23 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     return result;
+  }
+
+  /**
+   * Get the appropriate menu level for nested-menu-accordion
+   * If Human Resources is skipped, return level 4, otherwise return level 3
+   */
+  getMenuLevel(): number {
+    if (this.selectedNavigationItem?.id === 'admin' && this.selectedLevel2Item && this.selectedLevel2Item.children) {
+      // Check if Human Resources exists in Level 3
+      const hasHumanResources = this.selectedLevel2Item.children.some(
+        item => item.label === 'Human Resources' && item.children && item.children.length > 0
+      );
+      // If Human Resources exists, we're showing Level 4 items, so return 4
+      // Otherwise, return 3 for normal Level 3 items
+      return hasHumanResources ? 4 : 3;
+    }
+    return 3; // Default to level 3
   }
 
   /**

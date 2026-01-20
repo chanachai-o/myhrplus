@@ -1,5 +1,5 @@
 <div class="nested-menu-accordion">
-  <div *ngFor="let item of items; trackBy: trackByLabel" 
+  <div *ngFor="let item of items; trackBy: trackByLabel"
        class="menu-item"
        [class.level-3]="level === 3"
        [class.level-4]="level === 4"
@@ -7,7 +7,7 @@
        [class.expanded]="isExpanded(item)"
        [class.active]="isActive(item)"
        [class.navigable]="!hasChildren(item) && !!item.route">
-    
+
     <!-- Menu Item Content -->
     <a *ngIf="!hasChildren(item) && item.route"
        [routerLink]="item.route"
@@ -17,27 +17,27 @@
        [attr.aria-current]="isActive(item) ? 'page' : null"
        [attr.tabindex]="0">
       <!-- Icon -->
-      <span *ngIf="item.icon || true" 
+      <span *ngIf="item.icon || true"
             [class]="getIconClass(item.icon || 'folder')"
             class="menu-item-icon">{{ isMaterialIcon(item.icon || 'folder') ? (item.icon || 'folder') : '' }}</span>
-      
+
       <!-- Label -->
       <span class="menu-item-label">{{ translateLabel(item.label) }}</span>
-      
+
       <!-- Badge -->
-      <span *ngIf="item.badge" 
+      <span *ngIf="item.badge"
             class="menu-item-badge"
             [style.background-color]="item.badgeColor || '#ef4444'">
         {{ item.badge }}
       </span>
-      
+
       <!-- Action Icon (Arrow for navigable) -->
       <span class="menu-item-action">
-        <span *ngIf="item.route" 
+        <span *ngIf="item.route"
               class="e-icons e-arrow-right arrow-icon"></span>
       </span>
     </a>
-    
+
     <div *ngIf="hasChildren(item)"
          class="menu-item-content"
          (click)="onToggleExpand(item, $event)"
@@ -47,30 +47,30 @@
          (keydown.enter)="onToggleExpand(item, $event)"
          (keydown.space)="onToggleExpand(item, $event); $event.preventDefault()">
       <!-- Icon -->
-      <span *ngIf="item.icon || true" 
+      <span *ngIf="item.icon || true"
             [class]="getIconClass(item.icon || 'folder')"
             class="menu-item-icon">{{ isMaterialIcon(item.icon || 'folder') ? (item.icon || 'folder') : '' }}</span>
-      
+
       <!-- Label -->
       <span class="menu-item-label">{{ translateLabel(item.label) }}</span>
-      
+
       <!-- Badge -->
-      <span *ngIf="item.badge" 
+      <span *ngIf="item.badge"
             class="menu-item-badge"
             [style.background-color]="item.badgeColor || '#ef4444'">
         {{ item.badge }}
       </span>
-      
+
       <!-- Action Icon (Chevron for expandable) -->
       <span class="menu-item-action">
-        <span *ngIf="hasChildren(item)" 
+        <span *ngIf="hasChildren(item)"
               class="e-icons e-chevron-down chevron-icon"
               [class.rotated]="isExpanded(item)"></span>
       </span>
     </div>
-    
+
     <!-- Nested Children (Level 4) -->
-    <div *ngIf="hasChildren(item) && isExpanded(item)" 
+    <div *ngIf="hasChildren(item) && isExpanded(item)"
          class="menu-item-children"
          [@slideDown]>
       <app-nested-menu-accordion
