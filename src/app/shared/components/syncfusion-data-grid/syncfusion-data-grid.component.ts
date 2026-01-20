@@ -116,7 +116,7 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @ViewChild('grid') public grid?: GridComponent;
 
   // Data
-  @Input() dataSource: any[] = [];
+  @Input() dataSource: any[] | { result: any[], count: number } | any = [];
   @Input() columns: ColumnModel[] = [];
 
   // Features Flags
@@ -320,6 +320,25 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     if (changes['loadingIndicator'] && this.grid) {
       this.grid.loadingIndicator = this.loadingIndicator;
     }
+  }
+
+  /**
+   * Check if data source has records
+   */
+  get hasData(): boolean {
+    if (!this.dataSource) return false;
+
+    // If it's an array
+    if (Array.isArray(this.dataSource)) {
+      return this.dataSource.length > 0;
+    }
+
+    // If it's { result: [], count: N }
+    const ds = this.dataSource as any;
+    if (ds.count !== undefined && ds.count > 0) return true;
+    if (ds.result && Array.isArray(ds.result) && ds.result.length > 0) return true;
+
+    return false;
   }
 
   private setupLocalization(): void {

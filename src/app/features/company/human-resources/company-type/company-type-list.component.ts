@@ -56,7 +56,8 @@ export class CompanyTypeListComponent implements OnInit {
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
 
   // Use signal for data to avoid AsyncPipe deadlock with loading state
-  data = signal<CompanyType[]>([]);
+  // Changed type to any to support { result: any[], count: number } for server-side pagination
+  data = signal<any>({ result: [], count: 0 });
   showModal = false;
   selectedItem: CompanyType | null = null;
   searchControl = new FormControl('');
@@ -98,7 +99,12 @@ export class CompanyTypeListComponent implements OnInit {
     this.service.getAllWithPagination({ page, size }).subscribe({
       next: (response) => {
         console.log('[CompanyTypeList] Data loaded:', response);
-        this.data.set(response.data);
+
+        // Update data signal with { result, count } structure for server-side pagination
+        this.data.set({
+          result: response.data,
+          count: response.totalElements
+        });
 
         // Update pagination info from service response
         this.currentPage = response.currentPage;
@@ -119,14 +125,14 @@ export class CompanyTypeListComponent implements OnInit {
       ...this.pageSettings,
       pageSize: this.pageSize,
       currentPage: this.currentPage + 1, // Syncfusion uses 1-based page index
-      pageCount: this.totalPages || 5
+      pageCount: 5
     };
   }
 
   onActionBegin(event: any) {
     // Handle pagination
     if (event.requestType === 'paging') {
-      const newPage = event.currentPage - 1; // Convert from 1-based to 0-based
+      const newPage = (event.currentPage as number) - 1; // Convert from 1-based to 0-based
       const newPageSize = event.pageSize || this.pageSize;
 
       if (newPage !== this.currentPage || newPageSize !== this.pageSize) {

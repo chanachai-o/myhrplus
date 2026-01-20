@@ -6,7 +6,7 @@
     [dataSource]="dataSource"
     [height]="'100%'"
     [width]="'100%'"
-    [allowPaging]="allowPaging && dataSource.length > 0"
+    [allowPaging]="allowPaging && hasData"
     [allowSorting]="allowSorting"
     [allowFiltering]="allowFiltering"
     [allowGrouping]="allowGrouping"

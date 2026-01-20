@@ -42,6 +42,7 @@ company-type/
 - จัดการ search และ filtering
 - จัดการ confirmation dialogs
 - จัดการ loading states
+- **แสดง Toast notification เฉพาะกรณี Delete (Create/Update ให้ Form Component จัดการ)**
 
 **Key Features:**
 - ใช้ `SyncfusionDataGridComponent` สำหรับแสดงข้อมูล
@@ -66,6 +67,7 @@ import { NotificationService } from '@core/services';
 - จัดการ form validation
 - จัดการ confirmation dialog ก่อนบันทึก
 - เรียกใช้ service สำหรับ save/update
+- **แสดง Toast notification กรณี Save สำเร็จ**
 
 **Key Features:**
 - ใช้ `ReactiveFormsModule` สำหรับ form management
@@ -84,13 +86,15 @@ import { ConfirmationDialogService } from '@core/services';
 
 ### 3. Service Pattern
 
-**Service Location**: `src/app/features/company/human-resources/services/company-type.service.ts`
+**Service Location**: `src/app/features/company/services/company-type.service.ts`
 
 **Responsibilities:**
-- จัดการ API calls (GET, POST, PUT, DELETE)
+- จัดการ API calls (GET, POST, DELETE)
+- **ใช้ POST method สำหรับทั้ง Create และ Update** (ตามมาตรฐานใหม่)
 - จัดการ loading state ด้วย `signal()`
 - ใช้ `ApiService` wrapper แทน `HttpClient` โดยตรง
 - จัดการ error handling
+- **Map ข้อมูล API response ให้เป็น camelCase model**
 
 **Key Features:**
 - ใช้ `providedIn: 'root'` สำหรับ singleton service
@@ -100,10 +104,11 @@ import { ConfirmationDialogService } from '@core/services';
 
 ### 4. Model Pattern
 
-**Model Location**: `src/app/features/company/human-resources/models/company-type.model.ts`
+**Model Location**: `src/app/features/company/models/company-type.model.ts`
 
 **Responsibilities:**
 - กำหนด TypeScript interface สำหรับ data structure
+- **ใช้ camelCase naming convention** (e.g., `codeId`, `editDate`)
 - ใช้ strict typing (no `any`)
 - ตรงกับ database schema
 
@@ -212,7 +217,7 @@ onDelete(row: any): void {
   this.confirmationDialogService.confirmDelete().subscribe({
     next: (result) => {
       if (result.confirmed) {
-        this.service.delete(row.codeid).subscribe({
+        this.service.delete(row.codeId).subscribe({
           next: () => {
             this.loadData();
             this.notificationService.showSuccess(
@@ -267,7 +272,7 @@ readonly TRANSLATION_KEYS = TRANSLATION_KEYS;
 **ใช้ Reactive Forms:**
 ```typescript
 this.form = this.fb.group({
-  codeid: ['', [Validators.required, Validators.maxLength(3)]],
+  codeId: ['', [Validators.required, Validators.maxLength(3)]],
   tdesc: ['', Validators.required],
   edesc: ['']
 });
@@ -275,9 +280,9 @@ this.form = this.fb.group({
 
 **ใช้ FormValidationMessagesComponent:**
 ```html
-<app-glass-input formControlName="codeid" [useFormValidationMessages]="true">
+<app-glass-input formControlName="codeId" [useFormValidationMessages]="true">
   <app-form-validation-messages
-    [control]="form.get('codeid')"
+    [control]="form.get('codeId')"
     [customMessages]="{ required: 'company.companyType.codeIdRequired' | translate }">
   </app-form-validation-messages>
 </app-glass-input>
@@ -288,10 +293,10 @@ this.form = this.fb.group({
 **ใช้ SyncfusionDataGridComponent:**
 ```typescript
 columns: ColumnModel[] = [
-  { field: 'codeid', headerText: 'company.companyType.column.codeId', width: 150, isPrimaryKey: true },
+  { field: 'codeId', headerText: 'company.companyType.column.codeId', width: 150, isPrimaryKey: true },
   { field: 'tdesc', headerText: 'company.companyType.column.tdesc', width: 300, minWidth: 200 },
   { field: 'edesc', headerText: 'company.companyType.column.edesc', width: 300, minWidth: 200 },
-  { field: 'edit_date', headerText: 'company.companyType.column.editDate', type: 'date', width: 180, format: 'dd/MM/yyyy' }
+  { field: 'editDate', headerText: 'company.companyType.column.editDate', type: 'date', width: 180, format: 'dd/MM/yyyy' }
 ];
 
 gridActions: GridAction[] = [
@@ -322,7 +327,7 @@ gridActions: GridAction[] = [
   icon="domain"
   iconGradient="from-primary to-primary"
   titleGradient="from-primary to-primary"
-  customClass="border-b border-gray-200 dark:border-gray-700 pb-4"
+  customClass="border-b border-primary/30 dark:border-primary/50 pb-4"
 >
   <div header-actions class="w-full md:w-64">
     <app-glass-input
@@ -330,7 +335,7 @@ gridActions: GridAction[] = [
       icon="search"
       [placeholder]="'common.actions.search' | translate"
       [isSearch]="true"
-      [customClass]="'h-9 text-sm'"
+      [customClass]="'h-11 min-h-[44px] text-sm'"
     >
     </app-glass-input>
   </div>
@@ -355,8 +360,8 @@ gridActions: GridAction[] = [
 เมื่อ migrate หน้าทะเบียนใหม่ ให้ทำตาม checklist นี้:
 
 ### Phase 1: Setup
-- [ ] สร้าง model interface (`*.model.ts`)
-- [ ] สร้าง service (`*.service.ts`)
+- [ ] สร้าง model interface (`*.model.ts`) ใช้ **camelCase**
+- [ ] สร้าง service (`*.service.ts`) ใช้ **POST for Update**
 - [ ] เพิ่ม translation keys ใน `th.json`, `en.json`, และภาษาอื่นๆ
 - [ ] เพิ่ม route ใน routing module
 
@@ -367,7 +372,7 @@ gridActions: GridAction[] = [
 - [ ] ใช้ `PageHeaderComponent` สำหรับ header
 - [ ] ใช้ `signal()` สำหรับ data state
 - [ ] ใช้ `FormControl` สำหรับ search
-- [ ] ใช้ `NotificationService` สำหรับ error/success messages
+- [ ] ใช้ `NotificationService` สำหรับ error/success messages (เฉพาะ Delete)
 - [ ] ใช้ `ConfirmationDialogService` สำหรับ delete confirmation
 - [ ] ใช้ `app-skeleton-loader` type="datagrid" สำหรับ loading state
 
@@ -379,6 +384,7 @@ gridActions: GridAction[] = [
 - [ ] ใช้ `GlassInputComponent` สำหรับ input fields
 - [ ] ใช้ `FormValidationMessagesComponent` สำหรับ validation
 - [ ] ใช้ `ConfirmationDialogService` สำหรับ save confirmation
+- [ ] **จัดการแสดง Success Toast ใน Form Component เมื่อบันทึกสำเร็จ**
 - [ ] จัดการ edit mode (disable PK field)
 
 ### Phase 4: Integration
@@ -402,32 +408,21 @@ gridActions: GridAction[] = [
 ### 1. Service Pattern
 ```typescript
 @Injectable({ providedIn: 'root' })
-export class EntityService {
+export class EntityService extends BaseApiService<Entity> {
   loading = signal<boolean>(false);
   
-  constructor(private apiService: ApiService) {}
-  
-  getAll(): Observable<ApiResponse<Entity[]>> {
-    return this.apiService.get<Entity[]>(`${this.baseUrl}/entities`);
+  // Override for custom mapping if needed
+  override getAll(params?: PaginationParams): Observable<Entity[]> {
+    // ... implementation with mapping to camelCase
   }
   
-  getById(id: string): Observable<ApiResponse<Entity>> {
-    return this.apiService.get<Entity>(`${this.baseUrl}/entities/${id}`);
-  }
-  
-  create(data: Entity): Observable<ApiResponse<Entity>> {
+  // Create and Update use POST
+  override update(id: string | number, data: Partial<Entity>): Observable<Entity> {
     this.loading.set(true);
-    return this.apiService.post<Entity>(`${this.baseUrl}/entities`, data);
-  }
-  
-  update(id: string, data: Entity): Observable<ApiResponse<Entity>> {
-    this.loading.set(true);
-    return this.apiService.put<Entity>(`${this.baseUrl}/entities/${id}`, data);
-  }
-  
-  delete(id: string): Observable<ApiResponse<void>> {
-    this.loading.set(true);
-    return this.apiService.delete<void>(`${this.baseUrl}/entities/${id}`);
+    // Use POST for update
+    return this.http.post<Entity>(this.apiUrl, data).pipe(
+      // ...
+    );
   }
 }
 ```
@@ -435,45 +430,27 @@ export class EntityService {
 ### 2. List Component Pattern
 ```typescript
 export class EntityListComponent implements OnInit {
-  public service = inject(EntityService);
-  private translate = inject(TranslateService);
-  private notificationService = inject(NotificationService);
+  // ... injections
   
-  @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
-  
-  private confirmationDialogService = inject(ConfirmationDialogService);
-  
-  data = signal<Entity[]>([]);
-  showModal = false;
-  selectedItem: Entity | null = null;
-  searchControl = new FormControl('');
-  
-  columns: ColumnModel[] = [];
-  gridActions: GridAction[] = [];
-  
-  ngOnInit() {
-    this.updateTranslations();
-    this.translate.onLangChange.subscribe(() => {
-      this.updateTranslations();
-    });
-    
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(value => {
-      this.grid.search(value || '');
-    });
-    
+  onSaveSuccess() {
+    // No toast here, handled in form
     this.loadData();
+    this.showModal = false;
   }
-  
-  loadData() {
-    this.service.getAll().subscribe({
-      next: (res) => this.data.set(res),
-      error: (err) => {
-        this.notificationService.showError(
-          this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.LOAD)
-        );
+
+  onDelete(row: any) {
+    this.confirmationDialogService.confirmDelete().subscribe({
+      next: (result) => {
+        if (result.confirmed) {
+          this.service.delete(row.codeId).subscribe({
+            next: () => {
+              this.loadData();
+              this.notificationService.showSuccess(
+                this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.DELETE)
+              );
+            }
+          });
+        }
       }
     });
   }
@@ -483,74 +460,18 @@ export class EntityListComponent implements OnInit {
 ### 3. Form Component Pattern
 ```typescript
 export class EntityFormComponent implements OnChanges {
-  @Input() isOpen = false;
-  @Input() data: Entity | null = null;
-  @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<void>();
-  
-  private fb = inject(FormBuilder);
-  private service = inject(EntityService);
-  private notificationService = inject(NotificationService);
-  private translate = inject(TranslateService);
-  private confirmationDialogService = inject(ConfirmationDialogService);
-  
-  form: FormGroup;
-  isEditMode = false;
-  
-  readonly TRANSLATION_KEYS = TRANSLATION_KEYS;
-  
-  constructor() {
-    this.form = this.fb.group({
-      // Form controls
-    });
-  }
-  
-  ngOnChanges() {
-    if (this.isOpen) {
-      this.isEditMode = !!this.data;
-      if (this.data) {
-        this.form.patchValue(this.data);
-        // Disable PK field in edit mode
-      } else {
-        this.form.reset();
-      }
-    }
-  }
-  
-  onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    
-    this.confirmationDialogService.confirmSave(this.isEditMode).subscribe({
-      next: (result) => {
-        if (result.confirmed) {
-          this.saveData();
-        }
-      }
-    });
-  }
+  // ...
   
   private saveData() {
-    const formData = this.form.getRawValue();
-    this.service.loading.set(true);
-    
-    const request$ = this.isEditMode
-      ? this.service.update(formData.id, formData)
-      : this.service.create(formData);
-    
+    // ...
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
+        this.notificationService.showSuccess(
+          this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE)
+        );
         this.save.emit();
         this.onClose();
-      },
-      error: (err: unknown) => {
-        this.service.loading.set(false);
-        this.notificationService.showError(
-          this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE)
-        );
       }
     });
   }
@@ -559,85 +480,43 @@ export class EntityFormComponent implements OnChanges {
 
 ## Key Differences from JSP
 
-### 1. No Direct DOM Manipulation
-- ❌ JSP: `document.getElementById()`, jQuery
-- ✅ Angular: `@ViewChild`, `FormControl`, Reactive Forms
+### 1. Naming Convention
+- ❌ JSP: `snake_case` (e.g., `code_id`, `edit_date`)
+- ✅ Angular: `camelCase` (e.g., `codeId`, `editDate`)
 
-### 2. Type Safety
-- ❌ JSP: No type checking
-- ✅ Angular: TypeScript interfaces, strict typing
+### 2. HTTP Methods
+- ❌ JSP: Various patterns
+- ✅ Angular: POST for Create/Update, DELETE for Delete, GET for Read
 
-### 3. State Management
-- ❌ JSP: Global variables, form state
-- ✅ Angular: `signal()`, `FormControl`, reactive state
-
-### 4. Component Communication
-- ❌ JSP: Direct function calls, global scope
-- ✅ Angular: `@Input()`, `@Output()`, EventEmitters
-
-### 5. Error Handling
-- ❌ JSP: Alert boxes, page reloads
-- ✅ Angular: `NotificationService`, error interceptors
-
-### 6. Loading States
-- ❌ JSP: Manual show/hide, page reloads
-- ✅ Angular: `signal()`, `app-skeleton-loader`, reactive loading
-
-### 7. Validation
-- ❌ JSP: Manual validation, server-side only
-- ✅ Angular: Reactive Forms, client-side validation, `FormValidationMessagesComponent`
-
-### 8. Dialogs
-- ❌ JSP: Alert/Confirm, custom modals
-- ✅ Angular: `ConfirmationDialogService` (centralized), `ModalComponent`
-
-## Testing Checklist
-
-- [ ] Load data successfully
-- [ ] Search functionality works
-- [ ] Add new record
-- [ ] Edit existing record
-- [ ] Delete record with confirmation
-- [ ] Form validation works
-- [ ] Error handling works
-- [ ] Loading states display correctly
-- [ ] Translation works (all languages)
-- [ ] Responsive design works
-- [ ] Dark mode works
-- [ ] Accessibility (keyboard navigation, ARIA labels)
+### 3. Toast Notifications
+- ❌ JSP: Alert boxes
+- ✅ Angular: Centralized `NotificationService`, Success toast in Form (Save) and List (Delete)
 
 ## References
 
 - **Component Location**: `src/app/features/company/human-resources/company-type/`
-- **Service Location**: `src/app/features/company/human-resources/services/company-type.service.ts`
-- **Model Location**: `src/app/features/company/human-resources/models/company-type.model.ts`
+- **Service Location**: `src/app/features/company/services/company-type.service.ts`
+- **Model Location**: `src/app/features/company/models/company-type.model.ts`
 - **Shared Components**: `src/app/shared/components/`
 - **Syncfusion Module**: `src/app/shared/syncfusion/syncfusion.module.ts`
 - **Translation Keys**: `src/app/core/constants/translation-keys.constant.ts`
 
 ---
 
-**Last Updated**: 2025-01-08
+**Last Updated**: 2026-01-20
 **Status**: ✅ Complete Reference Implementation
 
-## Recent Updates (2025-01-08)
+## Recent Updates (2026-01-20)
 
-### 1. Confirmation Dialog Service Integration
-- ✅ เปลี่ยนจาก Syncfusion Dialog โดยตรงเป็น `ConfirmationDialogService`
-- ✅ ใช้ `app-glass-button` ใน confirmation dialog แทน `ejs-button`
-- ✅ ลบ dialog template จาก component (ใช้ global component แทน)
+### 1. Naming Convention Standardization
+- ✅ เปลี่ยน Model properties เป็น `camelCase` ทั้งหมด (e.g., `codeId`, `editDate`)
+- ✅ Service ทำหน้าที่ map ข้อมูลจาก API (ถ้ายังส่งมาเป็น format อื่น) ให้เป็น camelCase model
 
-### 2. Skeleton Loader Enhancement
-- ✅ เพิ่ม `type="datagrid"` สำหรับ skeleton loader
-- ✅ รองรับ `showToolbar`, `showPagination`, `hasActions` properties
-- ✅ Skeleton structure ตรงกับ Syncfusion DataGrid
+### 2. Service Method Standardization
+- ✅ ใช้ `POST` method สำหรับ Update operation (เหมือนกับ Create)
+- ✅ `update()` method ใน service เรียกไปที่ `apiUrl` เดียวกันกับ `create()`
 
-### 3. Page Header Improvements
-- ✅ ลด top spacing (`pt-2` แทน `pt-6`)
-- ✅ เพิ่ม border-bottom (`border-b border-gray-200 dark:border-gray-700`)
-- ✅ รองรับ search input ใน header actions
-
-### 4. Glass Input Icon Fix
-- ✅ แก้ไข icon search ไม่แสดง (เพิ่ม `z-10` และ `flex items-center justify-center`)
-- ✅ Icon color ถูกส่งไปที่ `app-icon` component โดยตรง
-
+### 3. Toast Notification Standardization
+- ✅ **Save Success**: ย้ายการแสดง toast ไปที่ `FormComponent` (ผู้กระทำ action)
+- ✅ **Delete Success**: แสดง toast ที่ `ListComponent` (ผู้กระทำ action)
+- ✅ ลดความซ้ำซ้อนของการเรียก NotificationService
