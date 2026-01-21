@@ -91,8 +91,8 @@
           (keydown.enter)="navigateToRoute(statistics.branches.route)"
           (keydown.space)="navigateToRoute(statistics.branches.route); $event.preventDefault()">
           <app-glass-card
-            padding="p-4 md:p-5"
-            customClass="bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 text-white text-center hover:scale-105 hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-indigo-400 focus-within:ring-offset-2">
+            padding="p-5 md:p-6"
+            customClass="bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 dark:from-purple-600 dark:via-purple-700 dark:to-purple-800 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-purple-400 focus-within:ring-offset-2 rounded-xl">
             <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2"  >{{ statistics.branches.value }}</div>
             <div class="text-xs md:text-sm opacity-90 mb-2" id="branches-card-description">{{ 'company.dashboard.statistics.branches' | translate }}</div>
             <!-- Comparison View -->
@@ -122,8 +122,8 @@
           (keydown.enter)="navigateToRoute(statistics.divisions.route)"
           (keydown.space)="navigateToRoute(statistics.divisions.route); $event.preventDefault()">
           <app-glass-card
-            padding="p-4 md:p-5"
-            customClass="bg-gradient-to-br from-pink-500 to-red-500 dark:from-pink-600 dark:to-red-600 text-white text-center hover:scale-105 hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2">
+            padding="p-5 md:p-6"
+            customClass="bg-gradient-to-br from-pink-500 via-pink-600 to-rose-500 dark:from-pink-600 dark:via-pink-700 dark:to-rose-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2 rounded-xl">
             <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2"  >{{ statistics.divisions.value }}</div>
             <div class="text-xs md:text-sm opacity-90 mb-2" id="divisions-card-description">{{ 'company.dashboard.statistics.divisions' | translate }}</div>
             <!-- Comparison View -->
@@ -153,8 +153,8 @@
           (keydown.enter)="navigateToRoute(statistics.departments.route)"
           (keydown.space)="navigateToRoute(statistics.departments.route); $event.preventDefault()">
           <app-glass-card
-            padding="p-4 md:p-5"
-            customClass="bg-gradient-to-br from-primary to-primary dark:from-primary dark:to-primary text-white text-center hover:scale-105 hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
+            padding="p-5 md:p-6"
+            customClass="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 dark:from-blue-600 dark:via-blue-700 dark:to-blue-800 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 rounded-xl">
             <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2"  >{{ statistics.departments.value }}</div>
             <div class="text-xs md:text-sm opacity-90 mb-2" id="departments-card-description">{{ 'company.dashboard.statistics.departments' | translate }}</div>
             <!-- Comparison View -->
@@ -184,8 +184,8 @@
           (keydown.enter)="navigateToRoute(statistics.positions.route)"
           (keydown.space)="navigateToRoute(statistics.positions.route); $event.preventDefault()">
           <app-glass-card
-            padding="p-4 md:p-5"
-            customClass="bg-gradient-to-br from-green-400 to-teal-400 dark:from-green-500 dark:to-teal-500 text-white text-center hover:scale-105 hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2">
+            padding="p-5 md:p-6"
+            customClass="bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 dark:from-green-600 dark:via-emerald-600 dark:to-teal-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 rounded-xl">
             <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2"  >{{ statistics.positions.value }}</div>
             <div class="text-xs md:text-sm opacity-90 mb-2" id="positions-card-description">{{ 'company.dashboard.statistics.positions' | translate }}</div>
             <!-- Comparison View -->
@@ -215,8 +215,8 @@
           (keydown.enter)="navigateToRoute(statistics.locations.route)"
           (keydown.space)="navigateToRoute(statistics.locations.route); $event.preventDefault()">
           <app-glass-card
-            padding="p-4 md:p-5"
-            customClass="bg-gradient-to-br from-yellow-400 to-orange-400 dark:from-yellow-500 dark:to-orange-500 text-white text-center hover:scale-105 hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-yellow-400 focus-within:ring-offset-2">
+            padding="p-5 md:p-6"
+            customClass="bg-gradient-to-br from-orange-500 via-amber-500 to-yellow-500 dark:from-orange-600 dark:via-amber-600 dark:to-yellow-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-orange-400 focus-within:ring-offset-2 rounded-xl">
             <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2"  >{{ statistics.locations.value }}</div>
             <div class="text-xs md:text-sm opacity-90 mb-2" id="locations-card-description">{{ 'company.dashboard.statistics.locations' | translate }}</div>
             <!-- Comparison View -->
@@ -235,26 +235,11 @@
       </div>
     </section>
 
-    <!-- Quick Actions Bar -->
-    <div *ngIf="isSectionVisible('quickActions')" class="mb-6 md:mb-8">
+    <!-- Charts Controls Bar -->
+    <div *ngIf="isSectionVisible('charts')" class="mb-6 md:mb-8">
       <app-glass-card padding="p-4 md:p-5" customClass="mb-4">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div class="flex-1">
-            <h3 class="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ 'company.dashboard.quickActions.title' | translate }}</h3>
-            <div class="flex flex-wrap gap-2">
-              <button
-                *ngFor="let action of quickActions; let i = index"
-                [routerLink]="action.route ? [action.route] : null"
-                (click)="action.action === 'export' ? exportDashboard() : null"
-                [appStagger]="i"
-                [staggerDelay]="0.05"
-                class="flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105"
-                [class]="'bg-' + action.color + '-100 dark:bg-' + action.color + '-900/30 text-' + action.color + '-700 dark:text-' + action.color + '-400 hover:bg-' + action.color + '-200 dark:hover:bg-' + action.color + '-800/50'">
-                <app-icon [name]="action.icon" size="sm"></app-icon>
-                <span class="thai-text">{{ action.label | translate }}</span>
-              </button>
-            </div>
-          </div>
+          <h2 class="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.title' | translate }}</h2>
           <div class="w-full md:w-auto flex flex-col md:flex-row items-start md:items-center gap-3">
             <!-- Comparison Mode Toggle -->
             <div class="flex items-center gap-2 px-3 py-2 bg-primary/10 dark:bg-primary/10 rounded-lg border border-primary/20 dark:border-primary/20">
@@ -280,18 +265,7 @@
               (rangeChange)="onDateRangeChange($event)"
               [showPresets]="true">
             </app-date-range-picker>
-          </div>
-        </div>
-      </app-glass-card>
-    </div>
-
-    <!-- Main Content: Charts (3 parts) and Navigation (1 part) -->
-    <div *ngIf="isSectionVisible('charts')" class="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-      <!-- Charts Section: 3 columns (75%) -->
-      <div class="lg:col-span-3">
-        <div class="mb-6 md:mb-8">
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4 mb-3 md:mb-4">
-            <h2 class="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.title' | translate }}</h2>
+            <!-- Export Buttons -->
             <div class="flex items-center gap-2">
               <button
                 (click)="exportCharts('pdf')"
@@ -307,191 +281,133 @@
               </button>
             </div>
           </div>
+        </div>
+      </app-glass-card>
+    </div>
 
-          <!-- Charts Row 1: 2 columns -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-            <!-- Pie Chart: Organization Structure -->
-            <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-              <div class="flex items-center justify-between mb-3 md:mb-5">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.divisionStructure' | translate }}</h3>
+    <!-- Main Content: Charts (Full Width) -->
+    <div *ngIf="isSectionVisible('charts')" class="mb-6 md:mb-8">
+      <div>
+        <!-- Charts Row 1: 2 columns -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Donut Chart: Organization Structure -->
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.divisionStructure' | translate }}</h3>
                 <button
                   (click)="exportChart('division', 'pdf')"
-                  class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
                   [attr.aria-label]="('Export' | translate) + ' ' + ('company.dashboard.charts.divisionStructure' | translate) + ' PDF'"
-                  [attr.tabindex]="0">
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"  ></app-icon>
+                  [attr.tabindex]="0"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
                 </button>
               </div>
-              <div echarts [options]="divisionPieChartOption" class="w-full h-[280px] min-h-[280px] md:h-[300px]"></div>
+              <div echarts [options]="divisionPieChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-label]="'company.dashboard.charts.divisionStructure' | translate"></div>
             </app-glass-card>
 
             <!-- Bar Chart: Branches -->
-            <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-              <div class="flex items-center justify-between mb-3 md:mb-5">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.employeesByBranch' | translate }}</h3>
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.employeesByBranch' | translate }}</h3>
                 <button
                   (click)="exportChart('branch', 'pdf')"
-                  class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  [attr.aria-label]="'Export chart'">
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  [attr.aria-label]="'Export chart'"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
                 </button>
               </div>
-              <div echarts [options]="branchBarChartOption" class="w-full h-[280px] min-h-[280px] md:h-[300px]" role="img" [attr.aria-label]="'company.dashboard.charts.employeesByBranch' | translate"></div>
+              <div echarts [options]="branchBarChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-label]="'company.dashboard.charts.employeesByBranch' | translate"></div>
             </app-glass-card>
           </div>
 
           <!-- Charts Row 2: 2 columns -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Bar Chart: Departments -->
-            <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-              <div class="flex items-center justify-between mb-3 md:mb-5">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.employeesByDepartment' | translate }}</h3>
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.employeesByDepartment' | translate }}</h3>
                 <button
                   (click)="exportChart('department', 'pdf')"
-                  class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  [attr.aria-label]="'Export chart'">
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  [attr.aria-label]="'Export chart'"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
                 </button>
               </div>
-              <div echarts [options]="departmentBarChartOption" class="w-full h-[280px] min-h-[280px] md:h-[300px]" role="img" [attr.aria-label]="'company.dashboard.charts.employeesByDepartment' | translate"></div>
+              <div echarts [options]="departmentBarChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-label]="'company.dashboard.charts.employeesByDepartment' | translate"></div>
             </app-glass-card>
 
             <!-- Bar Chart: Positions -->
-            <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-              <div class="flex items-center justify-between mb-3 md:mb-5">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.positionsByLevel' | translate }}</h3>
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.positionsByLevel' | translate }}</h3>
                 <button
                   (click)="exportChart('position', 'pdf')"
-                  class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  [attr.aria-label]="'Export chart'">
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  [attr.aria-label]="'Export chart'"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
                 </button>
               </div>
-              <div echarts [options]="positionBarChartOption" class="w-full h-[280px] min-h-[280px] md:h-[300px]" role="img" [attr.aria-label]="'company.dashboard.charts.positionsByLevel' | translate"></div>
+              <div echarts [options]="positionBarChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-label]="'company.dashboard.charts.positionsByLevel' | translate"></div>
             </app-glass-card>
           </div>
 
           <!-- Charts Row 3: 2 columns -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Tree Map: Organization Hierarchy -->
-            <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-              <div class="flex items-center justify-between mb-3 md:mb-5">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.orgTreeMap' | translate }}</h3>
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.orgTreeMap' | translate }}</h3>
                 <button
                   (click)="exportChart('orgTreeMap', 'pdf')"
-                  class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  [attr.aria-label]="'Export chart'">
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  [attr.aria-label]="'Export chart'"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
                 </button>
               </div>
-              <div echarts [options]="orgTreeMapChartOption" class="w-full h-[280px] min-h-[280px] md:h-[300px]" role="img" [attr.aria-label]="'company.dashboard.charts.orgTreeMap' | translate"></div>
+              <div echarts [options]="orgTreeMapChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-label]="'company.dashboard.charts.orgTreeMap' | translate"></div>
             </app-glass-card>
 
             <!-- Bar Chart: Work Locations -->
-            <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-              <div class="flex items-center justify-between mb-3 md:mb-5">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.workLocationDistribution' | translate }}</h3>
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.workLocationDistribution' | translate }}</h3>
                 <button
                   (click)="exportChart('location', 'pdf')"
-                  class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  [attr.aria-label]="'Export chart'">
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  [attr.aria-label]="'Export chart'"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
                 </button>
               </div>
-              <div echarts [options]="locationBarChartOption" class="w-full h-[280px] min-h-[280px] md:h-[300px]" role="img" [attr.aria-label]="'company.dashboard.charts.workLocationDistribution' | translate"></div>
+              <div echarts [options]="locationBarChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-label]="'company.dashboard.charts.workLocationDistribution' | translate"></div>
+            </app-glass-card>
+          </div>
+
+          <!-- Charts Row 4: Sankey Diagram (Full Width) -->
+          <div class="grid grid-cols-1 gap-6 mb-6">
+            <!-- Sankey Diagram: Organization Flow -->
+            <app-glass-card padding="p-5 md:p-6" customClass="hover:shadow-xl transition-all duration-300 rounded-xl">
+              <div class="flex items-center justify-between mb-4 md:mb-5">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'company.dashboard.charts.orgFlow' | translate }}</h3>
+                <button
+                  (click)="exportChart('sankey', 'pdf')"
+                  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  [attr.aria-label]="'Export chart'"
+                  type="button">
+                  <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                </button>
+              </div>
+              <div echarts [options]="sankeyChartOption" class="w-full h-[450px] min-h-[450px] md:h-[500px]" role="img" [attr.aria-label]="'company.dashboard.charts.orgFlow' | translate"></div>
             </app-glass-card>
           </div>
         </div>
       </div>
 
-      <!-- Navigation Cards Section: 1 column (25%) -->
-      <div class="lg:col-span-1">
-        <div class="sticky top-4 md:top-5">
-          <h2 class="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3 md:mb-4 transition-colors duration-300">{{ 'company.dashboard.mainMenu.title' | translate }}</h2>
-          <div class="space-y-3 md:space-y-4">
-            <!-- Human Resources Card -->
-            <div
-              [routerLink]="['human-resources']"
-              [appStagger]="0"
-              [staggerDelay]="0.1"
-              class="cursor-pointer group">
-              <app-glass-card
-                padding="p-4 md:p-6"
-                customClass="hover:shadow-lg hover:scale-[1.02] dark:hover:shadow-gray-700/50 transition-all duration-300 border border-transparent hover:border-primary/20 dark:hover:border-primary/20">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-3 md:mb-4 text-primary dark:text-primary transition-colors duration-300 group-hover:scale-110">
-                  <app-icon name="business" size="md" color="text-primary dark:text-primary"></app-icon>
-                </div>
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1 md:mb-2 transition-colors duration-300">{{ 'company.dashboard.mainMenu.humanResources.title' | translate }}</h3>
-                <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-3 md:mb-4 transition-colors duration-300">{{ 'company.dashboard.mainMenu.humanResources.description' | translate }}</p>
-                <div class="flex items-center text-primary dark:text-primary text-xs md:text-sm font-medium transition-colors duration-300">
-                  {{ 'company.dashboard.mainMenu.enterMenu' | translate }} <app-icon name="arrow_forward" size="sm" color="text-primary dark:text-primary" customClass="ml-2 group-hover:translate-x-1 transition-transform duration-300"></app-icon>
-                </div>
-              </app-glass-card>
-            </div>
-
-            <!-- Approve Setup Card -->
-            <div
-              [routerLink]="['approve']"
-              [appStagger]="1"
-              [staggerDelay]="0.1"
-              class="cursor-pointer group">
-              <app-glass-card
-                padding="p-4 md:p-6"
-                customClass="hover:shadow-lg hover:scale-[1.02] dark:hover:shadow-gray-700/50 transition-all duration-300 border border-transparent hover:border-green-200 dark:hover:border-green-800">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-green-50 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-3 md:mb-4 text-green-600 dark:text-green-400 transition-colors duration-300 group-hover:scale-110">
-                  <app-icon name="check_circle" size="md" color="text-green-600 dark:text-green-400"></app-icon>
-                </div>
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1 md:mb-2 transition-colors duration-300">{{ 'company.dashboard.mainMenu.approveSetup.title' | translate }}</h3>
-                <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-3 md:mb-4 transition-colors duration-300">{{ 'company.dashboard.mainMenu.approveSetup.description' | translate }}</p>
-                <div class="flex items-center text-green-600 dark:text-green-400 text-xs md:text-sm font-medium transition-colors duration-300">
-                  {{ 'company.dashboard.mainMenu.enterMenu' | translate }} <app-icon name="arrow_forward" size="sm" color="text-green-600 dark:text-green-400" customClass="ml-2 group-hover:translate-x-1 transition-transform duration-300"></app-icon>
-                </div>
-              </app-glass-card>
-            </div>
-
-            <!-- ESS Setup Card -->
-            <div
-              [routerLink]="['ess-setup']"
-              [appStagger]="2"
-              [staggerDelay]="0.1"
-              class="cursor-pointer group">
-              <app-glass-card
-                padding="p-4 md:p-6"
-                customClass="hover:shadow-lg hover:scale-[1.02] dark:hover:shadow-gray-700/50 transition-all duration-300 border border-transparent hover:border-purple-200 dark:hover:border-purple-800">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-50 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-3 md:mb-4 text-purple-600 dark:text-purple-400 transition-colors duration-300 group-hover:scale-110">
-                  <app-icon name="phone_android" size="md" color="text-purple-600 dark:text-purple-400"></app-icon>
-                </div>
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1 md:mb-2 transition-colors duration-300">{{ 'company.dashboard.mainMenu.essSetup.title' | translate }}</h3>
-                <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-3 md:mb-4 transition-colors duration-300">{{ 'company.dashboard.mainMenu.essSetup.description' | translate }}</p>
-                <div class="flex items-center text-purple-600 dark:text-purple-400 text-xs md:text-sm font-medium transition-colors duration-300">
-                  {{ 'company.dashboard.mainMenu.enterMenu' | translate }} <app-icon name="arrow_forward" size="sm" color="text-purple-600 dark:text-purple-400" customClass="ml-2 group-hover:translate-x-1 transition-transform duration-300"></app-icon>
-                </div>
-              </app-glass-card>
-            </div>
-
-            <!-- Reports Card -->
-            <div
-              [routerLink]="['reports']"
-              [appStagger]="3"
-              [staggerDelay]="0.1"
-              class="cursor-pointer group">
-              <app-glass-card
-                padding="p-4 md:p-6"
-                customClass="hover:shadow-lg hover:scale-[1.02] dark:hover:shadow-gray-700/50 transition-all duration-300 border border-transparent hover:border-orange-200 dark:hover:border-orange-800">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-orange-50 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mb-3 md:mb-4 text-orange-600 dark:text-orange-400 transition-colors duration-300 group-hover:scale-110">
-                  <app-icon name="assessment" size="md" color="text-orange-600 dark:text-orange-400"></app-icon>
-                </div>
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1 md:mb-2 transition-colors duration-300">{{ 'company.dashboard.mainMenu.reports.title' | translate }}</h3>
-                <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-3 md:mb-4 transition-colors duration-300">{{ 'company.dashboard.mainMenu.reports.description' | translate }}</p>
-                <div class="flex items-center text-orange-600 dark:text-orange-400 text-xs md:text-sm font-medium transition-colors duration-300">
-                  {{ 'company.dashboard.mainMenu.enterMenu' | translate }} <app-icon name="arrow_forward" size="sm" color="text-orange-600 dark:text-orange-400" customClass="ml-2 group-hover:translate-x-1 transition-transform duration-300"></app-icon>
-                </div>
-              </app-glass-card>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Recent Activities & Pending Tasks -->
     <div *ngIf="isSectionVisible('recentActivities') || isSectionVisible('pendingTasks')" class="-mx-4 md:-mx-6 lg:-mx-8 mt-6 md:mt-8">

@@ -1304,6 +1304,7 @@
   "company.dashboard.charts.location.warehouse": "คลังสินค้า",
   "company.dashboard.charts.organization": "องค์กร",
   "company.dashboard.charts.orgTreeMap": "โครงสร้างองค์กรแบบ Tree Map",
+  "company.dashboard.charts.orgFlow": "สายบังคับบัญชา",
   "company.dashboard.charts.person": "คน",
   "company.dashboard.charts.position.assistantManager": "รองผู้จัดการ",
   "company.dashboard.charts.position.cLevel": "C-Level",

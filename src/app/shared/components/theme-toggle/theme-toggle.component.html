@@ -11,7 +11,7 @@
     [customClass]="customClass || 'w-11 h-11 min-w-[44px] min-h-[44px] md:w-10 md:h-10 p-0 rounded-lg hover-lift micro-active-scale hover:shadow-lg hover:-translate-y-0.5 group overflow-hidden flex items-center justify-center'">
     <app-icon
       name="palette"
-      size="md"
+      [size]="iconSize"
       [color]="iconColor || 'text-gray-700 dark:text-gray-300 theme-myhr:text-primary dark:theme-myhr:text-gray-300 group-hover:scale-110 group-hover:rotate-12 icon-micro relative z-10'"
       [ariaLabel]="'สีธีมปัจจุบัน: ' + currentColor"
     ></app-icon>

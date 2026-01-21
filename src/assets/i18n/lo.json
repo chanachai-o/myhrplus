@@ -1304,6 +1304,7 @@
   "company.dashboard.charts.location.warehouse": "Warehouse",
   "company.dashboard.charts.organization": "Organization",
   "company.dashboard.charts.orgTreeMap": "Organization Tree Map",
+  "company.dashboard.charts.orgFlow": "Organization Flow",
   "company.dashboard.charts.person": "people",
   "company.dashboard.charts.position.assistantManager": "Assistant Manager",
   "company.dashboard.charts.position.cLevel": "C-Level",

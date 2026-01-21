@@ -54,7 +54,6 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
   showCustomizationMenu = false;
   dashboardSections = [
     { id: 'statistics', label: 'company.dashboard.sections.statistics', visible: true },
-    { id: 'quickActions', label: 'company.dashboard.sections.quickActions', visible: true },
     { id: 'charts', label: 'company.dashboard.sections.charts', visible: true },
     { id: 'recentActivities', label: 'company.dashboard.sections.recentActivities', visible: true },
     { id: 'pendingTasks', label: 'company.dashboard.sections.pendingTasks', visible: true }
@@ -110,33 +109,6 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     locations: 16
   };
 
-  // Quick Actions
-  quickActions = [
-    {
-      label: 'company.dashboard.quickActions.addBranch',
-      icon: 'add_business',
-      route: '/company/human-resources/branch',
-      color: 'indigo'
-    },
-    {
-      label: 'company.dashboard.quickActions.addDepartment',
-      icon: 'add',
-      route: '/company/human-resources/department',
-      color: 'blue'
-    },
-    {
-      label: 'company.dashboard.quickActions.viewReports',
-      icon: 'assessment',
-      route: '/company/reports',
-      color: 'green'
-    },
-    {
-      label: 'company.dashboard.quickActions.exportData',
-      icon: 'download',
-      action: 'export',
-      color: 'purple'
-    }
-  ];
 
   // Chart Options
   divisionPieChartOption: EChartsOption = {};
@@ -348,12 +320,6 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  exportDashboard(): void {
-    // Export dashboard data
-    console.log('Exporting dashboard...');
-    // TODO: Implement export functionality
-  }
-
   exportCharts(format: 'pdf' | 'excel'): void {
     // Export charts
     console.log(`Exporting charts as ${format}...`);
@@ -451,8 +417,10 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
                       window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
-  private getChartTextColor(): string {
-    return this.isDarkMode ? '#e2e8f0' : '#1e293b';
+  private getChartTextColor(): string | undefined {
+    // Return undefined to use ECharts default color
+    // ECharts will automatically handle colors based on theme
+    return undefined;
   }
 
   private getChartBackgroundColor(): string {
@@ -467,12 +435,69 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     return this.isDarkMode ? '#334155' : '#f1f5f9';
   }
 
+  /**
+   * Get primary color from CSS variable
+   */
+  private getPrimaryColor(): string {
+    const root = document.documentElement;
+    const primaryColor = getComputedStyle(root).getPropertyValue('--primary-color').trim();
+    return primaryColor || '#3b82f6'; // Fallback to blue-500
+  }
+
+  /**
+   * Get primary color RGB values
+   */
+  private getPrimaryColorRgb(): string {
+    const root = document.documentElement;
+    const primaryRgb = getComputedStyle(root).getPropertyValue('--primary-rgb').trim();
+    return primaryRgb || '59, 130, 246'; // Fallback to blue-500 RGB
+  }
+
+  /**
+   * Convert hex to RGB
+   */
+  private hexToRgb(hex: string): string {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (result) {
+      return `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`;
+    }
+    return '59, 130, 246'; // Fallback
+  }
+
+  /**
+   * Get bar chart color based on index (for variety)
+   */
+  private getBarChartColor(index: number, shade: 'light' | 'medium' | 'dark'): string {
+    const colors = [
+      { light: '#93c5fd', medium: '#60a5fa', dark: '#3b82f6' }, // Blue
+      { light: '#f9a8d4', medium: '#f472b6', dark: '#ec4899' }, // Pink
+      { light: '#86efac', medium: '#4ade80', dark: '#22c55e' }, // Green
+      { light: '#fbbf24', medium: '#f59e0b', dark: '#d97706' }, // Orange
+      { light: '#a78bfa', medium: '#8b5cf6', dark: '#7c3aed' }, // Purple
+      { light: '#34d399', medium: '#10b981', dark: '#059669' }, // Emerald
+      { light: '#fda4af', medium: '#fb7185', dark: '#f43f5e' }, // Rose
+      { light: '#60a5fa', medium: '#3b82f6', dark: '#2563eb' }  // Blue (repeat)
+    ];
+    const colorSet = colors[index % colors.length];
+    return colorSet[shade];
+  }
+
   initializeCharts(): void {
     const currentLang = this.translate.currentLang || 'th';
     const isThai = currentLang === 'th';
     const personLabel = this.translate.instant('company.dashboard.charts.person');
 
-    // Division Pie Chart
+    // Division Donut Chart - Color palette (diverse colors like in the image)
+    const donutColors = [
+      '#8b5cf6', // Purple
+      '#ec4899', // Pink
+      '#3b82f6', // Blue
+      '#10b981', // Green
+      '#f59e0b', // Orange
+      '#06b6d4', // Cyan
+      '#6366f1'  // Indigo
+    ];
+
     const divisionData = [
       { name: this.translate.instant('company.dashboard.charts.division.sales'), value: 342 },
       { name: this.translate.instant('company.dashboard.charts.division.marketing'), value: 198 },
@@ -481,7 +506,12 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
       { name: this.translate.instant('company.dashboard.charts.division.it'), value: 124 },
       { name: this.translate.instant('company.dashboard.charts.division.production'), value: 278 },
       { name: this.translate.instant('company.dashboard.charts.division.management'), value: 60 }
-    ];
+    ].map((item, index) => ({
+      ...item,
+      itemStyle: {
+        color: donutColors[index % donutColors.length]
+      }
+    }));
 
     this.divisionPieChartOption = {
       backgroundColor: this.getChartBackgroundColor(),
@@ -495,42 +525,49 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
       },
       legend: {
-        orient: 'vertical',
-        left: 'left',
-        top: 'middle',
-        textStyle: {
-          fontSize: 12,
-          color: this.getChartTextColor()
-        }
+        show: false // Hide legend
       },
       series: [{
         name: this.translate.instant('company.dashboard.charts.employeeCount'),
         type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
+        radius: ['40%', '70%'], // Donut chart (inner radius 40%, outer radius 70%)
+        avoidLabelOverlap: true,
+        center: ['50%', '50%'],
         itemStyle: {
-          borderRadius: 10,
-          borderColor: this.isDarkMode ? '#1e293b' : '#fff',
-          borderWidth: 2
+          borderWidth: 0 // No border between segments
         },
         label: {
           show: true,
           formatter: (params: any) => {
             return `${params.name}\n${params.value} ${personLabel}`;
           },
-          color: this.getChartTextColor()
+          // Use ECharts default color (remove color property to use default)
+          fontSize: 12,
+          fontWeight: 500 as any // Use number instead of string for ECharts compatibility
+        },
+        labelLine: {
+          show: true,
+          length: 15,
+          length2: 10
+          // Use ECharts default line style (remove lineStyle to use default)
         },
         emphasis: {
           label: {
             show: true,
             fontSize: 14,
             fontWeight: 'bold'
+          },
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
           }
         },
         data: divisionData
@@ -565,7 +602,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
@@ -687,24 +724,36 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
       ] : [{
         name: this.translate.instant('company.dashboard.charts.employeeCount'),
         type: 'bar',
-        data: branchData.values,
-        itemStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: '#83bff6' },
-              { offset: 0.5, color: '#188df0' },
-              { offset: 1, color: '#188df0' }
-            ]
+        data: branchData.values.map((value, index) => ({
+          value,
+          itemStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                { offset: 0, color: this.getBarChartColor(index, 'light') },
+                { offset: 0.5, color: this.getBarChartColor(index, 'medium') },
+                { offset: 1, color: this.getBarChartColor(index, 'dark') }
+              ]
+            },
+            borderRadius: [4, 4, 0, 0]
           }
-        },
+        })),
         label: {
           show: true,
-          position: 'top'
+          position: 'top',
+          color: this.getChartTextColor()
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.3)'
+          }
         }
       }],
       legend: this.comparisonMode && branchData.previousValues ? {
@@ -746,7 +795,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
@@ -800,24 +849,36 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
       series: [{
         name: this.translate.instant('company.dashboard.charts.employeeCount'),
         type: 'bar',
-        data: departmentData.values,
-        itemStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: '#f093fb' },
-              { offset: 0.5, color: '#f5576c' },
-              { offset: 1, color: '#f5576c' }
-            ]
+        data: departmentData.values.map((value, index) => ({
+          value,
+          itemStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                { offset: 0, color: this.getBarChartColor(index, 'light') },
+                { offset: 0.5, color: this.getBarChartColor(index, 'medium') },
+                { offset: 1, color: this.getBarChartColor(index, 'dark') }
+              ]
+            },
+            borderRadius: [4, 4, 0, 0]
           }
-        },
+        })),
         label: {
           show: true,
-          position: 'top'
+          position: 'top',
+          color: this.getChartTextColor()
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.3)'
+          }
         }
       }]
     };
@@ -847,7 +908,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
@@ -898,24 +959,36 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
       series: [{
         name: this.translate.instant('company.dashboard.charts.positionCount'),
         type: 'bar',
-        data: positionData.values,
-        itemStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: '#4facfe' },
-              { offset: 0.5, color: '#00f2fe' },
-              { offset: 1, color: '#00f2fe' }
-            ]
+        data: positionData.values.map((value, index) => ({
+          value,
+          itemStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                { offset: 0, color: this.getBarChartColor(index, 'light') },
+                { offset: 0.5, color: this.getBarChartColor(index, 'medium') },
+                { offset: 1, color: this.getBarChartColor(index, 'dark') }
+              ]
+            },
+            borderRadius: [4, 4, 0, 0]
           }
-        },
+        })),
         label: {
           show: true,
-          position: 'top'
+          position: 'top',
+          color: this.getChartTextColor()
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.3)'
+          }
         }
       }]
     };
@@ -973,10 +1046,32 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
+      },
+      visualMap: {
+        min: 0,
+        max: 500,
+        calculable: true,
+        orient: 'horizontal',
+        left: 'center',
+        bottom: '5%',
+        inRange: {
+          color: [
+            '#8b5cf6', // Purple
+            '#ec4899', // Pink
+            '#3b82f6', // Blue
+            '#10b981', // Green
+            '#f59e0b', // Orange
+            '#06b6d4', // Cyan
+            '#6366f1'  // Indigo
+          ]
+        },
+        textStyle: {
+          color: this.getChartTextColor()
+        }
       },
       series: [{
         type: 'treemap',
@@ -1044,7 +1139,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
@@ -1098,24 +1193,36 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
       series: [{
         name: this.translate.instant('company.dashboard.charts.employeeCount'),
         type: 'bar',
-        data: locationData.values,
-        itemStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: '#43e97b' },
-              { offset: 0.5, color: '#38f9d7' },
-              { offset: 1, color: '#38f9d7' }
-            ]
+        data: locationData.values.map((value, index) => ({
+          value,
+          itemStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                { offset: 0, color: this.getBarChartColor(index, 'light') },
+                { offset: 0.5, color: this.getBarChartColor(index, 'medium') },
+                { offset: 1, color: this.getBarChartColor(index, 'dark') }
+              ]
+            },
+            borderRadius: [4, 4, 0, 0]
           }
-        },
+        })),
         label: {
           show: true,
-          position: 'top'
+          position: 'top',
+          color: this.getChartTextColor()
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.3)'
+          }
         }
       }]
     };
@@ -1144,7 +1251,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
         borderWidth: 1,
         padding: [10, 15],
         textStyle: {
-          color: this.getChartTextColor(),
+          // Use ECharts default color
           fontSize: 13
         },
         extraCssText: 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border-radius: 8px;'
@@ -1152,22 +1259,22 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
       series: [{
         type: 'sankey',
         data: [
-          { name: 'CEO' },
-          { name: 'COO' },
-          { name: 'CFO' },
-          { name: 'CTO' },
-          { name: salesDiv },
-          { name: marketingDiv },
-          { name: accountingDiv },
-          { name: hrDiv },
-          { name: itDiv },
-          { name: productionDiv },
-          { name: salesDept },
-          { name: marketingDept },
-          { name: accountingDept },
-          { name: hrDept },
-          { name: itDept },
-          { name: productionDept }
+          { name: 'CEO', itemStyle: { color: '#8b5cf6' } },      // Purple
+          { name: 'COO', itemStyle: { color: '#ec4899' } },      // Pink
+          { name: 'CFO', itemStyle: { color: '#3b82f6' } },      // Blue
+          { name: 'CTO', itemStyle: { color: '#10b981' } },      // Green
+          { name: salesDiv, itemStyle: { color: '#f59e0b' } },   // Orange
+          { name: marketingDiv, itemStyle: { color: '#06b6d4' } }, // Cyan
+          { name: accountingDiv, itemStyle: { color: '#6366f1' } }, // Indigo
+          { name: hrDiv, itemStyle: { color: '#8b5cf6' } },      // Purple
+          { name: itDiv, itemStyle: { color: '#ec4899' } },       // Pink
+          { name: productionDiv, itemStyle: { color: '#3b82f6' } }, // Blue
+          { name: salesDept, itemStyle: { color: '#f59e0b' } },   // Orange
+          { name: marketingDept, itemStyle: { color: '#06b6d4' } }, // Cyan
+          { name: accountingDept, itemStyle: { color: '#6366f1' } }, // Indigo
+          { name: hrDept, itemStyle: { color: '#8b5cf6' } },     // Purple
+          { name: itDept, itemStyle: { color: '#ec4899' } },     // Pink
+          { name: productionDept, itemStyle: { color: '#3b82f6' } } // Blue
         ],
         links: [
           { source: 'CEO', target: 'COO', value: 10 },
@@ -1190,7 +1297,12 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
           focus: 'adjacency'
         },
         lineStyle: {
-          color: 'gradient'
+          color: 'gradient',
+          curveness: 0.5
+        },
+        label: {
+          // Use ECharts default color
+          fontSize: 12
         }
       }]
     };

@@ -63,7 +63,7 @@
               [attr.aria-label]="'layout.header.changeLanguage' | translate">
         <img [src]="getFlagPath(currentLanguage)"
              [alt]="currentLanguage"
-             class="w-6 h-6 object-cover rounded-full shadow-sm"
+             class="w-5 h-5 object-cover rounded-full shadow-sm"
              onerror="this.src='assets/images/flags/gb.svg'" />
       </button>
 
@@ -92,8 +92,9 @@
 
     <!-- Theme Toggle -->
     <app-theme-toggle
-      customClass="p-2 rounded-lg hover:bg-white/10 text-white transition-colors !bg-transparent !border-none !shadow-none !w-auto !h-auto !min-w-[unset] !min-h-[unset] !px-2 !py-2"
-      iconColor="text-white group-hover:rotate-12 transition-transform duration-300">
+      customClass="p-0 rounded-lg hover:bg-white/10 text-white transition-colors !bg-transparent !border-none !shadow-none !w-auto !h-auto !min-w-[unset] !min-h-[unset] flex items-center justify-center"
+      iconColor="text-white group-hover:rotate-12 transition-transform duration-300"
+      iconSize="md">
     </app-theme-toggle>
 
     <!-- Notifications -->

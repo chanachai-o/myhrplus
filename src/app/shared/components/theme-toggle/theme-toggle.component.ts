@@ -113,6 +113,7 @@ export class ThemeToggleComponent implements OnInit {
 
   @Input() customClass: string = '';
   @Input() iconColor: string = '';
+  @Input() iconSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
 
   constructor(public themeService: ThemeService) {}
 
