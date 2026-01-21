@@ -2,19 +2,21 @@
   <div class="p-4 md:p-6 lg:p-8 transition-colors duration-300">
     <!-- Page Header -->
     <app-page-header
-      [title]="'company.dashboard.title' | translate"
-      [subtitle]="'company.dashboard.subtitle' | translate"
-      [description]="'company.dashboard.welcome.subtitle' | translate"
-      icon="business"
-      iconGradient="from-indigo-500 to-purple-600"
-      titleGradient="from-indigo-600 to-purple-600"
-      [translateTitle]="true"
-      [translateSubtitle]="true"
-      [translateDescription]="true"
-      [showBreadcrumbs]="false"
-      [userInfo]="getCompanyUserInfo()"
-      [actions]="getCompanyActions()">
-    </app-page-header>
+    [title]="'company.dashboard.title' | translate"
+    [subtitle]="'company.dashboard.welcome.subtitle' | translate"
+    icon="business"
+    iconGradient="from-primary to-primary"
+    titleGradient="from-primary to-primary"
+    [translateTitle]="true"
+    [translateSubtitle]="true"
+    [translateDescription]="true"
+    [showBreadcrumbs]="false"
+    [useGlassCard]="false"
+    [userInfo]="getCompanyUserInfo()"
+    [actions]="getCompanyActions()"
+    customClass="border-b border-primary/30 dark:border-primary/50 pb-4">
+  </app-page-header>
+
 
     <!-- Dashboard Customization Menu (kept separate for better UX) -->
     <div class="relative mb-6">
