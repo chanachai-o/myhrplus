@@ -108,8 +108,13 @@ import { first } from 'rxjs/operators';
 
 **Error Handling Pattern:**
 ```typescript
-override delete(id: string | number): Observable<void> {
-  return this.http.delete<any>(url).pipe(
+override delete(id: string | number, data?: Partial<CompanyType>): Observable<void> {
+  const url = this.apiUrl; // No id in URL
+  // Include id in body (as codeId)
+  const body = { ...data, codeId: id };
+  const options = { body };
+  
+  return this.http.delete<any>(url, options).pipe(
     tap((response) => {
       // Check for logical error in response (even if HTTP status is 200)
       if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
@@ -561,8 +566,14 @@ export class EntityService extends BaseApiService<Entity> {
   }
 
   // Delete with logical error checking
-  override delete(id: string | number): Observable<void> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+  // Note: id is sent in body (as codeId), not in URL
+  override delete(id: string | number, data?: Partial<Entity>): Observable<void> {
+    const url = this.apiUrl; // No id in URL
+    // Include id in body (as codeId) along with optional data
+    const body = { ...data, codeId: id };
+    const options = { body };
+    
+    return this.http.delete<any>(url, options).pipe(
       tap((response) => {
         // Check for logical error in response (even if HTTP status is 200)
         if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {

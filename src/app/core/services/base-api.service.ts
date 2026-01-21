@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 /**
  * Base API Service for Standardized CRUD Operations
  * Extend this class in your feature services to inherit common methods.
- * 
+ *
  * Example:
  * export class BenefitService extends BaseApiService<Benefit> {
  *   protected baseUrl = 'hr/benefits';
@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 })
 export abstract class BaseApiService<T> {
   protected http = inject(HttpClient);
-  
+
   /**
    * The relative path to the API endpoint (e.g., 'hr/benefits')
    * This will be appended to environment.apiUrl
@@ -66,10 +66,12 @@ export abstract class BaseApiService<T> {
 
   /**
    * Delete item
-   * @param id Item ID
+   * @param data Data object to send in request body
    */
-  delete(id: number | string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  delete(data: Partial<T>): Observable<void> {
+    // Send data in body (body-based delete pattern)
+    const options = { body: data };
+    return this.http.delete<void>(this.apiUrl, options);
   }
 
   /**

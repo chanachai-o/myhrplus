@@ -253,7 +253,10 @@ export class ModelNameService {
     return this.apiService.put<ModelName>(`${this.baseUrl}/items/${id}`, item);
   }
 
-  deleteItem(id: string): Observable<ApiResponse<void>> {
+  deleteItem(id: string, data?: Partial<ModelName>): Observable<ApiResponse<void>> {
+    // Note: For some APIs, id is sent in body instead of URL
+    // Example: return this.apiService.delete<void>(this.baseUrl, { body: { ...data, id } });
+    // Standard pattern: return this.apiService.delete<void>(`${this.baseUrl}/items/${id}`);
     return this.apiService.delete<void>(`${this.baseUrl}/items/${id}`);
   }
 }
@@ -1426,7 +1429,31 @@ export class ComponentNameDemoComponent {
   - รองรับ field name variations จาก API
   - Code maintainability ดีขึ้น
 
-**Last Updated**: 2026-01-20 (Company Type Migration Guide - Dialog-based Feedback + camelCase Only)
+### Delete Method Pattern - Body-based Delete (2026-01-20)
+- ✅ **Delete Method Signature**: `delete(id: string | number, data?: Partial<T>): Observable<void>`
+  - รับ `id` และ optional `data` parameter (เหมือน `update` method)
+  - ใช้ `Partial<T>` type สำหรับ data parameter
+- ✅ **No ID in URL**: ไม่ส่ง id ใน URL แต่ส่งไปใน body แทน
+  - URL: `this.apiUrl` (ไม่ใช่ `${this.apiUrl}/${id}`)
+  - Body: `{ ...data, codeId: id }` (รวม id เข้ากับ data ใน body)
+- ✅ **Pattern Example**:
+  ```typescript
+  override delete(id: string | number, data?: Partial<CompanyType>): Observable<void> {
+    const url = this.apiUrl; // No id in URL
+    const body = { ...data, codeId: id }; // Include id in body
+    const options = { body };
+    return this.http.delete<any>(url, options).pipe(...);
+  }
+  ```
+- ✅ **Updated Documentation**: `COMPANY_TYPE_MIGRATION_GUIDE.md` อัพเดทแล้ว
+- ✅ **Updated Rules**: `.cursorrules` อัพเดทแล้ว
+- ✅ **Impact**:
+  - Consistent delete method pattern ทั่วทั้ง application
+  - Type-safe ด้วย `Partial<T>` type
+  - รองรับการส่ง data เพิ่มเติมใน delete request
+  - สอดคล้องกับ update method pattern
+
+**Last Updated**: 2026-01-20 (Company Type Migration Guide - Dialog-based Feedback + camelCase Only + Delete Method Pattern)
 **Status**: ✅ All Architecture Improvements Completed + Translation Complete + Code Fixes Complete + Background Style Options Complete + Theme Renamed to MyHR + Assets SCSS Standardization Complete + Component Improvements Complete (Phase 1-3) + Demo Components Cleanup Complete + Demo Components Phase 1 Improvements Complete + Syncfusion Reorganization Phase 1-4 Complete + Demo Components Audit Complete (Phase 1-3) + Demo API Documentation Complete + Demo Layout Improvements Complete + Layout Components Class Duplication Fix Complete + UX/UI Improvements (Sidebar/Header/Search) + Dialog-based Feedback Standardization Complete + Naming Convention camelCase Only Complete
 **Angular Version**: 17.0.0+
 **TypeScript Version**: 5.2.2+

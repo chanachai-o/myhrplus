@@ -233,18 +233,22 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
     };
   }
 
-  override delete(id: string | number): Observable<void> {
+  override delete(data: Partial<BankCompany>): Observable<void> {
     this.loading.set(true);
-    const url = `${this.apiUrl}/${id}`;
-    console.log('[BankCompanyService] Deleting:', id);
-    return this.http.delete<any>(url).pipe(
+    const url = this.apiUrl;
+    console.log('[BankCompanyService] Deleting:', data);
+
+    // DELETE request with BankCompany body (send data as-is)
+    const body = data;
+    const options = { body };
+
+    return this.http.delete<any>(url, options).pipe(
       tap((response) => {
         // Check for logical error in response (even if HTTP status is 200)
         if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
           console.error('[BankCompanyService] Logical error in delete response:', response);
           throw new Error(response.message || 'Delete failed');
         }
-        console.log('[BankCompanyService] Deleted:', id);
         this.loading.set(false);
       }),
       catchError((error) => {

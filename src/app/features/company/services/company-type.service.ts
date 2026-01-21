@@ -171,18 +171,22 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     );
   }
 
-  override delete(id: string | number): Observable<void> {
+  override delete(data: Partial<CompanyType>): Observable<void> {
     this.loading.set(true);
-    const url = `${this.apiUrl}/${id}`;
-    console.log('[CompanyTypeService] Deleting:', id);
-    return this.http.delete<any>(url).pipe(
+    const url = this.apiUrl;
+    console.log('[CompanyTypeService] Deleting:', data);
+
+    // DELETE request with CompanyType body (send data as-is)
+    const body = data;
+    const options = { body };
+
+    return this.http.delete<any>(url, options).pipe(
       tap((response) => {
         // Check for logical error in response (even if HTTP status is 200)
         if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
           console.error('[CompanyTypeService] Logical error in delete response:', response);
           throw new Error(response.message || 'Delete failed');
         }
-        console.log('[CompanyTypeService] Deleted:', id);
         this.loading.set(false);
       }),
       catchError((error) => {

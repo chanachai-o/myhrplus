@@ -16,6 +16,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+import { filterSyncfusionFields } from '@core/utils';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
@@ -220,6 +221,18 @@ export class BankCompanyListComponent implements OnInit {
 
     console.log('[BankCompanyList] Delete action clicked for row:', row);
 
+    // Filter out Syncfusion Grid internal fields (e.g., 'column', 'index')
+    // Only include fields that are part of BankCompany model
+    const modelFields: (keyof BankCompany)[] = [
+      'companyId', 'bankId', 'branch', 'bankBranch', 'lineNo',
+      'account', 'bankClient', 'bankClientThName', 'bankClientEngName',
+      'contactPerson', 'tel',
+      'transAts', 'transMedia', 'transOther', 'transOtherDesc',
+      'dayDisk', 'dayCheque', 'isDefault'
+    ];
+
+    const cleanRow = filterSyncfusionFields<BankCompany>(row, modelFields);
+
     // Show confirmation dialog using service
     this.confirmationDialogService.confirmDelete().pipe(
       first() // Only take first emission to prevent duplicate subscriptions
@@ -228,7 +241,7 @@ export class BankCompanyListComponent implements OnInit {
         if (result.confirmed) {
           // Wait for confirmation dialog to fully close before proceeding
           await this.confirmationDialogService.waitForClose();
-          this.service.delete(row.lineNo).subscribe({
+          this.service.delete(cleanRow).subscribe({
             next: () => {
               console.log('[BankCompanyList] Delete successful');
               // Wait a bit to ensure confirmation dialog is fully closed

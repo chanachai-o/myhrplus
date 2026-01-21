@@ -16,6 +16,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
+import { filterSyncfusionFields } from '@core/utils';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { SyncfusionModule } from '@shared/syncfusion/syncfusion.module';
 
@@ -220,6 +221,14 @@ export class CompanyTypeListComponent implements OnInit {
 
     console.log('[CompanyTypeList] Delete action clicked for row:', row);
 
+    // Filter out Syncfusion Grid internal fields (e.g., 'column', 'index')
+    // Only include fields that are part of CompanyType model
+    const modelFields: (keyof CompanyType)[] = [
+      'codeId', 'tdesc', 'edesc', 'editBy', 'editDate', 'editTime', 'verified', 'companyId'
+    ];
+
+    const cleanRow = filterSyncfusionFields<CompanyType>(row, modelFields);
+
     // Show confirmation dialog using service
     this.confirmationDialogService.confirmDelete().pipe(
       first() // Only take first emission to prevent duplicate subscriptions
@@ -228,7 +237,7 @@ export class CompanyTypeListComponent implements OnInit {
         if (result.confirmed) {
           // Wait for confirmation dialog to fully close before proceeding
           await this.confirmationDialogService.waitForClose();
-          this.service.delete(row.codeId).subscribe({
+          this.service.delete(cleanRow).subscribe({
             next: () => {
               console.log('[CompanyTypeList] Delete successful');
               // Wait a bit to ensure confirmation dialog is fully closed

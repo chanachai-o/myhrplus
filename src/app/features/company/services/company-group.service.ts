@@ -42,7 +42,7 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
     return this.http.get<PaginatedResponse<CompanyGroup>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
         // API returns camelCase, normalize field names to match our model
-        const transformedData: CompanyGroup[] = (response.content || []).map((item: any) => 
+        const transformedData: CompanyGroup[] = (response.content || []).map((item: any) =>
           this.normalizeFromApiFormat(item)
         );
         console.log('[CompanyGroupService] Data loaded:', {
@@ -93,7 +93,7 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
     return this.http.get<PaginatedResponse<CompanyGroup>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
         // API returns camelCase, normalize field names to match our model
-        const transformedData: CompanyGroup[] = (response.content || []).map((item: any) => 
+        const transformedData: CompanyGroup[] = (response.content || []).map((item: any) =>
           this.normalizeFromApiFormat(item)
         );
         console.log('[CompanyGroupService] Pagination response:', {
@@ -163,18 +163,22 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
     );
   }
 
-  override delete(id: string | number): Observable<void> {
+  override delete(data: Partial<CompanyGroup>): Observable<void> {
     this.loading.set(true);
-    const url = `${this.apiUrl}/${id}`;
-    console.log('[CompanyGroupService] Deleting:', id);
-    return this.http.delete<any>(url).pipe(
+    const url = this.apiUrl;
+    console.log('[CompanyGroupService] Deleting:', data);
+
+    // DELETE request with CompanyGroup body (send data as-is)
+    const body = data;
+    const options = { body };
+
+    return this.http.delete<any>(url, options).pipe(
       tap((response) => {
         // Check for logical error in response (even if HTTP status is 200)
         if (response && (response.state === 'FAIL' || response.success === false || response.statusCode === 500)) {
           console.error('[CompanyGroupService] Logical error in delete response:', response);
           throw new Error(response.message || 'Delete failed');
         }
-        console.log('[CompanyGroupService] Deleted:', id);
         this.loading.set(false);
       }),
       catchError((error) => {
