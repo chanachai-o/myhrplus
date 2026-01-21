@@ -12,62 +12,57 @@
     [translateDescription]="true"
     [showBreadcrumbs]="false"
     [useGlassCard]="false"
-    [userInfo]="getCompanyUserInfo()"
-    [actions]="getCompanyActions()"
     customClass="border-b border-primary/30 dark:border-primary/50 pb-4">
-  </app-page-header>
-
-
-    <!-- Dashboard Customization Menu (kept separate for better UX) -->
-    <div class="relative mb-6">
-      <button
-        (click)="showCustomizationMenu = !showCustomizationMenu"
-        (clickOutside)="showCustomizationMenu = false"
-        type="button"
-        class="p-2 rounded-lg bg-primary/10 dark:bg-primary/10 hover:bg-primary/20 dark:hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        [attr.aria-label]="'company.dashboard.customize' | translate"
-        [attr.aria-expanded]="showCustomizationMenu"
-        (keydown.enter)="showCustomizationMenu = !showCustomizationMenu"
-        (keydown.space)="showCustomizationMenu = !showCustomizationMenu; $event.preventDefault()">
-        <app-icon name="tune" size="sm" color="text-primary dark:text-primary"></app-icon>
-      </button>
-            <!-- Customization Menu -->
+      <div header-actions class="relative">
+        <button
+          (click)="showCustomizationMenu = !showCustomizationMenu"
+          (clickOutside)="showCustomizationMenu = false"
+          type="button"
+          class="p-2 rounded-lg bg-primary/10 dark:bg-primary/10 hover:bg-primary/20 dark:hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          [attr.aria-label]="'company.dashboard.customize' | translate"
+          [attr.aria-expanded]="showCustomizationMenu"
+          (keydown.enter)="showCustomizationMenu = !showCustomizationMenu"
+          (keydown.space)="showCustomizationMenu = !showCustomizationMenu; $event.preventDefault()">
+          <app-icon name="tune" size="sm" color="text-primary dark:text-primary" class="flex items-center justify-center"></app-icon>
+        </button>
+        <!-- Customization Menu -->
+        <div
+          *ngIf="showCustomizationMenu"
+          class="absolute right-0 top-full mt-2 w-64 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl rounded-xl shadow-2xl border-2 border-gray-300/70 dark:border-gray-600/70 z-[1000] p-4"
+          (click)="$event.stopPropagation()">
+          <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ 'company.dashboard.customize.title' | translate }}</h3>
+            <button
+              (click)="showCustomizationMenu = false"
+              class="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              [attr.aria-label]="'Close menu'">
+              <app-icon name="close" size="xs" color="text-gray-600 dark:text-gray-400"></app-icon>
+            </button>
+          </div>
+          <div class="space-y-2 mb-3 max-h-64 overflow-y-auto">
             <div
-              *ngIf="showCustomizationMenu"
-              class="fixed right-4 top-24 w-64 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl rounded-xl shadow-2xl border-2 border-gray-300/70 dark:border-gray-600/70 z-[1000] p-4"
-              (click)="$event.stopPropagation()">
-              <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ 'company.dashboard.customize.title' | translate }}</h3>
-                <button
-                  (click)="showCustomizationMenu = false"
-                  class="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  [attr.aria-label]="'Close menu'">
-                  <app-icon name="close" size="xs" color="text-gray-600 dark:text-gray-400"></app-icon>
-                </button>
-              </div>
-              <div class="space-y-2 mb-3 max-h-64 overflow-y-auto">
-                <div
-                  *ngFor="let section of dashboardSections"
-                  class="flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-                  (click)="toggleSection(section.id)">
-                  <label class="flex items-center gap-3 cursor-pointer flex-1">
-                    <input
-                      type="checkbox"
-                      [checked]="section.visible"
-                      (change)="toggleSection(section.id)"
-                      (click)="$event.stopPropagation()"
-                      class="w-4 h-4 text-primary bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-primary focus:ring-offset-1 cursor-pointer">
-                    <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ section.label | translate }}</span>
-                  </label>
-                </div>
-              </div>
-              <button
-                (click)="resetDashboardLayout()"
-                class="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 rounded-lg transition-colors shadow-md hover:shadow-lg">
-                {{ 'company.dashboard.customize.reset' | translate }}
-              </button>
+              *ngFor="let section of dashboardSections"
+              class="flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              (click)="toggleSection(section.id)">
+              <label class="flex items-center gap-3 cursor-pointer flex-1">
+                <input
+                  type="checkbox"
+                  [checked]="section.visible"
+                  (change)="toggleSection(section.id)"
+                  (click)="$event.stopPropagation()"
+                  class="w-4 h-4 text-primary bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-primary focus:ring-offset-1 cursor-pointer">
+                <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ section.label | translate }}</span>
+              </label>
             </div>
-    </div>
+          </div>
+          <button
+            (click)="resetDashboardLayout()"
+            class="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 rounded-lg transition-colors shadow-md hover:shadow-lg">
+            {{ 'company.dashboard.customize.reset' | translate }}
+          </button>
+        </div>
+      </div>
+  </app-page-header>
 
     <!-- Statistics Cards -->
     <section class="mb-6 md:mb-8" [attr.aria-labelledby]="'statistics-title'">

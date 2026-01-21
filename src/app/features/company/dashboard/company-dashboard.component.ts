@@ -379,16 +379,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     }];
   }
 
-  getCompanyActions(): Array<{label: string, icon?: string, onClick?: () => void, disabled?: boolean}> {
-    return [{
-      label: this.translate.instant('company.dashboard.customize'),
-      icon: 'tune',
-      onClick: () => {
-        this.showCustomizationMenu = !this.showCustomizationMenu;
-      },
-      disabled: false
-    }];
-  }
+  // Removed: getCompanyActions() method - customization menu is now in header-actions slot
 
   private setupThemeObserver(): void {
     // Watch for theme changes
