@@ -26,6 +26,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   sidebarType: 'Over' | 'Push' | 'Slide' = 'Over';
   breadcrumbs: BreadcrumbItem[] = [];
   currentTheme: any = null; // Store current theme config
+  currentRoute: string = ''; // Current route for sidebar width adjustment
 
   private destroy$ = new Subject<void>();
 
@@ -62,11 +63,15 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
           const currentUrl = event.urlAfterRedirects || event.url;
+          this.currentRoute = currentUrl;
+          this.updateSidebarWidth();
           this.updateBreadcrumbs(currentUrl);
         }
       });
 
     // Initialize breadcrumbs with current URL
+    this.currentRoute = this.router.url;
+    this.updateSidebarWidth();
     this.updateBreadcrumbs(this.router.url);
   }
 
@@ -116,5 +121,24 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         this.layoutService.setSidebarState(false);
       }
     });
+  }
+
+  /**
+   * Check if current route is home route
+   */
+  isHomeRoute(): boolean {
+    return this.currentRoute === '/home' || this.currentRoute === '/' || this.currentRoute.startsWith('/home');
+  }
+
+  /**
+   * Update sidebar width based on current route
+   * When at /home, only show icon bar (56px), otherwise show full sidebar (368px)
+   */
+  updateSidebarWidth(): void {
+    if (this.isHomeRoute()) {
+      this.sidebarWidth = '56px'; // Only icon bar
+    } else {
+      this.sidebarWidth = '368px'; // Icon bar + menu panel
+    }
   }
 }

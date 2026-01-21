@@ -81,6 +81,8 @@
    .main-wrapper {
      position: relative;
      z-index: 1;
+     /* Smooth transition for padding-left when sidebar width changes */
+     transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
    }
 
    /* Sticky Header Wrapper */
@@ -172,10 +174,11 @@
          /* Z-index to ensure sidebar is above footer */
          z-index: 1000;
 
-         /* Smooth transitions */
+         /* Smooth transitions - including width animation */
          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                      opacity 0.3s ease-in-out,
-                     box-shadow 0.3s ease-in-out;
+                     box-shadow 0.3s ease-in-out,
+                     width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
          /* Enhanced shadow */
          box-shadow:
@@ -296,6 +299,10 @@
 
      .route-content-wrapper {
        animation: none;
+     }
+
+     .main-wrapper {
+       transition: none;
      }
 
      ::ng-deep {

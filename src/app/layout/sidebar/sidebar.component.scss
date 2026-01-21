@@ -32,6 +32,11 @@
   min-width: 56px;
   max-width: 56px;
 
+  /* Smooth transition for width changes */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
   /* Background gradient with pattern overlay - Using CSS Variables */
   background: linear-gradient(
     to bottom,
@@ -255,6 +260,13 @@
   min-width: 320px;
   max-width: 400px;
   width: 400px; /* Force width to take more space if container allows */
+
+  /* Smooth transition for width and opacity changes */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Remove heavy borders and simplify background for cleaner look */
   border-left: 1px solid var(--border-light);
@@ -760,6 +772,8 @@
 
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
+  .icon-bar,
+  .menu-panel,
   .module-icon-btn,
   .logo-container,
   .search-container,
