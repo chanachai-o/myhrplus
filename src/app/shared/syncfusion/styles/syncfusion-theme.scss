@@ -1,0 +1,10 @@
+/* ============================================
+   Syncfusion Theme Overrides
+   Global styles for all Syncfusion components
+   ============================================ */
+
+// Remove padding-right from draggable/droppable grid headers
+.e-gridheader.e-lib.e-draggable.e-droppable {
+  padding-right: 0 !important;
+}
+

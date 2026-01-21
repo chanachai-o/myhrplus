@@ -12,6 +12,11 @@
       border-bottom-color: var(--border-light);
       background-color: var(--bg-surface-secondary);
 
+      // Remove padding-right from draggable/droppable headers
+      &.e-lib.e-draggable.e-droppable {
+        padding-right: 0 !important;
+      }
+
       .e-headercell {
         background-color: transparent;
         color: var(--text-primary); // Increased contrast (was text-secondary)
