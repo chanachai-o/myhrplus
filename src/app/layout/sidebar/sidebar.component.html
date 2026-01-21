@@ -57,7 +57,7 @@
           <img [src]="getIconPath(level2Item.icon || 'home', '01')"
                [alt]="translateLabel(level2Item.label, 'admin', 2)"
                (error)="onIconError($event)"
-               class="w-6 h-6 relative z-10
+               class="w-8 h-8 relative z-10
                       icon-micro group-hover:scale-110
                       transition-all duration-300
                       object-contain
@@ -66,7 +66,7 @@
                [class.brightness-0]="selectedLevel2Item === level2Item"
                [class.invert]="selectedLevel2Item === level2Item">
           <!-- Fallback to Unicode icon if image fails to load -->
-          <span class="text-2xl relative z-10
+          <span class="text-3xl relative z-10
                        icon-micro group-hover:scale-110
                        transition-transform duration-300
                        leading-none flex items-center justify-center hidden"
@@ -121,14 +121,14 @@
                       transition-all duration-300"></div>
           <span *ngIf="module.iconCss"
                 [class]="module.iconCss"
-                class="text-2xl relative z-10
+                class="text-3xl relative z-10
                        icon-micro group-hover:scale-110
                        transition-colors duration-300"
                 [class.text-primary]="selectedModule === module.id"
                 [class.text-gray-500]="selectedModule !== module.id && !isDarkMode"
                 [class.text-gray-400]="selectedModule !== module.id && isDarkMode"></span>
           <span *ngIf="!module.iconCss"
-                class="text-2xl relative z-10
+                class="text-3xl relative z-10
                        icon-micro group-hover:scale-110
                        transition-colors duration-300
                        e-icons e-folder"
