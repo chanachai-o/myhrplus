@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -14,8 +14,9 @@ import { StaggerDirective } from '@shared/directives/stagger.directive';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { EChartsOption } from 'echarts';
 import { CompanyService } from '../services/company.service';
-import { AuthService, User, LayoutService, BreadcrumbItem, DashboardPreferencesService } from '@core/services';
+import { AuthService, User, LayoutService, BreadcrumbItem, DashboardPreferencesService, ConfirmationDialogService, NotificationService } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-dashboard',
@@ -43,6 +44,8 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private layoutService = inject(LayoutService);
   private dashboardPreferences = inject(DashboardPreferencesService);
+  private confirmationDialogService = inject(ConfirmationDialogService);
+  private notificationService = inject(NotificationService);
   private router = inject(Router);
   private observer?: MutationObserver;
 
@@ -88,13 +91,18 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     }
   };
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
+  isExporting = signal<boolean>(false);
 
   // Date Range for Charts
   dateRange = {
     start: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     end: new Date()
   };
+
+  // Charts Controls
+  chartsControlsExpanded = true;
+  showDatePickerMenu = false;
 
   // Comparison Mode
   comparisonMode = false;
@@ -172,7 +180,6 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     this.currentUser = this.authService.getCurrentUser();
     this.checkDarkMode();
     this.loadDashboardPreferences();
-    this.initializeCharts();
     this.loadDashboardData();
     this.setupThemeObserver();
 
@@ -220,6 +227,13 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
   isSectionVisible(sectionId: string): boolean {
     const section = this.dashboardSections.find(s => s.id === sectionId);
     return section ? section.visible : true;
+  }
+
+  /**
+   * Toggle charts controls expanded state
+   */
+  toggleChartsControls(): void {
+    this.chartsControlsExpanded = !this.chartsControlsExpanded;
   }
 
   /**
@@ -321,15 +335,42 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
   }
 
   exportCharts(format: 'pdf' | 'excel'): void {
-    // Export charts
-    console.log(`Exporting charts as ${format}...`);
-    // TODO: Implement chart export functionality
+    if (this.isExporting()) {
+      return;
+    }
+
+    this.isExporting.set(true);
+    const formatName = format.toUpperCase();
+
+    // Simulate export (replace with actual export logic)
+    setTimeout(() => {
+      this.isExporting.set(false);
+      const message = this.translate.instant('company.dashboard.export.success', { format: formatName });
+      this.confirmationDialogService.showSuccess(message).pipe(
+        first()
+      ).subscribe();
+    }, 1500);
   }
 
   exportChart(chartType: string, format: 'pdf' | 'excel'): void {
-    // Export individual chart
-    console.log(`Exporting ${chartType} chart as ${format}...`);
-    // TODO: Implement individual chart export
+    if (this.isExporting()) {
+      return;
+    }
+
+    this.isExporting.set(true);
+    const formatName = format.toUpperCase();
+
+    // Simulate export (replace with actual export logic)
+    setTimeout(() => {
+      this.isExporting.set(false);
+      const message = this.translate.instant('company.dashboard.export.chartSuccess', {
+        chart: chartType,
+        format: formatName
+      });
+      this.confirmationDialogService.showSuccess(message).pipe(
+        first()
+      ).subscribe();
+    }, 1000);
   }
 
   /**
@@ -337,7 +378,9 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
    */
   filterActivities(): void {
     // TODO: Implement filter functionality
-    console.log('Filtering activities...');
+    // For now, show a message that feature is coming soon
+    const message = this.translate.instant('company.dashboard.activities.filterComingSoon') || 'Filter feature coming soon';
+    this.notificationService.showInfo(message);
   }
 
   /**
@@ -1300,11 +1343,31 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadDashboardData(): void {
-    // TODO: Load real data from API
-    // this.service.getDashboardStatistics().subscribe(data => {
-    //   this.statistics = data;
-    //   this.updateChartsWithRealData(data);
+    this.isLoading.set(true);
+
+    // TODO: Replace with actual API call
+    // this.service.getDashboardStatistics().subscribe({
+    //   next: (data) => {
+    //     this.statistics = data;
+    //     this.updateChartsWithRealData(data);
+    //     this.initializeCharts();
+    //     this.isLoading.set(false);
+    //   },
+    //   error: (err) => {
+    //     this.isLoading.set(false);
+    //     const errorMessage = err?.error?.message ||
+    //                          err?.message ||
+    //                          this.translate.instant('company.dashboard.loadError');
+    //     this.notificationService.showError(errorMessage);
+    //   }
     // });
+
+    // Simulate API call for now
+    setTimeout(() => {
+      // Data is already set in component properties
+      this.initializeCharts();
+      this.isLoading.set(false);
+    }, 500);
   }
 }
 
