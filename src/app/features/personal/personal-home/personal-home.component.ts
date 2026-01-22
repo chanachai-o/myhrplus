@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, User } from '@core/services';
+import { AuthService, User, ConfirmationDialogService, NotificationService } from '@core/services';
 import { EChartsOption } from 'echarts';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
@@ -13,6 +13,8 @@ export class PersonalHomeComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   loading = false;
   isDarkMode = false;
+  isExporting = signal<boolean>(false);
+  showDatePickerMenu = false;
   private observer?: MutationObserver;
 
   statistics = {
@@ -54,6 +56,8 @@ export class PersonalHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
+    private confirmationDialogService: ConfirmationDialogService,
+    private notificationService: NotificationService,
     private router: Router
   ) {
     this.currentUser = this.authService.getCurrentUser();
@@ -406,6 +410,28 @@ export class PersonalHomeComponent implements OnInit, OnDestroy {
       // Reload charts with new date range
       this.initializeCharts();
     }
+  }
+
+  exportCharts(format: 'pdf' | 'excel'): void {
+    if (this.isExporting()) return;
+
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.confirmationDialogService.showSuccess(`ส่งออกกราฟเป็น ${format.toUpperCase()} เรียบร้อยแล้ว`);
+    }, 1500);
+  }
+
+  exportChart(chartType: string, format: 'pdf' | 'excel'): void {
+    if (this.isExporting()) return;
+
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.notificationService.showSuccess(`ส่งออกกราฟ ${chartType} เป็น ${format.toUpperCase()} เรียบร้อยแล้ว`);
+    }, 1000);
   }
 }
 

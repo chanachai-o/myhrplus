@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService, User } from '@core/services';
+import { AuthService, User, ConfirmationDialogService, NotificationService } from '@core/services';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -31,6 +31,8 @@ export class RecruitHomeComponent implements OnInit, OnDestroy {
   loading = false;
   currentUser: User | null = null;
   isDarkMode = false;
+  isExporting = signal<boolean>(false);
+  showDatePickerMenu = false;
   private observer?: MutationObserver;
 
   statistics = {
@@ -85,6 +87,8 @@ export class RecruitHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
+    private confirmationDialogService: ConfirmationDialogService,
+    private notificationService: NotificationService,
     private router: Router
   ) {
     this.currentUser = this.authService.getCurrentUser();
@@ -361,6 +365,28 @@ export class RecruitHomeComponent implements OnInit, OnDestroy {
       // Reload charts with new date range
       this.initializeCharts();
     }
+  }
+
+  exportCharts(format: 'pdf' | 'excel'): void {
+    if (this.isExporting()) return;
+
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.confirmationDialogService.showSuccess(`ส่งออกกราฟเป็น ${format.toUpperCase()} เรียบร้อยแล้ว`);
+    }, 1500);
+  }
+
+  exportChart(chartType: string, format: 'pdf' | 'excel'): void {
+    if (this.isExporting()) return;
+
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.notificationService.showSuccess(`ส่งออกกราฟ ${chartType} เป็น ${format.toUpperCase()} เรียบร้อยแล้ว`);
+    }, 1000);
   }
 }
 

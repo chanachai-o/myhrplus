@@ -9,18 +9,76 @@
       iconGradient="from-primary to-primary"
       titleGradient="from-primary to-primary"
       [showBreadcrumbs]="false">
+      
+      <div header-actions class="flex items-center gap-2 relative">
+        <!-- Date Range Picker Dropdown -->
+        <div class="relative" (clickOutside)="showDatePickerMenu = false">
+          <button type="button" 
+            class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            (click)="showDatePickerMenu = !showDatePickerMenu"
+            [attr.aria-expanded]="showDatePickerMenu"
+            aria-haspopup="true">
+            <app-icon name="calendar_today" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
+            <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">
+              {{ dateRange.start | date:'d MMM' }} - {{ dateRange.end | date:'d MMM yyyy' }}
+            </span>
+            <app-icon name="arrow_drop_down" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
+          </button>
+          
+          <!-- Date Picker Popup -->
+          <div *ngIf="showDatePickerMenu" 
+            class="absolute right-0 top-full mt-2 z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 w-[320px] md:w-[600px]">
+            <app-date-range-picker 
+              [startDate]="dateRange.start" 
+              [endDate]="dateRange.end"
+              (rangeChange)="onDateRangeChange($event); showDatePickerMenu = false" 
+              [showPresets]="true">
+            </app-date-range-picker>
+          </div>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 shadow-sm">
+          <button type="button" 
+            (click)="exportCharts('pdf')" 
+            [disabled]="isExporting()"
+            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            [attr.aria-label]="'Export PDF'"
+            title="Export PDF">
+            @if (isExporting()) {
+              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
+            } @else {
+              <app-icon name="picture_as_pdf" size="sm"></app-icon>
+            }
+          </button>
+          <div class="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
+          <button type="button" 
+            (click)="exportCharts('excel')" 
+            [disabled]="isExporting()"
+            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            [attr.aria-label]="'Export Excel'"
+            title="Export Excel">
+            @if (isExporting()) {
+              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
+            } @else {
+              <app-icon name="table_chart" size="sm"></app-icon>
+            }
+          </button>
+        </div>
+      </div>
     </app-page-header>
+
     <!-- Statistics Cards -->
     <section class="mb-8" [attr.aria-labelledby]="'statistics-title'">
       <h2 id="statistics-title" class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">สถิติข้อมูลพนักงาน</h2>
 
       <!-- Loading State -->
-      <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+      <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
         <app-skeleton-loader *ngFor="let i of [0,1,2,3,4]" [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
       </div>
 
       <!-- Statistics Cards -->
-      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
         <div
           [appStagger]="0"
           [staggerDelay]="0.05"
@@ -109,105 +167,119 @@
       </div>
     </section>
 
-    <!-- Quick Actions Bar with Date Range Picker -->
-    <section class="mb-6" aria-labelledby="personal-actions-title">
-      <app-glass-card padding="p-4 md:p-5" customClass="mb-6">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
-            <h2 id="personal-actions-title" class="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-300">กราฟและรายงาน</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400 thai-text">เลือกช่วงวันที่เพื่อดูข้อมูลพนักงาน</p>
-          </div>
-          <div class="w-full md:w-auto">
-            <app-date-range-picker
-              [startDate]="dateRange.start"
-              [endDate]="dateRange.end"
-              (rangeChange)="onDateRangeChange($event)"
-              [showPresets]="true">
-            </app-date-range-picker>
-          </div>
-        </div>
-      </app-glass-card>
-    </section>
-
     <!-- Workspace Grid: Charts and Quick Actions -->
-    <section class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8" aria-labelledby="personal-charts-title">
+    <section class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8" aria-labelledby="personal-charts-title">
       <!-- Charts Section: 3 columns (75%) -->
-      <div class="lg:col-span-3">
+      <div class="xl:col-span-3">
         <h2 id="personal-charts-title" class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">กราฟและรายงาน</h2>
 
         <!-- Charts Row 1: 2 columns -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
           <!-- Employee Growth Chart -->
-          <app-glass-card padding="p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-            <div class="flex items-center justify-between mb-5">
-              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การเติบโตของพนักงาน 6 เดือน</h3>
-              <app-icon name="bar_chart" size="md" color="text-gray-400 dark:text-gray-500"  ></app-icon>
+          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การเติบโตของพนักงาน 6 เดือน</h3>
+              <button type="button" (click)="exportChart('growth', 'pdf')"
+                [disabled]="isExporting()"
+                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+                [attr.aria-label]="'Export การเติบโตของพนักงาน 6 เดือน PDF'">
+                @if (isExporting()) {
+                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
+                } @else {
+                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                }
+              </button>
             </div>
-            <div echarts [options]="employeeGrowthChartOption" class="h-64" role="img" [attr.aria-label]="'กราฟการเติบโตของพนักงาน 6 เดือน'"></div>
+            <div echarts [options]="employeeGrowthChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการเติบโตของพนักงาน 6 เดือน'"></div>
           </app-glass-card>
 
           <!-- Employee Distribution Chart -->
-          <app-glass-card padding="p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-            <div class="flex items-center justify-between mb-5">
-              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายพนักงานตามแผนก</h3>
-              <app-icon name="pie_chart" size="md" color="text-gray-400 dark:text-gray-500"  ></app-icon>
+          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายพนักงานตามแผนก</h3>
+              <button type="button" (click)="exportChart('distribution', 'pdf')"
+                [disabled]="isExporting()"
+                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+                [attr.aria-label]="'Export การกระจายพนักงานตามแผนก PDF'">
+                @if (isExporting()) {
+                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
+                } @else {
+                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                }
+              </button>
             </div>
-            <div echarts [options]="employeeDistributionChartOption" class="h-64" role="img" [attr.aria-label]="'กราฟการกระจายพนักงานตามแผนก'"></div>
+            <div echarts [options]="employeeDistributionChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการกระจายพนักงานตามแผนก'"></div>
           </app-glass-card>
         </div>
 
         <!-- Charts Row 2: 2 columns -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
           <!-- Employee by Age Chart -->
-          <app-glass-card padding="p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-            <div class="flex items-center justify-between mb-5">
-              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายตามอายุ</h3>
-              <app-icon name="account_tree" size="md" color="text-gray-400 dark:text-gray-500"  ></app-icon>
+          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายตามอายุ</h3>
+              <button type="button" (click)="exportChart('age', 'pdf')"
+                [disabled]="isExporting()"
+                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+                [attr.aria-label]="'Export การกระจายตามอายุ PDF'">
+                @if (isExporting()) {
+                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
+                } @else {
+                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                }
+              </button>
             </div>
-            <div echarts [options]="employeeByAgeChartOption" class="h-64" role="img" [attr.aria-label]="'กราฟการกระจายตามอายุ'"></div>
+            <div echarts [options]="employeeByAgeChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการกระจายตามอายุ'"></div>
           </app-glass-card>
 
           <!-- Employee Status Chart -->
-          <app-glass-card padding="p-5" customClass="hover:shadow-lg transition-shadow duration-300">
-            <div class="flex items-center justify-between mb-5">
-              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">สถานะพนักงาน</h3>
-              <app-icon name="person" size="md" color="text-gray-400 dark:text-gray-500"  ></app-icon>
+          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">สถานะพนักงาน</h3>
+              <button type="button" (click)="exportChart('status', 'pdf')"
+                [disabled]="isExporting()"
+                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+                [attr.aria-label]="'Export สถานะพนักงาน PDF'">
+                @if (isExporting()) {
+                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
+                } @else {
+                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+                }
+              </button>
             </div>
-            <div echarts [options]="employeeStatusChartOption" class="h-64" role="img" [attr.aria-label]="'กราฟสถานะพนักงาน'"></div>
+            <div echarts [options]="employeeStatusChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟสถานะพนักงาน'"></div>
           </app-glass-card>
         </div>
       </div>
 
-      <!-- Quick Actions Section: 1 column (25%) -->
-      <div class="lg:col-span-1">
-        <div class="sticky top-5">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">เมนูหลัก</h3>
-          <div class="space-y-4">
-            <div
-              *ngFor="let item of menuItems; let i = index"
-              [appStagger]="i"
-              [staggerDelay]="0.1"
-              class="cursor-pointer group focus:outline-none focus:ring-2 focus:ring-primary"
-              role="button"
-              [attr.tabindex]="0"
-              [attr.aria-label]="item.title + ' - ' + item.description"
-              (click)="navigateToRoute(item.route)"
-              (keydown.enter)="navigateToRoute(item.route)"
-              (keydown.space)="navigateToRoute(item.route); $event.preventDefault()">
-              <app-glass-card
-                padding="p-6"
-                customClass="hover:shadow-md dark:hover:shadow-gray-700/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
-                <div class="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary dark:text-primary transition-colors duration-300 group-hover:scale-110"  >
-                  <app-icon [name]="getIconName(item.icon)" size="lg" color="text-primary dark:text-primary"></app-icon>
+      <!-- Right Column: Sidebar (25%) -->
+      <div class="xl:col-span-1 space-y-6">
+        <div class="sticky top-24">
+          <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">เมนูหลัก</h3>
+            <div class="space-y-3">
+              <div
+                *ngFor="let item of menuItems; let i = index"
+                [appStagger]="i"
+                [staggerDelay]="0.1"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group"
+                role="button"
+                [attr.tabindex]="0"
+                [attr.aria-label]="item.title + ' - ' + item.description"
+                (click)="navigateToRoute(item.route)"
+                (keydown.enter)="navigateToRoute(item.route)"
+                (keydown.space)="navigateToRoute(item.route); $event.preventDefault()">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/10 flex items-center justify-center text-primary dark:text-primary group-hover:scale-110 transition-transform duration-300">
+                  <app-icon [name]="getIconName(item.icon)" size="sm"></app-icon>
                 </div>
-                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-300">{{ item.title }}</h4>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 transition-colors duration-300">{{ item.description }}</p>
-                <div class="flex items-center text-primary dark:text-primary text-sm font-medium transition-colors duration-300">
-                  เข้าสู่เมนู <app-icon name="arrow_forward" size="sm" color="text-primary dark:text-primary" customClass="ml-2 group-hover:translate-x-1 transition-transform duration-300"  ></app-icon>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ item.title }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ item.description }}</p>
                 </div>
-              </app-glass-card>
+                <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-primary transition-colors"></app-icon>
+              </div>
             </div>
-          </div>
+          </app-glass-card>
         </div>
       </div>
     </section>

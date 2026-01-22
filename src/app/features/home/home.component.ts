@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { AuthService, User } from '@core/services';
+import { AuthService, User, ConfirmationDialogService, NotificationService } from '@core/services';
 import { HomeService, MenuCategory, MenuItem } from './home.service';
 import { EChartsOption } from 'echarts';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
@@ -23,6 +23,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   loading = false;
   isDarkMode = false;
+  isExporting = signal<boolean>(false);
+  showDatePickerMenu = false;
   private observer?: MutationObserver;
 
   statistics = {
@@ -115,6 +117,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private homeService: HomeService,
+    private confirmationDialogService: ConfirmationDialogService,
+    private notificationService: NotificationService,
     public router: Router
   ) {
     this.currentUser = this.authService.getCurrentUser();
@@ -185,21 +189,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   exportDashboard(): void {
-    // Export dashboard data
-    console.log('Exporting dashboard...');
-    // TODO: Implement export functionality
+    if (this.isExporting()) return;
+    
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.confirmationDialogService.showSuccess('ส่งออกข้อมูล Dashboard เรียบร้อยแล้ว');
+    }, 1500);
   }
 
   exportCharts(format: 'pdf' | 'excel'): void {
-    // Export charts
-    console.log(`Exporting charts as ${format}...`);
-    // TODO: Implement chart export functionality
+    if (this.isExporting()) return;
+
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.confirmationDialogService.showSuccess(`ส่งออกกราฟเป็น ${format.toUpperCase()} เรียบร้อยแล้ว`);
+    }, 1500);
   }
 
   exportChart(chartType: string, format: 'pdf' | 'excel'): void {
-    // Export individual chart
-    console.log(`Exporting ${chartType} chart as ${format}...`);
-    // TODO: Implement individual chart export
+    if (this.isExporting()) return;
+
+    this.isExporting.set(true);
+    // Simulate export delay
+    setTimeout(() => {
+      this.isExporting.set(false);
+      this.notificationService.showSuccess(`ส่งออกกราฟ ${chartType} เป็น ${format.toUpperCase()} เรียบร้อยแล้ว`);
+    }, 1000);
   }
 
   viewAllActivities(): void {

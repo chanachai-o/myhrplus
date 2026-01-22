@@ -100,7 +100,7 @@
     <!-- Notifications -->
     <div class="relative" appClickOutside (appClickOutside)="closeNotificationMenu()">
        <button type="button"
-               class="p-2 rounded-lg hover:bg-white/10 text-white transition-colors relative"
+               class="p-2 rounded-lg hover:bg-white/10 text-white transition-colors relative flex items-center justify-center"
                (click)="toggleNotificationMenu()"
                [attr.aria-label]="'layout.header.notifications' | translate">
          <app-icon name="notifications" size="md" color="text-white"></app-icon>
