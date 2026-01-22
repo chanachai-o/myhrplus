@@ -21,9 +21,7 @@ import { StaggerDirective } from '@shared/directives/stagger.directive';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule,
@@ -31,25 +29,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
     SharedModule, // Contains DateRangePickerComponent and SkeletonLoaderComponent (non-standalone)
     LayoutModule,
     HomeRoutingModule,
-    // Standalone components
-    PageLayoutComponent,
-    GlassCardComponent,
-    GlassButtonComponent,
-    StatisticsCardComponent,
-    StatisticsGridComponent,
-    LoadingComponent,
-    EmptyStateComponent,
-    PageHeaderComponent,
-    IconComponent,
-    // Standalone directives
-    LazyImageDirective,
-    StaggerDirective,
-    // Charts
-    NgxEchartsModule
-  ],
-  exports: [
+    // Standalone component
     HomeComponent
-  ]
+  ],
+  exports: []
 })
 export class HomeModule { }
 

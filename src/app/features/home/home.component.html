@@ -1,366 +1,534 @@
-<div class="-mx-4 md:-mx-6 lg:-mx-8" role="main" [attr.aria-label]="'Dashboard'">
+<div class="-mx-4 md:-mx-6 lg:-mx-8" role="main" [attr.aria-label]="'HR Management Dashboard'">
   <div class="p-4 md:p-6 lg:p-8 transition-colors duration-300">
-    <!-- Page Header -->
-    <app-page-header title="Dashboard" subtitle="ภาพรวมระบบ HR Management"
-      [welcomeMessage]="getGreeting() + ', ' + (currentUser?.fullname || currentUser?.name || 'ผู้ใช้งาน') + '! ยินดีต้อนรับสู่ระบบ HR Management - ภาพรวมข้อมูลสำคัญทั้งหมด'"
-      icon="dashboard" iconGradient="from-indigo-500 to-purple-600" titleGradient="from-indigo-600 to-purple-600"
-      [showBreadcrumbs]="false" [userInfo]="getUserInfo()">
-      
+    <!-- Enhanced Page Header with Welcome Message -->
+    <app-page-header
+      [title]="getGreeting() + ', ' + (currentUser?.fullname || currentUser?.name || ('home.dashboard.userInfo.user' | translate)) + '! ' + ('home.dashboard.welcomeMessage' | translate)"
+      [subtitle]="'home.dashboard.subtitle' | translate"
+      icon="dashboard"
+      iconGradient="from-indigo-500 to-purple-600"
+      titleGradient="from-indigo-600 to-purple-600"
+      [showBreadcrumbs]="false"
+      [useGlassCard]="false"
+      customClass="border-b border-primary/30 dark:border-primary/50 pb-4 mb-6">
+
       <div header-actions class="flex items-center gap-2 relative">
-        <!-- Date Range Picker Dropdown -->
-        <div class="relative" (clickOutside)="showDatePickerMenu = false">
-          <button type="button" 
-            class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            (click)="showDatePickerMenu = !showDatePickerMenu"
-            [attr.aria-expanded]="showDatePickerMenu"
-            aria-haspopup="true">
-            <app-icon name="calendar_today" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
-            <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">
-              {{ dateRange.start | date:'d MMM' }} - {{ dateRange.end | date:'d MMM yyyy' }}
-            </span>
-            <app-icon name="arrow_drop_down" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
-          </button>
-          
-          <!-- Date Picker Popup -->
-          <div *ngIf="showDatePickerMenu" 
-            class="absolute right-0 top-full mt-2 z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 w-[320px] md:w-[600px]">
-            <app-date-range-picker 
-              [startDate]="dateRange.start" 
-              [endDate]="dateRange.end"
-              (rangeChange)="onDateRangeChange($event); showDatePickerMenu = false" 
-              [showPresets]="true">
-            </app-date-range-picker>
+        <!-- Global Filters (Desktop) -->
+        <div class="hidden xl:flex items-center gap-2">
+          <!-- Comparison Mode Toggle -->
+          <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg border transition-colors"
+               [ngClass]="{
+                 'bg-primary/10 border-primary/20': comparisonMode,
+                 'bg-transparent border-transparent': !comparisonMode
+               }">
+            <app-glass-switch
+              [(ngModel)]="comparisonMode"
+              (ngModelChange)="toggleComparisonMode()"
+              [label]="'home.dashboard.comparison.enable' | translate"
+              size="sm">
+            </app-glass-switch>
+            <select
+              *ngIf="comparisonMode"
+              [(ngModel)]="comparisonPeriod"
+              (ngModelChange)="loadComparisonData(); initializeCharts()"
+              class="ml-1 px-2 py-1 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm">
+              <option value="previous">{{ 'home.dashboard.comparison.previousPeriod' | translate }}</option>
+              <option value="year-over-year">{{ 'home.dashboard.comparison.yearOverYear' | translate }}</option>
+            </select>
+          </div>
+
+          <!-- Date Range Picker Dropdown -->
+          <div class="relative">
+            <button
+              (click)="showDatePickerMenu = !showDatePickerMenu"
+              (clickOutside)="showDatePickerMenu = false"
+              type="button"
+              class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800 transition-all text-sm text-gray-700 dark:text-gray-200 shadow-sm"
+              [attr.aria-expanded]="showDatePickerMenu"
+              [attr.aria-label]="'Select date range'">
+              <app-icon name="calendar_today" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+              <span>{{ dateRange.start | date:'dd/MM/yyyy' }} - {{ dateRange.end | date:'dd/MM/yyyy' }}</span>
+              <app-icon name="arrow_drop_down" size="xs" color="text-gray-400"></app-icon>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div *ngIf="showDatePickerMenu"
+                 class="absolute right-0 top-full mt-2 z-[100] p-2 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 min-w-[320px] animate-fade-in-up"
+                 (click)="$event.stopPropagation()">
+              <app-date-range-picker
+                [startDate]="dateRange.start"
+                [endDate]="dateRange.end"
+                (rangeChange)="onDateRangeChange($event)"
+                [showPresets]="true">
+              </app-date-range-picker>
+            </div>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="flex items-center bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-1 shadow-sm">
+            <button
+              (click)="exportCharts('pdf')"
+              type="button"
+              [disabled]="isExporting()"
+              class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
+              [attr.aria-label]="'Export to PDF'">
+              <app-icon name="picture_as_pdf" size="xs"></app-icon>
+            </button>
+            <div class="w-px h-4 bg-gray-200 dark:bg-gray-700 mx-1"></div>
+            <button
+              (click)="exportCharts('excel')"
+              type="button"
+              [disabled]="isExporting()"
+              class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors disabled:opacity-50"
+              [attr.aria-label]="'Export to Excel'">
+              <app-icon name="table_chart" size="xs"></app-icon>
+            </button>
           </div>
         </div>
 
-        <!-- Export Buttons -->
-        <div class="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 shadow-sm">
-          <button type="button" 
-            (click)="exportCharts('pdf')" 
-            [disabled]="isExporting()"
-            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            [attr.aria-label]="'Export PDF'"
-            title="Export PDF">
-            @if (isExporting()) {
-              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
-            } @else {
-              <app-icon name="picture_as_pdf" size="sm"></app-icon>
-            }
-          </button>
-          <div class="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
-          <button type="button" 
-            (click)="exportCharts('excel')" 
-            [disabled]="isExporting()"
-            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            [attr.aria-label]="'Export Excel'"
-            title="Export Excel">
-            @if (isExporting()) {
-              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
-            } @else {
-              <app-icon name="table_chart" size="sm"></app-icon>
-            }
+        <!-- Customization Button -->
+        <button
+          (click)="showCustomizationMenu = !showCustomizationMenu"
+          (clickOutside)="showCustomizationMenu = false"
+          type="button"
+          class="p-2 rounded-lg bg-primary/10 dark:bg-primary/10 hover:bg-primary/20 dark:hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          [attr.aria-label]="'home.dashboard.customize' | translate"
+          [attr.aria-expanded]="showCustomizationMenu"
+          (keydown.enter)="showCustomizationMenu = !showCustomizationMenu"
+          (keydown.space)="showCustomizationMenu = !showCustomizationMenu; $event.preventDefault()">
+          <app-icon name="tune" size="sm" color="text-primary dark:text-primary" class="flex items-center justify-center"></app-icon>
+        </button>
+        <!-- Customization Menu -->
+        <div
+          *ngIf="showCustomizationMenu"
+          class="absolute right-0 top-full mt-2 w-64 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl rounded-xl shadow-2xl border-2 border-gray-300/70 dark:border-gray-600/70 z-[1000] p-4"
+          (click)="$event.stopPropagation()">
+          <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ 'home.dashboard.customize.title' | translate }}</h3>
+            <button
+              (click)="showCustomizationMenu = false"
+              class="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              [attr.aria-label]="'Close menu'">
+              <app-icon name="close" size="xs" color="text-gray-600 dark:text-gray-400"></app-icon>
+            </button>
+          </div>
+          <div class="space-y-2 mb-3 max-h-64 overflow-y-auto">
+            <div
+              *ngFor="let section of dashboardSections"
+              class="flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              (click)="toggleSection(section.id)">
+              <label class="flex items-center gap-3 cursor-pointer flex-1">
+                <input
+                  type="checkbox"
+                  [checked]="section.visible"
+                  (change)="toggleSection(section.id)"
+                  (click)="$event.stopPropagation()"
+                  class="w-4 h-4 text-primary bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-primary focus:ring-offset-1 cursor-pointer">
+                <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ section.label | translate }}</span>
+              </label>
+            </div>
+          </div>
+          <button
+            (click)="resetDashboardLayout()"
+            class="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 rounded-lg transition-colors shadow-md hover:shadow-lg">
+            {{ 'home.dashboard.customize.reset' | translate }}
           </button>
         </div>
       </div>
     </app-page-header>
 
     <!-- Statistics Cards -->
-    <section class="mb-8" [attr.aria-labelledby]="'statistics-title'">
-      <h2 id="statistics-title"
-        class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">สถิติภาพรวม
-      </h2>
+    <section class="mb-6 md:mb-8" [attr.aria-labelledby]="'statistics-title'">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="statistics-title" class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'home.dashboard.statistics.title' | translate }}</h2>
+      </div>
 
       <!-- Loading State -->
-      <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-        <app-skeleton-loader *ngFor="let i of [0,1,2,3,4]" [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
-      </div>
+      @if (isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          @for (i of [0,1,2,3,4]; track i) {
+            <app-skeleton-loader [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
+          }
+        </div>
+      }
 
-      <!-- Statistics Cards -->
-      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-        <div [routerLink]="['/personal']" [appStagger]="0" [staggerDelay]="0.05" class="cursor-pointer group"
-          role="button"
-          [attr.aria-label]="'พนักงานทั้งหมด: ' + statistics.totalEmployees + ', เพิ่ม ' + statistics.newEmployeesThisMonth + ' เดือนนี้'"
-          [attr.aria-describedby]="'total-employees-description'" [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/personal')"
-          (keydown.space)="navigateToRoute('/personal'); $event.preventDefault()">
-          <app-glass-card padding="p-5"
-            customClass="bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-indigo-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2">{{ statistics.totalEmployees }}</div>
-            <div class="text-sm opacity-90" id="total-employees-description">พนักงานทั้งหมด</div>
-            <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1"
-              [attr.aria-label]="'เพิ่ม ' + statistics.newEmployeesThisMonth + ' เดือนนี้'">
-              <app-icon name="trending_up" size="xs" color="text-white"></app-icon>
-              <span>+{{ statistics.newEmployeesThisMonth }} เดือนนี้</span>
-            </div>
-          </app-glass-card>
+      <!-- Statistics Cards with Trend Indicators -->
+      @if (!isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <!-- Total Employees Card -->
+          <div
+            [routerLink]="[statistics.totalEmployees.route]"
+            [appStagger]="0"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('home.dashboard.statistics.totalEmployees' | translate) + ': ' + statistics.totalEmployees.value"
+            [attr.aria-describedby]="'total-employees-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.totalEmployees.route)"
+            (keydown.space)="navigateToRoute(statistics.totalEmployees.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-600 dark:from-indigo-600 dark:via-purple-700 dark:to-pink-700 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-indigo-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.totalEmployees.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="total-employees-description">{{ 'home.dashboard.statistics.totalEmployees' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'home.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.totalEmployees }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.totalEmployees.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.totalEmployees.change >= 0 ? '+' : '' }}{{ statistics.totalEmployees.change }} {{ 'home.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.totalEmployees.value, previousPeriodStatistics.totalEmployees) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.totalEmployees.value, previousPeriodStatistics.totalEmployees) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Today Attendance Card -->
+          <div
+            [routerLink]="[statistics.todayAttendance.route]"
+            [appStagger]="1"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('home.dashboard.statistics.todayAttendance' | translate) + ': ' + statistics.todayAttendance.value"
+            [attr.aria-describedby]="'attendance-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.todayAttendance.route)"
+            (keydown.space)="navigateToRoute(statistics.todayAttendance.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-pink-500 via-rose-600 to-red-600 dark:from-pink-600 dark:via-rose-700 dark:to-red-700 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.todayAttendance.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="attendance-description">{{ 'home.dashboard.statistics.todayAttendance' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'home.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.todayAttendance }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.todayAttendance.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.todayAttendance.change >= 0 ? '+' : '' }}{{ statistics.todayAttendance.change }} {{ 'home.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.todayAttendance.value, previousPeriodStatistics.todayAttendance) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.todayAttendance.value, previousPeriodStatistics.todayAttendance) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Pending Approvals Card -->
+          <div
+            [routerLink]="[statistics.pendingApprovals.route]"
+            [appStagger]="2"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('home.dashboard.statistics.pendingApprovals' | translate) + ': ' + statistics.pendingApprovals.value"
+            [attr.aria-describedby]="'pending-approvals-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.pendingApprovals.route)"
+            (keydown.space)="navigateToRoute(statistics.pendingApprovals.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 dark:from-amber-500 dark:via-orange-600 dark:to-red-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-amber-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.pendingApprovals.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="pending-approvals-description">{{ 'home.dashboard.statistics.pendingApprovals' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'home.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.pendingApprovals }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.pendingApprovals.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.pendingApprovals.change >= 0 ? '+' : '' }}{{ statistics.pendingApprovals.change }} {{ 'home.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.pendingApprovals.value, previousPeriodStatistics.pendingApprovals) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.pendingApprovals.value, previousPeriodStatistics.pendingApprovals) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Active Payroll Card -->
+          <div
+            [routerLink]="[statistics.activePayroll.route]"
+            [appStagger]="3"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('home.dashboard.statistics.activePayroll' | translate) + ': ' + statistics.activePayroll.value"
+            [attr.aria-describedby]="'payroll-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.activePayroll.route)"
+            (keydown.space)="navigateToRoute(statistics.activePayroll.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 dark:from-emerald-500 dark:via-teal-600 dark:to-cyan-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-emerald-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.activePayroll.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="payroll-description">{{ 'home.dashboard.statistics.activePayroll' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'home.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.activePayroll }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.activePayroll.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.activePayroll.change >= 0 ? '+' : '' }}{{ statistics.activePayroll.change }} {{ 'home.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.activePayroll.value, previousPeriodStatistics.activePayroll) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.activePayroll.value, previousPeriodStatistics.activePayroll) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Total Branches Card -->
+          <div
+            [routerLink]="[statistics.totalBranches.route]"
+            [appStagger]="4"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('home.dashboard.statistics.totalBranches' | translate) + ': ' + statistics.totalBranches.value"
+            [attr.aria-describedby]="'branches-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.totalBranches.route)"
+            (keydown.space)="navigateToRoute(statistics.totalBranches.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 dark:from-cyan-500 dark:via-blue-600 dark:to-indigo-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-cyan-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.totalBranches.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="branches-description">{{ 'home.dashboard.statistics.totalBranches' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'home.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.totalBranches }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.totalBranches.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.totalBranches.change >= 0 ? '+' : '' }}{{ statistics.totalBranches.change }} {{ 'home.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.totalBranches.value, previousPeriodStatistics.totalBranches) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.totalBranches.value, previousPeriodStatistics.totalBranches) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
         </div>
-        <div [routerLink]="['/ta']" [appStagger]="1" [staggerDelay]="0.05" class="cursor-pointer group" role="button"
-          [attr.aria-label]="'ลงเวลาวันนี้: ' + statistics.todayAttendance + ', อัตราการลงเวลา ' + statistics.attendanceRate + ' เปอร์เซ็นต์'"
-          [attr.aria-describedby]="'attendance-description'" [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/ta')" (keydown.space)="navigateToRoute('/ta'); $event.preventDefault()">
-          <app-glass-card padding="p-5"
-            customClass="bg-gradient-to-br from-pink-500 to-red-500 dark:from-pink-600 dark:to-red-600 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2">{{ statistics.todayAttendance }}</div>
-            <div class="text-sm opacity-90" id="attendance-description">ลงเวลาวันนี้</div>
-            <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1"
-              [attr.aria-label]="'อัตราการลงเวลา ' + statistics.attendanceRate + ' เปอร์เซ็นต์'">
-              <app-icon name="access_time" size="xs" color="text-white"></app-icon>
-              <span>{{ statistics.attendanceRate }}%</span>
-            </div>
-          </app-glass-card>
-        </div>
-        <div [routerLink]="['/ta']" [appStagger]="2" [staggerDelay]="0.05" class="cursor-pointer group" role="button"
-          [attr.aria-label]="'รออนุมัติ: ' + statistics.pendingApprovals + ' คำขอใหม่'"
-          [attr.aria-describedby]="'pending-approvals-description'" [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/ta')" (keydown.space)="navigateToRoute('/ta'); $event.preventDefault()">
-          <app-glass-card padding="p-5"
-            customClass="bg-gradient-to-br from-amber-400 to-orange-500 dark:from-amber-500 dark:to-orange-600 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-amber-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2">{{ statistics.pendingApprovals }}</div>
-            <div class="text-sm opacity-90" id="pending-approvals-description">รออนุมัติ</div>
-            <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1" [attr.aria-label]="'คำขอใหม่'">
-              <app-icon name="pending" size="xs" color="text-white"></app-icon>
-              <span>คำขอใหม่</span>
-            </div>
-          </app-glass-card>
-        </div>
-        <div [routerLink]="['/payroll']" [appStagger]="3" [staggerDelay]="0.05" class="cursor-pointer group"
-          role="button" [attr.aria-label]="'เงินเดือนเดือนนี้: ' + statistics.activePayroll + ', พร้อมจ่าย'"
-          [attr.aria-describedby]="'payroll-description'" [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/payroll')"
-          (keydown.space)="navigateToRoute('/payroll'); $event.preventDefault()">
-          <app-glass-card padding="p-5"
-            customClass="bg-gradient-to-br from-emerald-400 to-teal-500 dark:from-emerald-500 dark:to-teal-600 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-emerald-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2">{{ statistics.activePayroll }}</div>
-            <div class="text-sm opacity-90" id="payroll-description">เงินเดือนเดือนนี้</div>
-            <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1" [attr.aria-label]="'พร้อมจ่าย'">
-              <app-icon name="attach_money" size="xs" color="text-white"></app-icon>
-              <span>พร้อมจ่าย</span>
-            </div>
-          </app-glass-card>
-        </div>
-        <div [routerLink]="['/company']" [appStagger]="4" [staggerDelay]="0.05" class="cursor-pointer group"
-          role="button" [attr.aria-label]="'สาขา/แผนก: ' + statistics.totalBranches + ' ทั้งหมด'"
-          [attr.aria-describedby]="'branches-description'" [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/company')"
-          (keydown.space)="navigateToRoute('/company'); $event.preventDefault()">
-          <app-glass-card padding="p-5"
-            customClass="bg-gradient-to-br from-cyan-400 to-blue-500 dark:from-cyan-500 dark:to-blue-600 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-cyan-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2">{{ statistics.totalBranches }}</div>
-            <div class="text-sm opacity-90" id="branches-description">สาขา/แผนก</div>
-            <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1" [attr.aria-label]="'ทั้งหมด'">
-              <app-icon name="business" size="xs" color="text-white"></app-icon>
-              <span>ทั้งหมด</span>
-            </div>
-          </app-glass-card>
-        </div>
-      </div>
+      }
     </section>
 
-    <!-- Main Content Grid -->
+    <!-- Main Layout: Charts (Left) + Sidebar (Right) -->
     <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-6 md:mb-8">
       <!-- Left Column: Charts (75%) -->
       <div class="xl:col-span-3">
-        <h2 id="charts-title"
-          class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">กราฟภาพรวม
-        </h2>
+        @if (isSectionVisible('charts')) {
+          <div class="mb-6">
+            <!-- Charts Row 1: 2 columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- Attendance Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-attendance-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">การลงเวลาย้อนหลัง 7 วัน</h3>
+                  <button
+                    (click)="exportChart('attendance', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export การลงเวลาย้อนหลัง 7 วัน PDF'"
+                    [attr.tabindex]="0"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="attendanceChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-attendance-title'"></div>
+              </app-glass-card>
 
-        <!-- Charts Row 1: 2 columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <!-- Attendance Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">
-                การลงเวลาย้อนหลัง 7 วัน</h3>
-              <button type="button" (click)="exportChart('attendance', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export การลงเวลาย้อนหลัง 7 วัน PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
+              <!-- Employee Distribution Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-distribution-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายพนักงานตามแผนก</h3>
+                  <button
+                    (click)="exportChart('distribution', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export การกระจายพนักงานตามแผนก PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="distributionChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-distribution-title'"></div>
+              </app-glass-card>
             </div>
-            <div echarts [options]="attendanceChartOption" class="h-64 md:h-72" role="img"
-              [attr.aria-label]="'กราฟการลงเวลาย้อนหลัง 7 วัน'"></div>
-          </app-glass-card>
 
-          <!-- Employee Distribution Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">
-                การกระจายพนักงานตามแผนก</h3>
-              <button type="button" (click)="exportChart('distribution', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export การกระจายพนักงานตามแผนก PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="distributionChartOption" class="h-64 md:h-72" role="img"
-              [attr.aria-label]="'กราฟการกระจายพนักงานตามแผนก'"></div>
-          </app-glass-card>
-        </div>
+            <!-- Charts Row 2: 2 columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- Leave Requests Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-leave-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">คำขอลาเดือนนี้</h3>
+                  <button
+                    (click)="exportChart('leave', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export คำขอลาเดือนนี้ PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="leaveChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-leave-title'"></div>
+              </app-glass-card>
 
-        <!-- Charts Row 2: 2 columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <!-- Leave Requests Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">
-                คำขอลาเดือนนี้</h3>
-              <button type="button" (click)="exportChart('leave', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export คำขอลาเดือนนี้ PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
+              <!-- Payroll Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-payroll-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">เงินเดือน 6 เดือนล่าสุด</h3>
+                  <button
+                    (click)="exportChart('payroll', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export เงินเดือน 6 เดือนล่าสุด PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="payrollChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-payroll-title'"></div>
+              </app-glass-card>
             </div>
-            <div echarts [options]="leaveChartOption" class="h-64 md:h-72" role="img"
-              [attr.aria-label]="'กราฟคำขอลาเดือนนี้'"></div>
-          </app-glass-card>
-
-          <!-- Payroll Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">
-                เงินเดือน 6 เดือนล่าสุด</h3>
-              <button type="button" (click)="exportChart('payroll', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export เงินเดือน 6 เดือนล่าสุด PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="payrollChartOption" class="h-64 md:h-72" role="img"
-              [attr.aria-label]="'กราฟเงินเดือน 6 เดือนล่าสุด'"></div>
-          </app-glass-card>
-        </div>
+          </div>
+        }
       </div>
 
-      <!-- Right Column: Sidebar (25%) -->
+      <!-- Right Column: Quick Actions, Activities & Tasks (25%) -->
       <div class="xl:col-span-1 space-y-6">
-        <!-- Main Menu -->
-        <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
-          <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">
-            เมนูหลัก</h3>
-          <div class="space-y-3">
-            <!-- Personal Management -->
-            <div [routerLink]="['/personal']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/10 flex items-center justify-center text-primary dark:text-primary group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="person" size="sm"></app-icon>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">จัดการข้อมูลพนักงาน</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">ข้อมูลส่วนบุคคล</p>
-              </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-primary transition-colors"></app-icon>
+        <!-- Quick Actions Section -->
+        @if (isSectionVisible('quickActions')) {
+          <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
+            <div class="flex items-center justify-between mb-3 md:mb-4">
+              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'home.dashboard.quickActions.title' | translate }}</h3>
             </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div
+                *ngFor="let action of quickActions; let i = index"
+                [appStagger]="i"
+                [staggerDelay]="0.05"
+                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gradient-to-br cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                [ngClass]="'bg-gradient-to-br ' + action.color"
+                role="button"
+                [attr.aria-label]="action.label | translate"
+                [attr.tabindex]="0"
+                (click)="handleQuickAction(action)"
+                (keydown.enter)="handleQuickAction(action)"
+                (keydown.space)="handleQuickAction(action); $event.preventDefault()">
+                <div class="w-10 h-10 rounded-full bg-white/20 dark:bg-white/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+                  <app-icon [name]="action.icon" size="md" color="text-white"></app-icon>
+                </div>
+                <p class="text-xs font-medium text-white text-center line-clamp-2">{{ action.label | translate }}</p>
+              </div>
+            </div>
+          </app-glass-card>
+        }
 
-            <!-- Time Attendance -->
-            <div [routerLink]="['/ta']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="access_time" size="sm"></app-icon>
+        @if (isSectionVisible('recentActivities') || isSectionVisible('pendingTasks')) {
+          <!-- Recent Activities -->
+          @if (isSectionVisible('recentActivities')) {
+            <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit sticky top-24">
+              <div class="flex items-center justify-between mb-3 md:mb-4">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'home.dashboard.activities.title' | translate }}</h3>
+                <div class="flex items-center gap-2">
+                  <button
+                    (click)="filterActivities()"
+                    type="button"
+                    class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                    [attr.aria-label]="'Filter activities'">
+                    <app-icon name="filter_list" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  </button>
+                  <button
+                    (click)="viewAllActivities()"
+                    class="text-xs text-primary dark:text-primary hover:text-primary/80 dark:hover:text-primary/80 transition-colors">
+                    {{ 'View All' | translate }}
+                  </button>
+                </div>
               </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">การลงเวลา</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">เวลาการทำงาน</p>
+              <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                <div *ngFor="let activity of recentActivities; let i = index"
+                     class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
+                     [appStagger]="i"
+                     [staggerDelay]="0.05">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <app-icon [name]="activity.icon" size="xs" color="text-primary dark:text-primary"></app-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 thai-text line-clamp-2">{{ activity.title }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ activity.time }}</p>
+                  </div>
+                </div>
+                <app-empty-state
+                  *ngIf="recentActivities.length === 0"
+                  iconName="inbox"
+                  [title]="'home.dashboard.activities.empty' | translate"
+                  description=""
+                  iconSize="sm">
+                </app-empty-state>
               </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-green-600 transition-colors"></app-icon>
-            </div>
+            </app-glass-card>
+          }
 
-            <!-- Company Management -->
-            <div [routerLink]="['/company']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="business" size="sm"></app-icon>
+          <!-- Pending Tasks -->
+          @if (isSectionVisible('pendingTasks')) {
+            <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
+              <div class="flex items-center justify-between mb-3 md:mb-4">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'home.dashboard.approvals.title' | translate }}</h3>
+                <div class="flex items-center gap-2">
+                  <button
+                    (click)="filterApprovals()"
+                    type="button"
+                    class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                    [attr.aria-label]="'Filter approvals'">
+                    <app-icon name="filter_list" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  </button>
+                  <button
+                    (click)="viewAllApprovals()"
+                    class="text-xs text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-300 transition-colors">
+                    {{ 'View All' | translate }}
+                  </button>
+                </div>
               </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">จัดการองค์กร</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">ข้อมูลในองค์กร</p>
+              <div class="space-y-3">
+                <div *ngFor="let task of pendingTasks; let i = index"
+                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-700"
+                     [appStagger]="i"
+                     [staggerDelay]="0.05"
+                     [routerLink]="[task.route]">
+                  <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
+                    <app-icon [name]="task.icon" size="xs" color="text-yellow-600 dark:text-yellow-400"></app-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 thai-text truncate">{{ task.title }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ task.count }} {{ 'home.dashboard.approvals.items' | translate }}</p>
+                  </div>
+                  <app-icon name="chevron_right" size="xs" color="text-gray-400 dark:text-gray-500"></app-icon>
+                </div>
+                <app-empty-state
+                  *ngIf="pendingTasks.length === 0"
+                  iconName="check_circle"
+                  [title]="'home.dashboard.approvals.empty' | translate"
+                  description=""
+                  iconSize="sm">
+                </app-empty-state>
               </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-purple-600 transition-colors"></app-icon>
-            </div>
-
-            <!-- Payroll -->
-            <div [routerLink]="['/payroll']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="attach_money" size="sm"></app-icon>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">เงินเดือน</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">ข้อมูลเงินเดือน</p>
-              </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-orange-600 transition-colors"></app-icon>
-            </div>
-          </div>
-        </app-glass-card>
-
-        <!-- Recent Activities -->
-        <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit sticky top-24">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">กิจกรรมล่าสุด</h3>
-            <button type="button" (click)="viewAllActivities()" 
-              class="text-xs text-primary hover:text-primary-dark transition-colors">
-              ดูทั้งหมด
-            </button>
-          </div>
-          <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-            <div *ngFor="let activity of recentActivities; let i = index"
-              class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer">
-              <div class="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <app-icon [name]="activity.icon" size="xs" color="text-primary dark:text-primary"></app-icon>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs md:text-sm font-medium text-gray-800 dark:text-gray-100 thai-text line-clamp-2">{{ activity.title }}</p>
-                <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ activity.time }}</p>
-              </div>
-            </div>
-            <app-empty-state *ngIf="recentActivities.length === 0" iconName="inbox" title="ไม่มีกิจกรรมล่าสุด"
-              description="ยังไม่มีกิจกรรมที่ต้องแสดง" iconSize="sm">
-            </app-empty-state>
-          </div>
-        </app-glass-card>
-
-        <!-- Pending Approvals -->
-        <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">รออนุมัติ</h3>
-            <button type="button" (click)="viewAllApprovals()" 
-              class="text-xs text-primary hover:text-primary-dark transition-colors">
-              ดูทั้งหมด
-            </button>
-          </div>
-          <div class="space-y-3">
-            <div *ngFor="let approval of pendingApprovals; let i = index"
-              class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer"
-              [routerLink]="[approval.route]">
-              <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
-                <app-icon [name]="approval.icon" size="xs" color="text-yellow-600 dark:text-yellow-400"></app-icon>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs md:text-sm font-medium text-gray-800 dark:text-gray-100 thai-text truncate">{{ approval.title }}</p>
-                <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ approval.count }} รายการ</p>
-              </div>
-              <app-icon name="chevron_right" size="xs" class="text-gray-400"></app-icon>
-            </div>
-            <app-empty-state *ngIf="pendingApprovals.length === 0" iconName="check_circle" title="ไม่มีรายการรออนุมัติ"
-              description="ไม่มีรายการที่รอการอนุมัติในขณะนี้" iconSize="sm">
-            </app-empty-state>
-          </div>
-        </app-glass-card>
+            </app-glass-card>
+          }
+        }
       </div>
     </div>
   </div>
