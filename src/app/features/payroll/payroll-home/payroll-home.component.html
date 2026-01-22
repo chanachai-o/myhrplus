@@ -1,376 +1,498 @@
-<div class="-mx-4 md:-mx-6 lg:-mx-8">
-  <div class="p-4 md:p-6 lg:p-8 transition-colors duration-300" role="main">
+<div class="-mx-4 md:-mx-6 lg:-mx-8" role="main" [attr.aria-label]="'Payroll Management'">
+  <div class="p-4 md:p-6 lg:p-8 transition-colors duration-300">
     <!-- Page Header -->
     <app-page-header
       title="Payroll Management"
-      subtitle="จัดการเงินเดือนและสวัสดิการ"
-      description="จัดการข้อมูลเงินเดือน สลิปเงินเดือน และสวัสดิการพนักงาน"
+      subtitle="จัดการข้อมูลเงินเดือน สลิปเงินเดือน และสวัสดิการพนักงาน"
       icon="attach_money"
       iconGradient="from-green-500 to-emerald-600"
       titleGradient="from-green-600 to-emerald-600"
       [showBreadcrumbs]="false"
-      [userInfo]="getPayrollUserInfo()">
+      [useGlassCard]="false"
+      customClass="border-b border-primary/30 dark:border-primary/50 pb-4">
       
       <div header-actions class="flex items-center gap-2 relative">
-        <!-- Date Range Picker Dropdown -->
-        <div class="relative" (clickOutside)="showDatePickerMenu = false">
-          <button type="button" 
-            class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            (click)="showDatePickerMenu = !showDatePickerMenu"
-            [attr.aria-expanded]="showDatePickerMenu"
-            aria-haspopup="true">
-            <app-icon name="calendar_today" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
-            <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">
-              {{ dateRange.start | date:'d MMM' }} - {{ dateRange.end | date:'d MMM yyyy' }}
-            </span>
-            <app-icon name="arrow_drop_down" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
-          </button>
-          
-          <!-- Date Picker Popup -->
-          <div *ngIf="showDatePickerMenu" 
-            class="absolute right-0 top-full mt-2 z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 w-[320px] md:w-[600px]">
-            <app-date-range-picker 
-              [startDate]="dateRange.start" 
-              [endDate]="dateRange.end"
-              (rangeChange)="onDateRangeChange($event); showDatePickerMenu = false" 
-              [showPresets]="true">
-            </app-date-range-picker>
+        <!-- Global Filters (Desktop) -->
+        <div class="hidden xl:flex items-center gap-2">
+          <!-- Comparison Mode Toggle -->
+          <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg border transition-colors"
+               [ngClass]="{
+                 'bg-primary/10 border-primary/20': comparisonMode,
+                 'bg-transparent border-transparent': !comparisonMode
+               }">
+            <app-glass-switch
+              [(ngModel)]="comparisonMode"
+              (ngModelChange)="toggleComparisonMode()"
+              [label]="'payroll.dashboard.comparison.enable' | translate"
+              size="sm">
+            </app-glass-switch>
+            <select
+              *ngIf="comparisonMode"
+              [(ngModel)]="comparisonPeriod"
+              (ngModelChange)="loadComparisonData(); initializeCharts()"
+              class="ml-1 px-2 py-1 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm">
+              <option value="previous">{{ 'payroll.dashboard.comparison.previousPeriod' | translate }}</option>
+              <option value="year-over-year">{{ 'payroll.dashboard.comparison.yearOverYear' | translate }}</option>
+            </select>
+          </div>
+
+          <!-- Date Range Picker Dropdown -->
+          <div class="relative">
+            <button
+              (click)="showDatePickerMenu = !showDatePickerMenu"
+              (clickOutside)="showDatePickerMenu = false"
+              type="button"
+              class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800 transition-all text-sm text-gray-700 dark:text-gray-200 shadow-sm"
+              [attr.aria-expanded]="showDatePickerMenu"
+              [attr.aria-label]="'Select date range'">
+              <app-icon name="calendar_today" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+              <span>{{ dateRange.start | date:'dd/MM/yyyy' }} - {{ dateRange.end | date:'dd/MM/yyyy' }}</span>
+              <app-icon name="arrow_drop_down" size="xs" color="text-gray-400"></app-icon>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div *ngIf="showDatePickerMenu"
+                 class="absolute right-0 top-full mt-2 z-[100] p-2 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 min-w-[320px] animate-fade-in-up"
+                 (click)="$event.stopPropagation()">
+              <app-date-range-picker
+                [startDate]="dateRange.start"
+                [endDate]="dateRange.end"
+                (rangeChange)="onDateRangeChange($event)"
+                [showPresets]="true">
+              </app-date-range-picker>
+            </div>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="flex items-center bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-1 shadow-sm">
+            <button
+              (click)="exportCharts('pdf')"
+              type="button"
+              [disabled]="isExporting()"
+              class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
+              [attr.aria-label]="'Export to PDF'">
+              <app-icon name="picture_as_pdf" size="xs"></app-icon>
+            </button>
+            <div class="w-px h-4 bg-gray-200 dark:bg-gray-700 mx-1"></div>
+            <button
+              (click)="exportCharts('excel')"
+              type="button"
+              [disabled]="isExporting()"
+              class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors disabled:opacity-50"
+              [attr.aria-label]="'Export to Excel'">
+              <app-icon name="table_chart" size="xs"></app-icon>
+            </button>
           </div>
         </div>
 
-        <!-- Export Buttons -->
-        <div class="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 shadow-sm">
-          <button type="button" 
-            (click)="exportCharts('pdf')" 
-            [disabled]="isExporting()"
-            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            [attr.aria-label]="'Export PDF'"
-            title="Export PDF">
-            @if (isExporting()) {
-              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
-            } @else {
-              <app-icon name="picture_as_pdf" size="sm"></app-icon>
-            }
-          </button>
-          <div class="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
-          <button type="button" 
-            (click)="exportCharts('excel')" 
-            [disabled]="isExporting()"
-            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            [attr.aria-label]="'Export Excel'"
-            title="Export Excel">
-            @if (isExporting()) {
-              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
-            } @else {
-              <app-icon name="table_chart" size="sm"></app-icon>
-            }
+        <!-- Customization Button -->
+        <button
+          (click)="showCustomizationMenu = !showCustomizationMenu"
+          (clickOutside)="showCustomizationMenu = false"
+          type="button"
+          class="p-2 rounded-lg bg-primary/10 dark:bg-primary/10 hover:bg-primary/20 dark:hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          [attr.aria-label]="'payroll.dashboard.customize' | translate"
+          [attr.aria-expanded]="showCustomizationMenu"
+          (keydown.enter)="showCustomizationMenu = !showCustomizationMenu"
+          (keydown.space)="showCustomizationMenu = !showCustomizationMenu; $event.preventDefault()">
+          <app-icon name="tune" size="sm" color="text-primary dark:text-primary" class="flex items-center justify-center"></app-icon>
+        </button>
+        <!-- Customization Menu -->
+        <div
+          *ngIf="showCustomizationMenu"
+          class="absolute right-0 top-full mt-2 w-64 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl rounded-xl shadow-2xl border-2 border-gray-300/70 dark:border-gray-600/70 z-[1000] p-4"
+          (click)="$event.stopPropagation()">
+          <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ 'payroll.dashboard.customize.title' | translate }}</h3>
+            <button
+              (click)="showCustomizationMenu = false"
+              class="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              [attr.aria-label]="'Close menu'">
+              <app-icon name="close" size="xs" color="text-gray-600 dark:text-gray-400"></app-icon>
+            </button>
+          </div>
+          <div class="space-y-2 mb-3 max-h-64 overflow-y-auto">
+            <div
+              *ngFor="let section of dashboardSections"
+              class="flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              (click)="toggleSection(section.id)">
+              <label class="flex items-center gap-3 cursor-pointer flex-1">
+                <input
+                  type="checkbox"
+                  [checked]="section.visible"
+                  (change)="toggleSection(section.id)"
+                  (click)="$event.stopPropagation()"
+                  class="w-4 h-4 text-primary bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-primary focus:ring-offset-1 cursor-pointer">
+                <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ section.label | translate }}</span>
+              </label>
+            </div>
+          </div>
+          <button
+            (click)="resetDashboardLayout()"
+            class="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 rounded-lg transition-colors shadow-md hover:shadow-lg">
+            {{ 'payroll.dashboard.customize.reset' | translate }}
           </button>
         </div>
       </div>
     </app-page-header>
 
     <!-- Statistics Cards -->
-    <section class="mb-8" aria-labelledby="payroll-statistics-title">
-      <h2 id="payroll-statistics-title" class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">สถิติเงินเดือน</h2>
+    <section class="mb-6 md:mb-8" [attr.aria-labelledby]="'statistics-title'">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="statistics-title" class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'payroll.dashboard.statistics.title' | translate }}</h2>
+      </div>
 
       <!-- Loading State -->
-      <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-        <app-skeleton-loader *ngFor="let i of [0,1,2,3,4]" [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
-      </div>
+      @if (isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          @for (i of [0,1,2,3,4]; track i) {
+            <app-skeleton-loader [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
+          }
+        </div>
+      }
 
-      <!-- Statistics Cards -->
-      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-        <app-glass-card
-          padding="p-5"
-          customClass="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 text-white text-center hover:scale-105 transition-transform duration-300 cursor-pointer focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2"
-          [appStagger]="0"
-          [staggerDelay]="0.05"
-          role="button"
-          [attr.tabindex]="0"
-          [attr.aria-label]="'เงินเดือนทั้งหมด: ' + statistics.totalPayroll + ' บาท'"
-          [attr.aria-describedby]="'payroll-stat-desc-0'"
-          (click)="navigateToRoute('/payroll')"
-          (keydown.enter)="navigateToRoute('/payroll')"
-          (keydown.space)="navigateToRoute('/payroll'); $event.preventDefault()">
-          <div class="text-4xl font-bold mb-2">{{ statistics.totalPayroll }}</div>
-          <div class="text-sm opacity-90" id="payroll-stat-desc-0">เงินเดือนทั้งหมด</div>
-          <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1">
-            <app-icon name="attach_money" size="xs" color="text-white"  ></app-icon>
-            <span>บาท</span>
+      <!-- Statistics Cards with Trend Indicators -->
+      @if (!isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <!-- Total Payroll Card -->
+          <div
+            [routerLink]="[statistics.totalPayroll.route]"
+            [appStagger]="0"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('payroll.dashboard.statistics.totalPayroll' | translate) + ': ' + statistics.totalPayroll.value"
+            [attr.aria-describedby]="'total-payroll-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.totalPayroll.route)"
+            (keydown.space)="navigateToRoute(statistics.totalPayroll.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-green-500 via-emerald-600 to-teal-600 dark:from-green-600 dark:via-emerald-700 dark:to-teal-700 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ (statistics.totalPayroll.value / 1000000).toFixed(1) }}M</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="total-payroll-description">{{ 'payroll.dashboard.statistics.totalPayroll' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'payroll.dashboard.comparison.previous' | translate }}: {{ (previousPeriodStatistics.totalPayroll / 1000000).toFixed(1) }}M</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.totalPayroll.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.totalPayroll.change >= 0 ? '+' : '' }}{{ (statistics.totalPayroll.change / 1000000).toFixed(1) }}M {{ 'payroll.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.totalPayroll.value, previousPeriodStatistics.totalPayroll) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.totalPayroll.value, previousPeriodStatistics.totalPayroll) }}%)
+                </span>
+              </div>
+            </app-glass-card>
           </div>
-        </app-glass-card>
-        <app-glass-card
-          padding="p-5"
-          customClass="bg-gradient-to-br from-primary to-primary dark:from-primary dark:to-primary text-white text-center hover:scale-105 transition-transform duration-300 cursor-pointer focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
-          [appStagger]="1"
-          [staggerDelay]="0.05"
-          role="button"
-          [attr.tabindex]="0"
-          [attr.aria-label]="'พนักงานที่จ่าย: ' + statistics.totalEmployees + ' คน'"
-          [attr.aria-describedby]="'payroll-stat-desc-1'"
-          (click)="navigateToRoute('/payroll')"
-          (keydown.enter)="navigateToRoute('/payroll')"
-          (keydown.space)="navigateToRoute('/payroll'); $event.preventDefault()">
-          <div class="text-4xl font-bold mb-2">{{ statistics.totalEmployees }}</div>
-          <div class="text-sm opacity-90" id="payroll-stat-desc-1">พนักงานที่จ่าย</div>
-          <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1">
-            <app-icon name="people" size="xs" color="text-white"  ></app-icon>
-            <span>คน</span>
+
+          <!-- Total Employees Card -->
+          <div
+            [routerLink]="[statistics.totalEmployees.route]"
+            [appStagger]="1"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('payroll.dashboard.statistics.totalEmployees' | translate) + ': ' + statistics.totalEmployees.value"
+            [attr.aria-describedby]="'total-employees-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.totalEmployees.route)"
+            (keydown.space)="navigateToRoute(statistics.totalEmployees.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-primary via-primary to-primary dark:from-primary dark:via-primary dark:to-primary text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-primary/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.totalEmployees.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="total-employees-description">{{ 'payroll.dashboard.statistics.totalEmployees' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'payroll.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.totalEmployees }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.totalEmployees.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.totalEmployees.change >= 0 ? '+' : '' }}{{ statistics.totalEmployees.change }} {{ 'payroll.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.totalEmployees.value, previousPeriodStatistics.totalEmployees) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.totalEmployees.value, previousPeriodStatistics.totalEmployees) }}%)
+                </span>
+              </div>
+            </app-glass-card>
           </div>
-        </app-glass-card>
-        <app-glass-card
-          padding="p-5"
-          customClass="bg-gradient-to-br from-purple-500 to-pink-600 dark:from-purple-600 dark:to-pink-700 text-white text-center hover:scale-105 transition-transform duration-300 cursor-pointer focus-within:ring-2 focus-within:ring-purple-400 focus-within:ring-offset-2"
-          [appStagger]="2"
-          [staggerDelay]="0.05"
-          role="button"
-          [attr.tabindex]="0"
-          [attr.aria-label]="'รอจ่าย: ' + statistics.pendingPayroll + ' รายการ'"
-          [attr.aria-describedby]="'payroll-stat-desc-2'"
-          (click)="navigateToRoute('/payroll')"
-          (keydown.enter)="navigateToRoute('/payroll')"
-          (keydown.space)="navigateToRoute('/payroll'); $event.preventDefault()">
-          <div class="text-4xl font-bold mb-2">{{ statistics.pendingPayroll }}</div>
-          <div class="text-sm opacity-90" id="payroll-stat-desc-2">รอจ่าย</div>
-          <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1">
-            <app-icon name="pending" size="xs" color="text-white"  ></app-icon>
-            <span>รายการ</span>
+
+          <!-- Pending Payroll Card -->
+          <div
+            [routerLink]="[statistics.pendingPayroll.route]"
+            [appStagger]="2"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('payroll.dashboard.statistics.pendingPayroll' | translate) + ': ' + statistics.pendingPayroll.value"
+            [attr.aria-describedby]="'pending-payroll-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.pendingPayroll.route)"
+            (keydown.space)="navigateToRoute(statistics.pendingPayroll.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-purple-500 via-pink-600 to-rose-600 dark:from-purple-600 dark:via-pink-700 dark:to-rose-700 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-purple-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.pendingPayroll.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="pending-payroll-description">{{ 'payroll.dashboard.statistics.pendingPayroll' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'payroll.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.pendingPayroll }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.pendingPayroll.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.pendingPayroll.change >= 0 ? '+' : '' }}{{ statistics.pendingPayroll.change }} {{ 'payroll.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.pendingPayroll.value, previousPeriodStatistics.pendingPayroll) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.pendingPayroll.value, previousPeriodStatistics.pendingPayroll) }}%)
+                </span>
+              </div>
+            </app-glass-card>
           </div>
-        </app-glass-card>
-        <app-glass-card
-          padding="p-5"
-          customClass="bg-gradient-to-br from-orange-500 to-red-600 dark:from-orange-600 dark:to-red-700 text-white text-center hover:scale-105 transition-transform duration-300 cursor-pointer focus-within:ring-2 focus-within:ring-orange-400 focus-within:ring-offset-2"
-          [appStagger]="3"
-          [staggerDelay]="0.05"
-          role="button"
-          [attr.tabindex]="0"
-          [attr.aria-label]="'จ่ายแล้ว: ' + statistics.completedPayroll + ' รายการ'"
-          [attr.aria-describedby]="'payroll-stat-desc-3'"
-          (click)="navigateToRoute('/payroll')"
-          (keydown.enter)="navigateToRoute('/payroll')"
-          (keydown.space)="navigateToRoute('/payroll'); $event.preventDefault()">
-          <div class="text-4xl font-bold mb-2">{{ statistics.completedPayroll }}</div>
-          <div class="text-sm opacity-90" id="payroll-stat-desc-3">จ่ายแล้ว</div>
-          <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1">
-            <app-icon name="check_circle" size="xs" color="text-white"  ></app-icon>
-            <span>รายการ</span>
+
+          <!-- Completed Payroll Card -->
+          <div
+            [routerLink]="[statistics.completedPayroll.route]"
+            [appStagger]="3"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('payroll.dashboard.statistics.completedPayroll' | translate) + ': ' + statistics.completedPayroll.value"
+            [attr.aria-describedby]="'completed-payroll-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.completedPayroll.route)"
+            (keydown.space)="navigateToRoute(statistics.completedPayroll.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-orange-500 via-red-600 to-rose-600 dark:from-orange-600 dark:via-red-700 dark:to-rose-700 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-orange-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.completedPayroll.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="completed-payroll-description">{{ 'payroll.dashboard.statistics.completedPayroll' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'payroll.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.completedPayroll }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.completedPayroll.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.completedPayroll.change >= 0 ? '+' : '' }}{{ statistics.completedPayroll.change }} {{ 'payroll.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.completedPayroll.value, previousPeriodStatistics.completedPayroll) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.completedPayroll.value, previousPeriodStatistics.completedPayroll) }}%)
+                </span>
+              </div>
+            </app-glass-card>
           </div>
-        </app-glass-card>
-        <app-glass-card
-          padding="p-5"
-          customClass="bg-gradient-to-br from-yellow-500 to-amber-600 dark:from-yellow-600 dark:to-amber-700 text-white text-center hover:scale-105 transition-transform duration-300 cursor-pointer focus-within:ring-2 focus-within:ring-yellow-400 focus-within:ring-offset-2"
-          [appStagger]="4"
-          [staggerDelay]="0.05"
-          role="button"
-          [attr.tabindex]="0"
-          [attr.aria-label]="'เงินเดือนเฉลี่ย: ' + statistics.averageSalary + ' บาท/คน'"
-          [attr.aria-describedby]="'payroll-stat-desc-4'"
-          (click)="navigateToRoute('/payroll')"
-          (keydown.enter)="navigateToRoute('/payroll')"
-          (keydown.space)="navigateToRoute('/payroll'); $event.preventDefault()">
-          <div class="text-4xl font-bold mb-2">{{ statistics.averageSalary }}</div>
-          <div class="text-sm opacity-90" id="payroll-stat-desc-4">เงินเดือนเฉลี่ย</div>
-          <div class="mt-2 text-xs opacity-75 flex items-center justify-center gap-1">
-            <app-icon name="trending_up" size="xs" color="text-white"  ></app-icon>
-            <span>บาท/คน</span>
+
+          <!-- Average Salary Card -->
+          <div
+            [routerLink]="[statistics.averageSalary.route]"
+            [appStagger]="4"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('payroll.dashboard.statistics.averageSalary' | translate) + ': ' + statistics.averageSalary.value"
+            [attr.aria-describedby]="'average-salary-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.averageSalary.route)"
+            (keydown.space)="navigateToRoute(statistics.averageSalary.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 dark:from-yellow-500 dark:via-amber-600 dark:to-orange-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-yellow-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.averageSalary.value.toLocaleString('th-TH') }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="average-salary-description">{{ 'payroll.dashboard.statistics.averageSalary' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'payroll.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.averageSalary.toLocaleString('th-TH') }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.averageSalary.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.averageSalary.change >= 0 ? '+' : '' }}{{ statistics.averageSalary.change.toLocaleString('th-TH') }} {{ 'payroll.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.averageSalary.value, previousPeriodStatistics.averageSalary) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.averageSalary.value, previousPeriodStatistics.averageSalary) }}%)
+                </span>
+              </div>
+            </app-glass-card>
           </div>
-        </app-glass-card>
-      </div>
+        </div>
+      }
     </section>
 
-    <!-- Workspace Grid: Charts and Quick Actions -->
-    <section class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8" aria-labelledby="payroll-charts-title">
-      <!-- Charts Section: 3 columns (75%) -->
+    <!-- Main Layout: Charts (Left) + Sidebar (Right) -->
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-6 md:mb-8">
+      <!-- Left Column: Charts (75%) -->
       <div class="xl:col-span-3">
-        <h2 id="payroll-charts-title" class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">กราฟและรายงาน</h2>
+        @if (isSectionVisible('charts')) {
+          <div class="mb-6">
+            <!-- Charts Row 1: 2 columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- Payroll Trend Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-trend-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">แนวโน้มเงินเดือน 6 เดือน</h3>
+                  <button
+                    (click)="exportChart('trend', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export แนวโน้มเงินเดือน 6 เดือน PDF'"
+                    [attr.tabindex]="0"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="payrollTrendChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-trend-title'"></div>
+              </app-glass-card>
 
-        <!-- Charts Row 1: 2 columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <!-- Payroll Trend Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">แนวโน้มเงินเดือน 6 เดือน</h3>
-              <button type="button" (click)="exportChart('trend', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export แนวโน้มเงินเดือน 6 เดือน PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
+              <!-- Salary Distribution Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-distribution-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายเงินเดือน</h3>
+                  <button
+                    (click)="exportChart('distribution', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export การกระจายเงินเดือน PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="salaryDistributionChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-distribution-title'"></div>
+              </app-glass-card>
             </div>
-            <div echarts [options]="payrollTrendChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟแนวโน้มเงินเดือน 6 เดือน'"></div>
-          </app-glass-card>
 
-          <!-- Salary Distribution Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายเงินเดือน</h3>
-              <button type="button" (click)="exportChart('distribution', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export การกระจายเงินเดือน PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="salaryDistributionChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการกระจายเงินเดือน'"></div>
-          </app-glass-card>
-        </div>
+            <!-- Charts Row 2: 2 columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- Department Payroll Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-department-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">เงินเดือนตามแผนก</h3>
+                  <button
+                    (click)="exportChart('department', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export เงินเดือนตามแผนก PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="departmentPayrollChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-department-title'"></div>
+              </app-glass-card>
 
-        <!-- Charts Row 2: 2 columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <!-- Department Payroll Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">เงินเดือนตามแผนก</h3>
-              <button type="button" (click)="exportChart('department', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export เงินเดือนตามแผนก PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
+              <!-- Benefits Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-benefits-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">สวัสดิการและหักเงิน</h3>
+                  <button
+                    (click)="exportChart('benefits', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export สวัสดิการและหักเงิน PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="benefitsChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-benefits-title'"></div>
+              </app-glass-card>
             </div>
-            <div echarts [options]="departmentPayrollChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟเงินเดือนตามแผนก'"></div>
-          </app-glass-card>
-
-          <!-- Benefits Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">สวัสดิการและหักเงิน</h3>
-              <button type="button" (click)="exportChart('benefits', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export สวัสดิการและหักเงิน PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="benefitsChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟสวัสดิการและหักเงิน'"></div>
-          </app-glass-card>
-        </div>
+          </div>
+        }
       </div>
 
-      <!-- Right Column: Sidebar (25%) -->
+      <!-- Right Column: Activities & Tasks (25%) -->
       <div class="xl:col-span-1 space-y-6">
-        <!-- Main Menu -->
-        <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
-          <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">เมนูหลัก</h3>
-          <div class="space-y-3">
-            <!-- Payroll Management -->
-            <div [routerLink]="['/payroll']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="payments" size="sm"></app-icon>
+        @if (isSectionVisible('recentActivities') || isSectionVisible('pendingTasks')) {
+          <!-- Recent Activities -->
+          @if (isSectionVisible('recentActivities')) {
+            <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit sticky top-24">
+              <div class="flex items-center justify-between mb-3 md:mb-4">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'payroll.dashboard.activities.title' | translate }}</h3>
+                <div class="flex items-center gap-2">
+                  <button
+                    (click)="filterActivities()"
+                    type="button"
+                    class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                    [attr.aria-label]="'Filter activities'">
+                    <app-icon name="filter_list" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  </button>
+                  <button
+                    (click)="viewAllActivities()"
+                    class="text-xs text-primary dark:text-primary hover:text-primary/80 dark:hover:text-primary/80 transition-colors">
+                    {{ 'View All' | translate }}
+                  </button>
+                </div>
               </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">จัดการเงินเดือน</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">ข้อมูลเงินเดือน</p>
+              <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                <div *ngFor="let activity of recentActivities; let i = index"
+                     class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
+                     [appStagger]="i"
+                     [staggerDelay]="0.05">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <app-icon [name]="activity.icon" size="xs" color="text-primary dark:text-primary"></app-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 thai-text line-clamp-2">{{ activity.title }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ activity.time }}</p>
+                  </div>
+                </div>
+                <app-empty-state
+                  *ngIf="recentActivities.length === 0"
+                  iconName="inbox"
+                  [title]="'payroll.dashboard.activities.empty' | translate"
+                  description=""
+                  iconSize="sm">
+                </app-empty-state>
               </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-green-600 transition-colors"></app-icon>
-            </div>
+            </app-glass-card>
+          }
 
-            <!-- Pay Slip -->
-            <div [routerLink]="['/payroll']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/10 flex items-center justify-center text-primary dark:text-primary group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="receipt" size="sm"></app-icon>
+          <!-- Pending Tasks -->
+          @if (isSectionVisible('pendingTasks')) {
+            <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
+              <div class="flex items-center justify-between mb-3 md:mb-4">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'payroll.dashboard.tasks.title' | translate }}</h3>
+                <button
+                  [routerLink]="['/payroll']"
+                  class="text-xs text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-300 transition-colors">
+                  {{ 'View All' | translate }}
+                </button>
               </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">สลิปเงินเดือน</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">ดูสลิปเงินเดือน</p>
+              <div class="space-y-3">
+                <div *ngFor="let task of pendingTasks; let i = index"
+                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-700"
+                     [appStagger]="i"
+                     [staggerDelay]="0.05"
+                     [routerLink]="[task.route]">
+                  <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
+                    <app-icon [name]="task.icon" size="xs" color="text-yellow-600 dark:text-yellow-400"></app-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 thai-text truncate">{{ task.title }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ task.count }} {{ 'payroll.dashboard.tasks.items' | translate }}</p>
+                  </div>
+                  <app-icon name="chevron_right" size="xs" color="text-gray-400 dark:text-gray-500"></app-icon>
+                </div>
+                <app-empty-state
+                  *ngIf="pendingTasks.length === 0"
+                  iconName="check_circle"
+                  [title]="'payroll.dashboard.tasks.empty' | translate"
+                  description=""
+                  iconSize="sm">
+                </app-empty-state>
               </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-primary transition-colors"></app-icon>
-            </div>
-
-            <!-- Reports -->
-            <div [routerLink]="['/payroll']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="assessment" size="sm"></app-icon>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">รายงาน</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">รายงานเงินเดือน</p>
-              </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-purple-600 transition-colors"></app-icon>
-            </div>
-
-            <!-- Benefits -->
-            <div [routerLink]="['/payroll']" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-              <div class="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform duration-300">
-                <app-icon name="savings" size="sm"></app-icon>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">สวัสดิการ</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">จัดการสวัสดิการ</p>
-              </div>
-              <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-orange-600 transition-colors"></app-icon>
-            </div>
-          </div>
-        </app-glass-card>
-
-        <!-- Recent Activities -->
-        <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit sticky top-24">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">กิจกรรมล่าสุด</h3>
-            <button type="button" class="text-xs text-primary hover:text-primary-dark transition-colors">
-              ดูทั้งหมด
-            </button>
-          </div>
-          <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-            <div *ngFor="let activity of recentActivities; let i = index"
-              class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer">
-              <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                <app-icon [name]="activity.icon" size="xs" color="text-green-600 dark:text-green-400"></app-icon>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs md:text-sm font-medium text-gray-800 dark:text-gray-100 thai-text line-clamp-2">{{ activity.title }}</p>
-                <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ activity.time }}</p>
-              </div>
-            </div>
-            <app-empty-state *ngIf="recentActivities.length === 0" iconName="inbox" title="ไม่มีกิจกรรมล่าสุด"
-              description="ยังไม่มีกิจกรรมที่ต้องแสดง" iconSize="sm">
-            </app-empty-state>
-          </div>
-        </app-glass-card>
-
-        <!-- Pending Tasks -->
-        <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">งานที่ต้องทำ</h3>
-            <button type="button" class="text-xs text-primary hover:text-primary-dark transition-colors">
-              ดูทั้งหมด
-            </button>
-          </div>
-          <div class="space-y-3">
-            <div *ngFor="let task of pendingTasks; let i = index"
-              class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer"
-              [routerLink]="[task.route]">
-              <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
-                <app-icon [name]="task.icon" size="xs" color="text-yellow-600 dark:text-yellow-400"></app-icon>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs md:text-sm font-medium text-gray-800 dark:text-gray-100 thai-text truncate">{{ task.title }}</p>
-                <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ task.count }} รายการ</p>
-              </div>
-              <app-icon name="chevron_right" size="xs" class="text-gray-400"></app-icon>
-            </div>
-            <app-empty-state *ngIf="pendingTasks.length === 0" iconName="check_circle" title="ไม่มีงานที่ต้องทำ"
-              description="ไม่มีงานที่ต้องทำในขณะนี้" iconSize="sm">
-            </app-empty-state>
-          </div>
-        </app-glass-card>
+            </app-glass-card>
+          }
+        }
       </div>
-    </section>
+    </div>
   </div>
 </div>

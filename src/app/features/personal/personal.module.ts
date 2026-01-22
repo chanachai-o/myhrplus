@@ -13,9 +13,7 @@ import { StaggerDirective } from '@shared/directives/stagger.directive';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
-  declarations: [
-    PersonalHomeComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     FormsModule,
@@ -24,6 +22,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     SharedModule,
     LayoutModule,
     PersonalRoutingModule,
+    PersonalHomeComponent,
     GlassCardComponent,
     PageHeaderComponent,
     IconComponent,

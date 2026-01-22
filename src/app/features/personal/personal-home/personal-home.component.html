@@ -3,285 +3,496 @@
     <!-- Page Header -->
     <app-page-header
       title="Personal Management"
-      subtitle="จัดการข้อมูลพนักงาน"
-      description="จัดการข้อมูลส่วนบุคคลของพนักงานทั้งหมดในระบบ"
+      subtitle="จัดการข้อมูลส่วนบุคคลของพนักงานทั้งหมดในระบบ"
       icon="people"
       iconGradient="from-primary to-primary"
       titleGradient="from-primary to-primary"
-      [showBreadcrumbs]="false">
-      
+      [showBreadcrumbs]="false"
+      [useGlassCard]="false"
+      customClass="border-b border-primary/30 dark:border-primary/50 pb-4">
+
       <div header-actions class="flex items-center gap-2 relative">
-        <!-- Date Range Picker Dropdown -->
-        <div class="relative" (clickOutside)="showDatePickerMenu = false">
-          <button type="button" 
-            class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            (click)="showDatePickerMenu = !showDatePickerMenu"
-            [attr.aria-expanded]="showDatePickerMenu"
-            aria-haspopup="true">
-            <app-icon name="calendar_today" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
-            <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">
-              {{ dateRange.start | date:'d MMM' }} - {{ dateRange.end | date:'d MMM yyyy' }}
-            </span>
-            <app-icon name="arrow_drop_down" size="sm" class="text-gray-500 dark:text-gray-400"></app-icon>
-          </button>
-          
-          <!-- Date Picker Popup -->
-          <div *ngIf="showDatePickerMenu" 
-            class="absolute right-0 top-full mt-2 z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 w-[320px] md:w-[600px]">
-            <app-date-range-picker 
-              [startDate]="dateRange.start" 
-              [endDate]="dateRange.end"
-              (rangeChange)="onDateRangeChange($event); showDatePickerMenu = false" 
-              [showPresets]="true">
-            </app-date-range-picker>
+        <!-- Global Filters (Desktop) -->
+        <div class="hidden xl:flex items-center gap-2">
+          <!-- Comparison Mode Toggle -->
+          <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg border transition-colors"
+               [ngClass]="{
+                 'bg-primary/10 border-primary/20': comparisonMode,
+                 'bg-transparent border-transparent': !comparisonMode
+               }">
+            <app-glass-switch
+              [(ngModel)]="comparisonMode"
+              (ngModelChange)="toggleComparisonMode()"
+              [label]="'personal.dashboard.comparison.enable' | translate"
+              size="sm">
+            </app-glass-switch>
+            <select
+              *ngIf="comparisonMode"
+              [(ngModel)]="comparisonPeriod"
+              (ngModelChange)="loadComparisonData(); initializeCharts()"
+              class="ml-1 px-2 py-1 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm">
+              <option value="previous">{{ 'personal.dashboard.comparison.previousPeriod' | translate }}</option>
+              <option value="year-over-year">{{ 'personal.dashboard.comparison.yearOverYear' | translate }}</option>
+            </select>
+          </div>
+
+          <!-- Date Range Picker Dropdown -->
+          <div class="relative">
+            <button
+              (click)="showDatePickerMenu = !showDatePickerMenu"
+              (clickOutside)="showDatePickerMenu = false"
+              type="button"
+              class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800 transition-all text-sm text-gray-700 dark:text-gray-200 shadow-sm"
+              [attr.aria-expanded]="showDatePickerMenu"
+              [attr.aria-label]="'Select date range'">
+              <app-icon name="calendar_today" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
+              <span>{{ dateRange.start | date:'dd/MM/yyyy' }} - {{ dateRange.end | date:'dd/MM/yyyy' }}</span>
+              <app-icon name="arrow_drop_down" size="xs" color="text-gray-400"></app-icon>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div *ngIf="showDatePickerMenu"
+                 class="absolute right-0 top-full mt-2 z-[100] p-2 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 min-w-[320px] animate-fade-in-up"
+                 (click)="$event.stopPropagation()">
+              <app-date-range-picker
+                [startDate]="dateRange.start"
+                [endDate]="dateRange.end"
+                (rangeChange)="onDateRangeChange($event)"
+                [showPresets]="true">
+              </app-date-range-picker>
+            </div>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="flex items-center bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-1 shadow-sm">
+            <button
+              (click)="exportCharts('pdf')"
+              type="button"
+              [disabled]="isExporting()"
+              class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
+              [attr.aria-label]="'Export to PDF'">
+              <app-icon name="picture_as_pdf" size="xs"></app-icon>
+            </button>
+            <div class="w-px h-4 bg-gray-200 dark:bg-gray-700 mx-1"></div>
+            <button
+              (click)="exportCharts('excel')"
+              type="button"
+              [disabled]="isExporting()"
+              class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors disabled:opacity-50"
+              [attr.aria-label]="'Export to Excel'">
+              <app-icon name="table_chart" size="xs"></app-icon>
+            </button>
           </div>
         </div>
 
-        <!-- Export Buttons -->
-        <div class="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 shadow-sm">
-          <button type="button" 
-            (click)="exportCharts('pdf')" 
-            [disabled]="isExporting()"
-            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            [attr.aria-label]="'Export PDF'"
-            title="Export PDF">
-            @if (isExporting()) {
-              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
-            } @else {
-              <app-icon name="picture_as_pdf" size="sm"></app-icon>
-            }
-          </button>
-          <div class="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
-          <button type="button" 
-            (click)="exportCharts('excel')" 
-            [disabled]="isExporting()"
-            class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            [attr.aria-label]="'Export Excel'"
-            title="Export Excel">
-            @if (isExporting()) {
-              <app-icon name="hourglass_empty" size="sm" class="animate-spin"></app-icon>
-            } @else {
-              <app-icon name="table_chart" size="sm"></app-icon>
-            }
+        <!-- Customization Button -->
+        <button
+          (click)="showCustomizationMenu = !showCustomizationMenu"
+          (clickOutside)="showCustomizationMenu = false"
+          type="button"
+          class="p-2 rounded-lg bg-primary/10 dark:bg-primary/10 hover:bg-primary/20 dark:hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          [attr.aria-label]="'personal.dashboard.customize' | translate"
+          [attr.aria-expanded]="showCustomizationMenu"
+          (keydown.enter)="showCustomizationMenu = !showCustomizationMenu"
+          (keydown.space)="showCustomizationMenu = !showCustomizationMenu; $event.preventDefault()">
+          <app-icon name="tune" size="sm" color="text-primary dark:text-primary" class="flex items-center justify-center"></app-icon>
+        </button>
+        <!-- Customization Menu -->
+        <div
+          *ngIf="showCustomizationMenu"
+          class="absolute right-0 top-full mt-2 w-64 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl rounded-xl shadow-2xl border-2 border-gray-300/70 dark:border-gray-600/70 z-[1000] p-4"
+          (click)="$event.stopPropagation()">
+          <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ 'personal.dashboard.customize.title' | translate }}</h3>
+            <button
+              (click)="showCustomizationMenu = false"
+              class="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              [attr.aria-label]="'Close menu'">
+              <app-icon name="close" size="xs" color="text-gray-600 dark:text-gray-400"></app-icon>
+            </button>
+          </div>
+          <div class="space-y-2 mb-3 max-h-64 overflow-y-auto">
+            <div
+              *ngFor="let section of dashboardSections"
+              class="flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              (click)="toggleSection(section.id)">
+              <label class="flex items-center gap-3 cursor-pointer flex-1">
+                <input
+                  type="checkbox"
+                  [checked]="section.visible"
+                  (change)="toggleSection(section.id)"
+                  (click)="$event.stopPropagation()"
+                  class="w-4 h-4 text-primary bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-primary focus:ring-offset-1 cursor-pointer">
+                <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ section.label | translate }}</span>
+              </label>
+            </div>
+          </div>
+          <button
+            (click)="resetDashboardLayout()"
+            class="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 rounded-lg transition-colors shadow-md hover:shadow-lg">
+            {{ 'personal.dashboard.customize.reset' | translate }}
           </button>
         </div>
       </div>
     </app-page-header>
 
     <!-- Statistics Cards -->
-    <section class="mb-8" [attr.aria-labelledby]="'statistics-title'">
-      <h2 id="statistics-title" class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">สถิติข้อมูลพนักงาน</h2>
+    <section class="mb-6 md:mb-8" [attr.aria-labelledby]="'statistics-title'">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="statistics-title" class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'personal.dashboard.statistics.title' | translate }}</h2>
+      </div>
 
       <!-- Loading State -->
-      <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-        <app-skeleton-loader *ngFor="let i of [0,1,2,3,4]" [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
-      </div>
-
-      <!-- Statistics Cards -->
-      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-        <div
-          [appStagger]="0"
-          [staggerDelay]="0.05"
-          class="cursor-pointer group min-h-[44px]"
-          role="button"
-          [attr.aria-label]="'พนักงานทั้งหมด: ' + statistics.totalEmployees"
-          [attr.aria-describedby]="'total-employees-description'"
-          [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/personal')"
-          (keydown.space)="navigateToRoute('/personal'); $event.preventDefault()">
-          <app-glass-card
-            padding="p-5"
-            customClass="bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-indigo-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2"  >{{ statistics.totalEmployees }}</div>
-            <div class="text-sm opacity-90" id="total-employees-description">พนักงานทั้งหมด</div>
-          </app-glass-card>
+      @if (isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          @for (i of [0,1,2,3,4]; track i) {
+            <app-skeleton-loader [type]="'card'" [animation]="'pulse'"></app-skeleton-loader>
+          }
         </div>
-        <div
-          [appStagger]="1"
-          [staggerDelay]="0.05"
-          class="cursor-pointer group min-h-[44px]"
-          role="button"
-          [attr.aria-label]="'พนักงานที่ทำงาน: ' + statistics.activeEmployees"
-          [attr.aria-describedby]="'active-employees-description'"
-          [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/personal')"
-          (keydown.space)="navigateToRoute('/personal'); $event.preventDefault()">
-          <app-glass-card
-            padding="p-5"
-            customClass="bg-gradient-to-br from-pink-500 to-red-500 dark:from-pink-600 dark:to-red-600 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2"  >{{ statistics.activeEmployees }}</div>
-            <div class="text-sm opacity-90" id="active-employees-description">พนักงานที่ทำงาน</div>
-          </app-glass-card>
-        </div>
-        <div
-          [appStagger]="2"
-          [staggerDelay]="0.05"
-          class="cursor-pointer group min-h-[44px]"
-          role="button"
-          [attr.aria-label]="'พนักงานใหม่ (เดือนนี้): ' + statistics.newEmployees"
-          [attr.aria-describedby]="'new-employees-description'"
-          [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/personal')"
-          (keydown.space)="navigateToRoute('/personal'); $event.preventDefault()">
-          <app-glass-card
-            padding="p-5"
-            customClass="bg-gradient-to-br from-primary to-primary dark:from-primary dark:to-primary text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2"  >{{ statistics.newEmployees }}</div>
-            <div class="text-sm opacity-90" id="new-employees-description">พนักงานใหม่ (เดือนนี้)</div>
-          </app-glass-card>
-        </div>
-        <div
-          [appStagger]="3"
-          [staggerDelay]="0.05"
-          class="cursor-pointer group min-h-[44px]"
-          role="button"
-          [attr.aria-label]="'พนักงานที่ลาออก: ' + statistics.onLeave"
-          [attr.aria-describedby]="'on-leave-description'"
-          [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/personal')"
-          (keydown.space)="navigateToRoute('/personal'); $event.preventDefault()">
-          <app-glass-card
-            padding="p-5"
-            customClass="bg-gradient-to-br from-green-400 to-teal-400 dark:from-green-500 dark:to-teal-500 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2"  >{{ statistics.onLeave }}</div>
-            <div class="text-sm opacity-90" id="on-leave-description">พนักงานที่ลาออก</div>
-          </app-glass-card>
-        </div>
-        <div
-          [appStagger]="4"
-          [staggerDelay]="0.05"
-          class="cursor-pointer group min-h-[44px]"
-          role="button"
-          [attr.aria-label]="'รออนุมัติ: ' + statistics.pendingApprovals"
-          [attr.aria-describedby]="'pending-approvals-description'"
-          [attr.tabindex]="0"
-          (keydown.enter)="navigateToRoute('/personal')"
-          (keydown.space)="navigateToRoute('/personal'); $event.preventDefault()">
-          <app-glass-card
-            padding="p-5"
-            customClass="bg-gradient-to-br from-yellow-400 to-orange-400 dark:from-yellow-500 dark:to-orange-500 text-white text-center hover:scale-105 transition-transform duration-300 focus-within:ring-2 focus-within:ring-yellow-400 focus-within:ring-offset-2">
-            <div class="text-4xl font-bold mb-2"  >{{ statistics.pendingApprovals }}</div>
-            <div class="text-sm opacity-90" id="pending-approvals-description">รออนุมัติ</div>
-          </app-glass-card>
-        </div>
-      </div>
-    </section>
+      }
 
-    <!-- Workspace Grid: Charts and Quick Actions -->
-    <section class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8" aria-labelledby="personal-charts-title">
-      <!-- Charts Section: 3 columns (75%) -->
-      <div class="xl:col-span-3">
-        <h2 id="personal-charts-title" class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">กราฟและรายงาน</h2>
-
-        <!-- Charts Row 1: 2 columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <!-- Employee Growth Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การเติบโตของพนักงาน 6 เดือน</h3>
-              <button type="button" (click)="exportChart('growth', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export การเติบโตของพนักงาน 6 เดือน PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="employeeGrowthChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการเติบโตของพนักงาน 6 เดือน'"></div>
-          </app-glass-card>
-
-          <!-- Employee Distribution Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายพนักงานตามแผนก</h3>
-              <button type="button" (click)="exportChart('distribution', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export การกระจายพนักงานตามแผนก PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="employeeDistributionChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการกระจายพนักงานตามแผนก'"></div>
-          </app-glass-card>
-        </div>
-
-        <!-- Charts Row 2: 2 columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <!-- Employee by Age Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายตามอายุ</h3>
-              <button type="button" (click)="exportChart('age', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export การกระจายตามอายุ PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="employeeByAgeChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟการกระจายตามอายุ'"></div>
-          </app-glass-card>
-
-          <!-- Employee Status Chart -->
-          <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-lg transition-shadow duration-300 h-full">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">สถานะพนักงาน</h3>
-              <button type="button" (click)="exportChart('status', 'pdf')"
-                [disabled]="isExporting()"
-                class="p-1.5 min-h-[32px] min-w-[32px] rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-                [attr.aria-label]="'Export สถานะพนักงาน PDF'">
-                @if (isExporting()) {
-                  <app-icon name="hourglass_empty" size="xs" class="animate-spin text-gray-500 dark:text-gray-400"></app-icon>
-                } @else {
-                  <app-icon name="download" size="xs" color="text-gray-500 dark:text-gray-400"></app-icon>
-                }
-              </button>
-            </div>
-            <div echarts [options]="employeeStatusChartOption" class="h-64 md:h-72" role="img" [attr.aria-label]="'กราฟสถานะพนักงาน'"></div>
-          </app-glass-card>
-        </div>
-      </div>
-
-      <!-- Right Column: Sidebar (25%) -->
-      <div class="xl:col-span-1 space-y-6">
-        <div class="sticky top-24">
-          <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 transition-colors duration-300">เมนูหลัก</h3>
-            <div class="space-y-3">
-              <div
-                *ngFor="let item of menuItems; let i = index"
-                [appStagger]="i"
-                [staggerDelay]="0.1"
-                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group"
-                role="button"
-                [attr.tabindex]="0"
-                [attr.aria-label]="item.title + ' - ' + item.description"
-                (click)="navigateToRoute(item.route)"
-                (keydown.enter)="navigateToRoute(item.route)"
-                (keydown.space)="navigateToRoute(item.route); $event.preventDefault()">
-                <div class="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/10 flex items-center justify-center text-primary dark:text-primary group-hover:scale-110 transition-transform duration-300">
-                  <app-icon [name]="getIconName(item.icon)" size="sm"></app-icon>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ item.title }}</p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ item.description }}</p>
-                </div>
-                <app-icon name="chevron_right" size="sm" class="text-gray-400 group-hover:text-primary transition-colors"></app-icon>
+      <!-- Statistics Cards with Trend Indicators -->
+      @if (!isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <!-- Total Employees Card -->
+          <div
+            [routerLink]="[statistics.totalEmployees.route]"
+            [appStagger]="0"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('personal.dashboard.statistics.totalEmployees' | translate) + ': ' + statistics.totalEmployees.value"
+            [attr.aria-describedby]="'total-employees-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.totalEmployees.route)"
+            (keydown.space)="navigateToRoute(statistics.totalEmployees.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 dark:from-indigo-600 dark:via-indigo-700 dark:to-purple-700 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-indigo-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.totalEmployees.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="total-employees-description">{{ 'personal.dashboard.statistics.totalEmployees' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'personal.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.totalEmployees }}</span>
               </div>
-            </div>
-          </app-glass-card>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.totalEmployees.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.totalEmployees.change >= 0 ? '+' : '' }}{{ statistics.totalEmployees.change }} {{ 'personal.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.totalEmployees.value, previousPeriodStatistics.totalEmployees) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.totalEmployees.value, previousPeriodStatistics.totalEmployees) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Active Employees Card -->
+          <div
+            [routerLink]="[statistics.activeEmployees.route]"
+            [appStagger]="1"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('personal.dashboard.statistics.activeEmployees' | translate) + ': ' + statistics.activeEmployees.value"
+            [attr.aria-describedby]="'active-employees-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.activeEmployees.route)"
+            (keydown.space)="navigateToRoute(statistics.activeEmployees.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-pink-500 via-pink-600 to-red-500 dark:from-pink-600 dark:via-pink-700 dark:to-red-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.activeEmployees.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="active-employees-description">{{ 'personal.dashboard.statistics.activeEmployees' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'personal.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.activeEmployees }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.activeEmployees.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.activeEmployees.change >= 0 ? '+' : '' }}{{ statistics.activeEmployees.change }} {{ 'personal.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.activeEmployees.value, previousPeriodStatistics.activeEmployees) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.activeEmployees.value, previousPeriodStatistics.activeEmployees) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- New Employees Card -->
+          <div
+            [routerLink]="[statistics.newEmployees.route]"
+            [appStagger]="2"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('personal.dashboard.statistics.newEmployees' | translate) + ': ' + statistics.newEmployees.value"
+            [attr.aria-describedby]="'new-employees-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.newEmployees.route)"
+            (keydown.space)="navigateToRoute(statistics.newEmployees.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-primary via-primary to-primary dark:from-primary dark:via-primary dark:to-primary text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-primary/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.newEmployees.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="new-employees-description">{{ 'personal.dashboard.statistics.newEmployees' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'personal.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.newEmployees }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.newEmployees.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.newEmployees.change >= 0 ? '+' : '' }}{{ statistics.newEmployees.change }} {{ 'personal.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.newEmployees.value, previousPeriodStatistics.newEmployees) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.newEmployees.value, previousPeriodStatistics.newEmployees) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- On Leave Card -->
+          <div
+            [routerLink]="[statistics.onLeave.route]"
+            [appStagger]="3"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('personal.dashboard.statistics.onLeave' | translate) + ': ' + statistics.onLeave.value"
+            [attr.aria-describedby]="'on-leave-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.onLeave.route)"
+            (keydown.space)="navigateToRoute(statistics.onLeave.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-green-400 via-emerald-500 to-teal-500 dark:from-green-500 dark:via-emerald-600 dark:to-teal-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.onLeave.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="on-leave-description">{{ 'personal.dashboard.statistics.onLeave' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'personal.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.onLeave }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.onLeave.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.onLeave.change >= 0 ? '+' : '' }}{{ statistics.onLeave.change }} {{ 'personal.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.onLeave.value, previousPeriodStatistics.onLeave) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.onLeave.value, previousPeriodStatistics.onLeave) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+
+          <!-- Pending Approvals Card -->
+          <div
+            [routerLink]="[statistics.pendingApprovals.route]"
+            [appStagger]="4"
+            [staggerDelay]="0.05"
+            class="cursor-pointer group"
+            role="button"
+            [attr.aria-label]="('personal.dashboard.statistics.pendingApprovals' | translate) + ': ' + statistics.pendingApprovals.value"
+            [attr.aria-describedby]="'pending-approvals-description'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateToRoute(statistics.pendingApprovals.route)"
+            (keydown.space)="navigateToRoute(statistics.pendingApprovals.route); $event.preventDefault()">
+            <app-glass-card
+              padding="p-4 md:p-5"
+              customClass="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 dark:from-yellow-500 dark:via-amber-600 dark:to-orange-600 text-white text-center hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 focus-within:ring-2 focus-within:ring-yellow-400 focus-within:ring-offset-2 rounded-xl">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{{ statistics.pendingApprovals.value }}</div>
+              <div class="text-xs md:text-sm opacity-90 mb-2" id="pending-approvals-description">{{ 'personal.dashboard.statistics.pendingApprovals' | translate }}</div>
+              <!-- Comparison View -->
+              <div *ngIf="comparisonMode" class="text-xs opacity-70 mb-1">
+                <span>{{ 'personal.dashboard.comparison.previous' | translate }}: {{ previousPeriodStatistics.pendingApprovals }}</span>
+              </div>
+              <div class="flex items-center justify-center gap-1 text-xs opacity-80">
+                <app-icon [name]="statistics.pendingApprovals.change >= 0 ? 'trending_up' : 'trending_down'" size="xs" color="text-white"></app-icon>
+                <span>{{ statistics.pendingApprovals.change >= 0 ? '+' : '' }}{{ statistics.pendingApprovals.change }} {{ 'personal.dashboard.statistics.trend' | translate }}</span>
+                <span *ngIf="comparisonMode" class="ml-1">
+                  ({{ getComparisonPercentage(statistics.pendingApprovals.value, previousPeriodStatistics.pendingApprovals) >= 0 ? '+' : '' }}{{ getComparisonPercentage(statistics.pendingApprovals.value, previousPeriodStatistics.pendingApprovals) }}%)
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
         </div>
-      </div>
+      }
     </section>
+
+    <!-- Main Layout: Charts (Left) + Sidebar (Right) -->
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-6 md:mb-8">
+      <!-- Left Column: Charts (75%) -->
+      <div class="xl:col-span-3">
+        @if (isSectionVisible('charts')) {
+          <div class="mb-6">
+            <!-- Charts Row 1: 2 columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- Employee Growth Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-growth-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">การเติบโตของพนักงาน 6 เดือน</h3>
+                  <button
+                    (click)="exportChart('growth', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export การเติบโตของพนักงาน 6 เดือน PDF'"
+                    [attr.tabindex]="0"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="employeeGrowthChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-growth-title'"></div>
+              </app-glass-card>
+
+              <!-- Employee Distribution Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-distribution-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายพนักงานตามแผนก</h3>
+                  <button
+                    (click)="exportChart('distribution', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export การกระจายพนักงานตามแผนก PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="employeeDistributionChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-distribution-title'"></div>
+              </app-glass-card>
+            </div>
+
+            <!-- Charts Row 2: 2 columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <!-- Employee by Age Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-age-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">การกระจายตามอายุ</h3>
+                  <button
+                    (click)="exportChart('age', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export การกระจายตามอายุ PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="employeeByAgeChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-age-title'"></div>
+              </app-glass-card>
+
+              <!-- Employee Status Chart -->
+              <app-glass-card padding="p-4 md:p-5" customClass="hover:shadow-xl transition-all duration-300 rounded-xl h-full">
+                <div class="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 id="chart-status-title" class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300">สถานะพนักงาน</h3>
+                  <button
+                    (click)="exportChart('status', 'pdf')"
+                    [disabled]="isExporting()"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [attr.aria-label]="'Export สถานะพนักงาน PDF'"
+                    type="button">
+                    @if (isExporting()) {
+                      <app-icon name="hourglass_empty" size="sm" color="text-gray-500 dark:text-gray-400" class="animate-spin"></app-icon>
+                    } @else {
+                      <app-icon name="download" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                    }
+                  </button>
+                </div>
+                <div echarts [options]="employeeStatusChartOption" class="w-full h-[320px] min-h-[320px] md:h-[350px]" role="img" [attr.aria-labelledby]="'chart-status-title'"></div>
+              </app-glass-card>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Right Column: Activities & Tasks (25%) -->
+      <div class="xl:col-span-1 space-y-6">
+        @if (isSectionVisible('recentActivities') || isSectionVisible('pendingTasks')) {
+          <!-- Recent Activities -->
+          @if (isSectionVisible('recentActivities')) {
+            <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit sticky top-24">
+              <div class="flex items-center justify-between mb-3 md:mb-4">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'personal.dashboard.activities.title' | translate }}</h3>
+                <div class="flex items-center gap-2">
+                  <button
+                    (click)="filterActivities()"
+                    type="button"
+                    class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                    [attr.aria-label]="'Filter activities'">
+                    <app-icon name="filter_list" size="sm" color="text-gray-500 dark:text-gray-400"></app-icon>
+                  </button>
+                  <button
+                    (click)="viewAllActivities()"
+                    class="text-xs text-primary dark:text-primary hover:text-primary/80 dark:hover:text-primary/80 transition-colors">
+                    {{ 'View All' | translate }}
+                  </button>
+                </div>
+              </div>
+              <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                <div *ngFor="let activity of recentActivities; let i = index"
+                     class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
+                     [appStagger]="i"
+                     [staggerDelay]="0.05">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <app-icon [name]="activity.icon" size="xs" color="text-primary dark:text-primary"></app-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 thai-text line-clamp-2">{{ activity.title }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ activity.time }}</p>
+                  </div>
+                </div>
+                <app-empty-state
+                  *ngIf="recentActivities.length === 0"
+                  iconName="inbox"
+                  [title]="'personal.dashboard.activities.empty' | translate"
+                  description=""
+                  iconSize="sm">
+                </app-empty-state>
+              </div>
+            </app-glass-card>
+          }
+
+          <!-- Pending Tasks -->
+          @if (isSectionVisible('pendingTasks')) {
+            <app-glass-card padding="p-4 md:p-6" customClass="hover:shadow-lg transition-shadow duration-300 h-fit">
+              <div class="flex items-center justify-between mb-3 md:mb-4">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-300">{{ 'personal.dashboard.tasks.title' | translate }}</h3>
+                <button
+                  [routerLink]="['/personal']"
+                  class="text-xs text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-300 transition-colors">
+                  {{ 'View All' | translate }}
+                </button>
+              </div>
+              <div class="space-y-3">
+                <div *ngFor="let task of pendingTasks; let i = index"
+                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-700"
+                     [appStagger]="i"
+                     [staggerDelay]="0.05"
+                     [routerLink]="[task.route]">
+                  <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
+                    <app-icon [name]="task.icon" size="xs" color="text-yellow-600 dark:text-yellow-400"></app-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 thai-text truncate">{{ task.title }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ task.count }} {{ 'personal.dashboard.tasks.items' | translate }}</p>
+                  </div>
+                  <app-icon name="chevron_right" size="xs" color="text-gray-400 dark:text-gray-500"></app-icon>
+                </div>
+                <app-empty-state
+                  *ngIf="pendingTasks.length === 0"
+                  iconName="check_circle"
+                  [title]="'personal.dashboard.tasks.empty' | translate"
+                  description=""
+                  iconSize="sm">
+                </app-empty-state>
+              </div>
+            </app-glass-card>
+          }
+        }
+      </div>
+    </div>
   </div>
 </div>

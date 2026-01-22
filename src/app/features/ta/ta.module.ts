@@ -19,9 +19,7 @@ import { StaggerDirective } from '@shared/directives/stagger.directive';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
-  declarations: [
-    TaHomeComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     FormsModule,
@@ -41,7 +39,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
     IconComponent,
     StaggerDirective,
     // Charts
-    NgxEchartsModule
+    NgxEchartsModule,
+    TaHomeComponent
   ]
 })
 export class TaModule { }
