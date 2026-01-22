@@ -50,7 +50,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
       // Level 2: Company Management (มี Level 3-4)
       {
         label: 'Company Management',
-        icon: 'business',
+        icon: 'company',
         route: '/company', // Dashboard route - หน้าแรกของโมดูล
         children: [ // Level 3 - เมนูของโมดูล Company
           // 0. Dashboard (หน้าแรก)
@@ -944,7 +944,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
       // Level 2: Settings (มี Level 3-4)
       {
         label: 'Settings',
-        icon: 'settings',
+        icon: 'setting',
         route: '/setting', // Dashboard route - หน้าแรกของโมดูล
         children: [ // Level 3
           // 0. Dashboard (หน้าแรก)
