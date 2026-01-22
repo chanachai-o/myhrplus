@@ -135,37 +135,37 @@
      }
    }
 
-   /* Sticky Footer Wrapper */
-   .sticky-footer-wrapper {
-     position: relative; /* Changed from sticky to relative as it's now outside scroll area */
-     z-index: 40;
-     background: linear-gradient(
-       to top,
-       rgba(255, 255, 255, 0.05) 0%,
-       transparent 100%
-     );
-    @include backdrop-blur(4px);
-    margin-top: auto;
-    @include smooth-transition(all, 0.3s);
+  /* Sticky Footer Wrapper */
+  .sticky-footer-wrapper {
+    position: relative; /* Changed from sticky to relative as it's now outside scroll area */
+    z-index: 40;
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, var(--overlay-opacity-subtle, 0.05)) 0%,
+      transparent 100%
+    );
+   @include backdrop-blur(4px);
+   margin-top: auto;
+   @include smooth-transition(all, 0.3s);
 
-     .dark &,
-     [data-theme='dark'] & {
-       background: linear-gradient(
-         to top,
-         rgba(0, 0, 0, 0.1) 0%,
-         transparent 100%
-       );
-     }
+    .dark &,
+    [data-theme='dark'] & {
+      background: linear-gradient(
+        to top,
+        rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-light, 0.1)) 0%,
+        transparent 100%
+      );
+    }
 
-    [data-theme='myhr'] &,
-    [class*='theme-myhr'] & {
-       background: linear-gradient(
-         to top,
-         rgba(0, 0, 0, 0.15) 0%,
-         transparent 100%
-       );
-     }
-   }
+   [data-theme='myhr'] &,
+   [class*='theme-myhr'] & {
+      background: linear-gradient(
+        to top,
+        rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-light, 0.15)) 0%,
+        transparent 100%
+      );
+    }
+  }
 
    /* Syncfusion Sidebar Enhancements */
    ::ng-deep {
@@ -180,37 +180,37 @@
                      box-shadow 0.3s ease-in-out,
                      width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-         /* Enhanced shadow */
-         box-shadow:
-           0 10px 40px rgba(0, 0, 0, 0.1),
-           0 0 0 1px rgba(var(--primary-rgb), 0.1);
+        /* Enhanced shadow - Using CSS Variables */
+        box-shadow:
+          0 10px 40px rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-light, 0.1)),
+          0 0 0 1px rgba(var(--primary-rgb), 0.1);
 
-         /* Backdrop blur - subtle effect, let sidebar component handle background */
-         @include backdrop-blur(20px);
+        /* Backdrop blur - subtle effect, let sidebar component handle background */
+        @include backdrop-blur(20px);
 
-         /* Transparent background - let sidebar component handle its own background */
-         background: transparent !important;
+        /* Transparent background - let sidebar component handle its own background */
+        background: transparent !important;
 
-         /* Full height sidebar - let container control height */
-         /* top: 0 !important; */
-         /* height: 100vh !important; */
+        /* Full height sidebar - let container control height */
+        /* top: 0 !important; */
+        /* height: 100vh !important; */
 
-         /* Dark mode - Enhanced shadow only */
-         .dark &,
-         [data-theme='dark'] & {
-           box-shadow:
-             0 10px 40px rgba(0, 0, 0, 0.3),
-             0 0 0 1px rgba(var(--primary-rgb), 0.2);
-         }
+        /* Dark mode - Enhanced shadow only - Using CSS Variables */
+        .dark &,
+        [data-theme='dark'] & {
+          box-shadow:
+            0 10px 40px rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-medium, 0.3)),
+            0 0 0 1px rgba(var(--primary-rgb), 0.2);
+        }
 
-         /* Myhr theme - Enhanced shadow only */
-    [data-theme='myhr'] &,
-    [class*='theme-myhr'] & {
-           box-shadow:
-             0 10px 40px rgba(0, 0, 0, 0.5),
-             0 0 0 1px rgba(var(--primary-rgb), 0.3),
-             0 0 60px rgba(var(--primary-rgb), 0.1);
-         }
+        /* Myhr theme - Enhanced shadow only - Using CSS Variables */
+   [data-theme='myhr'] &,
+   [class*='theme-myhr'] & {
+          box-shadow:
+            0 10px 40px rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-strong, 0.5)),
+            0 0 0 1px rgba(var(--primary-rgb), 0.3),
+            0 0 60px rgba(var(--primary-rgb), 0.1);
+        }
        }
 
        /* Overlay */
@@ -273,20 +273,20 @@
      }
    }
 
-   /* Glass Nav Header Styles */
-   .glass-nav {
-     position: relative;
-     z-index: 50;
+  /* Glass Nav Header Styles */
+  .glass-nav {
+    position: relative;
+    z-index: 50;
 
-     /* Background gradient - Using CSS Variables */
-     background: linear-gradient(
-       to bottom,
-       var(--header-bg-start) 0%,
-       var(--header-bg-end) 100%
-     );
-     backdrop-filter: blur(20px);
-     -webkit-backdrop-filter: blur(20px);
-   }
+    /* Background gradient - Using CSS Variables */
+    background: linear-gradient(
+      to bottom,
+      var(--header-bg-start) 0%,
+      var(--header-bg-end) 100%
+    );
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
 
    /* Reduced Motion Support */
    @media (prefers-reduced-motion: reduce) {

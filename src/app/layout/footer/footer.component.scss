@@ -8,10 +8,10 @@ footer {
   right: 0;
   z-index: 40;
   width: 100%;
-  min-height: var(--footer-height-md);
+  min-height: 48px; /* Reduced from default */
 
   @media (max-width: 768px) {
-    min-height: var(--footer-height);
+    min-height: 44px; /* Reduced from default */
   }
 
   /* Background - Using CSS Variables */
@@ -39,7 +39,7 @@ footer {
     pointer-events: none;
   }
 
-  /* Pattern overlay for Light mode - Using standardized animation */
+  /* Pattern overlay for Light mode - Using standardized animation and CSS Variables */
   &::after {
     content: '';
     position: absolute;
@@ -48,9 +48,9 @@ footer {
     right: 0;
     bottom: 0;
     background-image:
-      radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.03) 1px, transparent 0);
-    background-size: 20px 20px;
-    opacity: 0.4;
+      radial-gradient(circle at 1px 1px, var(--pattern-color-subtle, rgba(var(--primary-rgb), 0.03)) 1px, transparent 0);
+    background-size: var(--pattern-size-lg, 20px) var(--pattern-size-lg, 20px);
+    opacity: var(--pattern-opacity, 0.4);
     pointer-events: none;
     z-index: 0;
     animation: patternShimmer 14s ease-in-out infinite;
@@ -74,8 +74,8 @@ footer {
 
   &::after {
     background-image:
-      radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.05) 1px, transparent 0);
-    opacity: 0.3;
+      radial-gradient(circle at 1px 1px, var(--pattern-color-light, rgba(var(--primary-rgb), 0.05)) 1px, transparent 0);
+    opacity: var(--pattern-opacity, 0.3);
     animation: patternShimmer 16s ease-in-out infinite;
 
     @media (prefers-reduced-motion: reduce) {
@@ -103,12 +103,12 @@ body.theme-myhr .myhr-footer {
   @include backdrop-blur-saturate(24px, 200%);
   border-top: 1px solid var(--footer-border-color) !important;
   box-shadow:
-    0 -4px 20px 0 rgba(0, 0, 0, 0.6),
+    0 -4px 20px 0 rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-strong, 0.6)),
     0 0 0 1px rgba(var(--primary-rgb), 0.2) inset,
     0 0 40px rgba(var(--primary-rgb), 0.1) !important;
   position: relative;
 
-  /* Animated gradient border */
+  /* Animated gradient border - Using CSS Variables for dynamic theming */
   &::before {
     content: '';
     position: absolute;
@@ -118,9 +118,9 @@ body.theme-myhr .myhr-footer {
     height: 2px;
     background: linear-gradient(90deg,
       transparent 0%,
-      rgba(147, 197, 253, 0.6) 20%,
-      rgba(96, 165, 250, 0.6) 50%,
-      rgba(var(--primary-rgb), 0.6) 80%,
+      rgba(var(--primary-rgb), 0.4) 20%,
+      rgba(var(--primary-rgb), 0.6) 50%,
+      rgba(var(--primary-rgb), 0.4) 80%,
       transparent 100%
     );
     background-size: 200% 100%;
@@ -128,7 +128,7 @@ body.theme-myhr .myhr-footer {
     z-index: 1;
   }
 
-  /* Subtle glow effect with pattern overlay */
+  /* Subtle glow effect with pattern overlay - Using CSS Variables for dynamic theming */
   &::after {
     content: '';
     position: absolute;
@@ -138,7 +138,7 @@ body.theme-myhr .myhr-footer {
     bottom: 0;
     background:
       radial-gradient(circle at 50% 100%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%),
-      radial-gradient(circle at 1px 1px, rgba(147, 197, 253, 0.05) 1px, transparent 0);
+      radial-gradient(circle at 1px 1px, rgba(var(--primary-rgb), 0.05) 1px, transparent 0);
     background-size: 100% 100%, 20px 20px;
     opacity: 1;
     pointer-events: none;
@@ -152,7 +152,7 @@ body.theme-myhr .myhr-footer {
 
   .footer-content {
     span {
-      color: rgba(203, 213, 225, 0.9) !important;
+      color: var(--footer-text-color, rgba(255, 255, 255, 0.9)) !important;
       @include smooth-transition(all, 0.3s);
 
       &:first-child {

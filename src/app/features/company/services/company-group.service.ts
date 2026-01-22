@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,10 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
 
   loading = signal<boolean>(false);
 
-  // Override apiUrl to use specific endpoint
+  // Override apiUrl to use OIS API endpoint
   protected override get apiUrl(): string {
-    return 'http://192.168.30.71:8110/company/group';
+    const base = environment.oisUrl.endsWith('/') ? environment.oisUrl.slice(0, -1) : environment.oisUrl;
+    return `${base}/company/group`;
   }
 
   /**

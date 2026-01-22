@@ -198,8 +198,8 @@
     top: 50%;
     transform: translateY(-50%) translateX(-10px);
     padding: 6px 12px;
-    background: rgba(30, 41, 59, 0.9); /* Dark background for better contrast */
-    color: #ffffff;
+    background: rgba(var(--dark-bg, 30, 41, 59), 0.9); /* Dark background for better contrast - Using CSS Variables */
+    color: var(--text-primary, #ffffff);
     font-size: 12px;
     font-weight: 500;
     white-space: nowrap;
@@ -208,8 +208,8 @@
     pointer-events: none;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
+    border: 1px solid var(--glass-border-weak, rgba(255, 255, 255, 0.1));
 
     /* Arrow */
     &::before {
@@ -219,17 +219,17 @@
       top: 50%;
       transform: translateY(-50%);
       border: 6px solid transparent;
-      border-right-color: rgba(30, 41, 59, 0.9); /* Match background */
+      border-right-color: rgba(var(--dark-bg, 30, 41, 59), 0.9); /* Match background - Using CSS Variables */
     }
 
     /* Dark mode adjustments */
     .dark & {
-      background: rgba(255, 255, 255, 0.9);
-      color: #0f172a;
-      border-color: rgba(0, 0, 0, 0.1);
+      background: var(--glass-bg-strong, rgba(255, 255, 255, 0.9));
+      color: var(--text-primary, #0f172a);
+      border-color: var(--glass-border-weak, rgba(0, 0, 0, 0.1));
 
       &::before {
-        border-right-color: rgba(255, 255, 255, 0.9);
+        border-right-color: var(--glass-bg-strong, rgba(255, 255, 255, 0.9));
       }
     }
   }
@@ -525,7 +525,7 @@
   .dark & {
     background: var(--glass-bg-strong);
     box-shadow:
-      0 10px 40px rgba(0, 0, 0, 0.3),
+      0 10px 40px rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-medium, 0.3)),
       0 0 0 1px var(--glass-border-weak);
     border-color: var(--glass-border-weak);
 
@@ -538,14 +538,14 @@
           var(--pattern-color) 2px,
           var(--pattern-color) 4px
         );
-      opacity: 0.2;
+      opacity: var(--overlay-opacity-light, 0.2);
     }
   }
 
   [class*='theme-myhr'] & {
     background: var(--glass-bg-strong);
     box-shadow:
-      0 10px 40px rgba(0, 0, 0, 0.5),
+      0 10px 40px rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-strong, 0.5)),
       0 0 0 1px var(--glass-border-strong),
       0 0 30px rgba(var(--primary-rgb), 0.15);
     border-color: var(--glass-border-strong);

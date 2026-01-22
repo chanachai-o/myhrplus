@@ -33,7 +33,7 @@ export class ApiService {
     const httpParams = this.buildParams(params);
     // Check if endpoint is already a full URL
     const url = endpoint.startsWith('http') ? endpoint : `${this.baseUrl}${endpoint}`;
-    
+
     const request = this.http.get<ApiResponse<T>>(url, { params: httpParams });
 
     if (useCache && cacheKey) {
@@ -75,7 +75,7 @@ export class ApiService {
   uploadFile(endpoint: string, file: File, additionalData?: any): Observable<ApiResponse<any>> {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     if (additionalData) {
       Object.keys(additionalData).forEach(key => {
         formData.append(key, additionalData[key]);

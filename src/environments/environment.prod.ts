@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   apiBaseUrl: 'https://demo.myhr.co.th/hr',
+  oisUrl: 'https://myhrplus.myhr.co.th/api/ois',  // For /api/ois endpoints (Organization/Company module)
   apiEndpoints: {
     auth: '/restauthen',
     core: '/capi',
