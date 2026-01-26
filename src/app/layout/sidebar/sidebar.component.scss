@@ -199,7 +199,7 @@
     transform: translateY(-50%) translateX(-10px);
     padding: 6px 12px;
     background: rgba(var(--dark-bg, 30, 41, 59), 0.9); /* Dark background for better contrast - Using CSS Variables */
-    color: var(--text-primary, #ffffff);
+    color: #ffffff; /* White text for layer1 tooltips */
     font-size: 12px;
     font-weight: 500;
     white-space: nowrap;
@@ -222,14 +222,26 @@
       border-right-color: rgba(var(--dark-bg, 30, 41, 59), 0.9); /* Match background - Using CSS Variables */
     }
 
-    /* Dark mode adjustments */
+    /* Dark mode adjustments - Keep white text */
     .dark & {
-      background: var(--glass-bg-strong, rgba(255, 255, 255, 0.9));
-      color: var(--text-primary, #0f172a);
-      border-color: var(--glass-border-weak, rgba(0, 0, 0, 0.1));
+      background: rgba(var(--dark-bg, 30, 41, 59), 0.95);
+      color: #ffffff; /* White text for layer1 tooltips */
+      border-color: var(--glass-border-weak, rgba(255, 255, 255, 0.1));
 
       &::before {
-        border-right-color: var(--glass-bg-strong, rgba(255, 255, 255, 0.9));
+        border-right-color: rgba(var(--dark-bg, 30, 41, 59), 0.95);
+      }
+    }
+
+    /* Theme myhr adjustments - Keep white text */
+    [data-theme='myhr'] &,
+    [class*='theme-myhr'] & {
+      background: rgba(var(--dark-bg, 30, 41, 59), 0.95);
+      color: #ffffff; /* White text for layer1 tooltips */
+      border-color: var(--glass-border-weak, rgba(255, 255, 255, 0.1));
+
+      &::before {
+        border-right-color: rgba(var(--dark-bg, 30, 41, 59), 0.95);
       }
     }
   }
