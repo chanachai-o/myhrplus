@@ -24,12 +24,10 @@
     <!-- Switch Thumb -->
     <span
       [class]="sizeClasses.thumb"
-      class="absolute top-0.5 left-0.5 rounded-full bg-white dark:bg-gray-100 theme-myhr:bg-white shadow-md transition-all duration-300 transform"
+      class="absolute top-1/2 -translate-y-1/2 rounded-full bg-white dark:bg-gray-100 theme-myhr:bg-white shadow-md transition-all duration-300"
       [ngClass]="{
-        'translate-x-0': !checked,
-        'translate-x-full': checked && size === 'sm',
-        'translate-x-5': checked && size === 'md',
-        'translate-x-7': checked && size === 'lg'
+        'left-0.5': !checked,
+        'right-0.5': checked
       }">
     </span>
   </button>
