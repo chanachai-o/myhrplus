@@ -93,7 +93,7 @@
 **✅ Good:**
 ```typescript
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
-this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW);
+this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD);
 ```
 
 **❌ Bad:**

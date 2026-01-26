@@ -27,7 +27,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 export class AssetListComponent implements OnInit {
   public service = inject(AssetService);
   private translate = inject(TranslateService);
-  
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: Asset | null = null;
@@ -37,7 +37,7 @@ export class AssetListComponent implements OnInit {
 
   ngOnInit() {
     // Wait for translations to load, then initialize
-    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW).subscribe(() => {
+    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD).subscribe(() => {
       this.initializeTranslations();
     });
   }
@@ -45,7 +45,7 @@ export class AssetListComponent implements OnInit {
   private initializeTranslations() {
     this.headerActions = [
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD),
         variant: 'primary' as const,
         onClick: () => this.onCreate()
       }

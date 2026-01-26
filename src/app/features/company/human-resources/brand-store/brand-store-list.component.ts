@@ -27,7 +27,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 export class BrandStoreListComponent implements OnInit {
   public service = inject(BrandStoreService);
   private translate = inject(TranslateService);
-  
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: BrandStore | null = null;
@@ -36,7 +36,7 @@ export class BrandStoreListComponent implements OnInit {
   columns: any[] = [];
 
   ngOnInit() {
-    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW).subscribe(() => {
+    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD).subscribe(() => {
       this.initializeTranslations();
     });
   }
@@ -44,7 +44,7 @@ export class BrandStoreListComponent implements OnInit {
   private initializeTranslations() {
     this.headerActions = [
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD),
         variant: 'primary' as const,
         onClick: () => this.onCreate()
       }

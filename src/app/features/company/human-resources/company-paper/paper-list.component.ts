@@ -27,7 +27,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 export class PaperListComponent implements OnInit {
   public service = inject(PaperService);
   private translate = inject(TranslateService);
-  
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: Paper | null = null;
@@ -37,7 +37,7 @@ export class PaperListComponent implements OnInit {
 
   ngOnInit() {
     // Wait for translations to load, then initialize
-    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW).subscribe(() => {
+    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD).subscribe(() => {
       this.initializeTranslations();
     });
   }
@@ -45,7 +45,7 @@ export class PaperListComponent implements OnInit {
   private initializeTranslations() {
     this.headerActions = [
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD),
         variant: 'primary' as const,
         onClick: () => this.onCreate()
       }
@@ -55,24 +55,24 @@ export class PaperListComponent implements OnInit {
       { field: 'paperid', headerText: this.translate.instant('company.companyPaper.column.paperId'), width: '150px' },
       { field: 'tdesc', headerText: this.translate.instant('company.companyPaper.column.tdesc'), width: '250px' },
       { field: 'edesc', headerText: this.translate.instant('company.companyPaper.column.edesc'), width: '250px' },
-      { 
-        field: 'jb_active', 
-        headerText: this.translate.instant('company.companyPaper.column.jbActive'), 
+      {
+        field: 'jb_active',
+        headerText: this.translate.instant('company.companyPaper.column.jbActive'),
         width: '150px',
         type: 'boolean' as const,
         formatter: (value: string) => {
-          return value === '1' 
+          return value === '1'
             ? this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.ACTIVE)
             : this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.INACTIVE);
         }
       },
-      { 
-        field: 'attachfile_active', 
-        headerText: this.translate.instant('company.companyPaper.column.attachfileActive'), 
+      {
+        field: 'attachfile_active',
+        headerText: this.translate.instant('company.companyPaper.column.attachfileActive'),
         width: '150px',
         type: 'boolean' as const,
         formatter: (value: string) => {
-          return value === '1' 
+          return value === '1'
             ? this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.ACTIVE)
             : this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.INACTIVE);
         }

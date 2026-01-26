@@ -27,7 +27,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 export class T3ListComponent implements OnInit {
   public service = inject(T3Service);
   private translate = inject(TranslateService);
-  
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: T3 | null = null;
@@ -36,7 +36,7 @@ export class T3ListComponent implements OnInit {
   columns: any[] = [];
 
   ngOnInit() {
-    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW).subscribe(() => {
+    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD).subscribe(() => {
       this.initializeTranslations();
     });
   }
@@ -44,7 +44,7 @@ export class T3ListComponent implements OnInit {
   private initializeTranslations() {
     this.headerActions = [
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD),
         variant: 'primary' as const,
         onClick: () => this.onCreate()
       }
@@ -56,13 +56,13 @@ export class T3ListComponent implements OnInit {
       { field: 'tdesc', headerText: this.translate.instant('company.t3.column.tdesc'), width: '200px' },
       { field: 'edesc', headerText: this.translate.instant('company.t3.column.edesc'), width: '200px' },
       { field: 'short_name', headerText: this.translate.instant('company.t3.column.shortName'), width: '100px' },
-      { 
-        field: 'active', 
-        headerText: this.translate.instant('company.t3.column.active'), 
+      {
+        field: 'active',
+        headerText: this.translate.instant('company.t3.column.active'),
         width: '100px',
         type: 'boolean' as const,
         formatter: (value: string) => {
-          return value === '1' 
+          return value === '1'
             ? this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.ACTIVE)
             : this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.INACTIVE);
         }

@@ -147,7 +147,7 @@ export class BankCompanyListComponent implements OnInit {
   private updateTranslations() {
     this.headerActions = [
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD),
         variant: 'primary',
         icon: 'add',
         onClick: () => this.onCreate()

@@ -27,7 +27,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 export class SectionListComponent implements OnInit {
   public service = inject(SectionService);
   private translate = inject(TranslateService);
-  
+
   data$ = this.service.getAll();
   showModal = false;
   selectedItem: Section | null = null;
@@ -37,7 +37,7 @@ export class SectionListComponent implements OnInit {
 
   ngOnInit() {
     // Wait for translations to load, then initialize
-    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW).subscribe(() => {
+    this.translate.get(TRANSLATION_KEYS.COMMON.ACTIONS.ADD).subscribe(() => {
       this.initializeTranslations();
     });
   }
@@ -45,7 +45,7 @@ export class SectionListComponent implements OnInit {
   private initializeTranslations() {
     this.headerActions = [
       {
-        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD_NEW),
+        label: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.ADD),
         variant: 'primary' as const,
         onClick: () => this.onCreate()
       }
@@ -57,13 +57,13 @@ export class SectionListComponent implements OnInit {
       { field: 'tdesc', headerText: this.translate.instant('features.company.entities.section.column.tdesc'), width: '200px' },
       { field: 'edesc', headerText: this.translate.instant('features.company.entities.section.column.edesc'), width: '200px' },
       { field: 'short_name', headerText: this.translate.instant('features.company.entities.section.column.shortName'), width: '100px' },
-      { 
-        field: 'active', 
-        headerText: this.translate.instant('features.company.entities.section.column.active'), 
+      {
+        field: 'active',
+        headerText: this.translate.instant('features.company.entities.section.column.active'),
         width: '100px',
         type: 'boolean' as const,
         formatter: (value: string) => {
-          return value === '1' 
+          return value === '1'
             ? this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.ACTIVE)
             : this.translate.instant(TRANSLATION_KEYS.COMMON.STATUS.INACTIVE);
         }
