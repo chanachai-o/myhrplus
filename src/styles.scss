@@ -422,6 +422,36 @@ body.theme-myhr {
 @import 'app/shared/syncfusion/styles/syncfusion-theme.scss';
 
 /* ============================================
+   Syncfusion Global Overrides - Dynamic Primary Color
+   ============================================ */
+// Override Syncfusion footer buttons to use dynamic primary color
+.e-footer-content .e-btn.e-primary.e-flat:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.e-footer-content .e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+// Override all Syncfusion primary buttons
+.e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+
+  &:hover:not([DISABLED]) {
+    background: rgba(var(--primary-rgb), 0.9) !important;
+    border-color: rgba(var(--primary-rgb), 0.9) !important;
+  }
+
+  &:active:not([DISABLED]),
+  &:focus:not([DISABLED]) {
+    background: rgba(var(--primary-rgb), 0.8) !important;
+    border-color: rgba(var(--primary-rgb), 0.8) !important;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2) !important;
+  }
+}
+
+/* ============================================
    Base Styles
    ============================================ */
 * {

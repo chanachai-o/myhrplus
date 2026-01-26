@@ -128,7 +128,7 @@
             &:hover:not(.e-currentitem):not(.e-disable) {
               background-color: var(--bg-surface-hover);
               color: var(--primary-color);
-              border-color: var(--primary-color) / 30;
+              border-color: rgba(var(--primary-rgb), 0.3);
             }
 
             &.e-currentitem {
@@ -163,7 +163,7 @@
               transition: all 0.2s ease;
 
               &:hover {
-                border-color: var(--primary-color) / 50;
+                border-color: rgba(var(--primary-rgb), 0.5);
               }
 
               &:focus {
@@ -284,11 +284,11 @@
 // }
 .e-headercell,
 .e-detailheadercell {
-  background-color: rgb(96 165 250 / 0.1) !important;
+  background-color: rgba(var(--primary-rgb), 0.1) !important;
 }
 
 .e-pager .e-currentitem, .e-pager .e-currentitem:hover {
-  background: rgb(96 165 250) !important;
+  background: var(--primary-color) !important;
   color: #fff;
   opacity: 1 !important;
   border: none !important;
@@ -296,7 +296,7 @@
 
 
 .e-checkbox-wrapper .e-frame.e-check, .e-css.e-checkbox-wrapper .e-frame.e-check {
-  background-color: rgb(96 165 250) !important;
+  background-color: var(--primary-color) !important;
   border-color: transparent;
   color: #fff;
 }
@@ -318,5 +318,44 @@
 }
 
 .e-grid td.e-selectionbackground {
-  background-color: #aec2ec !important;
+  background-color: rgba(var(--primary-rgb), 0.2) !important;
+}
+
+// Global override for Syncfusion footer buttons - Must be outside component scope for higher specificity
+body .e-footer-content .e-btn.e-primary.e-flat:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+body .e-footer-content .e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+// Footer Content Buttons - Override Syncfusion default colors with higher specificity
+.syncfusion-data-grid .e-footer-content .e-btn.e-primary.e-flat:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.syncfusion-data-grid .e-footer-content .e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.e-footer-content .e-btn.e-primary.e-flat:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.e-footer-content .e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+// Additional Syncfusion button overrides for primary buttons with higher specificity
+.syncfusion-data-grid .e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.e-btn.e-primary.e-flat:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+
+  &:hover:not([DISABLED]) {
+    background: rgba(var(--primary-rgb), 0.9) !important;
+    border-color: rgba(var(--primary-rgb), 0.9) !important;
+  }
+
+  &:active:not([DISABLED]),
+  &:focus:not([DISABLED]) {
+    background: rgba(var(--primary-rgb), 0.8) !important;
+    border-color: rgba(var(--primary-rgb), 0.8) !important;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2) !important;
+  }
 }

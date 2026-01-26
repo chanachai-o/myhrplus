@@ -8,3 +8,48 @@
   padding-right: 0 !important;
 }
 
+/* ============================================
+   Syncfusion Pager - Dynamic Primary Color
+   ============================================ */
+// Override pager current item to use dynamic primary color
+.e-pager .e-currentitem,
+.e-pager .e-currentitem:hover {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  border: none !important;
+}
+
+/* ============================================
+   Syncfusion Footer Buttons - Dynamic Primary Color
+   ============================================ */
+// Override footer buttons to use dynamic primary color
+.e-footer-content .e-btn.e-primary.e-flat:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info),
+.e-footer-content .e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+/* ============================================
+   Syncfusion Primary Buttons - Dynamic Primary Color
+   ============================================ */
+// Override all Syncfusion primary buttons
+.e-btn.e-primary:not([DISABLED]):not(.e-success):not(.e-danger):not(.e-warning):not(.e-info) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+
+  &:hover:not([DISABLED]) {
+    background: rgba(var(--primary-rgb), 0.9) !important;
+    border-color: rgba(var(--primary-rgb), 0.9) !important;
+  }
+
+  &:active:not([DISABLED]),
+  &:focus:not([DISABLED]) {
+    background: rgba(var(--primary-rgb), 0.8) !important;
+    border-color: rgba(var(--primary-rgb), 0.8) !important;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2) !important;
+  }
+}
+
