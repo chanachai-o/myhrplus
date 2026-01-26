@@ -171,8 +171,13 @@
   /* Enhanced hover state - Using CSS Variables */
   &:hover:not(.active) {
     background: var(--sidebar-hover-bg);
-    transform: translateY(-2px) scale(1.02);
+    /* Remove translateY to keep centered when square */
+    transform: scale(1.03);
     box-shadow: var(--shadow-lg);
+    /* Ensure icon stays centered */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     [data-theme='dark'] &,
     .dark & {
@@ -184,10 +189,28 @@
       box-shadow: var(--shadow-xl);
     }
 
-    /* Icon animation on hover */
+    /* Icon animation on hover - keep centered */
+    .material-icons,
+    span[class*='e-icons'],
+    img {
+      transform: scale(1.12);
+      filter: drop-shadow(0 4px 8px rgba(var(--primary-rgb), 0.3));
+    }
+  }
+
+  /* Active state enhancements */
+  &.active,
+  &[routerlinkactive='active'] {
+    /* Enhanced shadow for active state */
+    box-shadow: 
+      0 10px 25px -5px rgba(var(--primary-rgb), 0.4),
+      0 0 0 1px rgba(var(--primary-rgb), 0.1) inset;
+
+    /* Icon enhancements when active */
+    img,
     .material-icons,
     span[class*='e-icons'] {
-      transform: rotate(6deg) scale(1.1);
+      filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.3));
     }
   }
 
@@ -622,6 +645,29 @@
     opacity: 0.9;
     transform: scale(1.02);
   }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-50%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) translateY(-50%);
+    opacity: 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-50%);
 }
 
 @keyframes indicatorPulse {

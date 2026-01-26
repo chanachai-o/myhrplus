@@ -7,7 +7,7 @@
               w-14 min-w-14 max-w-14">
     <!-- Logo Removed (Moved to Header) -->
     <!-- Navigation Icons (Rail) -->
-    <div class="flex flex-col gap-3 flex-1 w-full px-2">
+    <div class="flex flex-col gap-3 flex-1 w-full">
       <!-- Level 2 Items - Show Admin Level 2 items directly (no Level 1 selection) -->
       <ng-container *ngIf="level2Items.length > 0">
 
@@ -19,52 +19,71 @@
                 [attr.aria-current]="selectedLevel2Item === level2Item ? 'true' : 'false'"
                 [style.animation-delay.ms]="i * 50"
                 class="module-icon-btn w-full h-12 mb-2 flex items-center justify-center rounded-xl
+                group-hover:w-12 group-hover:aspect-square group-hover:rounded-lg
                 hover-lift
                 micro-active-scale
                        relative group
                        fade-in
                        cursor-pointer
-                       border-0 bg-transparent">
+                       border-0 bg-transparent
+                       transition-all duration-300
+                       overflow-visible">
           <!-- Active Background Glow -->
           <div *ngIf="selectedLevel2Item === level2Item"
-               class="absolute inset-0 rounded-xl
-                      bg-gradient-to-br from-primary via-primary/90 to-primary
-                      dark:from-primary dark:via-primary/95 dark:to-primary
-                      theme-myhr:from-primary theme-myhr:via-primary/95 theme-myhr:to-primary
-                      shadow-lg shadow-primary/50
-                      ring-2 ring-primary/50 ring-inset
-                      transition-all duration-300"></div>
+               class="absolute inset-0
+                      bg-gradient-to-br from-primary via-primary/95 to-primary
+                      dark:from-primary dark:via-primary/98 dark:to-primary
+                      theme-myhr:from-primary theme-myhr:via-primary/97 theme-myhr:to-primary
+                      shadow-xl shadow-primary/60
+                      ring-2 ring-primary/60 ring-inset
+                      transition-all duration-300
+                      z-0"></div>
 
-          <!-- Hover Background -->
-          <div class="absolute inset-0 rounded-xl
-                      bg-gradient-to-br from-primary/70 via-primary/65 to-primary/70
-                      dark:from-primary/80 dark:via-primary/75 dark:to-primary/80
-                      theme-myhr:from-primary/75 theme-myhr:via-primary/70 theme-myhr:to-primary/75
-                      group-hover:from-primary/80 group-hover:via-primary/75 group-hover:to-primary/80
-                      dark:group-hover:from-primary/90 dark:group-hover:via-primary/85 dark:group-hover:to-primary/90
-                      theme-myhr:group-hover:from-primary/85 theme-myhr:group-hover:via-primary/80 theme-myhr:group-hover:to-primary/85
-                      transition-all duration-300"
-               [class.opacity-0]="selectedLevel2Item === level2Item"></div>
-
-          <!-- Active Glow Effect -->
+          <!-- Active Shine Effect -->
           <div *ngIf="selectedLevel2Item === level2Item"
                class="absolute inset-0 rounded-xl
-                      bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0
-                      animate-pulse
-                      pointer-events-none"></div>
+                      bg-gradient-to-r from-transparent via-white/20 to-transparent
+                      animate-shimmer
+                      pointer-events-none
+                      z-[1]"></div>
+
+          <!-- Hover Background -->
+          <div class="absolute inset-0 rounded-xl group-hover:rounded-lg
+                      bg-gradient-to-br from-primary/60 via-primary/55 to-primary/60
+                      dark:from-primary/70 dark:via-primary/65 dark:to-primary/70
+                      theme-myhr:from-primary/65 theme-myhr:via-primary/60 theme-myhr:to-primary/65
+                      group-hover:from-primary/85 group-hover:via-primary/80 group-hover:to-primary/85
+                      dark:group-hover:from-primary/90 dark:group-hover:via-primary/85 dark:group-hover:to-primary/90
+                      theme-myhr:group-hover:from-primary/90 theme-myhr:group-hover:via-primary/85 theme-myhr:group-hover:to-primary/90
+                      group-hover:shadow-lg group-hover:shadow-primary/40
+                      transition-all duration-300
+                      z-0"
+               [class.opacity-0]="selectedLevel2Item === level2Item"></div>
+
+          <!-- Hover Glow Ring -->
+          <div class="absolute inset-0 rounded-xl group-hover:rounded-lg
+                      ring-2 ring-primary/30
+                      group-hover:ring-primary/60
+                      transition-all duration-300
+                      opacity-0 group-hover:opacity-100
+                      z-[1]
+                      pointer-events-none"
+               [class.opacity-0]="selectedLevel2Item === level2Item"></div>
 
           <!-- Icon -->
           <img [src]="getIconPath(level2Item.icon || 'home', '01')"
                [alt]="translateLabel(level2Item.label, 'admin', 2)"
                (error)="onIconError($event)"
                class="w-8 h-8 relative z-10
-                      icon-micro group-hover:scale-110
-                      transition-all duration-300
+                      icon-micro
+                      group-hover:scale-110 group-hover:drop-shadow-lg
+                      transition-all duration-300 ease-out
                       object-contain
-                      drop-shadow-2xl"
+                      drop-shadow-md"
                [class.scale-110]="selectedLevel2Item === level2Item"
                [class.brightness-0]="selectedLevel2Item === level2Item"
-               [class.invert]="selectedLevel2Item === level2Item">
+               [class.invert]="selectedLevel2Item === level2Item"
+               [class.drop-shadow-xl]="selectedLevel2Item === level2Item">
           <!-- Fallback to Unicode icon if image fails to load -->
           <span class="text-3xl relative z-10
                        icon-micro group-hover:scale-110
@@ -77,16 +96,22 @@
           <!-- Active Indicator Bar -->
           <span *ngIf="selectedLevel2Item === level2Item"
                 class="absolute left-0 top-1/2 -translate-y-1/2
-                       w-1 h-3/4 rounded-r-full
-                       bg-gradient-to-b from-primary-light via-primary to-primary-dark
-                       shadow-lg shadow-primary/60
-                       animate-pulse"></span>
+                       w-1.5 h-4/5 rounded-r-full
+                       bg-gradient-to-b from-white/90 via-white to-white/90
+                       dark:from-primary-light dark:via-primary dark:to-primary-dark
+                       shadow-lg shadow-primary/70
+                       animate-pulse
+                       z-[2]"></span>
 
-          <!-- Active Ring -->
+          <!-- Active Outer Glow -->
           <div *ngIf="selectedLevel2Item === level2Item"
-               class="absolute inset-0 rounded-xl
-                      ring-2 ring-primary/60 ring-offset-2 ring-offset-transparent
-                      pointer-events-none"></div>
+               class="absolute -inset-1 rounded-xl
+                      bg-gradient-to-br from-primary/40 via-primary/30 to-primary/40
+                      blur-sm
+                      opacity-75
+                      animate-pulse
+                      pointer-events-none
+                      z-[-1]"></div>
           <!-- Badge -->
           <span *ngIf="level2Item.badge"
                 class="absolute top-1 right-1 w-4 h-4 rounded-full
@@ -110,36 +135,98 @@
            [attr.aria-current]="selectedModule === module.id ? 'true' : 'false'"
            [style.animation-delay.ms]="i * 50"
            class="module-icon-btn w-full h-12 mb-2 flex items-center justify-center rounded-xl
+                group-hover:w-12 group-hover:aspect-square group-hover:rounded-lg
                 hover-lift
                 micro-active-scale
                   relative group
-                  fade-in">
+                  fade-in
+                  transition-all duration-300
+                  overflow-visible">
+          <!-- Active Background -->
+          <div *ngIf="selectedModule === module.id"
+               class="absolute inset-0 rounded-xl
+                      bg-gradient-to-br from-primary via-primary/95 to-primary
+                      dark:from-primary dark:via-primary/98 dark:to-primary
+                      theme-myhr:from-primary theme-myhr:via-primary/97 theme-myhr:to-primary
+                      shadow-xl shadow-primary/60
+                      ring-2 ring-primary/60 ring-inset
+                      transition-all duration-300
+                      z-0"></div>
+
+          <!-- Active Shine Effect -->
+          <div *ngIf="selectedModule === module.id"
+               class="absolute inset-0 rounded-xl
+                      bg-gradient-to-r from-transparent via-white/20 to-transparent
+                      animate-shimmer
+                      pointer-events-none
+                      z-[1]"></div>
+
           <!-- Hover Background -->
-          <div class="absolute inset-0 rounded-xl
-                      bg-gradient-to-br from-primary/0 to-primary/0
-                      group-hover:from-primary/10 group-hover:to-primary/10
-                      transition-all duration-300"></div>
+          <div class="absolute inset-0 rounded-xl group-hover:rounded-lg
+                      bg-gradient-to-br from-primary/60 via-primary/55 to-primary/60
+                      dark:from-primary/70 dark:via-primary/65 dark:to-primary/70
+                      theme-myhr:from-primary/65 theme-myhr:via-primary/60 theme-myhr:to-primary/65
+                      group-hover:from-primary/85 group-hover:via-primary/80 group-hover:to-primary/85
+                      dark:group-hover:from-primary/90 dark:group-hover:via-primary/85 dark:group-hover:to-primary/90
+                      theme-myhr:group-hover:from-primary/90 theme-myhr:group-hover:via-primary/85 theme-myhr:group-hover:to-primary/90
+                      group-hover:shadow-lg group-hover:shadow-primary/40
+                      transition-all duration-300
+                      z-0"
+               [class.opacity-0]="selectedModule === module.id"></div>
+
+          <!-- Hover Glow Ring -->
+          <div class="absolute inset-0 rounded-xl group-hover:rounded-lg
+                      ring-2 ring-primary/30
+                      group-hover:ring-primary/60
+                      transition-all duration-300
+                      opacity-0 group-hover:opacity-100
+                      z-[1]
+                      pointer-events-none"
+               [class.opacity-0]="selectedModule === module.id"></div>
           <span *ngIf="module.iconCss"
                 [class]="module.iconCss"
                 class="text-3xl relative z-10
-                       icon-micro group-hover:scale-110
-                       transition-colors duration-300"
+                       icon-micro
+                       group-hover:scale-110 group-hover:drop-shadow-lg
+                       transition-all duration-300 ease-out
+                       drop-shadow-md"
                 [class.text-primary]="selectedModule === module.id"
+                [class.text-white]="selectedModule === module.id"
                 [class.text-gray-500]="selectedModule !== module.id && !isDarkMode"
-                [class.text-gray-400]="selectedModule !== module.id && isDarkMode"></span>
+                [class.text-gray-400]="selectedModule !== module.id && isDarkMode"
+                [class.drop-shadow-xl]="selectedModule === module.id"></span>
           <span *ngIf="!module.iconCss"
                 class="text-3xl relative z-10
-                       icon-micro group-hover:scale-110
-                       transition-colors duration-300
-                       e-icons e-folder"
+                       icon-micro
+                       group-hover:scale-110 group-hover:drop-shadow-lg
+                       transition-all duration-300 ease-out
+                       e-icons e-folder
+                       drop-shadow-md"
                 [class.text-primary]="selectedModule === module.id"
+                [class.text-white]="selectedModule === module.id"
                 [class.text-gray-500]="selectedModule !== module.id && !isDarkMode"
-                [class.text-gray-400]="selectedModule !== module.id && isDarkMode"></span>
+                [class.text-gray-400]="selectedModule !== module.id && isDarkMode"
+                [class.drop-shadow-xl]="selectedModule === module.id"></span>
 
-          <!-- Active Indicator -->
+          <!-- Active Indicator Bar -->
           <span *ngIf="selectedModule === module.id"
-                class="active-indicator
-                       pulse"></span>
+                class="absolute left-0 top-1/2 -translate-y-1/2
+                       w-1.5 h-4/5 rounded-r-full
+                       bg-gradient-to-b from-white/90 via-white to-white/90
+                       dark:from-primary-light dark:via-primary dark:to-primary-dark
+                       shadow-lg shadow-primary/70
+                       animate-pulse
+                       z-[2]"></span>
+
+          <!-- Active Outer Glow -->
+          <div *ngIf="selectedModule === module.id"
+               class="absolute -inset-1 rounded-xl
+                      bg-gradient-to-br from-primary/40 via-primary/30 to-primary/40
+                      blur-sm
+                      opacity-75
+                      animate-pulse
+                      pointer-events-none
+                      z-[-1]"></div>
           <!-- Tooltip -->
           <span class="module-tooltip">{{ module.name }}</span>
         </a>
