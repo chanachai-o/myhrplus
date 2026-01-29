@@ -39,14 +39,15 @@
         <div class="content-container flex-1 relative">
           <!-- Route Content -->
           <div class="route-content-wrapper">
-            <!-- Breadcrumbs (Centered above router-outlet) -->
-            <div class="flex items-center justify-center fade-in"
+            <!-- Breadcrumbs แบบบาง: แสดงเฉพาะ parent ไม่รวมหน้าปัจจุบัน -->
+            <div class="flex items-center justify-center py-1 fade-in"
                  [style.animation-delay.ms]="100">
               <app-breadcrumbs
                 [items]="breadcrumbs"
                 [separator]="'/'"
                 [showHome]="false"
-                [autoGenerate]="false">
+                [autoGenerate]="false"
+                [slim]="true">
               </app-breadcrumbs>
             </div>
 

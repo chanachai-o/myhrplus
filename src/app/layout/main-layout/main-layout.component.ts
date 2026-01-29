@@ -79,7 +79,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     const breadcrumbPath = getBreadcrumbPathFromNavigation(url);
 
     if (breadcrumbPath.length > 0) {
-      const breadcrumbItems: BreadcrumbItem[] = breadcrumbPath.map(item => ({
+      // แสดงเฉพาะ parent ไม่รวมหน้าปัจจุบัน (แบบบาง)
+      const pathWithoutCurrent = breadcrumbPath.slice(0, -1);
+      const breadcrumbItems: BreadcrumbItem[] = pathWithoutCurrent.map(item => ({
         label: item.label,
         route: item.route,
         icon: item.icon || getBreadcrumbIcon(item.level || 1)

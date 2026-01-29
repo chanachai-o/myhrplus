@@ -27,6 +27,8 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
   @Input() homeIcon: string = 'home';
   @Input() autoGenerate: boolean = false;
   @Input() maxItems: number = 5;
+  /** แบบบาง: ตัวอักษรและระยะห่างเล็กลง */
+  @Input() slim: boolean = false;
 
   breadcrumbs: BreadcrumbItem[] = [];
 
@@ -46,7 +48,7 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
     } else {
       this.breadcrumbs = this.items;
     }
-    
+
     // Watch for items changes (when sidebar updates breadcrumbs)
     // This ensures breadcrumb updates when items prop changes
   }
@@ -59,7 +61,7 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
 
   private generateBreadcrumbs(): void {
     const breadcrumbs: BreadcrumbItem[] = [];
-    
+
     if (this.showHome) {
       breadcrumbs.push({
         label: this.translate.instant('common.home'),
@@ -80,9 +82,9 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
         if (childRoute.outlet === 'primary') {
           const routeSnapshot = childRoute.snapshot;
           url += '/' + routeSnapshot.url.map(segment => segment.path).join('/');
-          
+
           routeData = routeSnapshot.data;
-          
+
           // Check for breadcrumbs array first (new format)
           if (routeData && routeData['breadcrumbs'] && Array.isArray(routeData['breadcrumbs'])) {
             routeData['breadcrumbs'].forEach((item: any) => {
@@ -111,7 +113,7 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
               });
             });
           }
-          
+
           route = childRoute;
         }
       });
@@ -138,6 +140,35 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
 
   isLast(index: number): boolean {
     return index === this.breadcrumbs.length - 1;
+  }
+
+  /** Class สำหรับ nav ตามโหมด slim */
+  get navClass(): string {
+    return this.slim ? 'py-1 sm:py-0.5' : 'py-3 sm:py-2';
+  }
+
+  /** Class สำหรับ ol ตามโหมด slim */
+  get olClass(): string {
+    return this.slim ? 'gap-1.5 sm:gap-1' : 'gap-2 sm:gap-1';
+  }
+
+  /** Class สำหรับ li ตามโหมด slim */
+  get liClass(): string {
+    return this.slim
+      ? 'gap-1 sm:gap-0.5 text-xs sm:text-[11px]'
+      : 'gap-2 sm:gap-1 text-sm sm:text-xs';
+  }
+
+  /** Class สำหรับลิงก์/span รายการ ตามโหมด slim */
+  get itemClass(): string {
+    return this.slim
+      ? 'gap-1 px-1.5 py-0.5 min-h-[24px] sm:min-h-[22px]'
+      : 'gap-1.5 px-2 py-1 min-h-[32px] sm:min-h-[28px]';
+  }
+
+  /** Class สำหรับตัวคั่น ตามโหมด slim */
+  get separatorClass(): string {
+    return this.slim ? 'mx-0.5 sm:mx-0.5 text-[10px]' : 'mx-1 sm:mx-0.5 text-xs';
   }
 }
 

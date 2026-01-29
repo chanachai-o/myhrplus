@@ -1,27 +1,53 @@
-<nav class="py-3 sm:py-2 w-full" aria-label="Breadcrumb">
-  <ol class="flex items-center flex-wrap gap-2 sm:gap-1 list-none m-0 p-0 overflow-x-auto -webkit-overflow-scrolling-touch">
-    <li
-      *ngFor="let item of breadcrumbs; let i = index"
-      class="flex items-center gap-2 sm:gap-1 text-sm sm:text-xs transition-smooth flex-shrink-0"
-      [class.active]="isLast(i)">
-        <a
-          *ngIf="!isLast(i) && item.route"
-          (click)="navigate(item.route!)"
-          class="thai-text flex items-center gap-1.5 text-slate-600 dark:text-slate-400 no-underline transition-colors cursor-pointer px-2 py-1 rounded-md min-h-[32px] sm:min-h-[28px] hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 font-sarabun theme-myhr:glass-myhr-weak theme-myhr:hover:glass-myhr theme-myhr:hover:drop-shadow-[0_0_4px_rgba(var(--primary-rgb),0.4)]">
-          <app-icon *ngIf="item.icon" [name]="item.icon" size="sm" class="flex-shrink-0"></app-icon>
-          <span class="sm:hidden md:inline">{{ item.label | translate }}</span>
-        </a>
-        <span
-          *ngIf="isLast(i) || !item.route"
-          class="thai-text flex items-center gap-1.5 text-slate-900 dark:text-slate-100 font-semibold px-2 py-1 min-h-[32px] sm:min-h-[28px] theme-myhr:text-primary font-sarabun">
-          <app-icon *ngIf="item.icon" [name]="item.icon" size="sm" class="flex-shrink-0"></app-icon>
-          <span>{{ item.label | translate }}</span>
-        </span>
-      <span
-        *ngIf="!isLast(i)"
-        class="text-slate-400 dark:text-slate-500 mx-1 sm:mx-0.5 select-none transition-colors flex-shrink-0 text-xs sm:text-xs">
+<nav class="w-full"
+     [ngClass]="navClass"
+     aria-label="Breadcrumb">
+
+  <ol class="flex items-center flex-wrap list-none m-0 p-4 overflow-x-auto -webkit-overflow-scrolling-touch transition-smooth"
+      [ngClass]="olClass">
+
+    <li *ngFor="let item of breadcrumbs; let i = index"
+        class="flex items-center flex-shrink-0 transition-smooth"
+        [ngClass]="liClass"
+        [class.active]="isLast(i)">
+
+      <!-- ลิงก์ (ไม่ใช่รายการสุดท้าย) -->
+      <a *ngIf="!isLast(i) && item.route"
+         (click)="navigate(item.route!)"
+         class="thai-text flex items-center no-underline transition-colors cursor-pointer rounded font-sarabun
+                text-slate-600 dark:text-slate-400
+                hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10
+                focus:outline-none focus:ring-2 focus:ring-primary/20
+                theme-myhr:glass-myhr-weak theme-myhr:hover:glass-myhr theme-myhr:hover:drop-shadow-[0_0_4px_rgba(var(--primary-rgb),0.4)]"
+         [ngClass]="itemClass">
+        <app-icon *ngIf="item.icon"
+                  [name]="item.icon"
+                  [size]="slim ? 'xs' : 'sm'"
+                  class="flex-shrink-0">
+        </app-icon>
+        <span class="sm:hidden md:inline">{{ item.label | translate }}</span>
+      </a>
+
+      <!-- รายการสุดท้ายหรือไม่มี route (ข้อความธรรมดา) -->
+      <span *ngIf="isLast(i) || !item.route"
+            class="thai-text flex items-center text-slate-900 dark:text-slate-100 font-semibold font-sarabun theme-myhr:text-primary"
+            [ngClass]="itemClass">
+        <app-icon *ngIf="item.icon"
+                  [name]="item.icon"
+                  [size]="slim ? 'xs' : 'sm'"
+                  class="flex-shrink-0">
+        </app-icon>
+        <span>{{ item.label | translate }}</span>
+      </span>
+
+      <!-- ตัวคั่น (ไม่แสดงหลังรายการสุดท้าย) -->
+      <span *ngIf="!isLast(i)"
+            class="text-slate-400 dark:text-slate-500 select-none transition-colors flex-shrink-0"
+            [ngClass]="separatorClass">
         {{ separator }}
       </span>
+
     </li>
+
   </ol>
+
 </nav>

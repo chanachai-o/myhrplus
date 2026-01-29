@@ -218,15 +218,6 @@ export function getBreadcrumbPathFromNavigation(route: string): BreadcrumbItem[]
     return path;
   }
 
-  // Level 1: NavigationItem (e.g., Admin)
-  if (result.level1) {
-    path.push({
-      label: result.level1.label,
-      route: result.level1.route,
-      icon: result.level1.icon,
-      level: 1
-    });
-  }
 
   // Level 2: First level child (e.g., Company Management)
   if (result.level2) {
@@ -238,15 +229,15 @@ export function getBreadcrumbPathFromNavigation(route: string): BreadcrumbItem[]
     });
   }
 
-  // Level 3: Second level child (e.g., Human Resources)
-  if (result.level3) {
-    path.push({
-      label: result.level3.label,
-      route: result.level3.route,
-      icon: result.level3.icon,
-      level: 3
-    });
-  }
+  // // Level 3: Second level child (e.g., Human Resources)
+  // if (result.level3) {
+  //   path.push({
+  //     label: result.level3.label,
+  //     route: result.level3.route,
+  //     icon: result.level3.icon,
+  //     level: 3
+  //   });
+  // }
 
   // Level 4: Third level child (e.g., Company Information)
   if (result.level4) {
