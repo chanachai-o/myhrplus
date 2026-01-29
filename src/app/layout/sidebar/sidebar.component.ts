@@ -363,25 +363,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     let result: NavigationChild[] = [];
 
-    // For Admin: Return Level 3 items (children of selected Level 2)
-    // Admin requires Level 2 selection first
+    // For Admin: ไม่แสดง Level 3 โดยตรง - flatten เป็น Level 4 เพื่อลดจำนวนชั้น
+    // รายการ Level 3 ที่มี children → แสดง children (Level 4) แทน; ที่ไม่มี children (เช่น Dashboard) → แสดงตามเดิม
     if (this.selectedNavigationItem?.id === 'admin' && this.selectedLevel2Item && this.selectedLevel2Item.children) {
-      // Check if any Level 3 item is "Human Resources" and skip it, showing its children instead
-      const flattenedChildren: NavigationChild[] = [];
-
+      const flattened: NavigationChild[] = [];
       for (const level3Item of this.selectedLevel2Item.children) {
-        // If this is "Human Resources", skip it and add its children directly
-        if (level3Item.label === 'Human Resources' && level3Item.children && level3Item.children.length > 0) {
-          // Add all children of Human Resources directly (Level 4 items)
-          flattenedChildren.push(...level3Item.children);
+        if (level3Item.children && level3Item.children.length > 0) {
+          flattened.push(...level3Item.children);
         } else {
-          // Add the item normally
-          flattenedChildren.push(level3Item);
+          flattened.push(level3Item);
         }
       }
-
-      result = flattenedChildren;
-      console.log('[Sidebar] getNavigationChildren (Admin - Level 3/4 flattened):', result.map(item => ({
+      result = flattened;
+      console.log('[Sidebar] getNavigationChildren (Admin - Level 4 flattened):', result.map(item => ({
         label: item.label,
         route: item.route,
         childrenCount: item.children?.length || 0
@@ -421,19 +415,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   /**
    * Get the appropriate menu level for nested-menu-accordion
-   * If Human Resources is skipped, return level 4, otherwise return level 3
+   * ไม่แสดง Level 3 แล้ว → เมนูชั้นแรกเป็น Level 4 (level นี้ใช้สำหรับ accordion)
    */
   getMenuLevel(): number {
-    if (this.selectedNavigationItem?.id === 'admin' && this.selectedLevel2Item && this.selectedLevel2Item.children) {
-      // Check if Human Resources exists in Level 3
-      const hasHumanResources = this.selectedLevel2Item.children.some(
-        item => item.label === 'Human Resources' && item.children && item.children.length > 0
-      );
-      // If Human Resources exists, we're showing Level 4 items, so return 4
-      // Otherwise, return 3 for normal Level 3 items
-      return hasHumanResources ? 4 : 3;
-    }
-    return 3; // Default to level 3
+    return 4;
   }
 
   /**

@@ -4,26 +4,26 @@
 
 @import '../../../../styles/mixins';
 
+/* ---- Container ---- */
 .nested-menu-accordion {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-/* Menu Item */
+/* ---- Menu Item (ฐาน + ตาม level) ---- */
 .menu-item {
   position: relative;
   transition: all 0.2s ease-out;
   overflow: hidden;
 
-  /* Level 3 Styling */
+  /* Level 3 */
   &.level-3 {
     .menu-item-content {
       padding: 0.5rem 0.75rem;
-      font-weight: 600;
       font-size: 0.875rem;
+      font-weight: 600;
     }
-
     .menu-item-icon {
       font-size: 1rem;
       width: 1rem;
@@ -31,48 +31,47 @@
     }
   }
 
-  /* Level 4 Styling */
+  /* Level 4 (ชั้นแรกหลัง flatten – ตัวหนา สีไม่ดำมาก) */
   &.level-4 {
     .menu-item-content {
       padding: 0.5rem 0.75rem 0.5rem 1rem;
-      font-weight: 400;
-      font-size: 0.8125rem;
-    }
-
-    .menu-item-icon {
       font-size: 0.875rem;
-      width: 0.875rem;
-      height: 0.875rem;
+      font-weight: 600;
+      color: var(--menu-item-level4-text, #475569);
+    }
+    .menu-item-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+      color: inherit;
+    }
+    .menu-item-label {
+      font-weight: 600;
+    }
+    :host-context(.dark) & .menu-item-content,
+    :host-context([data-theme='dark']) & .menu-item-content {
+      color: var(--menu-item-level4-text-dark, #cbd5e1);
     }
   }
 
-  /* Hover State - Using CSS Variables */
+  /* Hover / Active / Expanded – ใช้ตัวแปร theme */
   &:hover:not(.active) {
     background: var(--menu-item-hover-bg);
   }
-
-  /* Active State - Using CSS Variables */
   &.active {
     background: var(--menu-item-active-bg);
     border-left: 3px solid var(--menu-item-active-border);
-
     .menu-item-label {
       color: var(--menu-item-active-text);
       font-weight: 600;
     }
   }
-
-  /* Expanded State */
-  &.expanded {
-    .menu-item-content {
-      .chevron-icon {
-        transform: rotate(180deg);
-      }
-    }
+  &.expanded .menu-item-content .chevron-icon {
+    transform: rotate(180deg);
   }
 }
 
-/* Menu Item Content */
+/* ---- Menu Item Content ---- */
 .menu-item-content {
   display: flex;
   align-items: center;
@@ -81,20 +80,16 @@
   user-select: none;
   transition: all 0.2s ease-out;
   position: relative;
-
-  /* Focus State - Using CSS Variables */
   &:focus {
     outline: 2px solid var(--menu-item-focus-outline);
     outline-offset: 2px;
   }
-
-  /* Active State */
   &:active {
     transform: scale(0.98);
   }
 }
 
-/* Menu Item Icon */
+/* ---- Menu Item Icon ---- */
 .menu-item-icon {
   display: flex;
   align-items: center;
@@ -102,20 +97,19 @@
   flex-shrink: 0;
   color: inherit;
   transition: transform 0.2s ease-out;
-
   .menu-item:hover & {
     transform: scale(1.1);
   }
 }
 
-/* Menu Item Label */
+/* ---- Menu Item Label ---- */
 .menu-item-label {
   flex: 1;
   transition: color 0.2s ease-out;
   color: inherit;
 }
 
-/* Menu Item Badge - Using CSS Variables */
+/* ---- Menu Item Badge ---- */
 .menu-item-badge {
   display: inline-flex;
   align-items: center;
@@ -131,7 +125,7 @@
   flex-shrink: 0;
 }
 
-/* Menu Item Action */
+/* ---- Menu Item Action (chevron / arrow) ---- */
 .menu-item-action {
   display: flex;
   align-items: center;
@@ -141,21 +135,17 @@
   height: 1.25rem;
   opacity: 0.6;
   transition: all 0.2s ease-out;
-
   .menu-item:hover & {
     opacity: 1;
   }
-
   .chevron-icon {
     font-size: 0.875rem;
     transition: transform 0.3s ease-out;
   }
-
   .arrow-icon {
     font-size: 0.875rem;
     opacity: 0.5;
     transition: transform 0.2s ease-out;
-
     .menu-item:hover & {
       opacity: 1;
       transform: translateX(2px);
@@ -163,7 +153,7 @@
   }
 }
 
-/* Menu Item Children (Nested) - Using CSS Variables */
+/* ---- Menu Item Children (nested list) ---- */
 .menu-item-children {
   margin-top: 0.25rem;
   margin-left: 0.5rem;
@@ -172,7 +162,7 @@
   animation: slideDown 0.3s ease-out;
 }
 
-/* Animations */
+/* ---- Animations ---- */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -186,7 +176,7 @@
   }
 }
 
-/* Reduced Motion Support */
+/* ---- Reduced Motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .menu-item,
   .menu-item-content,
@@ -196,28 +186,19 @@
     transition: none;
     animation: none;
   }
-
   .chevron-icon {
     transition: none;
   }
 }
 
-/* Responsive Design */
+/* ---- Responsive (md down) ---- */
 @include respond-to-down('md') {
-  .menu-item {
-    &.level-3 {
-      .menu-item-content {
-        padding: 0.625rem 0.75rem;
-        font-size: 0.875rem;
-      }
-    }
-
-    &.level-4 {
-      .menu-item-content {
-        padding: 0.5rem 0.75rem 0.5rem 1rem;
-        font-size: 0.8125rem;
-      }
-    }
+  .menu-item.level-3 .menu-item-content {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  .menu-item.level-4 .menu-item-content {
+    padding: 0.5rem 0.75rem 0.5rem 1rem;
+    font-size: 0.8125rem;
   }
 }
-
