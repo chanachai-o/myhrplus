@@ -1,29 +1,27 @@
 @import '../../../styles/mixins';
 
 footer {
-  /* Sticky position - ติดล่างหน้าจอเมื่อเลื่อน */
   position: sticky;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 40;
   width: 100%;
-  min-height: 48px; /* Reduced from default */
+  height: 30px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
 
-  @media (max-width: 768px) {
-    min-height: 44px; /* Reduced from default */
-  }
-
-  /* Background - Using CSS Variables */
+  /* Background - CSS Variables รองรับ theme */
   background: linear-gradient(135deg,
     var(--footer-bg-start) 0%,
     var(--footer-bg-end) 100%
   );
   @include backdrop-blur-saturate(20px, 180%);
   border-top: 1px solid var(--footer-border-color);
-  @include smooth-transition(all, 0.5s, cubic-bezier(0.4, 0, 0.2, 1));
+  @include smooth-transition(all, 0.3s ease);
 
-  /* Subtle gradient overlay - Using CSS Variables */
+  /* เส้นเรืองบนขอบ (เบา) */
   &::before {
     content: '';
     position: absolute;
@@ -33,67 +31,34 @@ footer {
     height: 1px;
     background: linear-gradient(90deg,
       transparent 0%,
-      var(--footer-text-color) 50%,
+      var(--footer-text-color, rgba(0, 0, 0, 0.08)) 50%,
       transparent 100%
     );
     pointer-events: none;
-  }
-
-  /* Pattern overlay for Light mode - Using standardized animation and CSS Variables */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-      radial-gradient(circle at 1px 1px, var(--pattern-color-subtle, rgba(var(--primary-rgb), 0.03)) 1px, transparent 0);
-    background-size: var(--pattern-size-lg, 20px) var(--pattern-size-lg, 20px);
-    opacity: var(--pattern-opacity, 0.4);
-    pointer-events: none;
-    z-index: 0;
-    animation: patternShimmer 14s ease-in-out infinite;
-
-    @media (prefers-reduced-motion: reduce) {
-      animation: none;
-    }
+    opacity: 0.6;
   }
 }
 
-[data-theme='dark'] .footer,
-.dark .footer {
-  /* Dark mode styles handled by CSS variables */
+[data-theme='dark'] footer,
+.dark footer {
   &::before {
     background: linear-gradient(90deg,
       transparent 0%,
-      rgba(var(--primary-rgb), 0.4) 50%,
+      rgba(var(--primary-rgb), 0.25) 50%,
       transparent 100%
     );
   }
-
-  &::after {
-    background-image:
-      radial-gradient(circle at 1px 1px, var(--pattern-color-light, rgba(var(--primary-rgb), 0.05)) 1px, transparent 0);
-    opacity: var(--pattern-opacity, 0.3);
-    animation: patternShimmer 16s ease-in-out infinite;
-
-    @media (prefers-reduced-motion: reduce) {
-      animation: none;
-    }
-  }
 }
 
-/* Footer content styles migrated to Tailwind classes in HTML */
 .footer-content {
   font-family: 'Sarabun', 'Inter', sans-serif;
+  font-size: 10px;
+  line-height: 1.2;
   max-width: 1400px;
+  white-space: nowrap;
 }
 
-/* MyHR Theme - Footer - Using CSS Variables */
-[data-theme='myhr'] .myhr-footer,
-/* Myhr Theme - Footer background */
-/* Standard Pattern 2: Component Overrides using CSS Variables */
+/* MyHR Theme - Footer รองรับสีเทมเพลต */
 [data-theme='myhr'] .myhr-footer,
 body.theme-myhr .myhr-footer {
   background: linear-gradient(135deg,
@@ -103,71 +68,42 @@ body.theme-myhr .myhr-footer {
   @include backdrop-blur-saturate(24px, 200%);
   border-top: 1px solid var(--footer-border-color) !important;
   box-shadow:
-    0 -4px 20px 0 rgba(var(--dark-bg, 0, 0, 0), var(--overlay-opacity-strong, 0.6)),
-    0 0 0 1px rgba(var(--primary-rgb), 0.2) inset,
-    0 0 40px rgba(var(--primary-rgb), 0.1) !important;
+    0 -2px 10px rgba(var(--primary-rgb), 0.12),
+    0 0 0 1px rgba(var(--primary-rgb), 0.15) inset;
   position: relative;
 
-  /* Animated gradient border - Using CSS Variables for dynamic theming */
   &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 1px;
     background: linear-gradient(90deg,
       transparent 0%,
-      rgba(var(--primary-rgb), 0.4) 20%,
-      rgba(var(--primary-rgb), 0.6) 50%,
-      rgba(var(--primary-rgb), 0.4) 80%,
+      rgba(var(--primary-rgb), 0.5) 50%,
       transparent 100%
     );
-    background-size: 200% 100%;
-    animation: myhrShimmer 4s ease-in-out infinite;
+    pointer-events: none;
     z-index: 1;
   }
 
-  /* Subtle glow effect with pattern overlay - Using CSS Variables for dynamic theming */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-      radial-gradient(circle at 50% 100%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%),
-      radial-gradient(circle at 1px 1px, rgba(var(--primary-rgb), 0.05) 1px, transparent 0);
-    background-size: 100% 100%, 20px 20px;
-    opacity: 1;
-    pointer-events: none;
-    z-index: 0;
-    animation: patternShimmer 12s ease-in-out infinite;
-
-    @media (prefers-reduced-motion: reduce) {
-      animation: none;
-    }
+  .footer-content span {
+    color: var(--footer-text-color, rgba(255, 255, 255, 0.9)) !important;
+    @include smooth-transition(color, 0.3s);
   }
 
-  .footer-content {
-    span {
-      color: var(--footer-text-color, rgba(255, 255, 255, 0.9)) !important;
-      @include smooth-transition(all, 0.3s);
-
-      &:first-child {
-        background: linear-gradient(135deg,
-          var(--gradient-primary-start) 0%,
-          var(--gradient-primary-mid) 50%,
-          var(--gradient-primary-end) 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        background-size: 200% 200%;
-        animation: myhrGradient 3s ease infinite;
-      }
-    }
+  .footer-content span:first-child {
+    background: linear-gradient(135deg,
+      var(--gradient-primary-start) 0%,
+      var(--gradient-primary-mid) 50%,
+      var(--gradient-primary-end) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: myhrGradient 3s ease infinite;
   }
 }
 

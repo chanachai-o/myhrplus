@@ -1,15 +1,25 @@
-<footer class="glass-nav !bg-white/20 dark:!bg-gray-900/20 theme-myhr:!bg-gray-900/30 !backdrop-blur-lg border-t border-white/30 dark:border-gray-700/30 theme-myhr:border-primary/30 shadow-glass-sm transition-all duration-300 myhr-footer">
-  <div class="footer-content flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-3 px-4 md:px-6 py-2 md:py-2.5 w-full mx-auto h-full">
-    <div class="flex items-center gap-2">
-      <span class="thai-text text-xs md:text-sm text-gray-600 dark:text-gray-400 theme-myhr:text-white/80 transition-colors duration-300">
+<footer class="myhr-footer h-[30px] min-h-[30px] flex items-center
+  bg-white/80 dark:bg-gray-900/80 theme-myhr:bg-gray-900/40
+  backdrop-blur-md border-t border-gray-200/60 dark:border-gray-700/40 theme-myhr:border-primary/30
+  shadow-[0_-1px_3px_rgba(0,0,0,0.04)] dark:shadow-none theme-myhr:shadow-[0_-2px_8px_rgba(var(--primary-rgb),0.15)]
+  transition-colors duration-300">
+  <div class="footer-content flex flex-row justify-between items-center gap-2 px-3 w-full max-w-[1400px] mx-auto h-full text-[10px]">
+    <div class="flex items-center gap-1.5 min-w-0">
+      <span class="thai-text text-[10px] font-medium truncate
+        text-gray-600 dark:text-gray-400 theme-myhr:text-white/90
+        transition-colors duration-300">
         &copy; {{ currentYear }} {{ appName }}
       </span>
-      <span class="hidden sm:inline text-xs md:text-sm text-gray-500 dark:text-gray-500 theme-myhr:text-white/70 transition-colors duration-300">
+      <span class="hidden sm:inline text-[10px] truncate
+        text-gray-500 dark:text-gray-500 theme-myhr:text-white/75
+        transition-colors duration-300">
         {{ 'layout.footer.copyright' | translate }}
       </span>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="text-xs md:text-sm text-gray-500 dark:text-gray-500 theme-myhr:text-white/70 font-mono transition-colors duration-300">
+    <div class="flex items-center flex-shrink-0">
+      <span class="text-[10px] font-mono tabular-nums
+        text-gray-500 dark:text-gray-500 theme-myhr:text-white/75
+        transition-colors duration-300">
         v{{ version }}
       </span>
     </div>
