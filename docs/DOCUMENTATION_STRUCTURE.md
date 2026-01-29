@@ -293,6 +293,15 @@
 
 ---
 
+### 14. `migration/` - Migration Guides & Improvements
+เอกสารเกี่ยวกับการ migrate และการปรับปรุง module
+
+**ไฟล์**:
+- `COMPANY_TYPE_MIGRATION_GUIDE.md` - คู่มือ migrate หน้าทะเบียน (ใช้ company-type เป็นตัวอย่าง)
+- `COMPANY_MODEL_AND_SERVICE_IMPROVEMENTS.md` - สรุปการปรับปรุง Model และ Service ใน Company Module (ใช้ฟิลด์ตาม API โดยตรง ลดการ map)
+
+---
+
 ## 📝 เอกสารที่ลบแล้ว (ล้าสมัยหรือซ้ำซ้อน)
 
 ### Class Duplication

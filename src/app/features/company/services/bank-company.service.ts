@@ -1,33 +1,29 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseApiService } from '@core/services';
 import { PaginatedResponse, PaginationParams } from '@core/models/pagination.model';
-import { BankCompany } from '../models/bank-company.model';
+import { BankCompanyModel } from '../models/bank-company.model';
 import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
+import { env } from 'process';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BankCompanyService extends BaseApiService<BankCompany> {
-  protected baseUrl = 'company/bank'; // Relative path (will be overridden by apiUrl)
+export class BankCompanyService extends BaseApiService<BankCompanyModel> {
+  protected baseUrl = environment.apiEndpoints.organization + '/company/bank'; // Relative path (will be overridden by apiUrl)
 
   loading = signal<boolean>(false);
 
-  // Override apiUrl to use OIS API endpoint
-  protected override get apiUrl(): string {
-    const base = environment.oisUrl.endsWith('/') ? environment.oisUrl.slice(0, -1) : environment.oisUrl;
-    return `${base}/company/bank`;
-  }
 
   /**
    * Get all bank companies with pagination support
    * @param params Optional pagination parameters (page, size)
    * @returns Observable of BankCompany array
    */
-  override getAll(params?: PaginationParams): Observable<BankCompany[]> {
+  override getAll(params?: PaginationParams): Observable<BankCompanyModel[]> {
     this.loading.set(true);
 
     // Build query parameters
@@ -41,19 +37,16 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
 
     console.log('[BankCompanyService] Fetching data from:', this.apiUrl, 'with params:', params);
 
-    return this.http.get<PaginatedResponse<BankCompany>>(this.apiUrl, { params: httpParams }).pipe(
+    return this.http.get<PaginatedResponse<BankCompanyModel>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
-        // API returns camelCase, normalize field names to match our model
-        const transformedData: BankCompany[] = (response.content || []).map((item: any) =>
-          this.normalizeFromApiFormat(item)
-        );
+        const data: BankCompanyModel[] = response.content ?? [];
         console.log('[BankCompanyService] Data loaded:', {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           currentPage: response.number,
-          itemsCount: transformedData.length
+          itemsCount: data.length
         });
-        return transformedData;
+        return data;
       }),
       tap((data) => {
         console.log('[BankCompanyService] Data loaded:', data);
@@ -73,7 +66,7 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
    * @returns Observable with data and pagination info
    */
   getAllWithPagination(params?: PaginationParams): Observable<{
-    data: BankCompany[];
+    data: BankCompanyModel[];
     currentPage: number;
     pageSize: number;
     totalPages: number;
@@ -92,22 +85,18 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
 
     console.log('[BankCompanyService] Fetching data with pagination from:', this.apiUrl, 'with params:', params);
 
-    return this.http.get<PaginatedResponse<BankCompany>>(this.apiUrl, { params: httpParams }).pipe(
+    return this.http.get<PaginatedResponse<BankCompanyModel>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
-        // API returns camelCase, normalize field names to match our model
-        const transformedData: BankCompany[] = (response.content || []).map((item: any) =>
-          this.normalizeFromApiFormat(item)
-        );
+        const data: BankCompanyModel[] = response.content ?? [];
         console.log('[BankCompanyService] Pagination response:', {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           currentPage: response.number,
           pageSize: response.size,
-          itemsCount: transformedData.length
+          itemsCount: data.length
         });
-
         return {
-          data: transformedData,
+          data,
           currentPage: response.number,
           pageSize: response.size,
           totalPages: response.totalPages,
@@ -126,13 +115,10 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
     );
   }
 
-  override create(data: Partial<BankCompany>): Observable<BankCompany> {
+  override create(data: Partial<BankCompanyModel>): Observable<BankCompanyModel> {
     this.loading.set(true);
-    // API accepts camelCase, normalize data from model
-    const apiData = this.normalizeToApiFormat(data);
-    console.log('[BankCompanyService] Creating:', apiData);
-    return this.http.post<BankCompany>(this.apiUrl, apiData).pipe(
-      map((response) => this.normalizeFromApiFormat(response)),
+    console.log('[BankCompanyService] Creating:', data);
+    return this.http.post<BankCompanyModel>(this.apiUrl, data).pipe(
       tap((result) => {
         console.log('[BankCompanyService] Created:', result);
         this.loading.set(false);
@@ -145,14 +131,10 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
     );
   }
 
-  override update(id: string | number, data: Partial<BankCompany>): Observable<BankCompany> {
+  override update(id: string | number, data: Partial<BankCompanyModel>): Observable<BankCompanyModel> {
     this.loading.set(true);
-    // API accepts camelCase, normalize data from model
-    const apiData = this.normalizeToApiFormat(data);
-    // Use POST same as create, to apiUrl
-    console.log('[BankCompanyService] Updating (POST):', id, apiData);
-    return this.http.post<BankCompany>(this.apiUrl, apiData).pipe(
-      map((response) => this.normalizeFromApiFormat(response)),
+    console.log('[BankCompanyService] Updating (POST):', id, data);
+    return this.http.post<BankCompanyModel>(this.apiUrl, data).pipe(
       tap((result) => {
         console.log('[BankCompanyService] Updated:', result);
         this.loading.set(false);
@@ -165,77 +147,7 @@ export class BankCompanyService extends BaseApiService<BankCompany> {
     );
   }
 
-  /**
-   * Convert value to boolean
-   */
-  private convertToBoolean(value: any): boolean {
-    if (typeof value === 'boolean') return value;
-    if (typeof value === 'string') {
-      return value === '1' || value === 'true' || value === 'True';
-    }
-    if (typeof value === 'number') {
-      return value === 1;
-    }
-    return false;
-  }
-
-  /**
-   * Normalize model data to API format (camelCase)
-   * Handles boolean to string conversion for API
-   */
-  private normalizeToApiFormat(data: Partial<BankCompany>): any {
-    return {
-      companyId: data.companyId,
-      bankId: data.bankId,
-      branch: data.branch,
-      bankBranch: data.bankBranch,
-      lineNo: data.lineNo,
-      account: data.account,
-      bankClient: data.bankClient,
-      bankClientThName: data.bankClientThName,
-      bankClientEngName: data.bankClientEngName,
-      contactPerson: data.contactPerson,
-      tel: data.tel,
-      transAts: typeof data.transAts === 'boolean' ? (data.transAts ? 1 : 0) : data.transAts,
-      transMedia: data.transMedia,
-      transOther: data.transOther,
-      transOtherDesc: data.transOtherDesc,
-      dayDisk: data.dayDisk,
-      dayCheque: data.dayCheque,
-      isDefault: typeof data.isDefault === 'boolean' ? (data.isDefault ? '1' : '0') : data.isDefault
-    };
-  }
-
-  /**
-   * Normalize API response to model format (camelCase)
-   * Handles field name variations and type conversions
-   */
-  private normalizeFromApiFormat(item: any): BankCompany {
-    return {
-      companyId: item.companyId || '',
-      bankId: item.bankId || '',
-      branch: item.branch || '',
-      bankBranch: item.bankBranch || '',
-      lineNo: item.lineNo || '',
-      account: item.account || '',
-      bankClient: item.bankClient || '',
-      bankClientThName: item.bankClientThName || item.bankClientThname || '',
-      bankClientEngName: item.bankClientEngName || item.bankClientEngname || '',
-      contactPerson: item.contactPerson || '',
-      tel: item.tel || '',
-      transAts: this.convertToBoolean(item.transAts),
-      transMedia: item.transMedia || '',
-      transOther: item.transOther || '',
-      transOtherDesc: item.transOtherDesc,
-      dayDisk: item.dayDisk,
-      dayCheque: item.dayCheque,
-      isDefault: this.convertToBoolean(item.isDefault || item.isdefault),
-      bankTdesc: item.bankTdesc,
-      bankEdesc: item.bankEdesc
-    };
-  }
-
-  override delete(data: Partial<BankCompany>): Observable<void> {
+  override delete(data: Partial<BankCompanyModel>): Observable<void> {
     this.loading.set(true);
     const url = this.apiUrl;
     console.log('[BankCompanyService] Deleting:', data);

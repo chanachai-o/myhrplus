@@ -1,13 +1,13 @@
 export interface Company {
-  branchid: string; // PK - same as companyid when iscompany='1'
-  companyid: string;
-  soc_branchid?: string;
-  tax_branchid?: string;
+  branchId: string; // PK - same as companyid when iscompany='1'
+  companyId: string;
+  socBranchId?: string;
+  taxBranchId?: string;
   tdesc: string;
   edesc: string;
   taddr?: string;
   tvillage?: string;
-  troom_no?: string;
+  troomNo?: string;
   tfloor?: string;
   tsoi?: string;
   tmoo?: string;
@@ -15,54 +15,57 @@ export interface Company {
   tsubdistrict?: string;
   eaddr?: string;
   evillage?: string;
-  eroom_no?: string;
+  eroomNo?: string;
   efloor?: string;
   esoi?: string;
   emoo?: string;
   eroad?: string;
   esubdistrict?: string;
   zipcode?: string;
-  districtid?: string;
+  districtId?: string;
   tel?: string;
   fax?: string;
   website?: string;
-  social_code?: string;
-  soc_sign_name?: string;
-  soc_sign_pos?: string;
-  soc_sign_img?: string;
-  tax_sign_name?: string;
-  tax_sign_pos?: string;
-  tax_sign_img?: string;
-  branch_no?: string;
-  taxid?: string;
-  taxid2?: string;
+  socialCode?: string;
+  socSignName?: string;
+  socSignPos?: string;
+  socSignImg?: string;
+  taxSignName?: string;
+  taxSignPos?: string;
+  taxSignImg?: string;
+  branchNo?: string;
+  taxId?: string;
+  taxId2?: string;
   consolidate?: string;
-  brand_tdesc?: string;
-  brand_edesc?: string;
+  brandTdesc?: string;
+  brandEdesc?: string;
   logo?: string;
-  com_type?: string;
-  iscompany: string; // '1' for company
-  isbranch?: string; // '0' or empty for company
-  headcompany?: string;
-  branch_tax?: string;
+  comType?: string;
+  isCompany: string; // '1' for company
+  isBranch?: string; // '0' or empty for company
+  headCompany?: string;
+  branchTax?: string;
   // System fields
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   approve?: string;
   verified?: string;
 }
 
-export interface CompanyPayload {
-  branchid: string;
-  companyid: string;
-  soc_branchid?: string;
-  tax_branchid?: string;
+/** Alias for components/services that expect CompanyModel */
+export type CompanyModel = Company;
+
+export interface CompanyPayloadModel {
+  branchId: string;
+  companyId: string;
+  socBranchId?: string;
+  taxBranchId?: string;
   tdesc: string;
   edesc: string;
   taddr?: string;
   tvillage?: string;
-  troom_no?: string;
+  troomNo?: string;
   tfloor?: string;
   tsoi?: string;
   tmoo?: string;
@@ -70,36 +73,36 @@ export interface CompanyPayload {
   tsubdistrict?: string;
   eaddr?: string;
   evillage?: string;
-  eroom_no?: string;
+  eroomNo?: string;
   efloor?: string;
   esoi?: string;
   emoo?: string;
   eroad?: string;
   esubdistrict?: string;
   zipcode?: string;
-  districtid?: string;
+  districtId?: string;
   tel?: string;
   fax?: string;
   website?: string;
-  social_code?: string;
-  soc_sign_name?: string;
-  soc_sign_pos?: string;
-  soc_sign_img?: string;
-  tax_sign_name?: string;
-  tax_sign_pos?: string;
-  tax_sign_img?: string;
-  branch_no?: string;
-  taxid?: string;
-  taxid2?: string;
+  socialCode?: string;
+  socSignName?: string;
+  socSignPos?: string;
+  socSignImg?: string;
+  taxSignName?: string;
+  taxSignPos?: string;
+  taxSignImg?: string;
+  branchNo?: string;
+  taxId?: string;
+  taxId2?: string;
   consolidate?: string;
-  brand_tdesc?: string;
-  brand_edesc?: string;
+  brandTdesc?: string;
+  brandEdesc?: string;
   logo?: string;
-  com_type?: string;
-  iscompany: string;
-  isbranch?: string;
-  headcompany?: string;
-  branch_tax?: string;
+  comType?: string;
+  isCompany: string;
+  isBranch?: string;
+  headCompany?: string;
+  branchTax?: string;
 }
 
 // Related tables from DBXML
@@ -107,37 +110,36 @@ export interface ZipCode {
   zipcode: string;
   tdesc?: string;
   edesc?: string;
-  districtid?: string;
-  provinceid?: string;
-  companyid?: string;
+  districtId?: string;
+  provinceId?: string;
+  companyId?: string;
 }
 
 export interface District {
-  districtid: string;
+  districtId: string;
   tdesc?: string;
   edesc?: string;
-  provinceid?: string;
-  companyid?: string;
+  provinceId?: string;
+  companyId?: string;
 }
 
 export interface Province {
-  provinceid: string;
-  short_ename?: string;
-  short_tname?: string;
-  long_tname?: string;
-  long_ename?: string;
-  companyid?: string;
+  provinceId: string;
+  shortEname?: string;
+  shortTname?: string;
+  longTname?: string;
+  longEname?: string;
+  companyId?: string;
 }
 
 export interface CompanyGroup {
-  companyid: string;
+  companyId: string;
   tname?: string;
   ename?: string;
 }
 
 export interface CompanyType {
-  codeid: string;
+  codeId: string;
   tdesc?: string;
   edesc?: string;
 }
-

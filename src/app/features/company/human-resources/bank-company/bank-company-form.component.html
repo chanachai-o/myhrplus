@@ -45,13 +45,13 @@
       <!-- Account Name (Thai) -->
       <app-glass-input
         [label]="'company.bankCompany.bankClientThName' | translate"
-        formControlName="bankClientThName">
+        formControlName="bankClientThname">
       </app-glass-input>
 
       <!-- Account Name (English) -->
       <app-glass-input
         label="ชื่อบัญชี (อังกฤษ)"
-        formControlName="bankClientEngName">
+        formControlName="bankClientEngname">
       </app-glass-input>
 
       <!-- Account No -->
@@ -94,19 +94,21 @@
     <!-- Options Section -->
     <div class="flex flex-wrap gap-6">
       <label class="flex items-center space-x-2 cursor-pointer">
-        <input 
-          type="checkbox" 
-          formControlName="isDefault" 
+        <input
+          type="checkbox"
+          [checked]="form.get('isdefault')?.value === '1'"
+          (change)="form.get('isdefault')?.setValue($any($event.target).checked ? '1' : '0')"
           class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary focus:ring-2">
         <span class="text-gray-700 dark:text-gray-300 select-none">
           {{ 'company.bankCompany.isDefault' | translate }}
         </span>
       </label>
-      
+
       <label class="flex items-center space-x-2 cursor-pointer">
-        <input 
-          type="checkbox" 
-          formControlName="transAts" 
+        <input
+          type="checkbox"
+          [checked]="form.get('transAts')?.value === 1"
+          (change)="form.get('transAts')?.setValue($any($event.target).checked ? 1 : 0)"
           class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary focus:ring-2">
         <span class="text-gray-700 dark:text-gray-300 select-none">ATS</span>
       </label>

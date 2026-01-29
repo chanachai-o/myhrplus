@@ -6,7 +6,7 @@ import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
-import { CompanyType } from '../../models/company-type.model';
+import { CompanyTypeModel } from '../../models/company-type.model';
 import { CompanyTypeService } from '../../services/company-type.service';
 import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
@@ -26,7 +26,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 })
 export class CompanyTypeFormComponent implements OnChanges {
   @Input() isOpen = false;
-  @Input() data: CompanyType | null = null;
+  @Input() data: CompanyTypeModel | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
 

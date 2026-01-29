@@ -3,11 +3,11 @@
 ## Overview
 เอกสารสรุปสถานะการ migration จากระบบเก่า (JSP) ไปยัง Angular 17+ สำหรับ HR Management System
 
-**Last Updated**: 2024-12-29  
+**Last Updated**: 2026-01-26  
 **Project**: Angular HR Migration  
 **Angular Version**: 17.0.0+  
 **TypeScript Version**: 5.2.2+  
-**Status**: ✅ UX/UI Standardization Complete (Phase 1-3)
+**Status**: ✅ UX/UI Standardization Complete (Phase 1-3) | Company Module: Human Resources 14 หน้า, Approve 4 หน้า, ESS 13 หน้า, Terms Of Use 1 หน้า (CRUD + placeholder)
 
 ---
 
@@ -33,6 +33,12 @@
   - Employee Self Service: 13 screens
   - Reports: 21 screens
   - Terms Of Use: 1 screen
+- **Angular Migrated (ล่าสุด 2026-01-26)**:
+  - **Human Resources (14 หน้า)**: Company Structure (placeholder), Reporting Line Definition, Change Boss (placeholder), Job Grade, Job Title, Change Master File Code (placeholder), Key Competency, KPI, Manpower Number Detail, Approve Manpower Budget / Turnover Report / Compare Payroll / Report Reconcile (placeholder), Project Table — CRUD + placeholder (`/company/human-resources/*`, `/company/hr/*`)
+  - **Approve (4 หน้า)**: ApproveBox, ApproveBoxEmployee, ApproveBoxEmployeeGroup, AdjustApproveBoxEmployee — placeholder (`/company/approve/*`)
+  - **ESS (13 หน้า)**: News Setup, Event Setup, Banner Setup, Handbook Setup, Video Setup, Logo Setup, External Links Setup, Vision Table, Mission Table, Company History, Regulation Group/Type/Table — CRUD 4 หน้า + placeholder 9 หน้า (`/company/ess/*`)
+  - **Terms Of Use (1 หน้า)**: User Manual — placeholder (`/company/terms/user-manual`)
+  - รายละเอียด routes, components, i18n: `docs/modules/COMPANY_MODULE_INVENTORY.md` (Angular Migration Status)
 
 ### 2. Personal Module (Employees)
 - **Screens Constant**: `personal-screens.constant.ts` ✅

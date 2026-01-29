@@ -1,4 +1,4 @@
-export interface CompanyGroup {
+export interface CompanyGroupModel {
   codeId: string;
   tdesc: string;
   edesc: string;

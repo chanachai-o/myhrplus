@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseApiService } from '@core/services';
 import { PaginatedResponse, PaginationParams } from '@core/models/pagination.model';
-import { CompanyGroup } from '../models/company-group.model';
+import { CompanyGroupModel } from '../models/company-group.model';
 import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -11,23 +11,17 @@ import { environment } from '@env/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CompanyGroupService extends BaseApiService<CompanyGroup> {
-  protected baseUrl = 'company/group'; // Relative path (will be overridden by apiUrl)
+export class CompanyGroupService extends BaseApiService<CompanyGroupModel> {
+  protected baseUrl = environment.apiEndpoints.organization + '/company/group'; // Relative path (will be overridden by apiUrl)
 
   loading = signal<boolean>(false);
-
-  // Override apiUrl to use OIS API endpoint
-  protected override get apiUrl(): string {
-    const base = environment.oisUrl.endsWith('/') ? environment.oisUrl.slice(0, -1) : environment.oisUrl;
-    return `${base}/company/group`;
-  }
 
   /**
    * Get all company groups with pagination support
    * @param params Optional pagination parameters (page, size)
-   * @returns Observable of CompanyGroup array
+   * @returns Observable of CompanyGroupModel array
    */
-  override getAll(params?: PaginationParams): Observable<CompanyGroup[]> {
+  override getAll(params?: PaginationParams): Observable<CompanyGroupModel[]> {
     this.loading.set(true);
 
     // Build query parameters
@@ -41,19 +35,16 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
 
     console.log('[CompanyGroupService] Fetching data from:', this.apiUrl, 'with params:', params);
 
-    return this.http.get<PaginatedResponse<CompanyGroup>>(this.apiUrl, { params: httpParams }).pipe(
+    return this.http.get<PaginatedResponse<CompanyGroupModel>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
-        // API returns camelCase, normalize field names to match our model
-        const transformedData: CompanyGroup[] = (response.content || []).map((item: any) =>
-          this.normalizeFromApiFormat(item)
-        );
+        const data: CompanyGroupModel[] = response.content ?? [];
         console.log('[CompanyGroupService] Data loaded:', {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           currentPage: response.number,
-          itemsCount: transformedData.length
+          itemsCount: data.length
         });
-        return transformedData;
+        return data;
       }),
       tap((data) => {
         console.log('[CompanyGroupService] Data loaded:', data);
@@ -73,7 +64,7 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
    * @returns Observable with data and pagination info
    */
   getAllWithPagination(params?: PaginationParams): Observable<{
-    data: CompanyGroup[];
+    data: CompanyGroupModel[];
     currentPage: number;
     pageSize: number;
     totalPages: number;
@@ -92,22 +83,18 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
 
     console.log('[CompanyGroupService] Fetching data with pagination from:', this.apiUrl, 'with params:', params);
 
-    return this.http.get<PaginatedResponse<CompanyGroup>>(this.apiUrl, { params: httpParams }).pipe(
+    return this.http.get<PaginatedResponse<CompanyGroupModel>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
-        // API returns camelCase, normalize field names to match our model
-        const transformedData: CompanyGroup[] = (response.content || []).map((item: any) =>
-          this.normalizeFromApiFormat(item)
-        );
+        const data: CompanyGroupModel[] = response.content ?? [];
         console.log('[CompanyGroupService] Pagination response:', {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           currentPage: response.number,
           pageSize: response.size,
-          itemsCount: transformedData.length
+          itemsCount: data.length
         });
-
         return {
-          data: transformedData,
+          data,
           currentPage: response.number,
           pageSize: response.size,
           totalPages: response.totalPages,
@@ -126,12 +113,12 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
     );
   }
 
-  override create(data: Partial<CompanyGroup>): Observable<CompanyGroup> {
+  override create(data: Partial<CompanyGroupModel>): Observable<CompanyGroupModel> {
     this.loading.set(true);
     // API accepts camelCase, normalize data from model
     const apiData = this.normalizeToApiFormat(data);
     console.log('[CompanyGroupService] Creating:', apiData);
-    return this.http.post<CompanyGroup>(this.apiUrl, apiData).pipe(
+    return this.http.post<CompanyGroupModel>(this.apiUrl, apiData).pipe(
       map((response) => this.normalizeFromApiFormat(response)),
       tap((result) => {
         console.log('[CompanyGroupService] Created:', result);
@@ -145,13 +132,13 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
     );
   }
 
-  override update(id: string | number, data: Partial<CompanyGroup>): Observable<CompanyGroup> {
+  override update(id: string | number, data: Partial<CompanyGroupModel>): Observable<CompanyGroupModel> {
     this.loading.set(true);
     // API accepts camelCase, normalize data from model
     const apiData = this.normalizeToApiFormat(data);
     // Use POST same as create, to apiUrl
     console.log('[CompanyGroupService] Updating (POST):', id, apiData);
-    return this.http.post<CompanyGroup>(this.apiUrl, apiData).pipe(
+    return this.http.post<CompanyGroupModel>(this.apiUrl, apiData).pipe(
       map((response) => this.normalizeFromApiFormat(response)),
       tap((result) => {
         console.log('[CompanyGroupService] Updated:', result);
@@ -165,12 +152,12 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
     );
   }
 
-  override delete(data: Partial<CompanyGroup>): Observable<void> {
+  override delete(data: Partial<CompanyGroupModel>): Observable<void> {
     this.loading.set(true);
     const url = this.apiUrl;
     console.log('[CompanyGroupService] Deleting:', data);
 
-    // DELETE request with CompanyGroup body (send data as-is)
+    // DELETE request with CompanyGroupModel body (send data as-is)
     const body = data;
     const options = { body };
 
@@ -195,7 +182,7 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
    * Normalize model data to API format (camelCase)
    * Handles field name variations
    */
-  private normalizeToApiFormat(data: Partial<CompanyGroup>): any {
+  private normalizeToApiFormat(data: Partial<CompanyGroupModel>): any {
     return {
       codeId: data.codeId,
       tdesc: data.tdesc,
@@ -207,7 +194,7 @@ export class CompanyGroupService extends BaseApiService<CompanyGroup> {
    * Normalize API response to model format (camelCase)
    * Handles field name variations and type conversions
    */
-  private normalizeFromApiFormat(item: any): CompanyGroup {
+  private normalizeFromApiFormat(item: any): CompanyGroupModel {
     return {
       codeId: item.codeId || item.codeid || '',
       tdesc: item.tdesc || '',

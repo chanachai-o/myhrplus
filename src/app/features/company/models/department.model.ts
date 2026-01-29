@@ -1,67 +1,66 @@
-export interface Department {
-  bu2id: string;
-  companyid: string;
+export interface DepartmentModel {
+  bu2Id: string;
+  companyId: string;
   parent?: string; // Reference to MBU1 (Division)
   tdesc: string;
   edesc: string;
-  tshort_name?: string;
-  eshort_name?: string;
-  short_name?: string;
+  tshortName?: string;
+  eshortName?: string;
+  shortName?: string;
   active: string; // '0' or '1'
-  build_date?: string;
-  expire_date?: string;
+  buildDate?: string;
+  expireDate?: string;
   objective?: string;
   remark?: string;
   extention?: string;
   consolidate?: string;
   analcode?: string;
-  sort_number?: number;
-  bu2sup?: string; // Position ID (relation to mposition)
+  sortNumber?: number;
+  bu2Sup?: string; // Position ID (relation to mposition)
   website?: string;
   email?: string;
   // System fields
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   approve?: string;
   verified?: string;
 }
 
-export interface DepartmentPayload {
-  bu2id: string;
-  companyid: string;
+export interface DepartmentPayloadModel {
+  bu2Id: string;
+  companyId: string;
   parent?: string;
   tdesc: string;
   edesc: string;
-  tshort_name?: string;
-  eshort_name?: string;
-  short_name?: string;
+  tshortName?: string;
+  eshortName?: string;
+  shortName?: string;
   active: string;
-  build_date?: string;
-  expire_date?: string;
+  buildDate?: string;
+  expireDate?: string;
   objective?: string;
   remark?: string;
   extention?: string;
   consolidate?: string;
   analcode?: string;
-  sort_number?: number;
-  bu2sup?: string;
+  sortNumber?: number;
+  bu2Sup?: string;
   website?: string;
   email?: string;
 }
 
 // Related tables from DBXML
-export interface Division {
-  bu1id: string;
+export interface DivisionModel {
+  bu1Id: string;
   tdesc?: string;
   edesc?: string;
-  companyid?: string;
+  companyId?: string;
 }
 
 export interface Position {
-  positionid: string;
+  positionId: string;
   tdesc?: string;
   edesc?: string;
-  companyid?: string;
+  companyId?: string;
 }
-

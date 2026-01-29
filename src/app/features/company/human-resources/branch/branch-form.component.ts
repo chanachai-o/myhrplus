@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angu
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
-import { Branch } from '../../models/branch.model';
+import { BranchModel } from '../../models/branch.model';
 import { BranchService } from '../../services/branch.service';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
 @Component({
@@ -20,36 +22,37 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
   ],
   templateUrl: './branch-form.component.html'
 })
-export class BranchFormComponent implements OnChanges {
+export class BranchModelFormComponent implements OnChanges {
   @Input() isOpen = false;
-  @Input() data: Branch | null = null;
+  @Input() data: BranchModel | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
   private service = inject(BranchService);
   private translate = inject(TranslateService);
+  private confirmationDialogService = inject(ConfirmationDialogService);
 
   form: FormGroup;
   isEditMode = false;
 
   constructor() {
     this.form = this.fb.group({
-      branchid: ['', [Validators.required, Validators.maxLength(10)]],
-      companyid: ['', [Validators.required, Validators.maxLength(5)]],
-      headcompany: ['', [Validators.required, Validators.maxLength(10)]], // Required for branch
+      branchId: ['', [Validators.required, Validators.maxLength(10)]],
+      companyId: ['', [Validators.required, Validators.maxLength(5)]],
+      headCompany: ['', [Validators.required, Validators.maxLength(10)]], // Required for branch
       tdesc: ['', [Validators.required, Validators.maxLength(200)]],
       edesc: ['', [Validators.required, Validators.maxLength(200)]],
-      com_type: ['', Validators.maxLength(3)],
-      branch_no: ['', Validators.maxLength(10)],
-      soc_branchid: ['', Validators.maxLength(10)],
-      tax_branchid: ['', Validators.maxLength(10)],
-      taxid: ['', Validators.maxLength(13)],
-      taxid2: ['', Validators.maxLength(13)],
+      comType: ['', Validators.maxLength(3)],
+      branchNo: ['', Validators.maxLength(10)],
+      socBranchId: ['', Validators.maxLength(10)],
+      taxBranchId: ['', Validators.maxLength(10)],
+      taxId: ['', Validators.maxLength(13)],
+      taxId2: ['', Validators.maxLength(13)],
       // Address Thai
       taddr: ['', Validators.maxLength(20)],
       tvillage: ['', Validators.maxLength(50)],
-      troom_no: ['', Validators.maxLength(20)],
+      troomNo: ['', Validators.maxLength(20)],
       tfloor: ['', Validators.maxLength(10)],
       tsoi: ['', Validators.maxLength(50)],
       tmoo: ['', Validators.maxLength(10)],
@@ -58,7 +61,7 @@ export class BranchFormComponent implements OnChanges {
       // Address English
       eaddr: ['', Validators.maxLength(20)],
       evillage: ['', Validators.maxLength(50)],
-      eroom_no: ['', Validators.maxLength(20)],
+      eroomNo: ['', Validators.maxLength(20)],
       efloor: ['', Validators.maxLength(10)],
       esoi: ['', Validators.maxLength(50)],
       emoo: ['', Validators.maxLength(10)],
@@ -66,26 +69,26 @@ export class BranchFormComponent implements OnChanges {
       esubdistrict: ['', Validators.maxLength(50)],
       // Location
       zipcode: ['', Validators.maxLength(5)],
-      districtid: ['', Validators.maxLength(10)],
+      districtId: ['', Validators.maxLength(10)],
       // Contact
       tel: ['', Validators.maxLength(30)],
       fax: ['', Validators.maxLength(30)],
       website: ['', Validators.maxLength(100)],
       // Social Security
-      social_code: ['', Validators.maxLength(20)],
-      soc_sign_name: ['', Validators.maxLength(100)],
-      soc_sign_pos: ['', Validators.maxLength(50)],
+      socialCode: ['', Validators.maxLength(20)],
+      socSignName: ['', Validators.maxLength(100)],
+      socSignPos: ['', Validators.maxLength(50)],
       // Tax
-      tax_sign_name: ['', Validators.maxLength(100)],
-      tax_sign_pos: ['', Validators.maxLength(50)],
+      taxSignName: ['', Validators.maxLength(100)],
+      taxSignPos: ['', Validators.maxLength(50)],
       // Other
-      brand_tdesc: ['', Validators.maxLength(200)],
-      brand_edesc: ['', Validators.maxLength(200)],
+      brandTdesc: ['', Validators.maxLength(200)],
+      brandEdesc: ['', Validators.maxLength(200)],
       consolidate: ['', Validators.maxLength(10)],
-      branch_tax: ['', Validators.maxLength(10)],
+      branchTax: ['', Validators.maxLength(10)],
       // Required fields
-      iscompany: [''], // Empty for branch
-      isbranch: ['1', Validators.required] // '1' for branch
+      isCompany: [''], // Empty for branch
+      isBranch: ['1', Validators.required] // '1' for branch
     });
   }
 
@@ -95,20 +98,20 @@ export class BranchFormComponent implements OnChanges {
       if (this.data) {
         const formData = {
           ...this.data,
-          iscompany: this.data.iscompany || '',
-          isbranch: this.data.isbranch || '1'
+          isCompany: this.data.isCompany || '',
+          isBranch: this.data.isBranch || '1'
         };
         this.form.patchValue(formData);
-        this.form.get('branchid')?.disable(); // PK cannot be changed
-        this.form.get('companyid')?.disable(); // Company ID is readonly
+        this.form.get('branchId')?.disable(); // PK cannot be changed
+        this.form.get('companyId')?.disable(); // Company ID is readonly
       } else {
         this.form.reset({
-          iscompany: '',
-          isbranch: '1'
+          isCompany: '',
+          isBranch: '1'
         });
-        this.form.get('branchid')?.enable();
-        // TODO: Set companyid from current user context
-        this.form.get('companyid')?.setValue('001'); // Default or from service
+        this.form.get('branchId')?.enable();
+        // TODO: Set companyId from current user context
+        this.form.get('companyId')?.setValue('001'); // Default or from service
       }
     }
   }
@@ -123,23 +126,45 @@ export class BranchFormComponent implements OnChanges {
       return;
     }
 
+    this.confirmationDialogService.confirmSave(this.isEditMode).pipe(first()).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
+        if (result.confirmed) {
+          await this.confirmationDialogService.waitForClose();
+          this.saveData();
+        }
+      }
+    });
+  }
+
+  private saveData() {
     const formData = this.form.getRawValue();
     this.service.loading.set(true);
 
     const request$ = this.isEditMode
-      ? this.service.update(formData.branchid, formData)
+      ? this.service.update(formData.branchId, formData)
       : this.service.create(formData);
 
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
-        this.save.emit();
-        this.onClose();
+        setTimeout(() => {
+          const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE);
+          this.confirmationDialogService.showSuccess(successMessage).pipe(first()).subscribe({
+            next: () => {
+              this.save.emit();
+              this.onClose();
+            }
+          });
+        }, 100);
       },
       error: (err: unknown) => {
-        console.error(err);
         this.service.loading.set(false);
-        // TODO: Show toast error
+        setTimeout(() => {
+          const errorMessage = (err as any)?.error?.message ||
+                             (err as any)?.message ||
+                             this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE);
+          this.confirmationDialogService.showError(errorMessage).pipe(first()).subscribe();
+        }, 100);
       }
     });
   }

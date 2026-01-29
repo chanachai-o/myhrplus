@@ -202,6 +202,14 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
               { label: 'Regulation/Order/Notice Type Table', route: '/company/ess/regulation-type', icon: 'category' },
               { label: 'Regulation/Order/Notice Table', route: '/company/ess/regulation-table', icon: 'gavel' }
             ]
+          },
+          // 4. Terms Of Use
+          {
+            label: 'Terms Of Use',
+            icon: 'menu_book',
+            children: [
+              { label: 'User Manual', route: '/company/terms/user-manual', icon: 'menu_book' }
+            ]
           }
         ]
       },

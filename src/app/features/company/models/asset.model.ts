@@ -1,6 +1,6 @@
-export interface Asset {
-  companyid: string;
-  assetid: string;
+export interface AssetModel {
+  companyId: string;
+  assetId: string;
   tdesc: string;
   edesc: string;
   astype: string; // Asset Type ID
@@ -9,11 +9,9 @@ export interface Asset {
   owner?: string;
   status?: string; // ASSET_STATUS
   reservation?: string; // 0/1
-  
+
   // Display fields
-  astype_tdesc?: string;
-  owner_fname?: string;
-  owner_lname?: string;
+  astypeTdesc?: string;
+  ownerFname?: string;
+  ownerLname?: string;
 }
-
-

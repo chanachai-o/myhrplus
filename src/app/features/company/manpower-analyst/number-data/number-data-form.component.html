@@ -1,0 +1,7 @@
+<app-modal [show]="isOpen" [title]="(isEditMode ? 'company.manpowerNumberData.edit' : 'company.manpowerNumberData.add') | translate" [useSolidBackground]="true" [size]="'md'" (closeEvent)="onClose()" (confirmEvent)="onSubmit()">
+  <form [formGroup]="form" class="space-y-6">
+    <app-glass-input [label]="'company.manpowerNumberData.column.id' | translate" formControlName="manpowerNumberDataId" [required]="true" [readonly]="isEditMode" [useFormValidationMessages]="true"></app-glass-input>
+    <app-glass-input [label]="'company.manpowerNumberData.column.tdesc' | translate" formControlName="tdesc" [required]="true" [useFormValidationMessages]="true"></app-glass-input>
+    <app-glass-input [label]="'company.manpowerNumberData.column.edesc' | translate" formControlName="edesc"></app-glass-input>
+  </form>
+</app-modal>

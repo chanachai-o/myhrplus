@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from '@core/services';
-import { AssetType } from '../models/asset-type.model';
+import { AssetTypeModel } from '../models/asset-type.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AssetTypeService extends BaseApiService<AssetType> {
+export class AssetTypeService extends BaseApiService<AssetTypeModel> {
   protected baseUrl = 'hr/master/asset-type';
 }
 

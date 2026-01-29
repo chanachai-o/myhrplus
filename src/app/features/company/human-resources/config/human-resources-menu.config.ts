@@ -259,6 +259,16 @@ export const HUMAN_RESOURCES_MENU_ITEMS: HumanResourcesMenuItem[] = [
     badgeColor: 'green'
   },
   {
+    code: 'CO01A0401',
+    route: 'position',
+    icon: 'badge',
+    labelThai: 'ทะเบียนตำแหน่ง',
+    labelEnglish: 'Position Table',
+    description: 'Position Table (PRU010)',
+    category: 'branch-business-unit',
+    badgeColor: 'green'
+  },
+  {
     code: 'CO01A0221',
     route: 'workarea-store',
     icon: 'work',

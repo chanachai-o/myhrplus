@@ -3,12 +3,12 @@
   [title]="(isEditMode ? 'features.company.entities.division.edit' : 'features.company.entities.division.add') | translate"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
-  
+
   <form [formGroup]="form" class="space-y-4 p-2">
     <!-- BU1 ID (PK) -->
     <app-glass-input
       [label]="'features.company.entities.division.bu1Id' | translate"
-      formControlName="bu1id"
+      formControlName="bu1Id"
       [required]="true"
       [readonly]="isEditMode"
       [errorMessage]="'features.company.entities.division.bu1IdRequired' | translate"
@@ -18,7 +18,7 @@
     <!-- Company ID (Readonly) -->
     <app-glass-input
       [label]="'features.company.entities.division.companyId' | translate"
-      formControlName="companyid"
+      formControlName="companyId"
       [required]="true"
       [readonly]="true">
     </app-glass-input>
@@ -26,7 +26,7 @@
     <!-- Branch ID -->
     <app-glass-input
       [label]="'features.company.entities.division.branchId' | translate"
-      formControlName="branchid"
+      formControlName="branchId"
       maxLength="5">
     </app-glass-input>
 
@@ -52,13 +52,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <app-glass-input
         [label]="'features.company.entities.division.tshortName' | translate"
-        formControlName="tshort_name"
+        formControlName="tshortName"
         maxLength="10">
       </app-glass-input>
 
       <app-glass-input
         [label]="'features.company.entities.division.eshortName' | translate"
-        formControlName="eshort_name"
+        formControlName="eshortName"
         maxLength="10">
       </app-glass-input>
     </div>
@@ -70,17 +70,17 @@
       </label>
       <div class="flex gap-4">
         <label class="flex items-center cursor-pointer">
-          <input 
-            type="radio" 
-            formControlName="active" 
+          <input
+            type="radio"
+            formControlName="active"
             value="1"
             class="w-4 h-4 text-primary border-gray-300 focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
           <span class="ml-2 text-sm text-gray-700 dark:text-slate-300">{{ 'features.company.entities.division.activeActive' | translate }}</span>
         </label>
         <label class="flex items-center cursor-pointer">
-          <input 
-            type="radio" 
-            formControlName="active" 
+          <input
+            type="radio"
+            formControlName="active"
             value="0"
             class="w-4 h-4 text-primary border-gray-300 focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
           <span class="ml-2 text-sm text-gray-700 dark:text-slate-300">{{ 'features.company.entities.division.activeInactive' | translate }}</span>
@@ -92,14 +92,14 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <app-glass-input
         [label]="'features.company.entities.division.buildDate' | translate"
-        formControlName="build_date"
+        formControlName="buildDate"
         type="date"
         [required]="true">
       </app-glass-input>
 
       <app-glass-input
         [label]="'features.company.entities.division.expireDate' | translate"
-        formControlName="expire_date"
+        formControlName="expireDate"
         type="date">
       </app-glass-input>
     </div>
@@ -107,7 +107,7 @@
     <!-- Supervisor -->
     <app-glass-input
       [label]="'features.company.entities.division.bu1Sup' | translate"
-      formControlName="bu1sup"
+      formControlName="bu1Sup"
       maxLength="10">
     </app-glass-input>
 
@@ -116,7 +116,7 @@
       <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
         {{ 'features.company.entities.division.objective' | translate }}
       </label>
-      <textarea 
+      <textarea
         formControlName="objective"
         rows="3"
         maxLength="4000"
@@ -128,7 +128,7 @@
       <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2 transition-colors duration-300">
         {{ 'features.company.entities.division.remark' | translate }}
       </label>
-      <textarea 
+      <textarea
         formControlName="remark"
         rows="3"
         maxLength="4000"
@@ -160,7 +160,7 @@
 
       <app-glass-input
         [label]="'features.company.entities.division.sortNumber' | translate"
-        formControlName="sort_number"
+        formControlName="sortNumber"
         type="number">
       </app-glass-input>
 

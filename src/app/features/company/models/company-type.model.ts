@@ -1,4 +1,4 @@
-export interface CompanyType {
+export interface CompanyTypeModel {
   codeId: string;
   tdesc: string;
   edesc: string;
@@ -19,7 +19,7 @@ export interface CompanyTypePayload {
  * API Response interface for CompanyType
  * Used when API returns camelCase field names
  */
-export interface CompanyTypeApiResponse {
+export interface CompanyTypeApiResponseModel {
   codeId: string;
   tdesc: string;
   edesc: string;

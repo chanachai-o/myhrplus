@@ -10,7 +10,7 @@ import { ColumnModel, PageSettingsModel } from '@syncfusion/ej2-grids';
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { CompanyTypeService } from '../../services/company-type.service';
-import { CompanyType } from '../../models/company-type.model';
+import { CompanyTypeModel } from '../../models/company-type.model';
 import { CompanyTypeFormComponent } from './company-type-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -60,7 +60,7 @@ export class CompanyTypeListComponent implements OnInit {
   // Changed type to any to support { result: any[], count: number } for server-side pagination
   data = signal<any>({ result: [], count: 0 });
   showModal = false;
-  selectedItem: CompanyType | null = null;
+  selectedItem: CompanyTypeModel | null = null;
   searchControl = new FormControl('');
 
   headerActions: any[] = [];
@@ -223,11 +223,11 @@ export class CompanyTypeListComponent implements OnInit {
 
     // Filter out Syncfusion Grid internal fields (e.g., 'column', 'index')
     // Only include fields that are part of CompanyType model
-    const modelFields: (keyof CompanyType)[] = [
+    const modelFields: (keyof CompanyTypeModel)[] = [
       'codeId', 'tdesc', 'edesc', 'editBy', 'editDate', 'editTime', 'verified', 'companyId'
     ];
 
-    const cleanRow = filterSyncfusionFields<CompanyType>(row, modelFields);
+    const cleanRow = filterSyncfusionFields<CompanyTypeModel>(row, modelFields);
 
     // Show confirmation dialog using service
     this.confirmationDialogService.confirmDelete().pipe(

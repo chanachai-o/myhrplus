@@ -6,6 +6,7 @@
 - **Active Menus**: 60+ menu items
 - **Module Code**: CO (Company)
 - **Base Path**: `hrAppWeb.war/COMPANY/`
+- **Last Updated**: 2026-01-26
 
 ## Summary Statistics
 - **Company Information**: 7 screens
@@ -20,6 +21,123 @@
 - **Employee Self Service**: 13 screens
 - **Reports**: 20+ reports
 - **Terms Of Use**: 1 screen
+
+---
+
+## Angular Migration Status (ปัจจุบัน)
+
+หน้าจอที่ migrate เป็น Angular แล้ว (มาตรฐาน Syncfusion DataGrid + Form + ConfirmationDialog + i18n หรือ placeholder) และมีเมนูใน Sidebar ครบ
+
+### Human Resources — โครงสร้าง/รายงาน/ทะเบียน (14 หน้าจอ)
+| หน้าจอ | Route | ประเภท |
+|--------|-------|--------|
+| Company Structure | `human-resources/company-structure` | placeholder |
+| Reporting Line Definition | `hr/reporting-line/definition` | CRUD |
+| Change Boss | `hr/reporting-line/change-boss` | placeholder |
+| Job Grade Table | `hr/job-description/job-grade` | CRUD |
+| Job Title Table | `hr/job-description/job-title` | CRUD |
+| Change Master File Code | `hr/master-file/change-code` | placeholder |
+| Key Competency | `hr/master-file/key-competency` | CRUD |
+| KPI | `hr/master-file/kpi` | CRUD |
+| Manpower Number Detail | `hr/manpower-analyst/number-detail` | CRUD |
+| Approve Manpower Budget | `hr/manpower/approve-budget` | placeholder |
+| Turnover Report | `hr/manpower/turnover-report` | placeholder |
+| Compare Manpower and Payroll | `hr/manpower/compare-payroll` | placeholder |
+| Report Excel Report Reconcile | `hr/manpower/report-reconcile` | placeholder |
+| Project Table | `hr/setup/project-table` | CRUD |
+
+### Job Description (HR) — `/company/hr/job-description/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| Position Group Register | `position-group` | `job-description/position-group/*` | `company.positionGroup.*` |
+| Job Group Table | `job-group` | `job-description/job-group/*` | `company.jobGroup.*` |
+| Job Code Level Table | `job-code-level` | `job-description/job-code-level/*` | `company.jobCodeLevel.*` |
+
+### Master File (HR) — `/company/hr/master-file/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| Rounding-off Table | `rounding-off` | `master-file/rounding-off/*` | `company.roundingOff.*` |
+| Signature for e-Payslip Master | `e-payslip-signature` | `master-file/e-payslip-signature/*` | `company.ePayslipSignature.*` |
+| KC/KPI Group | `kc-kpi-group` | `master-file/kc-kpi-group/*` | `company.kcKpiGroup.*` |
+
+### Manpower Analyst (HR) — `/company/hr/manpower-analyst/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| Manpower Type | `type` | `manpower-analyst/type/*` | `company.manpowerType.*` |
+| Manpower Number Table | `number-table` | `manpower-analyst/number-table/*` | `company.manpowerNumberTable.*` |
+| Manpower Number Data | `number-data` | `manpower-analyst/number-data/*` | `company.manpowerNumberData.*` |
+
+### Manpower (HR) — `/company/hr/manpower/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| Generate Manpower Budget | `generate-budget` | `manpower/generate-budget/*` (placeholder) | `company.generateBudget.*` |
+
+### Employee Self Service (ESS) — `/company/ess/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| News Setup | `news-setup` | `ess/news-setup/*` (placeholder) | `company.newsSetup.*` |
+| Event Setup | `event-setup` | `ess/event-setup/*` | `company.eventSetup.*` |
+| Banner Setup | `banner-setup` | `ess/banner-setup/*` | `company.bannerSetup.*` |
+| Handbook Setup | `handbook-setup` | `ess/handbook-setup/*` | `company.handbookSetup.*` |
+| Video Setup | `video-setup` | `ess/video-setup/*` | `company.videoSetup.*` |
+| Logo Setup | `logo-setup` | `ess/logo-setup/*` (placeholder) | `company.logoSetup.*` |
+| External Links Setup | `external-links-setup` | `ess/external-links-setup/*` (placeholder) | `company.externalLinksSetup.*` |
+| Vision Table | `vision-table` | `ess/vision-table/*` (placeholder) | `company.visionTable.*` |
+| Mission Table | `mission-table` | `ess/mission-table/*` (placeholder) | `company.missionTable.*` |
+| Company History | `company-history` | `ess/company-history/*` (placeholder) | `company.companyHistory.*` |
+| Regulation/Order/Notice Group Table | `regulation-group` | `ess/regulation-group/*` (placeholder) | `company.regulationGroup.*` |
+| Regulation/Order/Notice Type Table | `regulation-type` | `ess/regulation-type/*` (placeholder) | `company.regulationType.*` |
+| Regulation/Order/Notice Table | `regulation-table` | `ess/regulation-table/*` (placeholder) | `company.regulationTable.*` |
+
+### Approve (TA01A08) — `/company/approve/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| ApproveBox | `approve-box` | `approve/approve-box/*` (placeholder) | `company.approveBox.*` |
+| ApproveBoxEmployee | `approve-box-employee` | `approve/approve-box-employee/*` (placeholder) | `company.approveBoxEmployee.*` |
+| ApproveBoxEmployeeGroup | `approve-box-employee-group` | `approve/approve-box-employee-group/*` (placeholder) | `company.approveBoxEmployeeGroup.*` |
+| AdjustApproveBoxEmployee | `adjust-approve-box-employee` | `approve/adjust-approve-box-employee/*` (placeholder) | `company.adjustApproveBoxEmployee.*` |
+
+### Terms Of Use — `/company/terms/`
+| หน้าจอ | Route | Components | i18n Key |
+|--------|-------|------------|----------|
+| User Manual | `user-manual` | `terms/user-manual/*` (placeholder) | `company.userManual.*` |
+
+### อ้างอิง
+- **Routing**: `src/app/features/company/company-routing.module.ts`
+- **Sidebar เมนู**: `src/app/core/constants/navigation.constant.ts` (Company Management → Human Resources / Employee Self Service)
+- **Reference implementation**: Company Type — `docs/migration/COMPANY_TYPE_MIGRATION_GUIDE.md`
+
+---
+
+## หน้าจอที่ยังไม่ Migrate (ควรนำมาใส่)
+
+หน้าจอต่อไปนี้มีใน JSP Inventory และ/หรือมีเมนูใน Sidebar แล้ว แต่ยังไม่มี Angular component (list/form) หรือ route จริง — แนะนำให้ migrate ตาม pattern ใน `docs/migration/COMPANY_TYPE_MIGRATION_GUIDE.md`
+
+### 1. Human Resources — **Migrated (14 หน้าจอ: CRUD + placeholder)**  
+→ ดู Angular Migration Status ด้านบน
+
+### 2. Approve (TA01A08) — **Migrated (placeholder)**  
+→ ดู Angular Migration Status ด้านบน
+
+### 3. Employee Self Service (ESS) — **Migrated (placeholder สำหรับ 9 หน้าจอใหม่)**  
+→ ดู Angular Migration Status ด้านบน
+
+### 4. Reports (CO02A)
+
+- รายงาน 20+ ตัว (ROI1001–ROI10xx ฯลฯ) — ส่วนใหญ่เป็น Report/Export ไม่ใช่หน้าทะเบียน CRUD; อาจทำเป็นหน้าสร้างรายงานหรือลิงก์ไประบบรายงานแยก
+
+### 5. Terms Of Use — **Migrated (placeholder)**  
+→ ดู Angular Migration Status ด้านบน (User Manual: `/company/terms/user-manual`)
+
+---
+
+**สรุปจำนวนที่ยังไม่ migrate (หน้าทะเบียน/เมนูหลัก):**
+
+- **Human Resources**: ทำครบ 14 หน้าจอแล้ว (CRUD + placeholder)
+- **Approve**: ทำครบ 4 หน้าจอแล้ว (placeholder)
+- **ESS**: ทำครบ 13 หน้าจอแล้ว (4 CRUD + 9 placeholder)
+- **Terms Of Use**: ทำครบ 1 หน้าจอแล้ว (placeholder)
+- **Reports**: 20+ รายงาน (ยังไม่ migrate — แยกประเภทงานออกจากทะเบียน CRUD)
 
 ---
 

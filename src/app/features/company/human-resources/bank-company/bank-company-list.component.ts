@@ -10,7 +10,7 @@ import { ColumnModel, PageSettingsModel } from '@syncfusion/ej2-grids';
 import { GlassCardComponent } from '@shared/components/glass-card/glass-card.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { BankCompanyService } from '../../services/bank-company.service';
-import { BankCompany } from '../../models/bank-company.model';
+import { BankCompanyModel } from '../../models/bank-company.model';
 import { BankCompanyFormComponent } from './bank-company-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -60,7 +60,7 @@ export class BankCompanyListComponent implements OnInit {
   // Changed type to any to support { result: any[], count: number } for server-side pagination
   data = signal<any>({ result: [], count: 0 });
   showModal = false;
-  selectedItem: BankCompany | null = null;
+  selectedItem: BankCompanyModel | null = null;
   searchControl = new FormControl('');
 
   headerActions: any[] = [];
@@ -164,9 +164,9 @@ export class BankCompanyListComponent implements OnInit {
     this.columns = [
       { field: 'lineNo', headerText: 'Line No.', width: 100, isPrimaryKey: true, visible: false },
       { field: 'bankId', headerText: 'company.bankCompany.column.bankId', width: 120 },
-      { field: 'bankClientThName', headerText: 'company.bankCompany.column.bankClientThName', width: 250, minWidth: 200 },
+      { field: 'bankClientThname', headerText: 'company.bankCompany.column.bankClientThName', width: 250, minWidth: 200 },
       { field: 'account', headerText: 'company.bankCompany.column.account', width: 150 },
-      { field: 'isDefault', headerText: 'company.bankCompany.column.isDefault', width: 100, type: 'boolean', displayAsCheckBox: true }
+      { field: 'isdefault', headerText: 'company.bankCompany.column.isDefault', width: 100 }
     ];
     console.log('[BankCompanyList] Columns configured:', this.columns);
 
@@ -223,15 +223,15 @@ export class BankCompanyListComponent implements OnInit {
 
     // Filter out Syncfusion Grid internal fields (e.g., 'column', 'index')
     // Only include fields that are part of BankCompany model
-    const modelFields: (keyof BankCompany)[] = [
+    const modelFields: (keyof BankCompanyModel)[] = [
       'companyId', 'bankId', 'branch', 'bankBranch', 'lineNo',
-      'account', 'bankClient', 'bankClientThName', 'bankClientEngName',
+      'account', 'bankClient', 'bankClientThname', 'bankClientEngname',
       'contactPerson', 'tel',
       'transAts', 'transMedia', 'transOther', 'transOtherDesc',
-      'dayDisk', 'dayCheque', 'isDefault'
+      'dayDisk', 'dayCheque', 'isdefault'
     ];
 
-    const cleanRow = filterSyncfusionFields<BankCompany>(row, modelFields);
+    const cleanRow = filterSyncfusionFields<BankCompanyModel>(row, modelFields);
 
     // Show confirmation dialog using service
     this.confirmationDialogService.confirmDelete().pipe(

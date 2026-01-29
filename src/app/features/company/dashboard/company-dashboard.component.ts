@@ -82,7 +82,7 @@ export class CompanyDashboardComponent implements OnInit, OnDestroy {
     positions: {
       value: 156,
       change: 15,
-      route: '/company/human-resources'
+      route: '/company/human-resources/position'
     },
     locations: {
       value: 18,

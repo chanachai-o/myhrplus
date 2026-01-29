@@ -1,0 +1,7 @@
+<app-modal [show]="isOpen" [title]="(isEditMode ? 'company.handbookSetup.edit' : 'company.handbookSetup.add') | translate" [useSolidBackground]="true" [size]="'md'" (closeEvent)="onClose()" (confirmEvent)="onSubmit()">
+  <form [formGroup]="form" class="space-y-6">
+    <app-glass-input [label]="'company.handbookSetup.column.id' | translate" formControlName="handbookid" [required]="true" [readonly]="isEditMode" [useFormValidationMessages]="true"></app-glass-input>
+    <app-glass-input [label]="'company.handbookSetup.column.tdesc' | translate" formControlName="tdesc" [required]="true" [useFormValidationMessages]="true"></app-glass-input>
+    <app-glass-input [label]="'company.handbookSetup.column.edesc' | translate" formControlName="edesc"></app-glass-input>
+  </form>
+</app-modal>

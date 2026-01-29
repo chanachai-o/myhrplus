@@ -1,0 +1,49 @@
+<app-modal
+  [show]="isOpen"
+  [title]="(isEditMode ? 'features.company.entities.position.edit' : 'features.company.entities.position.add') | translate"
+  [useSolidBackground]="true"
+  [size]="'md'"
+  (closeEvent)="onClose()"
+  (confirmEvent)="onSubmit()">
+
+  <form [formGroup]="form" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-1">
+        <app-glass-input
+          [label]="'features.company.entities.position.positionId' | translate"
+          formControlName="positionid"
+          [required]="true"
+          [readonly]="isEditMode"
+          [useFormValidationMessages]="true"
+          maxLength="20">
+          <app-form-validation-messages
+            [control]="form.get('positionid')"
+            [customMessages]="{ required: 'features.company.entities.position.positionIdRequired' | translate }">
+          </app-form-validation-messages>
+        </app-glass-input>
+      </div>
+      <div class="md:col-span-2"></div>
+    </div>
+
+    <div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+
+    <div class="space-y-6">
+      <app-glass-input
+        [label]="'features.company.entities.position.tdesc' | translate"
+        formControlName="tdesc"
+        [required]="true"
+        [useFormValidationMessages]="true">
+        <app-form-validation-messages
+          [control]="form.get('tdesc')"
+          [customMessages]="{ required: 'features.company.entities.position.tdescRequired' | translate }">
+        </app-form-validation-messages>
+      </app-glass-input>
+
+      <app-glass-input
+        [label]="'features.company.entities.position.edesc' | translate"
+        formControlName="edesc">
+      </app-glass-input>
+    </div>
+  </form>
+
+</app-modal>

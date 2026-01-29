@@ -1,0 +1,9 @@
+<app-modal [show]="isOpen" [title]="(isEditMode ? 'company.keyCompetency.edit' : 'company.keyCompetency.add') | translate" [useSolidBackground]="true" [size]="'md'" (closeEvent)="onClose()" (confirmEvent)="onSubmit()">
+  <form [formGroup]="form" class="space-y-6">
+    <app-glass-input [label]="'company.keyCompetency.column.id' | translate" formControlName="keyCompetencyId" [required]="true" [readonly]="isEditMode" [useFormValidationMessages]="true">
+      <app-form-validation-messages [control]="form.get('keyCompetencyId')" [customMessages]="{ required: 'company.keyCompetency.idRequired' | translate }"></app-form-validation-messages>
+    </app-glass-input>
+    <app-glass-input [label]="'company.keyCompetency.column.tdesc' | translate" formControlName="tdesc" [required]="true" [useFormValidationMessages]="true"></app-glass-input>
+    <app-glass-input [label]="'company.keyCompetency.column.edesc' | translate" formControlName="edesc"></app-glass-input>
+  </form>
+</app-modal>

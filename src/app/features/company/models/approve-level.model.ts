@@ -1,20 +1,18 @@
 export interface ApproveLevel {
-  approvelevelid: string; // PK
-  companyid: string;
+  approveLevelId: string;
+  companyId: string;
   tdesc: string;
   edesc: string;
-  // System fields
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   approve?: string;
   verified?: string;
 }
 
 export interface ApproveLevelPayload {
-  approvelevelid: string;
-  companyid: string;
+  approveLevelId: string;
+  companyId: string;
   tdesc: string;
   edesc: string;
 }
-

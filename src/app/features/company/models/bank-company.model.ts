@@ -1,32 +1,32 @@
-export interface BankCompany {
-  companyId: string;
+/**
+ * Matches API payload shape.
+ * API fields: bankClientThname, bankClientEngname, isdefault (lowercase).
+ * transAts, transMedia, transOther, dayDisk, dayCheque are number (0/1).
+ */
+export interface BankCompanyModel {
   bankId: string;
-  branch: string;
+  companyId: string;
   bankBranch: string;
+  branch: string;
+  bankClient: string;
   lineNo: string;
 
-  // Account Info
+  bankClientThname: string;
+  bankClientEngname: string;
   account: string;
-  bankClient: string;
-  bankClientThName: string;
-  bankClientEngName: string;
 
-  // Contact Info
   contactPerson: string;
   tel: string;
 
-  // Options (0/1 or Boolean)
-  transAts: string | boolean;
-  transMedia: string;
-  transOther: string;
-  transOtherDesc?: string;
-  dayDisk?: string;
-  dayCheque?: string;
-  isDefault: string | boolean;
+  transAts: number;
+  transMedia: number;
+  transOther: number;
+  transOtherDesc: string;
+  dayDisk: number;
+  dayCheque: number;
+  isdefault: string;
 
-  // Read-only fields from relations (for display)
+  // Read-only from relations (display)
   bankTdesc?: string;
   bankEdesc?: string;
 }
-
-

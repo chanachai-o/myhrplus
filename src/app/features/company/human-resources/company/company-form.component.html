@@ -3,18 +3,18 @@
   [title]="(isEditMode ? 'company.company.edit' : 'company.company.add') | translate"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
-  
+
   <form [formGroup]="form" class="space-y-4 p-2 max-h-[80vh] overflow-y-auto">
     <!-- Basic Information -->
     <div class="border-b dark:border-slate-700 pb-4 mb-4">
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.basic' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.branchId' | translate"
-          formControlName="branchid"
+          formControlName="branchId"
           [required]="true"
           [readonly]="isEditMode"
           [errorMessage]="'company.company.branchIdRequired' | translate"
@@ -23,7 +23,7 @@
 
         <app-glass-input
           [label]="'company.company.companyId' | translate"
-          formControlName="companyid"
+          formControlName="companyId"
           [required]="true"
           [readonly]="true">
         </app-glass-input>
@@ -46,13 +46,13 @@
 
         <app-glass-input
           [label]="'company.company.comType' | translate"
-          formControlName="com_type"
+          formControlName="comType"
           maxLength="3">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.branchNo' | translate"
-          formControlName="branch_no"
+          formControlName="branchNo"
           maxLength="10">
         </app-glass-input>
       </div>
@@ -63,35 +63,35 @@
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.tax' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.taxId' | translate"
-          formControlName="taxid"
+          formControlName="taxId"
           maxLength="13">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.taxId2' | translate"
-          formControlName="taxid2"
+          formControlName="taxId2"
           maxLength="13">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.taxBranchId' | translate"
-          formControlName="tax_branchid"
+          formControlName="taxBranchId"
           maxLength="10">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.taxSignName' | translate"
-          formControlName="tax_sign_name"
+          formControlName="taxSignName"
           maxLength="100">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.taxSignPos' | translate"
-          formControlName="tax_sign_pos"
+          formControlName="taxSignPos"
           maxLength="50">
         </app-glass-input>
       </div>
@@ -102,29 +102,29 @@
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.socialSecurity' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.socBranchId' | translate"
-          formControlName="soc_branchid"
+          formControlName="socBranchId"
           maxLength="10">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.socialCode' | translate"
-          formControlName="social_code"
+          formControlName="socialCode"
           maxLength="20">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.socSignName' | translate"
-          formControlName="soc_sign_name"
+          formControlName="socSignName"
           maxLength="100">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.socSignPos' | translate"
-          formControlName="soc_sign_pos"
+          formControlName="socSignPos"
           maxLength="50">
         </app-glass-input>
       </div>
@@ -135,7 +135,7 @@
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.addressThai' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.taddr' | translate"
@@ -151,7 +151,7 @@
 
         <app-glass-input
           [label]="'company.company.troomNo' | translate"
-          formControlName="troom_no"
+          formControlName="troomNo"
           maxLength="20">
         </app-glass-input>
 
@@ -192,7 +192,7 @@
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.addressEnglish' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.eaddr' | translate"
@@ -208,7 +208,7 @@
 
         <app-glass-input
           [label]="'company.company.eroomNo' | translate"
-          formControlName="eroom_no"
+          formControlName="eroomNo"
           maxLength="20">
         </app-glass-input>
 
@@ -249,7 +249,7 @@
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.contact' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.zipcode' | translate"
@@ -259,7 +259,7 @@
 
         <app-glass-input
           [label]="'company.company.districtId' | translate"
-          formControlName="districtid"
+          formControlName="districtId"
           maxLength="10">
         </app-glass-input>
 
@@ -291,17 +291,17 @@
       <h3 class="text-lg font-semibold text-gray-800 dark:text-slate-200 mb-4">
         {{ 'company.company.section.other' | translate }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <app-glass-input
           [label]="'company.company.brandTdesc' | translate"
-          formControlName="brand_tdesc"
+          formControlName="brandTdesc"
           maxLength="200">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.brandEdesc' | translate"
-          formControlName="brand_edesc"
+          formControlName="brandEdesc"
           maxLength="200">
         </app-glass-input>
 
@@ -313,13 +313,13 @@
 
         <app-glass-input
           [label]="'company.company.headCompany' | translate"
-          formControlName="headcompany"
+          formControlName="headCompany"
           maxLength="10">
         </app-glass-input>
 
         <app-glass-input
           [label]="'company.company.branchTax' | translate"
-          formControlName="branch_tax"
+          formControlName="branchTax"
           maxLength="10">
         </app-glass-input>
       </div>

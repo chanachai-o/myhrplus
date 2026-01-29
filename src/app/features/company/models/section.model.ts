@@ -1,67 +1,69 @@
-export interface Section {
-  bu3id: string;
-  companyid: string;
+export interface SectionModel {
+  bu3Id: string;
+  companyId: string;
   parent?: string; // Reference to MBU2 (Department)
   tdesc: string;
   edesc: string;
-  tshort_name?: string;
-  eshort_name?: string;
-  short_name?: string;
+  tshortName?: string;
+  eshortName?: string;
+  shortName?: string;
   active: string; // '0' or '1'
-  build_date?: string;
-  expire_date?: string;
+  buildDate?: string;
+  expireDate?: string;
   objective?: string;
   remark?: string;
   extention?: string;
   consolidate?: string;
   analcode?: string;
-  sort_number?: number;
-  bu3sup?: string; // Position ID (relation to mposition)
+  sortNumber?: number;
+  bu3Sup?: string; // Position ID (relation to mposition)
   website?: string;
   email?: string;
   // System fields
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   approve?: string;
   verified?: string;
 }
 
-export interface SectionPayload {
-  bu3id: string;
-  companyid: string;
+/** @deprecated Use SectionModel */
+export type Section = SectionModel;
+
+export interface SectionPayloadModel {
+  bu3Id: string;
+  companyId: string;
   parent?: string;
   tdesc: string;
   edesc: string;
-  tshort_name?: string;
-  eshort_name?: string;
-  short_name?: string;
+  tshortName?: string;
+  eshortName?: string;
+  shortName?: string;
   active: string;
-  build_date?: string;
-  expire_date?: string;
+  buildDate?: string;
+  expireDate?: string;
   objective?: string;
   remark?: string;
   extention?: string;
   consolidate?: string;
   analcode?: string;
-  sort_number?: number;
-  bu3sup?: string;
+  sortNumber?: number;
+  bu3Sup?: string;
   website?: string;
   email?: string;
 }
 
 // Related tables from DBXML
 export interface Department {
-  bu2id: string;
+  bu2Id: string;
   tdesc?: string;
   edesc?: string;
-  companyid?: string;
+  companyId?: string;
 }
 
 export interface Position {
-  positionid: string;
+  positionId: string;
   tdesc?: string;
   edesc?: string;
-  companyid?: string;
+  companyId?: string;
 }
-

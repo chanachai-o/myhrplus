@@ -3,12 +3,12 @@
   [title]="(isEditMode ? 'company.approveLevel.edit' : 'company.approveLevel.add') | translate"
   (closeEvent)="onClose()"
   (confirmEvent)="onSubmit()">
-  
+
   <form [formGroup]="form" class="space-y-4 p-2">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <app-glass-input
         [label]="'company.approveLevel.approveLevelId' | translate"
-        formControlName="approvelevelid"
+        formControlName="approveLevelId"
         [required]="true"
         [readonly]="isEditMode"
         [errorMessage]="'company.approveLevel.approveLevelIdRequired' | translate"
@@ -17,7 +17,7 @@
 
       <app-glass-input
         [label]="'company.approveLevel.companyId' | translate"
-        formControlName="companyid"
+        formControlName="companyId"
         [required]="true"
         [readonly]="true">
       </app-glass-input>

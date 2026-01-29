@@ -1,12 +1,11 @@
 export const environment = {
   production: false,
   // Base URLs - following myhrplus-rd pattern
-  baseUrl: 'https://hrplus-std.myhr.co.th/plus',  // For /plus endpoints
-  jbossUrl: 'https://hrplus-std.myhr.co.th/hr',   // For /hr endpoints (main API)
-  rootUrl: 'https://hrplus-std.myhr.co.th',       // Root URL without path
-  oisUrl: 'https://myhrplus.myhr.co.th/api/ois',  // For /api/ois endpoints (Organization/Company module)
+  baseUrl: 'https://myhrplus.myhr.co.th/plus',  // For /plus endpoints
+  jbossUrl: 'https://myhrplus.myhr.co.th/hr',   // For /hr endpoints (main API)
+  rootUrl: 'https://myhrplus.myhr.co.th',       // Root URL without path
   // Legacy support - keep for backward compatibility
-  apiBaseUrl: 'https://hrplus-std.myhr.co.th/hr', // Alias for jbossUrl
+  apiBaseUrl: 'https://myhrplus.myhr.co.th/api', // Alias for jbossUrl
   apiEndpoints: {
     auth: '/restauthen',
     core: '/capi',
@@ -18,9 +17,10 @@ export const environment = {
     payroll: '/prapi',
     welfare: '/welapi',
     recruit: '/reapi',
-    unsecure: '/usapi'
+    unsecure: '/usapi',
+    organization: '/ois'
   },
-  appName: 'HR System',
+  appName: 'myHR+',
   version: '1.0.0'
 };
 

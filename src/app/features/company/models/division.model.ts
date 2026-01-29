@@ -1,68 +1,66 @@
-export interface Division {
-  bu1id: string;
-  companyid: string;
-  branchid?: string;
+export interface DivisionModel {
+  bu1Id: string;
+  companyId: string;
+  branchId?: string;
   tdesc: string;
   edesc: string;
-  tshort_name?: string;
-  eshort_name?: string;
-  short_name?: string;
+  tshortName?: string;
+  eshortName?: string;
+  shortName?: string;
   active: string; // '0' or '1'
-  build_date?: string;
-  expire_date?: string;
+  buildDate?: string;
+  expireDate?: string;
   objective?: string;
   remark?: string;
   extention?: string;
   consolidate?: string;
   analcode?: string;
-  sort_number?: number;
-  bu1sup?: string; // Position ID (relation to mposition)
+  sortNumber?: number;
+  bu1Sup?: string; // Position ID (relation to mposition)
   website?: string;
   email?: string;
   // System fields
-  edit_by?: string;
-  edit_date?: string;
-  edit_time?: string;
+  editBy?: string;
+  editDate?: string;
+  editTime?: string;
   approve?: string;
   verified?: string;
 }
 
-export interface DivisionPayload {
-  bu1id: string;
-  companyid: string;
-  branchid?: string;
+export interface DivisionPayloadModel {
+  bu1Id: string;
+  companyId: string;
+  branchId?: string;
   tdesc: string;
   edesc: string;
-  tshort_name?: string;
-  eshort_name?: string;
-  short_name?: string;
+  tshortName?: string;
+  eshortName?: string;
+  shortName?: string;
   active: string;
-  build_date?: string;
-  expire_date?: string;
+  buildDate?: string;
+  expireDate?: string;
   objective?: string;
   remark?: string;
   extention?: string;
   consolidate?: string;
   analcode?: string;
-  sort_number?: number;
-  bu1sup?: string;
+  sortNumber?: number;
+  bu1Sup?: string;
   website?: string;
   email?: string;
 }
 
 // Related tables from DBXML
 export interface Branch {
-  branchid: string;
+  branchId: string;
   tdesc?: string;
   edesc?: string;
-  companyid?: string;
+  companyId?: string;
 }
 
 export interface Position {
-  positionid: string;
+  positionId: string;
   tdesc?: string;
   edesc?: string;
-  companyid?: string;
+  companyId?: string;
 }
-
-

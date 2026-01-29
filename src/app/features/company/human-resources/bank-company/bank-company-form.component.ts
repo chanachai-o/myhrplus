@@ -6,7 +6,7 @@ import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
-import { BankCompany } from '../../models/bank-company.model';
+import { BankCompanyModel } from '../../models/bank-company.model';
 import { BankCompanyService } from '../../services/bank-company.service';
 import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
@@ -26,7 +26,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 })
 export class BankCompanyFormComponent implements OnChanges {
   @Input() isOpen = false;
-  @Input() data: BankCompany | null = null;
+  @Input() data: BankCompanyModel | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
 
@@ -44,18 +44,24 @@ export class BankCompanyFormComponent implements OnChanges {
 
   constructor() {
     this.form = this.fb.group({
-      lineNo: [''], // Hidden Key
+      lineNo: [''],
       companyId: ['', Validators.required],
       bankId: ['', Validators.required],
       branch: [''],
       bankBranch: [''],
       account: ['', Validators.required],
-      bankClientThName: [''],
-      bankClientEngName: [''],
+      bankClient: [''],
+      bankClientThname: [''],
+      bankClientEngname: [''],
       contactPerson: [''],
       tel: [''],
-      transAts: [false],
-      isDefault: [false]
+      transAts: [0],
+      transMedia: [0],
+      transOther: [0],
+      transOtherDesc: [''],
+      dayDisk: [1],
+      dayCheque: [1],
+      isdefault: ['1']
     });
   }
 
@@ -70,8 +76,12 @@ export class BankCompanyFormComponent implements OnChanges {
       } else {
         this.form.reset({
           companyId: 'C001', // TODO: Get current company ID
-          isDefault: false,
-          transAts: false
+          isdefault: '1',
+          transAts: 0,
+          transMedia: 0,
+          transOther: 0,
+          dayDisk: 1,
+          dayCheque: 1
         });
         this.form.get('lineNo')?.enable();
       }

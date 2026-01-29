@@ -1,9 +1,7 @@
-export interface AssetType {
-  astypeid: string;
-  companyid: string;
+export interface AssetTypeModel {
+  astypeId: string;
+  companyId: string;
   tdesc: string;
   edesc: string;
-  astype_status?: string; // ASSETTYPE_STATUS
+  astypeStatus?: string; // ASSETTYPE_STATUS
 }
-
-

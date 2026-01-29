@@ -6,7 +6,7 @@ import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { FormValidationMessagesComponent } from '@shared/components/form-validation-messages/form-validation-messages.component';
-import { CompanyGroup } from '../../models/company-group.model';
+import { CompanyGroupModel } from '../../models/company-group.model';
 import { CompanyGroupService } from '../../services/company-group.service';
 import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
@@ -26,7 +26,7 @@ import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 })
 export class CompanyGroupFormComponent implements OnChanges {
   @Input() isOpen = false;
-  @Input() data: CompanyGroup | null = null;
+  @Input() data: CompanyGroupModel | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
 

@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseApiService } from '@core/services';
 import { PaginatedResponse, PaginationParams } from '@core/models/pagination.model';
-import { CompanyType, CompanyTypeApiResponse } from '../models/company-type.model';
+import { CompanyTypeModel } from '../models/company-type.model';
 import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -11,24 +11,18 @@ import { environment } from '@env/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CompanyTypeService extends BaseApiService<CompanyType> {
-  protected baseUrl = 'company/type'; // Relative path (will be overridden by apiUrl)
+export class CompanyTypeService extends BaseApiService<CompanyTypeModel> {
+  protected baseUrl = environment.apiEndpoints.organization + '/company/type'; // Relative path (will be overridden by apiUrl)
 
   // State
   loading = signal<boolean>(false);
 
-  // Override apiUrl to use OIS API endpoint
-  protected override get apiUrl(): string {
-    const base = environment.oisUrl.endsWith('/') ? environment.oisUrl.slice(0, -1) : environment.oisUrl;
-    return `${base}/company/type`;
-  }
-
   /**
    * Get all company types with pagination support
    * @param params Optional pagination parameters (page, size)
-   * @returns Observable of CompanyType array
+   * @returns Observable of CompanyTypeModel array
    */
-  override getAll(params?: PaginationParams): Observable<CompanyType[]> {
+  override getAll(params?: PaginationParams): Observable<CompanyTypeModel[]> {
     this.loading.set(true);
 
     // Build query parameters
@@ -42,26 +36,16 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
 
     console.log('[CompanyTypeService] Fetching data from:', this.apiUrl, 'with params:', params);
 
-    return this.http.get<PaginatedResponse<CompanyTypeApiResponse>>(this.apiUrl, { params: httpParams }).pipe(
+    return this.http.get<PaginatedResponse<CompanyTypeModel>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
-        // Transform API response to CompanyType model
-        const transformedData: CompanyType[] = response.content.map((item) => ({
-          codeId: item.codeId,
-          tdesc: item.tdesc,
-          edesc: item.edesc,
-          editBy: item.editBy,
-          editDate: item.editDate,
-          editTime: item.editTime
-        }));
-
-        console.log('[CompanyTypeService] Data transformed:', {
+        const data: CompanyTypeModel[] = response.content ?? [];
+        console.log('[CompanyTypeService] Data loaded:', {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           currentPage: response.number,
-          itemsCount: transformedData.length
+          itemsCount: data.length
         });
-
-        return transformedData;
+        return data;
       }),
       tap((data) => {
         console.log('[CompanyTypeService] Data loaded:', data);
@@ -81,7 +65,7 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
    * @returns Observable with data and pagination info
    */
   getAllWithPagination(params?: PaginationParams): Observable<{
-    data: CompanyType[];
+    data: CompanyTypeModel[];
     currentPage: number;
     pageSize: number;
     totalPages: number;
@@ -100,28 +84,18 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
 
     console.log('[CompanyTypeService] Fetching data with pagination from:', this.apiUrl, 'with params:', params);
 
-    return this.http.get<PaginatedResponse<CompanyTypeApiResponse>>(this.apiUrl, { params: httpParams }).pipe(
+    return this.http.get<PaginatedResponse<CompanyTypeModel>>(this.apiUrl, { params: httpParams }).pipe(
       map((response) => {
-        // Transform API response to CompanyType model
-        const transformedData: CompanyType[] = response.content.map((item) => ({
-          codeId: item.codeId,
-          tdesc: item.tdesc,
-          edesc: item.edesc,
-          editBy: item.editBy,
-          editDate: item.editDate,
-          editTime: item.editTime
-        }));
-
+        const data: CompanyTypeModel[] = response.content ?? [];
         console.log('[CompanyTypeService] Pagination response:', {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           currentPage: response.number,
           pageSize: response.size,
-          itemsCount: transformedData.length
+          itemsCount: data.length
         });
-
         return {
-          data: transformedData,
+          data,
           currentPage: response.number,
           pageSize: response.size,
           totalPages: response.totalPages,
@@ -140,10 +114,10 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     );
   }
 
-  override create(data: Partial<CompanyType>): Observable<CompanyType> {
+  override create(data: Partial<CompanyTypeModel>): Observable<CompanyTypeModel> {
     this.loading.set(true);
     console.log('[CompanyTypeService] Creating:', data);
-    return this.http.post<CompanyType>(this.apiUrl, data).pipe(
+    return this.http.post<CompanyTypeModel>(this.apiUrl, data).pipe(
       tap((result) => {
         console.log('[CompanyTypeService] Created:', result);
         this.loading.set(false);
@@ -156,11 +130,11 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     );
   }
 
-  override update(id: string | number, data: Partial<CompanyType>): Observable<CompanyType> {
+  override update(id: string | number, data: Partial<CompanyTypeModel>): Observable<CompanyTypeModel> {
     this.loading.set(true);
     // Use POST same as create, to apiUrl
     console.log('[CompanyTypeService] Updating (POST):', id, data);
-    return this.http.post<CompanyType>(this.apiUrl, data).pipe(
+    return this.http.post<CompanyTypeModel>(this.apiUrl, data).pipe(
       tap((result) => {
         console.log('[CompanyTypeService] Updated:', result);
         this.loading.set(false);
@@ -173,12 +147,12 @@ export class CompanyTypeService extends BaseApiService<CompanyType> {
     );
   }
 
-  override delete(data: Partial<CompanyType>): Observable<void> {
+  override delete(data: Partial<CompanyTypeModel>): Observable<void> {
     this.loading.set(true);
     const url = this.apiUrl;
     console.log('[CompanyTypeService] Deleting:', data);
 
-    // DELETE request with CompanyType body (send data as-is)
+    // DELETE request with CompanyTypeModel body (send data as-is)
     const body = data;
     const options = { body };
 

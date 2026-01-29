@@ -1,0 +1,9 @@
+<app-modal [show]="isOpen" [title]="(isEditMode ? 'company.jobGrade.edit' : 'company.jobGrade.add') | translate" [useSolidBackground]="true" [size]="'md'" (closeEvent)="onClose()" (confirmEvent)="onSubmit()">
+  <form [formGroup]="form" class="space-y-6">
+    <app-glass-input [label]="'company.jobGrade.column.id' | translate" formControlName="jobGradeId" [required]="true" [readonly]="isEditMode" [useFormValidationMessages]="true">
+      <app-form-validation-messages [control]="form.get('jobGradeId')" [customMessages]="{ required: 'company.jobGrade.idRequired' | translate }"></app-form-validation-messages>
+    </app-glass-input>
+    <app-glass-input [label]="'company.jobGrade.column.tdesc' | translate" formControlName="tdesc" [required]="true" [useFormValidationMessages]="true"></app-glass-input>
+    <app-glass-input [label]="'company.jobGrade.column.edesc' | translate" formControlName="edesc"></app-glass-input>
+  </form>
+</app-modal>

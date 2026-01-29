@@ -759,7 +759,18 @@ export class EntityFormComponent implements OnChanges {
 
 ---
 
-**Last Updated**: 2026-01-20
+### Screens using this guide (2026-01-26)
+
+หน้าทะเบียนที่ migrate ตาม pattern นี้:
+
+- **CRUD (Syncfusion DataGrid + Form + ConfirmationDialog)**: Position Group, Job Group, Job Code Level, Rounding-off, e-Payslip Signature, KC/KPI Group, Manpower Type, Number Table, Number Data, Reporting Line Definition, Job Grade, Job Title, Key Competency, KPI, Number Detail, Project Table, Event Setup, Banner Setup, Handbook Setup, Video Setup
+- **Placeholder (Under Development)**: Company Structure, Change Boss, Change Master File Code, Generate/Approve Manpower Budget, Turnover Report, Compare Payroll, Report Reconcile, ApproveBox 4 หน้า, ESS (News, Logo, External Links, Vision, Mission, Company History, Regulation Group/Type/Table), User Manual
+
+รายละเอียด routes, components, i18n: `docs/modules/COMPANY_MODULE_INVENTORY.md` (Angular Migration Status)
+
+---
+
+**Last Updated**: 2026-01-26
 **Status**: ✅ Complete Reference Implementation
 
 ## Recent Updates (2026-01-20)

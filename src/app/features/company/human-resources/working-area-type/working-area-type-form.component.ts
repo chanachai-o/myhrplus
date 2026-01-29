@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angu
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { first } from 'rxjs/operators';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GlassInputComponent } from '@shared/components/glass-input/glass-input.component';
 import { WorkingAreaType } from '../../models/working-area-type.model';
 import { WorkingAreaTypeService } from '../../services/working-area-type.service';
+import { ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 
 @Component({
@@ -33,6 +35,7 @@ export class WorkingAreaTypeFormComponent implements OnChanges {
   private fb = inject(FormBuilder);
   private service = inject(WorkingAreaTypeService);
   private translate = inject(TranslateService);
+  private confirmationDialogService = inject(ConfirmationDialogService);
 
   form: FormGroup;
   isEditMode = false;
@@ -86,6 +89,17 @@ export class WorkingAreaTypeFormComponent implements OnChanges {
       return;
     }
 
+    this.confirmationDialogService.confirmSave(this.isEditMode).pipe(first()).subscribe({
+      next: async (result: ConfirmationDialogResult) => {
+        if (result.confirmed) {
+          await this.confirmationDialogService.waitForClose();
+          this.saveData();
+        }
+      }
+    });
+  }
+
+  private saveData() {
     const formData = this.form.getRawValue();
     this.service.loading.set(true);
 
@@ -96,13 +110,24 @@ export class WorkingAreaTypeFormComponent implements OnChanges {
     request$.subscribe({
       next: () => {
         this.service.loading.set(false);
-        this.save.emit();
-        this.onClose();
+        setTimeout(() => {
+          const successMessage = this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.SUCCESS.SAVE);
+          this.confirmationDialogService.showSuccess(successMessage).pipe(first()).subscribe({
+            next: () => {
+              this.save.emit();
+              this.onClose();
+            }
+          });
+        }, 100);
       },
       error: (err: unknown) => {
-        console.error(err);
         this.service.loading.set(false);
-        // TODO: Show toast error
+        setTimeout(() => {
+          const errorMessage = (err as any)?.error?.message ||
+                             (err as any)?.message ||
+                             this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.SAVE);
+          this.confirmationDialogService.showError(errorMessage).pipe(first()).subscribe();
+        }, 100);
       }
     });
   }
