@@ -1,5 +1,13 @@
 .syncfusion-data-grid {
   // Syncfusion overrides to match MyHR Theme
+  .primary-key-cell {
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--primary);
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
 
   .e-grid {
     border-radius: 0.5rem;

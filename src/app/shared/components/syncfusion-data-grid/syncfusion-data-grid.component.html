@@ -1,4 +1,4 @@
-<div class="syncfusion-data-grid w-full h-full flex flex-col" [ngClass]="customClass">
+<div class="syncfusion-data-grid w-full h-full flex flex-col" [ngClass]="[customClass, enableAdaptiveUI ? 'e-bigger' : '']">
   <ejs-grid
     #grid
     class="flex-1 w-full min-h-0 block"
@@ -6,6 +6,9 @@
     [dataSource]="dataSource"
     [height]="'100%'"
     [width]="'100%'"
+    [enableAdaptiveUI]="enableAdaptiveUI"
+    [adaptiveUIMode]="adaptiveUIMode"
+    [rowRenderingMode]="rowRenderingMode"
     [allowPaging]="allowPaging && hasData"
     [allowSorting]="allowSorting"
     [allowFiltering]="allowFiltering"
@@ -110,15 +113,21 @@
              </div>
           </ng-template>
 
+          <!-- Primary key: แสดงขีดเส้นใต้ ให้รู้ว่ากดแถวเพื่อ edit ได้ -->
+          <ng-template #template let-data *ngIf="col.isPrimaryKey && col.type !== 'badge' && col.type !== 'image'">
+            <span class="primary-key-cell">{{ getDataValue(data, col.field) }}</span>
+          </ng-template>
+
         </e-column>
       </ng-container>
 
-      <!-- Actions Column -->
+      <!-- Actions Column (freeze ขวาได้เมื่อ freezeActionsColumn = true) -->
       <e-column
         *ngIf="actions.length > 0"
         [headerText]="actionHeaderText | translate"
         [width]="actionWidth"
         textAlign="Center"
+        [freeze]="freezeActionsColumn ? 'Right' : undefined"
         [allowSorting]="false"
         [allowFiltering]="false"
         [allowGrouping]="false"

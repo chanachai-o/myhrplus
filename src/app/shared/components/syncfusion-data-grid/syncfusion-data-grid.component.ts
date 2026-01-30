@@ -135,6 +135,13 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Input() showToolbar = true;
   @Input() loadingIndicator: { indicatorType?: 'Spinner' | 'Shimmer'; } = { indicatorType: 'Spinner' };
 
+  /** Adaptive layout: เปิดใช้เมื่อจอเล็ก (filter/sort/edit dialog แบบ fullscreen, แถวแนวตั้งได้) */
+  @Input() enableAdaptiveUI = true;
+  /** 'Mobile' = adaptive เฉพาะจอเล็ก, 'Both' = ทุกจอ, 'Desktop' = เฉพาะจอใหญ่ */
+  @Input() adaptiveUIMode: 'Both' | 'Mobile' | 'Desktop' = 'Mobile';
+  /** 'Vertical' = แถวแสดงแนวตั้ง (เหมาะจอเล็ก), 'Horizontal' = แถวแนวนอนตามปกติ */
+  @Input() rowRenderingMode: 'Horizontal' | 'Vertical' = 'Horizontal';
+
   // Settings
   @Input() pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100], pageCount: 5 };
   @Input() filterSettings: FilterSettingsModel = {
@@ -201,6 +208,8 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Input() actions: GridAction[] = [];
   @Input() actionWidth = 120;
   @Input() actionHeaderText = 'Actions';
+  /** freeze คอลัมน์ Actions ทางขวา (ไม่เลื่อนตาม horizontal scroll) */
+  @Input() freezeActionsColumn = false;
 
   // Detail Row
   @Input() enableDetailRow = false;
