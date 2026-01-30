@@ -53,9 +53,11 @@
         [showColumnMenu]="true"
         [showColumnChooser]="true"
         [pageSettings]="pageSettings"
+        [loadListOnGroupOrAggregate]="true"
         (rowSelected)="onEdit($event.data)"
         (rowDeleted)="onRowDeleted($event)"
         (actionBegin)="onActionBegin($event)"
+        (groupOrAggregateClick)="onGroupOrAggregateClick($event)"
       >
       </app-syncfusion-data-grid>
     }

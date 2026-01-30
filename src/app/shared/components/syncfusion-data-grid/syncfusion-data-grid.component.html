@@ -143,33 +143,13 @@
 
     </e-columns>
 
-    <!-- Aggregates -->
+    <!-- Aggregates: เมื่อเพิ่ม aggregate คอลัมน์ที่สอง aggregateRenderKey เปลี่ยน → e-aggregate ถูกสร้างใหม่ → Syncfusion อ่านทุกคอลัมน์ -->
     <e-aggregates>
-       <e-aggregate *ngIf="aggregatesSum.length > 0">
-         <e-columns>
-           <e-column *ngFor="let ag of aggregatesSum" [field]="ag.field" type="Sum" [footerTemplate]="ag.footerTemplate"></e-column>
-         </e-columns>
-       </e-aggregate>
-       <e-aggregate *ngIf="aggregatesCount.length > 0">
-         <e-columns>
-           <e-column *ngFor="let ag of aggregatesCount" [field]="ag.field" type="Count" [footerTemplate]="ag.footerTemplate"></e-column>
-         </e-columns>
-       </e-aggregate>
-       <e-aggregate *ngIf="aggregatesAvg.length > 0">
-         <e-columns>
-           <e-column *ngFor="let ag of aggregatesAvg" [field]="ag.field" type="Average" [footerTemplate]="ag.footerTemplate"></e-column>
-         </e-columns>
-       </e-aggregate>
-       <e-aggregate *ngIf="aggregatesMin.length > 0">
-         <e-columns>
-           <e-column *ngFor="let ag of aggregatesMin" [field]="ag.field" type="Min" [footerTemplate]="ag.footerTemplate"></e-column>
-         </e-columns>
-       </e-aggregate>
-       <e-aggregate *ngIf="aggregatesMax.length > 0">
-         <e-columns>
-           <e-column *ngFor="let ag of aggregatesMax" [field]="ag.field" type="Max" [footerTemplate]="ag.footerTemplate"></e-column>
-         </e-columns>
-       </e-aggregate>
+      <e-aggregate *ngFor="let aggKey of allAggregateColumns.length ? [aggregateRenderKey] : []; trackBy: trackByAggKey">
+        <e-columns>
+          <e-column *ngFor="let ag of allAggregateColumns; trackBy: trackByAggField" [field]="ag.field" [type]="ag.type" [footerTemplate]="ag.footerTemplate"></e-column>
+        </e-columns>
+      </e-aggregate>
     </e-aggregates>
 
   </ejs-grid>

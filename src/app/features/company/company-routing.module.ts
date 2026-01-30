@@ -8,7 +8,10 @@ const routes: Routes = [
     children: [
       {
         path: 'company-type',
-        loadComponent: () => import('./human-resources/company-type/company-type-list.component').then(m => m.CompanyTypeListComponent)
+        loadComponent: () => import('./human-resources/company-type/company-type-list.component').then(m => {
+          console.log('[Route] Company Type — โหลด component สำเร็จ (path: company-type)');
+          return m.CompanyTypeListComponent;
+        })
       },
       {
         path: 'company-group',

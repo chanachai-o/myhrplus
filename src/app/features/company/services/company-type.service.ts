@@ -62,16 +62,22 @@ export class CompanyTypeService extends BaseApiService<CompanyTypeModel> {
   /**
    * Get all company types with pagination info (supports server-side search and sort)
    * @param params Optional pagination parameters (page, size, search, sort, direction)
+   * @param options skipLoading: true = ไม่ set loading signal (ใช้ตอนโหลดสำหรับ aggregate เพื่อไม่ให้ grid ถูก destroy)
    * @returns Observable with data and pagination info
    */
-  getAllWithPagination(params?: PaginationParams): Observable<{
+  getAllWithPagination(
+    params?: PaginationParams,
+    options?: { skipLoading?: boolean }
+  ): Observable<{
     data: CompanyTypeModel[];
     currentPage: number;
     pageSize: number;
     totalPages: number;
     totalElements: number;
   }> {
-    this.loading.set(true);
+    const skipLoading = options?.skipLoading === true;
+    console.log('[CompanyTypeService] getAllWithPagination ถูกเรียก', { params, skipLoading });
+    if (!skipLoading) this.loading.set(true);
 
     // Build query parameters
     let httpParams = new HttpParams();
@@ -115,11 +121,11 @@ export class CompanyTypeService extends BaseApiService<CompanyTypeModel> {
       }),
       tap((result) => {
         console.log('[CompanyTypeService] Data with pagination loaded:', result);
-        this.loading.set(false);
+        if (!skipLoading) this.loading.set(false);
       }),
       catchError((error) => {
         console.error('[CompanyTypeService] Error loading data with pagination:', error);
-        this.loading.set(false);
+        if (!skipLoading) this.loading.set(false);
         return throwError(() => error);
       })
     );

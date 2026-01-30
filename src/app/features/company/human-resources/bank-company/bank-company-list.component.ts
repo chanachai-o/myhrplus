@@ -121,6 +121,26 @@ export class BankCompanyListComponent implements OnInit {
     });
   }
 
+  /** โหลดข้อมูลทั้งหมดก่อนแล้วค่อย apply aggregate (Sum/Count ฯลฯ) - ส่งเป็น array เพื่อให้ grid แสดง footer aggregate ได้ */
+  loadDataForAggregate() {
+    const size = this.totalElements > 0 ? this.totalElements : 5000;
+    this.service.getAllWithPagination({ page: 0, size }).subscribe({
+      next: (response) => {
+        const list = response.data ?? [];
+        this.data.set(list as any);
+        this.currentPage = 0;
+        this.pageSize = Math.max(list.length, 10);
+        this.totalPages = 1;
+        this.totalElements = list.length;
+        this.updatePageSettings();
+      },
+      error: (err) => {
+        console.error('[BankCompanyList] Error loading data for aggregate:', err);
+        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.LOAD));
+      }
+    });
+  }
+
   private updatePageSettings() {
     this.pageSettings = {
       ...this.pageSettings,
@@ -141,6 +161,15 @@ export class BankCompanyListComponent implements OnInit {
         this.pageSize = newPageSize;
         this.loadData(this.currentPage, this.pageSize);
       }
+    }
+  }
+
+  /** เมื่อเลือก Group/Aggregate ให้ดึงข้อมูลทั้งหมดก่อน แล้ว grid จะ apply aggregate หลัง data โหลดเสร็จ */
+  onGroupOrAggregateClick(event: { type: 'group' | 'aggregate'; field?: string; aggregateType?: string }) {
+    if (event.type === 'aggregate') {
+      this.loadDataForAggregate();
+    } else {
+      this.loadData(this.currentPage, this.pageSize);
     }
   }
 

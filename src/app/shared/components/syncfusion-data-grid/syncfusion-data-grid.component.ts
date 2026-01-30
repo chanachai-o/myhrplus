@@ -225,10 +225,16 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Output() toolbarClick = new EventEmitter<any>();
   @Output() contextMenuClick = new EventEmitter<any>();
   @Output() detailDataBound = new EventEmitter<DetailDataBoundEventArgs>();
+  /** When true, Group/Aggregate column menu items emit groupOrAggregateClick and skip client-side group/aggregate (parent calls API to load list first) */
+  @Input() loadListOnGroupOrAggregate = false;
+  /** Emitted when loadListOnGroupOrAggregate is true and user selects Group by this column or Aggregate (Sum/Count/etc.) */
+  @Output() groupOrAggregateClick = new EventEmitter<{ type: 'group' | 'aggregate'; field?: string; aggregateType?: string }>();
 
   // Internal State
   public query: Query = new Query();
   private isLoading = false;
+  /** After parent loads list (groupOrAggregateClick), apply this aggregate when dataSource updates */
+  private pendingAggregate: { type: string; field: string } | null = null;
 
   // Aggregates State
   aggregatesSum: any[] = [];
@@ -236,6 +242,8 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   aggregatesAvg: any[] = [];
   aggregatesMin: any[] = [];
   aggregatesMax: any[] = [];
+  /** ใช้บังคับให้ e-aggregate ถูกสร้างใหม่เมื่อเพิ่ม/ลด aggregate (Syncfusion อ่าน aggregate ใหม่) */
+  aggregateRenderKey = 0;
 
   // Localization
   locale = 'th-TH';
@@ -264,17 +272,9 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   }
 
   ngOnInit(): void {
-    console.log('[SyncfusionDataGrid] Init', {
-      dataSourceLength: this.dataSource?.length,
-      columnsCount: this.columns?.length,
-      columns: this.columns,
-      actionsCount: this.actions?.length,
-      actions: this.actions,
-      showToolbar: this.showToolbar,
-      showColumnMenu: this.showColumnMenu,
-      showColumnChooser: this.showColumnChooser,
-      toolbarItems: this.toolbarItems,
-      columnMenuItems: this.columnMenuItems
+    console.log('[SyncfusionDataGrid] ngOnInit — grid component ถูกสร้าง', {
+      dataSourceLength: Array.isArray(this.dataSource) ? this.dataSource.length : (this.dataSource as any)?.result?.length ?? 0,
+      columnsCount: this.columns?.length
     });
     this.setupLocalization();
     this.translateService.onLangChange.subscribe((event) => {
@@ -299,10 +299,17 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[SyncfusionDataGrid] Changes:', changes);
     if (changes['dataSource']) {
-      console.log('[SyncfusionDataGrid] New DataSource:', this.dataSource);
-      console.log('[SyncfusionDataGrid] Grid:', this.grid?.columnMenuItems);
+      const ds = this.dataSource;
+      const isArray = Array.isArray(ds);
+      const len = isArray ? (ds as any[]).length : (ds as any)?.result?.length;
+      const firstKey = isArray && (ds as any[]).length > 0 ? Object.keys((ds as any[])[0] || {}) : [];
+      console.log('[SyncfusionDataGrid] ngOnChanges dataSource', {
+        isArray,
+        length: len,
+        firstRowKeys: firstKey.slice(0, 5),
+        hasResult: !isArray && !!(ds as any)?.result
+      });
       if (this.grid) {
         this.grid.refresh();
       }
@@ -339,6 +346,28 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
     if (ds.result && Array.isArray(ds.result) && ds.result.length > 0) return true;
 
     return false;
+  }
+
+  trackByAggKey(_index: number, key: number): number {
+    return key;
+  }
+
+  trackByAggField(_index: number, ag: { field: string; type: string }): string {
+    return `${ag.field}_${ag.type}`;
+  }
+
+  /** รวมคอลัมน์ aggregate ทั้งหมดไว้ใน e-aggregate เดียว เพื่อให้ footer แสดงได้เมื่อ dataSource เป็น array */
+  get allAggregateColumns(): { field: string; type: string; footerTemplate: string }[] {
+    const sum = this.aggregatesSum.map((a) => ({ field: a.field, type: 'Sum' as const, footerTemplate: a.footerTemplate }));
+    const count = this.aggregatesCount.map((a) => ({ field: a.field, type: 'Count' as const, footerTemplate: a.footerTemplate }));
+    const avg = this.aggregatesAvg.map((a) => ({ field: a.field, type: 'Average' as const, footerTemplate: a.footerTemplate }));
+    const min = this.aggregatesMin.map((a) => ({ field: a.field, type: 'Min' as const, footerTemplate: a.footerTemplate }));
+    const max = this.aggregatesMax.map((a) => ({ field: a.field, type: 'Max' as const, footerTemplate: a.footerTemplate }));
+    const all = [...sum, ...count, ...avg, ...min, ...max];
+    if (all.length > 0) {
+      console.log('[SyncfusionDataGrid] allAggregateColumns', { length: all.length, columns: all.map((a) => ({ field: a.field, type: a.type })) });
+    }
+    return all;
   }
 
   private setupLocalization(): void {
@@ -549,6 +578,17 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
 
   onDataBound(args: any): void {
     this.dataBound.emit(args);
+    console.log('[SyncfusionDataGrid] onDataBound fired', { pendingAggregate: this.pendingAggregate, dataSourceIsArray: Array.isArray(this.dataSource), dataSourceLength: Array.isArray(this.dataSource) ? this.dataSource.length : (this.dataSource as any)?.result?.length });
+
+    // After parent loaded list (groupOrAggregateClick), apply pending aggregate when data is bound
+    if (this.pendingAggregate) {
+      const pending = this.pendingAggregate;
+      this.pendingAggregate = null;
+      console.log('[SyncfusionDataGrid] onDataBound: applying pending aggregate', pending);
+      setTimeout(() => {
+        this.updateAggregate(pending.type, pending.field);
+      }, 0);
+    }
 
     // Ensure column menu is properly initialized after data is bound
     if (this.grid && this.showColumnMenu) {
@@ -624,10 +664,26 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   onColumnMenuClick(args: ColumnMenuClickEventArgs): void {
     if (!args.item.id) return;
 
+    // When loadListOnGroupOrAggregate: emit so parent calls API (load list) first; then apply aggregate after data loads
+    if (this.loadListOnGroupOrAggregate && (args.item.id === 'Group' || args.item.id.startsWith('aggregate_'))) {
+      const colField = (args.column as any)?.field;
+      const aggregateType = args.item.id.startsWith('aggregate_') ? args.item.id.split('_')[1] : undefined;
+      if (args.item.id.startsWith('aggregate_') && colField && aggregateType) {
+        this.pendingAggregate = { type: aggregateType, field: colField };
+        console.log('[SyncfusionDataGrid] Aggregate selected: pendingAggregate set', { type: aggregateType, field: colField });
+      }
+      console.log('[SyncfusionDataGrid] groupOrAggregateClick emit', { type: args.item.id === 'Group' ? 'group' : 'aggregate', field: colField, aggregateType });
+      this.groupOrAggregateClick.emit({
+        type: args.item.id === 'Group' ? 'group' : 'aggregate',
+        field: colField,
+        aggregateType
+      });
+      return;
+    }
+
     if (args.item.id.startsWith('aggregate_')) {
       const colField = (args.column as any)?.field;
       if (!colField) return;
-
       const selectedAgg = args.item.id.split('_')[1]; // sum, count, average, min, max
       this.updateAggregate(selectedAgg, colField);
     }
@@ -682,6 +738,7 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   }
 
   private updateAggregate(type: string, field: string): void {
+    console.log('[SyncfusionDataGrid] updateAggregate called', { type, field });
     const addOrRemove = (array: any[], aggType: string, template: string) => {
       const index = array.findIndex(a => a.field === field);
       if (index > -1) {
@@ -712,11 +769,16 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
         addOrRemove(this.aggregatesMax, 'Max', 'Max: ${Max}');
         break;
     }
+    console.log('[SyncfusionDataGrid] updateAggregate done', { aggregatesSumLen: this.aggregatesSum.length, aggregatesCountLen: this.aggregatesCount.length });
 
-    // Refresh grid to reflect aggregates
+    this.aggregateRenderKey += 1;
+    this.cdr.detectChanges();
     setTimeout(() => {
-        this.grid?.refresh();
-    }, 100);
+      if (this.grid) {
+        (this.grid as any).refreshColumns?.();
+        this.grid.refresh();
+      }
+    }, 50);
   }
 
   // --- Detail Row Handling ---

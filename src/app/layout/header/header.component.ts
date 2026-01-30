@@ -134,18 +134,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   getAvatarUrl(): string | null {
     if (!this.currentUser) {
-      console.log('[Header] No currentUser available');
+      // console.log('[Header] No currentUser available');
       return null;
     }
 
     // Debug: Log currentUser properties
-    console.log('[Header] currentUser properties:', {
-      picture: this.currentUser.picture,
-      filename: this.currentUser.filename,
-      avatar: this.currentUser.avatar,
-      photo: this.currentUser.photo,
-      profileImage: this.currentUser.profileImage
-    });
+    // console.log('[Header] currentUser properties:', {
+    //   picture: this.currentUser.picture,
+    //   filename: this.currentUser.filename,
+    //   avatar: this.currentUser.avatar,
+    //   photo: this.currentUser.photo,
+    //   profileImage: this.currentUser.profileImage
+    // });
 
     // Base URL for FileViewer.jsp
     const baseUrl = 'https://hrplus-std.myhr.co.th/hr';
@@ -155,7 +155,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       const filename = this.currentUser.picture || this.currentUser.filename;
       // Construct FileViewer.jsp URL
       const url = `${baseUrl}/FileViewer.jsp?uploadfield=memployee.picture&filename=${encodeURIComponent(filename)}`;
-      console.log('[Header] Avatar URL (picture/filename):', url);
+      // console.log('[Header] Avatar URL (picture/filename):', url);
       return url;
     }
 
@@ -163,37 +163,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.currentUser.avatar) {
       // If avatar is already a full URL, return it
       if (this.currentUser.avatar.startsWith('http://') || this.currentUser.avatar.startsWith('https://')) {
-        console.log('[Header] Avatar URL (full URL):', this.currentUser.avatar);
+        // console.log('[Header] Avatar URL (full URL):', this.currentUser.avatar);
         return this.currentUser.avatar;
       }
       // If avatar is a filename, construct FileViewer.jsp URL
       const url = `${baseUrl}/FileViewer.jsp?uploadfield=memployee.picture&filename=${encodeURIComponent(this.currentUser.avatar)}`;
-      console.log('[Header] Avatar URL (avatar filename):', url);
+      // console.log('[Header] Avatar URL (avatar filename):', url);
       return url;
     }
 
     // Priority 3: Fallback to other photo properties
     if (this.currentUser.photo) {
       if (this.currentUser.photo.startsWith('http://') || this.currentUser.photo.startsWith('https://')) {
-        console.log('[Header] Avatar URL (photo full URL):', this.currentUser.photo);
+        // console.log('[Header] Avatar URL (photo full URL):', this.currentUser.photo);
         return this.currentUser.photo;
       }
       const url = `${baseUrl}/FileViewer.jsp?uploadfield=memployee.picture&filename=${encodeURIComponent(this.currentUser.photo)}`;
-      console.log('[Header] Avatar URL (photo filename):', url);
+      // console.log('[Header] Avatar URL (photo filename):', url);
       return url;
     }
 
     if (this.currentUser.profileImage) {
       if (this.currentUser.profileImage.startsWith('http://') || this.currentUser.profileImage.startsWith('https://')) {
-        console.log('[Header] Avatar URL (profileImage full URL):', this.currentUser.profileImage);
+        // console.log('[Header] Avatar URL (profileImage full URL):', this.currentUser.profileImage);
         return this.currentUser.profileImage;
       }
       const url = `${baseUrl}/FileViewer.jsp?uploadfield=memployee.picture&filename=${encodeURIComponent(this.currentUser.profileImage)}`;
-      console.log('[Header] Avatar URL (profileImage filename):', url);
+      // console.log('[Header] Avatar URL (profileImage filename):', url);
       return url;
     }
 
-    console.log('[Header] No avatar URL found for user:', this.currentUser);
+    // console.log('[Header] No avatar URL found for user:', this.currentUser);
     return null;
   }
 
@@ -336,7 +336,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (result && result.route) {
       // The router navigation in OmniSearchComponent will trigger NavigationEnd event
       // which sidebar already listens to, so sidebar will update automatically
-      console.log('[Header] Omni-Search result selected:', result);
+      // console.log('[Header] Omni-Search result selected:', result);
     }
   }
 

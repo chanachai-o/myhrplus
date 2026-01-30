@@ -56,6 +56,10 @@ export class CompanyTypeListComponent implements OnInit {
 
   @ViewChild(SyncfusionDataGridComponent) grid!: SyncfusionDataGridComponent;
 
+  constructor() {
+    console.log('[CompanyTypeList] constructor — component ถูกสร้าง');
+  }
+
   // Use signal for data to avoid AsyncPipe deadlock with loading state
   // Changed type to any to support { result: any[], count: number } for server-side pagination
   data = signal<any>({ result: [], count: 0 });
@@ -85,6 +89,7 @@ export class CompanyTypeListComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
 
   ngOnInit() {
+    console.log('[CompanyTypeList] ngOnInit เริ่มต้น — กำลังโหลดหน้ารายการ Company Type');
     this.updateTranslations();
     this.translate.onLangChange.subscribe(() => {
       this.updateTranslations();
@@ -101,7 +106,22 @@ export class CompanyTypeListComponent implements OnInit {
     });
 
     // Initial load
+    console.log('[CompanyTypeList] ngOnInit — กำลังเรียก loadData() ครั้งแรก');
     this.loadData();
+  }
+
+  /**
+   * คืน array สำหรับ grid แสดง (Syncfusion ต้องได้ array ถึงจะแสดงแถว)
+   * โหมด pagination: data = { result, count } -> ส่ง result
+   * โหมด aggregate: data = array -> ส่ง array
+   */
+  getGridData(): any[] {
+    const d = this.data();
+    if (Array.isArray(d)) return d;
+    const arr = (d as any)?.result;
+    const out = Array.isArray(arr) ? arr : [];
+    if (out.length === 0) console.log('[CompanyTypeList] getGridData ส่ง array ว่างไป grid', { isArray: Array.isArray(d), resultLength: arr?.length });
+    return out;
   }
 
   /**
@@ -115,9 +135,16 @@ export class CompanyTypeListComponent implements OnInit {
     sort: string | undefined = this.sortField,
     direction: 'asc' | 'desc' = this.sortDirection
   ) {
+    console.log('[CompanyTypeList] loadData เรียก', { page, size, search, sort, direction });
     this.service.getAllWithPagination({ page, size, search: search || undefined, sort, direction }).subscribe({
       next: (response) => {
-        console.log('[CompanyTypeList] Data loaded:', response);
+        console.log('[CompanyTypeList] loadData response', {
+          dataLength: response.data?.length,
+          totalElements: response.totalElements,
+          currentPage: response.currentPage,
+          pageSize: response.pageSize,
+          firstItem: response.data?.[0]
+        });
 
         // Update data signal with { result, count } structure for server-side pagination
         this.data.set({
@@ -131,6 +158,7 @@ export class CompanyTypeListComponent implements OnInit {
         this.totalPages = response.totalPages;
         this.totalElements = response.totalElements;
         this.updatePageSettings();
+        console.log('[CompanyTypeList] loadData เสร็จ data() =', { resultLen: (this.data() as any)?.result?.length, count: (this.data() as any)?.count });
       },
       error: (err) => {
         console.error('[CompanyTypeList] Error loading data:', err);
@@ -161,17 +189,72 @@ export class CompanyTypeListComponent implements OnInit {
       }
     }
 
-    // Handle sorting: cancel client-side sort, call API with sort params
+    // Handle sorting: cancel client-side sort, call API, show first page
     if (event.requestType === 'sorting') {
       event.cancel = true;
+      // Syncfusion sends columnName (and optionally column.field); direction is 'Ascending' | 'Descending'
       const column = event.column as { field?: string } | undefined;
-      const field = column?.field ?? event.sortColumnName;
+      const field = event.columnName ?? column?.field ?? event.sortColumnName;
       const dir = event.direction === 'Descending' ? 'desc' : 'asc';
       if (field) {
         this.sortField = field;
         this.sortDirection = dir;
-        this.loadData(this.currentPage, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
+        this.currentPage = 0;
+        this.updatePageSettings();
+        this.loadData(0, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
       }
+    }
+
+    // Handle grouping: cancel client-side group, call API (show list from server)
+    if (event.requestType === 'grouping') {
+      event.cancel = true;
+      this.loadData(this.currentPage, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
+    }
+  }
+
+  /** โหลดข้อมูลทั้งหมดก่อนแล้วค่อย apply aggregate (Sum/Count ฯลฯ) - ส่งเป็น array เพื่อให้ grid แสดง footer aggregate ได้ */
+  loadDataForAggregate() {
+    const size = this.totalElements > 0 ? this.totalElements : 5000;
+    console.log('[CompanyTypeList] loadDataForAggregate เรียก', { size, searchTerm: this.searchTerm });
+    this.service.getAllWithPagination(
+      {
+        page: 0,
+        size,
+        search: this.searchTerm || undefined,
+        sort: this.sortField,
+        direction: this.sortDirection
+      },
+      { skipLoading: true }
+    ).subscribe({
+      next: (response) => {
+        const list = response.data ?? [];
+        console.log('[CompanyTypeList] loadDataForAggregate response', {
+          listLength: list.length,
+          firstItem: list[0],
+          totalElements: response.totalElements
+        });
+        this.data.set(list as any);
+        this.currentPage = 0;
+        this.pageSize = Math.max(list.length, 10);
+        this.totalPages = 1;
+        this.totalElements = list.length;
+        this.updatePageSettings();
+        console.log('[CompanyTypeList] loadDataForAggregate เสร็จ data() เป็น array ความยาว', (this.data() as any)?.length);
+      },
+      error: (err) => {
+        console.error('[CompanyTypeList] Error loading data for aggregate:', err);
+        this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.LOAD));
+      }
+    });
+  }
+
+  /** เมื่อเลือก Group/Aggregate ให้ดึงข้อมูลทั้งหมดก่อน (aggregate) หรือโหลด list ปัจจุบัน (group) แล้ว grid จะ apply หลัง data โหลดเสร็จ */
+  onGroupOrAggregateClick(event: { type: 'group' | 'aggregate'; field?: string; aggregateType?: string }) {
+    console.log('[CompanyTypeList] onGroupOrAggregateClick', event);
+    if (event.type === 'aggregate') {
+      this.loadDataForAggregate();
+    } else {
+      this.loadData(this.currentPage, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
     }
   }
 

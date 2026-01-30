@@ -40,22 +40,23 @@
 
       <!-- Debug info (hidden in production) -->
       <div class="hidden">
-        Data Count: {{ data().length }}
-        Columns: {{ columns.length }}
+        Grid data length: {{ getGridData().length }} | Columns: {{ columns.length }}
       </div>
 
       <app-syncfusion-data-grid
         class="h-full block border border-primary/20 dark:border-primary/30 rounded-lg overflow-hidden shadow-sm"
-        [dataSource]="data()"
+        [dataSource]="getGridData()"
         [columns]="columns"
         [actions]="gridActions"
         [showToolbar]="true"
         [showColumnMenu]="true"
         [showColumnChooser]="true"
         [pageSettings]="pageSettings"
+        [loadListOnGroupOrAggregate]="true"
         (rowSelected)="onEdit($event.data)"
         (rowDeleted)="onRowDeleted($event)"
         (actionBegin)="onActionBegin($event)"
+        (groupOrAggregateClick)="onGroupOrAggregateClick($event)"
       >
       </app-syncfusion-data-grid>
     }
