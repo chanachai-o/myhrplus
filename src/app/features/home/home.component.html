@@ -2,7 +2,7 @@
   <div class="p-4 md:p-6 lg:p-8 transition-colors duration-300">
     <!-- Enhanced Page Header with Welcome Message -->
     <app-page-header
-      [title]="getGreeting() + ', ' + (currentUser?.fullname || currentUser?.name || ('home.dashboard.userInfo.user' | translate)) + '! ' + ('home.dashboard.welcomeMessage' | translate)"
+      [title]="getGreeting() + ', ' + (currentUser?.fullname || currentUser?.name || ('home.dashboard.userInfo.user' | translate)) + '! '"
       [subtitle]="'home.dashboard.subtitle' | translate"
       icon="dashboard"
       iconGradient="from-indigo-500 to-purple-600"
