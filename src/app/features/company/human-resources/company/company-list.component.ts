@@ -65,6 +65,9 @@ export class CompanyModelListComponent implements OnInit {
     currentPage: 1
   };
 
+  /** ส่ง sort เป็นชื่อฟิลด์:ทิศทาง เดียว (เช่น codeId:desc) */
+  sort = 'codeId:desc';
+
   ngOnInit() {
     this.updateTranslations();
     this.translate.onLangChange.subscribe(() => this.updateTranslations());
@@ -80,7 +83,9 @@ export class CompanyModelListComponent implements OnInit {
   }
 
   loadData() {
-    this.service.getAll().subscribe({
+    const params: { sort?: string } = {};
+    if (this.sort) params.sort = this.sort;
+    this.service.getAll(params).subscribe({
       next: (res) => {
         this.data.set(Array.isArray(res) ? res : []);
       },
@@ -89,6 +94,20 @@ export class CompanyModelListComponent implements OnInit {
         this.notificationService.showError(this.translate.instant(TRANSLATION_KEYS.COMMON.MESSAGES.ERROR.LOAD));
       }
     });
+  }
+
+  /** เมื่อผู้ใช้เรียงจาก grid ให้ส่ง sort=ชื่อฟิลด์:ทิศทาง แล้วโหลดใหม่ */
+  onActionBegin(event: any) {
+    if (event.requestType === 'sorting') {
+      event.cancel = true;
+      const column = event.column as { field?: string } | undefined;
+      const field = event.columnName ?? column?.field ?? (event as any).sortColumnName;
+      const dir = event.direction === 'Descending' ? 'desc' : 'asc';
+      if (field) {
+        this.sort = `${field}:${dir}`;
+        this.loadData();
+      }
+    }
   }
 
   private updateTranslations() {

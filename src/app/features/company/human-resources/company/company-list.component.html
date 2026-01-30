@@ -45,6 +45,7 @@
         [pageSettings]="pageSettings"
         (rowSelected)="onEdit($event.data)"
         (rowDeleted)="onRowDeleted($event)"
+        (actionBegin)="onActionBegin($event)"
       >
       </app-syncfusion-data-grid>
     }

@@ -52,8 +52,9 @@ export class CompanyService extends BaseApiService<CompanyModel> {
     return camelToSnakeKeys(data);
   }
 
-  override getAll(params?: any): Observable<CompanyModel[]> {
-    const mergedParams = { ...params, iscompany: '1' };
+  override getAll(params?: { sort?: string; [key: string]: any }): Observable<CompanyModel[]> {
+    const mergedParams: any = { ...params, iscompany: '1' };
+    // ใช้ฟิลด์เดียว sort=ชื่อฟิลด์:ทิศทาง (เช่น sort=codeId:desc)
     this.loading.set(true);
     return this.http.get<any[]>(this.apiUrl, { params: this.createParams(mergedParams) }).pipe(
       map(list => (Array.isArray(list) ? list : []).map(item => this.fromApi(item))),

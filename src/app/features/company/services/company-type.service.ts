@@ -91,12 +91,11 @@ export class CompanyTypeService extends BaseApiService<CompanyTypeModel> {
     if (params?.search !== undefined && params.search !== '') {
       httpParams = httpParams.set('keyword', params.search.trim());
     }
-    // sort = field name for ordering (API param name)
-    if (params?.sort !== undefined && params.sort !== '') {
+    // ใช้ฟิลด์เดียว sort=ชื่อฟิลด์:ทิศทาง (เช่น sort=codeId:desc) ไม่ส่ง direction แยก
+    if (params?.sort != null && params.sort !== '' && params?.direction != null) {
+      httpParams = httpParams.set('sort', `${params.sort}:${params.direction}`);
+    } else if (params?.sort != null && params.sort !== '') {
       httpParams = httpParams.set('sort', params.sort);
-    }
-    if (params?.direction !== undefined) {
-      httpParams = httpParams.set('direction', params.direction);
     }
 
     console.log('[CompanyTypeService] Fetching data with pagination from:', this.apiUrl, 'with params:', params);
