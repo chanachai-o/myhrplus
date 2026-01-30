@@ -20,8 +20,6 @@
   </div>
 </app-page-header>
 
-<app-glass-card customClass="flex flex-col flex-1 h-[600px] min-h-0">
-  <!-- DataGrid Section -->
   <div class="flex-1 w-full min-h-0 relative bg-white dark:bg-gray-900 mt-4 rounded-lg overflow-hidden">
     @if (service.loading()) {
       <div class="absolute inset-0 overflow-hidden">
@@ -61,7 +59,6 @@
       </app-syncfusion-data-grid>
     }
   </div>
-</app-glass-card>
 
 <app-company-type-form
   [isOpen]="showModal"
