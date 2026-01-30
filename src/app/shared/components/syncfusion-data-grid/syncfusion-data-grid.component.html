@@ -16,6 +16,8 @@
     [allowResizing]="allowResizing"
     [allowReordering]="allowReordering"
     [allowSelection]="allowSelection"
+    [allowTextWrap]="allowTextWrap"
+    [textWrapSettings]="textWrapSettings"
     [allowExcelExport]="allowExcelExport"
     [allowPdfExport]="allowPdfExport"
     [showColumnChooser]="showColumnChooser"
@@ -115,7 +117,7 @@
 
           <!-- Primary key: แสดงขีดเส้นใต้ ให้รู้ว่ากดแถวเพื่อ edit ได้ -->
           <ng-template #template let-data *ngIf="col.isPrimaryKey && col.type !== 'badge' && col.type !== 'image'">
-            <span class="primary-key-cell">{{ getDataValue(data, col.field) }}</span>
+            <span class="primary-key-cell text-primary">{{ getDataValue(data, col.field) }}</span>
           </ng-template>
 
         </e-column>
@@ -127,7 +129,7 @@
         [headerText]="actionHeaderText | translate"
         [width]="actionWidth"
         textAlign="Center"
-        [freeze]="freezeActionsColumn ? 'Right' : undefined"
+        freeze='Right'
         [allowSorting]="false"
         [allowFiltering]="false"
         [allowGrouping]="false"

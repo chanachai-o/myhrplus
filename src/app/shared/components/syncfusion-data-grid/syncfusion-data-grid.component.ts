@@ -127,6 +127,10 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   @Input() allowResizing = true;
   @Input() allowReordering = true;
   @Input() allowSelection = true;
+  /** Auto wrap ข้อความใน cell (column cells) */
+  @Input() allowTextWrap = false;
+  /** wrapMode: 'Both' | 'Content' | 'Header' — Content = wrap เฉพาะ cell ข้อมูล */
+  @Input() textWrapSettings: { wrapMode?: 'Both' | 'Content' | 'Header' } = { wrapMode: 'Content' };
   @Input() showCheckboxColumn = false; // Show checkbox column for row selection
   @Input() allowExcelExport = true;
   @Input() allowPdfExport = true;
@@ -207,7 +211,7 @@ export class SyncfusionDataGridComponent implements OnInit, AfterViewInit, OnCha
   // Actions
   @Input() actions: GridAction[] = [];
   @Input() actionWidth = 120;
-  @Input() actionHeaderText = 'Actions';
+  @Input() actionHeaderText = '';
   /** freeze คอลัมน์ Actions ทางขวา (ไม่เลื่อนตาม horizontal scroll) */
   @Input() freezeActionsColumn = false;
 

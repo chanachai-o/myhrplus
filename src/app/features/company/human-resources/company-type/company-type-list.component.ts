@@ -285,13 +285,13 @@ export class CompanyTypeListComponent implements OnInit {
     console.log('[CompanyTypeList] Columns configured:', this.columns);
 
     this.gridActions = [
-      {
-        id: 'edit',
-        title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EDIT),
-        icon: 'ti ti-edit',
-        class: 'text-primary',
-        onClick: (data) => this.onEdit(data)
-      },
+      // {
+      //   id: 'edit',
+      //   title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.EDIT),
+      //   icon: 'ti ti-edit',
+      //   class: 'text-primary',
+      //   onClick: (data) => this.onEdit(data)
+      // },
       {
         id: 'delete',
         title: this.translate.instant(TRANSLATION_KEYS.COMMON.ACTIONS.DELETE),
