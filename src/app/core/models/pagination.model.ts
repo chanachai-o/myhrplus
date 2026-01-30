@@ -50,5 +50,7 @@ export interface PaginationParams {
   size?: number;
   sort?: string;
   direction?: 'asc' | 'desc';
+  /** Search term; sent as query param `keyword` in API */
+  search?: string;
 }
 

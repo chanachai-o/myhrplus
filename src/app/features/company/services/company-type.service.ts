@@ -60,8 +60,8 @@ export class CompanyTypeService extends BaseApiService<CompanyTypeModel> {
   }
 
   /**
-   * Get all company types with pagination info
-   * @param params Optional pagination parameters (page, size)
+   * Get all company types with pagination info (supports server-side search and sort)
+   * @param params Optional pagination parameters (page, size, search, sort, direction)
    * @returns Observable with data and pagination info
    */
   getAllWithPagination(params?: PaginationParams): Observable<{
@@ -80,6 +80,17 @@ export class CompanyTypeService extends BaseApiService<CompanyTypeModel> {
     }
     if (params?.size !== undefined) {
       httpParams = httpParams.set('size', params.size.toString());
+    }
+    // keyword = search term (API param name)
+    if (params?.search !== undefined && params.search !== '') {
+      httpParams = httpParams.set('keyword', params.search.trim());
+    }
+    // sort = field name for ordering (API param name)
+    if (params?.sort !== undefined && params.sort !== '') {
+      httpParams = httpParams.set('sort', params.sort);
+    }
+    if (params?.direction !== undefined) {
+      httpParams = httpParams.set('direction', params.direction);
     }
 
     console.log('[CompanyTypeService] Fetching data with pagination from:', this.apiUrl, 'with params:', params);

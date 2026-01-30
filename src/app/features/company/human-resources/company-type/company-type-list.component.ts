@@ -14,7 +14,7 @@ import { CompanyTypeModel } from '../../models/company-type.model';
 import { CompanyTypeFormComponent } from './company-type-form.component';
 import { TRANSLATION_KEYS } from '@core/constants/translation-keys.constant';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, first, skip } from 'rxjs/operators';
 import { NotificationService, ConfirmationDialogService, ConfirmationDialogResult } from '@core/services';
 import { filterSyncfusionFields } from '@core/utils';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
@@ -79,25 +79,43 @@ export class CompanyTypeListComponent implements OnInit {
     currentPage: 1
   };
 
+  // Server-side search and sort state
+  searchTerm = '';
+  sortField: string | undefined;
+  sortDirection: 'asc' | 'desc' = 'asc';
+
   ngOnInit() {
     this.updateTranslations();
     this.translate.onLangChange.subscribe(() => {
       this.updateTranslations();
     });
 
+    // Server-side search: call API on search change (reset to page 0); skip(1) avoids double load on init
     this.searchControl.valueChanges.pipe(
       debounceTime(300),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      skip(1)
     ).subscribe(value => {
-      this.grid.search(value || '');
+      this.searchTerm = value ?? '';
+      this.loadData(0, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
     });
 
-    // Load data
+    // Initial load
     this.loadData();
   }
 
-  loadData(page: number = this.currentPage, size: number = this.pageSize) {
-    this.service.getAllWithPagination({ page, size }).subscribe({
+  /**
+   * Load data with server-side pagination, search and sort.
+   * When params are omitted, uses current component state.
+   */
+  loadData(
+    page: number = this.currentPage,
+    size: number = this.pageSize,
+    search: string = this.searchTerm,
+    sort: string | undefined = this.sortField,
+    direction: 'asc' | 'desc' = this.sortDirection
+  ) {
+    this.service.getAllWithPagination({ page, size, search: search || undefined, sort, direction }).subscribe({
       next: (response) => {
         console.log('[CompanyTypeList] Data loaded:', response);
 
@@ -131,7 +149,7 @@ export class CompanyTypeListComponent implements OnInit {
   }
 
   onActionBegin(event: any) {
-    // Handle pagination
+    // Handle pagination: call API with current search/sort
     if (event.requestType === 'paging') {
       const newPage = (event.currentPage as number) - 1; // Convert from 1-based to 0-based
       const newPageSize = event.pageSize || this.pageSize;
@@ -139,7 +157,20 @@ export class CompanyTypeListComponent implements OnInit {
       if (newPage !== this.currentPage || newPageSize !== this.pageSize) {
         this.currentPage = newPage;
         this.pageSize = newPageSize;
-        this.loadData(this.currentPage, this.pageSize);
+        this.loadData(this.currentPage, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
+      }
+    }
+
+    // Handle sorting: cancel client-side sort, call API with sort params
+    if (event.requestType === 'sorting') {
+      event.cancel = true;
+      const column = event.column as { field?: string } | undefined;
+      const field = column?.field ?? event.sortColumnName;
+      const dir = event.direction === 'Descending' ? 'desc' : 'asc';
+      if (field) {
+        this.sortField = field;
+        this.sortDirection = dir;
+        this.loadData(this.currentPage, this.pageSize, this.searchTerm, this.sortField, this.sortDirection);
       }
     }
   }
